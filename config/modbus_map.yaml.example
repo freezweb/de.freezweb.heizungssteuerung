@@ -1,0 +1,81 @@
+# Modbus-Register-Definitionen
+#
+# Pro Modbus-Bus und Slave die relevanten Register-Adressen.
+# Wird beim Geraete-Setup pro Hersteller-Datasheet ausgefuellt.
+
+busse:
+  bus_wp:
+    interface: "tcp"            # via Waveshare RS485-zu-Ethernet
+    host: "10.1.25.50"          # IP des Waveshare-Gateways (TBD)
+    port: 502
+    rtu_baud: 9600
+    rtu_parity: "N"
+    rtu_stopbits: 1
+    timeout_s: 2
+
+  bus_bwwp_aux:
+    interface: "tcp"
+    host: "10.1.25.51"
+    port: 502
+    rtu_baud: 9600
+    rtu_parity: "N"
+    rtu_stopbits: 1
+    timeout_s: 2
+
+  bus_klima_og:
+    interface: "tcp"
+    host: "10.1.25.52"          # Anschluss am Slave-Schrank (spaeter)
+    port: 502
+    rtu_baud: 9600
+    rtu_parity: "N"
+    rtu_stopbits: 1
+    timeout_s: 2
+
+slaves:
+  wp1:
+    bus: "bus_wp"
+    address: 1
+    register:
+      vl_soll:      { typ: "holding", addr: 100, datatype: "uint16", scale: 0.1, einheit: "C", rw: "rw" }
+      vl_ist:       { typ: "input",   addr: 200, datatype: "int16",  scale: 0.1, einheit: "C", rw: "r" }
+      rl_ist:       { typ: "input",   addr: 201, datatype: "int16",  scale: 0.1, einheit: "C", rw: "r" }
+      modus:        { typ: "holding", addr: 110, datatype: "uint16", scale: 1,   einheit: "enum:0=aus,1=heizen,2=kuehlen,3=ww", rw: "rw" }
+      leistung_pct: { typ: "input",   addr: 210, datatype: "uint16", scale: 1,   einheit: "%", rw: "r" }
+      stoerung:     { typ: "input",   addr: 220, datatype: "uint16", scale: 1,   einheit: "bitfield", rw: "r" }
+
+  wp2:
+    bus: "bus_wp"
+    address: 2
+    register:
+      # Identisch zu wp1 - sobald WP-Modell feststeht ggf. anpassen
+      vl_soll:      { typ: "holding", addr: 100, datatype: "uint16", scale: 0.1, einheit: "C", rw: "rw" }
+      vl_ist:       { typ: "input",   addr: 200, datatype: "int16",  scale: 0.1, einheit: "C", rw: "r" }
+      rl_ist:       { typ: "input",   addr: 201, datatype: "int16",  scale: 0.1, einheit: "C", rw: "r" }
+      modus:        { typ: "holding", addr: 110, datatype: "uint16", scale: 1,   einheit: "enum", rw: "rw" }
+      leistung_pct: { typ: "input",   addr: 210, datatype: "uint16", scale: 1,   einheit: "%", rw: "r" }
+      stoerung:     { typ: "input",   addr: 220, datatype: "uint16", scale: 1,   einheit: "bitfield", rw: "r" }
+
+  bwwp:
+    bus: "bus_bwwp_aux"
+    address: 10
+    register:
+      vl_soll:      { typ: "holding", addr: 100, datatype: "uint16", scale: 0.1, einheit: "C", rw: "rw" }
+      vl_ist:       { typ: "input",   addr: 200, datatype: "int16",  scale: 0.1, einheit: "C", rw: "r" }
+      modus:        { typ: "holding", addr: 110, datatype: "uint16", scale: 1,   einheit: "enum", rw: "rw" }
+
+  pool_peripherie:
+    bus: "bus_bwwp_aux"
+    address: 11
+    register:
+      # Optionaler Pool-/Filtercontroller. Waerme kommt aus dem Gesamtwaermekreis,
+      # nicht aus einer eigenen Pool-WP.
+      wasser_temp:  { typ: "input",   addr: 200, datatype: "int16",  scale: 0.1, einheit: "C", rw: "r" }
+      filter_pct:   { typ: "holding", addr: 100, datatype: "uint16", scale: 1,   einheit: "%", rw: "rw" }
+
+  # Inter-CPU: Slave-RevPi exponiert seine I/O als Modbus-TCP Server
+  slave_revpi:
+    bus: "bus_keller"           # ueber LAN/VLAN 25 direkt
+    address: 1
+    host: "10.1.25.11"
+    port: 502
+    # Register werden vom Slave-Service definiert

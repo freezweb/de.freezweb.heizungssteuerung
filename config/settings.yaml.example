@@ -1,0 +1,56 @@
+# Globale Einstellungen Heizungssteuerung
+
+regelung:
+  zyklus_ms: 1000               # Hauptregelkreis-Zyklus
+  mischer_reserve_k: 5           # Aufschlag auf WP-VL gegenueber hoechster Mischer-Anforderung
+  oelbrenner_unterstuetzung: true # Phase A: alter Kessel darf gemeinsame Waermeanforderung bedienen
+
+hydraulik:
+  # Alle diese Anforderungen haengen am gemeinsamen Gesamtwaermekreis.
+  # Beide Haupt-WPs speisen diesen Kreis; Pool/Nebengebaeude/Haus sind Senken.
+  common_heat_demands: [fbh_eg, klima_og, nebengeb, pool, hk_backup]
+
+heizkurve:
+  # Stuetzpunkte (Aussentemperatur -> VL-Soll); HA kann diese ueberschreiben
+  stuetzpunkte:
+    - { aussen: -12, vl: 45 }
+    - { aussen:   0, vl: 38 }
+    - { aussen: +15, vl: 25 }
+  vl_min: 25
+  vl_max: 55
+
+wp:
+  # Wechselrhythmus zwischen WP1/WP2 fuer gleichmaessige Laufzeit
+  wechsel_stunden: 24
+  # Wann beide WPs gleichzeitig laufen sollen (in % der max. Leistung)
+  parallel_ab_pct: 50
+  # Solange keine echte Leistungsanforderung vorliegt: ab so vielen aktiven Senken beide WPs freigeben.
+  parallel_ab_aktive_kreise: 2
+  bwwp:
+    soll_normal: 50
+    soll_legionellen: 65
+    legionellen_intervall_tage: 7
+
+pool:
+  soll_winter: 35
+  soll_sommer: 28
+  max_pv_ueberschuss_temp: 40
+  becken_volumen_m3: 30
+  filter_speed_pct: 100
+
+failsafe:
+  mqtt_timeout_s: 60
+  ha_heartbeat_timeout_s: 300
+  fallback_vl_ohne_aussenfuehler: 50
+  pumpen_an_im_failsafe: true
+
+hand:
+  # Default-Hand-Timeout (kann pro Kanal in io_map.yaml ueberschrieben werden)
+  default_timeout_min: null     # null = nie automatisch zurueck
+  state_persist_path: "state/hand_state.json"
+
+logging:
+  level: INFO
+  datei: "/var/log/heizung.log"
+  rotate_mb: 10
+  keep: 5

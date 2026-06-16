@@ -1,0 +1,31 @@
+[Unit]
+Description=Heizungssteuerung Freezweb (Revolution Pi)
+After=network-online.target piControl.service
+Wants=network-online.target piControl.service
+# Wichtig: Default-Pyload abschalten, sonst greift sie parallel auf I/O zu
+Conflicts=revpipyload.service
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=heizung
+Group=heizung
+SupplementaryGroups=picontrol
+WorkingDirectory=/opt/heizung
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/heizung/.venv/bin/python -m heizung
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Hardening
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+NoNewPrivileges=true
+ReadWritePaths=/opt/heizung/state /var/log
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "heizung"
+version = "0.0.1"
+description = "Heizungssteuerung Freezweb auf Revolution Pi"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{name = "Daniel Lanz", email = "daniel@freezweb.de"}]
+license = {text = "Proprietary"}
+dependencies = [
+    "revpimodio2>=2.8.1",
+    "paho-mqtt>=2.0",
+    "pymodbus>=3.6",
+    "pydantic>=2.5",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.4",
+    "mypy>=1.10",
+]
+
+[project.scripts]
+heizung = "heizung.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "ASYNC", "S", "C4", "RET", "SIM"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

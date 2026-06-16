@@ -1,0 +1,35 @@
+# MQTT-Konfiguration
+
+broker:
+  host: "mqtt.esrv.center"
+  port: 1883
+  user: "vbnet"
+  passwort: "vbnet"            # GEHEIM - in Live-Datei (config/mqtt.yaml) anpassen
+  client_id: "heizung-haupt"
+  keepalive_s: 30
+
+# Topic-Schema
+topics:
+  base: "heizung"
+  status: "heizung/status"          # LWT, online/offline (retain=true)
+  heartbeat: "heizung/heartbeat"    # Sekunden seit Boot (alle 30 s)
+
+# Home Assistant Discovery
+ha_discovery:
+  enabled: true
+  prefix: "homeassistant"
+  device:
+    identifiers: ["heizung-haupt"]
+    name: "Heizung Hauptsteuerung"
+    model: "RevPi Connect 4"
+    manufacturer: "Freezweb"
+    sw_version: "0.0.1"
+
+# Subscribe: Anforderungen die HA an die Steuerung sendet
+anforderungen:
+  # Beispiel - tatsaechliche Topic-Namen vom HA-Ist-Zustand ergaenzen (siehe O11 im Lastenheft)
+  fbh_eg:    { topic: "heizung/anforderung/fbh_eg/set",    typ: "json" }
+  klima_og:  { topic: "heizung/anforderung/klima_og/set",  typ: "json" }
+  nebengeb:  { topic: "heizung/anforderung/nebengeb/set",  typ: "json" }
+  pool:      { topic: "heizung/anforderung/pool/set",      typ: "json" }
+  bwwp:      { topic: "heizung/anforderung/bwwp/set",      typ: "json" }

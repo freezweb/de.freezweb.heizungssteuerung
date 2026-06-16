@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.venv/
+venv/
+env/
+
+# Live-Configs (Secrets, IPs, MQTT-Credentials) - nur *.example wird committet
+config/io_map.yaml
+config/modbus_map.yaml
+config/settings.yaml
+config/mqtt.yaml
+
+# State / Logs
+state/
+*.log
+logs/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build / Deploy Artefakte
+*.tar.gz
+*.deb

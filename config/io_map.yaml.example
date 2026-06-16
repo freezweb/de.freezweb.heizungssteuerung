@@ -1,0 +1,125 @@
+# I/O-Kanalbelegung Haupt-RevPi (Heizungsraum)
+#
+# Single Source of Truth fuer alle Kanal-Adressen.
+# Referenziert von src/heizung/lib/iohw.py.
+#
+# Korrekte RevPi-Modulkapazitaeten laut Revolution-Pi-Doku:
+# - DIO: 14 digitale Eingänge + 14 digitale Ausgänge
+# - DI:  16 digitale Eingänge
+# - AIO: 4 AI (V/I) + 2 RTD (Pt100/Pt1000) + 2 AO (V/I)
+#
+# PiCtory-Namen werden nach dem echten PiCtory-Export finalisiert.
+
+revpi:
+  hardware: "RevPi Connect 4 WLAN 32/4GB"
+  hostname: "RevPi107273"
+  max_modules_total: 10
+  max_modules_left: 5
+  max_modules_right: 5
+  layout:
+    # Ist-Stand Hauptsteuerung laut PiCtory/piTest.
+    # 2x DIO reichen fuer 21 geplante DO + 28 DI Reserve/Klemmen.
+    - { addr: 27, side: left,  slot: 1, type: DIO, hwversion: "1.5", name: DIO2 }
+    - { addr: 28, side: left,  slot: 2, type: DIO, hwversion: "1.5", name: DIO1 }
+    - { addr: 29, side: left,  slot: 3, type: AIO, hwversion: "1.4", name: AIO1 }
+    - { addr: 30, side: left,  slot: 4, type: AIO, hwversion: "1.4", name: AIO2 }
+    - { addr: 31, side: left,  slot: 5, type: AIO, hwversion: "1.4", name: AIO3 }
+    - { addr: 0,  side: base,  slot: 0, type: CPU, hwversion: "1.0", name: CPU1 }
+    - { addr: 32, side: right, slot: 1, type: AIO, hwversion: "1.4", name: AIO4 }
+    - { addr: 33, side: right, slot: 2, type: AIO, hwversion: "1.4", name: AIO5 }
+    - { addr: 34, side: right, slot: 3, type: AIO, hwversion: "1.4", name: AIO6 }
+    - { addr: 35, side: right, slot: 4, type: AIO, hwversion: "1.4", name: AIO7 }
+    - { addr: 36, side: right, slot: 5, type: AIO, hwversion: "1.4", name: AIO8 }
+
+# Digitale Ausgaenge.
+# DIO1: DO01-DO14, DIO2: DO15-DO28.
+do:
+  DO01: { module: DIO1, channel: O_1,  pictory_name: "O_1",              komponente: "brenner",          beschreibung: "Olbrenner Freigabe",        phase: A, hand_timeout_min: null }
+  DO02: { module: DIO1, channel: O_2,  pictory_name: "O_2",              komponente: "pumpe_bw_lade",    beschreibung: "Ladepumpe Brauchwasser",     phase: A, hand_timeout_min: 240 }
+  DO03: { module: DIO1, channel: O_3,  pictory_name: "O_3",              komponente: "wp1_freigabe",      beschreibung: "WP1 Freigabe",               phase: B, hand_timeout_min: 60 }
+  DO04: { module: DIO1, channel: O_4,  pictory_name: "O_4",              komponente: "wp2_freigabe",      beschreibung: "WP2 Freigabe",               phase: B, hand_timeout_min: 60 }
+  DO05: { module: DIO1, channel: O_5,  pictory_name: "O_5",              komponente: "bwwp_freigabe",     beschreibung: "Brauchwasser-WP Freigabe",   phase: B, hand_timeout_min: 240 }
+  DO06: { module: DIO1, channel: O_6,  pictory_name: "O_6",              komponente: "brunnen_mv",        beschreibung: "Brunnenpumpe Magnetventil",  phase: C, hand_timeout_min: 60 }
+  DO07: { module: DIO1, channel: O_7,  pictory_name: "O_7",              komponente: "pool_filter",       beschreibung: "Pool-Filterpumpe Freigabe",  phase: E, hand_timeout_min: 240 }
+  DO08: { module: DIO1, channel: O_8,  pictory_name: "O_8",              komponente: "sv_wp1_auf",        beschreibung: "WP1 in Sammelkreis AUF",     phase: B, hand_timeout_min: 30 }
+  DO09: { module: DIO1, channel: O_9,  pictory_name: "O_9",              komponente: "sv_wp1_zu",         beschreibung: "WP1 in Sammelkreis ZU",      phase: B, hand_timeout_min: 30 }
+  DO10: { module: DIO1, channel: O_10, pictory_name: "O_10",             komponente: "sv_wp2_auf",        beschreibung: "WP2 in Sammelkreis AUF",     phase: B, hand_timeout_min: 30 }
+  DO11: { module: DIO1, channel: O_11, pictory_name: "O_11",             komponente: "sv_wp2_zu",         beschreibung: "WP2 in Sammelkreis ZU",      phase: B, hand_timeout_min: 30 }
+  DO12: { module: DIO1, channel: O_12, pictory_name: "O_12",             komponente: "sv_pool_auf",       beschreibung: "Pool-Senke AUF",             phase: E, hand_timeout_min: 30 }
+  DO13: { module: DIO1, channel: O_13, pictory_name: "O_13",             komponente: "sv_pool_zu",        beschreibung: "Pool-Senke ZU",              phase: E, hand_timeout_min: 30 }
+  DO14: { module: DIO1, channel: O_14, pictory_name: "O_14",             komponente: "sv_nebengeb_auf",   beschreibung: "3WV Nebengebaude AUF",       phase: B, hand_timeout_min: 30 }
+  DO15: { module: DIO2, channel: O_1,  pictory_name: "O_1_i17",          komponente: "sv_nebengeb_zu",    beschreibung: "3WV Nebengebaude ZU",        phase: B, hand_timeout_min: 30 }
+  DO16: { module: DIO2, channel: O_2,  pictory_name: "O_2_i17",          komponente: "sv_hk_backup_auf",  beschreibung: "3WV HK-Backup OG AUF",       phase: B, hand_timeout_min: 30 }
+  DO17: { module: DIO2, channel: O_3,  pictory_name: "O_3_i17",          komponente: "sv_hk_backup_zu",   beschreibung: "3WV HK-Backup OG ZU",        phase: B, hand_timeout_min: 30 }
+  DO18: { module: DIO2, channel: O_4,  pictory_name: "O_4_i17",          komponente: "pumpe_nebengeb",    beschreibung: "Pumpe Nebengebaude",         phase: B, hand_timeout_min: 240 }
+  DO19: { module: DIO2, channel: O_5,  pictory_name: "O_5_i17",          komponente: "pumpe_pool",        beschreibung: "Pumpe Pool-Heizkreis",       phase: E, hand_timeout_min: 240 }
+  DO20: { module: DIO2, channel: O_6,  pictory_name: "O_6_i17",          komponente: "tor_ganz",          beschreibung: "Tor 'ganz' Impuls 250ms",    phase: A, hand_timeout_min: null, impuls_ms: 250 }
+  DO21: { module: DIO2, channel: O_7,  pictory_name: "O_7_i17",          komponente: "tor_halb",          beschreibung: "Tor 'halb' Impuls 250ms",    phase: A, hand_timeout_min: null, impuls_ms: 250 }
+  DO22: { module: DIO2, channel: O_8,  pictory_name: "O_8_i17",          komponente: "reserve_do_22",     beschreibung: "Reserve",                    phase: "-", hand_timeout_min: 60 }
+  DO23: { module: DIO2, channel: O_9,  pictory_name: "O_9_i17",          komponente: "reserve_do_23",     beschreibung: "Reserve",                    phase: "-", hand_timeout_min: 60 }
+  DO24: { module: DIO2, channel: O_10, pictory_name: "O_10_i17",         komponente: "reserve_do_24",     beschreibung: "Reserve",                    phase: "-", hand_timeout_min: 60 }
+  DO25: { module: DIO2, channel: O_11, pictory_name: "O_11_i17",         komponente: "reserve_do_25",     beschreibung: "Reserve",                    phase: "-", hand_timeout_min: 60 }
+  DO26: { module: DIO2, channel: O_12, pictory_name: "O_12_i17",         komponente: "reserve_do_26",     beschreibung: "Reserve",                    phase: "-", hand_timeout_min: 60 }
+  DO27: { module: DIO2, channel: O_13, pictory_name: "O_13_i17",         komponente: "reserve_do_27",     beschreibung: "Reserve",                    phase: "-", hand_timeout_min: 60 }
+  DO28: { module: DIO2, channel: O_14, pictory_name: "O_14_i17",         komponente: "reserve_do_28",     beschreibung: "Reserve",                    phase: "-", hand_timeout_min: 60 }
+
+# Digitale Eingange.
+# DIO1: DI01-DI14, DIO2: DI15-DI28. Zusaetzliche DI-Module sind aktuell Reservebestand.
+di:
+  DI01: { module: DIO1, channel: I_1,  pictory_name: "I_1",              komponente: "tor_es_ganz_zu",    beschreibung: "Endschalter Tor 'ganz zu'", phase: A }
+  DI02: { module: DIO1, channel: I_2,  pictory_name: "I_2",              komponente: "tor_es_halb_zu",    beschreibung: "Endschalter Tor 'halb zu'", phase: A }
+  DI03: { module: DIO1, channel: I_3,  pictory_name: "I_3",              komponente: "tor_lichtschranke", beschreibung: "Lichtschranke (NC)",        phase: A, polaritaet: NC }
+  DI04: { module: DIO1, channel: I_4,  pictory_name: "I_4",              komponente: "sg_ready_1",        beschreibung: "SG-Ready 1 (EVU)",          phase: "-" }
+  DI05: { module: DIO1, channel: I_5,  pictory_name: "I_5",              komponente: "sg_ready_2",        beschreibung: "SG-Ready 2 (EVU)",          phase: "-" }
+  DI06: { module: DIO1, channel: I_6,  pictory_name: "I_6",              komponente: "pv_ueberschuss",    beschreibung: "PV-Ueberschuss von HA",     phase: F }
+  DI07: { module: DIO1, channel: I_7,  pictory_name: "I_7",              komponente: "pv_mangel",         beschreibung: "PV-Mangel von HA",          phase: F }
+  DI08: { module: DIO1, channel: I_8,  pictory_name: "I_8",              komponente: "wp1_stoerung",      beschreibung: "Sammelstoerung WP1",        phase: B }
+  DI09: { module: DIO1, channel: I_9,  pictory_name: "I_9",              komponente: "wp2_stoerung",      beschreibung: "Sammelstoerung WP2",        phase: B }
+  DI10: { module: DIO1, channel: I_10, pictory_name: "I_10",             komponente: "bwwp_stoerung",     beschreibung: "Sammelstoerung BW-WP",      phase: B }
+  DI11: { module: DIO1, channel: I_11, pictory_name: "I_11",             komponente: "brunnen_stroemung", beschreibung: "Stroemungswachter Brunnen", phase: C }
+  DI12: { module: DIO1, channel: I_12, pictory_name: "I_12",             komponente: "druck_heizkreis",   beschreibung: "Druckwachter Heizkreis",    phase: "-" }
+  DI13: { module: DIO1, channel: I_13, pictory_name: "I_13",             komponente: "reserve_di_13",     beschreibung: "Reserve",                   phase: "-" }
+  DI14: { module: DIO1, channel: I_14, pictory_name: "I_14",             komponente: "reserve_di_14",     beschreibung: "Reserve",                   phase: "-" }
+  DI15: { module: DIO2, channel: I_1,  pictory_name: "I_1_i17",          komponente: "reserve_di_15",     beschreibung: "Reserve",                   phase: "-" }
+  DI16: { module: DIO2, channel: I_2,  pictory_name: "I_2_i17",          komponente: "reserve_di_16",     beschreibung: "Reserve",                   phase: "-" }
+
+# Direkte RTD-Kanaele fuer Pt100/Pt1000.
+# 8x AIO auf der Hauptsteuerung ergeben 16 direkte RTD-Kanaele.
+rtd:
+  RTD01: { module: AIO1, channel: RTD_1, pictory_name: "RTDValue_1_i14", komponente: "vl_sammel",      sensor: PT1000, einheit: "C", phase: A }
+  RTD02: { module: AIO1, channel: RTD_2, pictory_name: "RTDValue_2_i14", komponente: "rl_sammel",      sensor: PT1000, einheit: "C", phase: A }
+  RTD03: { module: AIO2, channel: RTD_1, pictory_name: "RTDValue_1_i13", komponente: "bw_oben",        sensor: PT1000, einheit: "C", phase: A }
+  RTD04: { module: AIO2, channel: RTD_2, pictory_name: "RTDValue_2_i13", komponente: "bw_unten",       sensor: PT1000, einheit: "C", phase: A }
+  RTD05: { module: AIO3, channel: RTD_1, pictory_name: "RTDValue_1_i12", komponente: "aussen",         sensor: PT1000, einheit: "C", phase: A }
+  RTD06: { module: AIO3, channel: RTD_2, pictory_name: "RTDValue_2_i12", komponente: "brunnen_ein",    sensor: PT1000, einheit: "C", phase: C }
+  RTD07: { module: AIO4, channel: RTD_1, pictory_name: "RTDValue_1",     komponente: "brunnen_aus",    sensor: PT1000, einheit: "C", phase: C }
+  RTD08: { module: AIO4, channel: RTD_2, pictory_name: "RTDValue_2",     komponente: "kuehl_vl",       sensor: PT1000, einheit: "C", phase: E }
+  RTD09: { module: AIO5, channel: RTD_1, pictory_name: "RTDValue_1_i07", komponente: "kuehl_rl",       sensor: PT1000, einheit: "C", phase: E }
+  RTD10: { module: AIO5, channel: RTD_2, pictory_name: "RTDValue_2_i07", komponente: "pool_wasser",    sensor: PT1000, einheit: "C", phase: E }
+  RTD11: { module: AIO6, channel: RTD_1, pictory_name: "RTDValue_1_i08", komponente: "pool_wt_vl",     sensor: PT1000, einheit: "C", phase: E }
+  RTD12: { module: AIO6, channel: RTD_2, pictory_name: "RTDValue_2_i08", komponente: "pool_wt_rl",     sensor: PT1000, einheit: "C", phase: E }
+  RTD13: { module: AIO7, channel: RTD_1, pictory_name: "RTDValue_1_i09", komponente: "vl_nebengeb",    sensor: PT1000, einheit: "C", phase: B }
+  RTD14: { module: AIO7, channel: RTD_2, pictory_name: "RTDValue_2_i09", komponente: "rl_nebengeb",    sensor: PT1000, einheit: "C", phase: B }
+  RTD15: { module: AIO8, channel: RTD_1, pictory_name: "RTDValue_1_i10", komponente: "wp1_verdampfer", sensor: PT1000, einheit: "C", phase: B }
+  RTD16: { module: AIO8, channel: RTD_2, pictory_name: "RTDValue_2_i10", komponente: "bwwp_vl",        sensor: PT1000, einheit: "C", phase: B }
+
+# Analog-Eingange fuer 0-10V/4-20mA.
+# Nicht fuer direkte PT1000 verwenden; direkte Temperaturfuehler stehen unter rtd:.
+ai:
+  AI01: { module: AIO1, channel: AI_1, pictory_name: "InputValue_1_i14", komponente: "vl_wp1_analog", sensor: "0-10V/4-20mA", einheit: "C", phase: B }
+  AI02: { module: AIO1, channel: AI_2, pictory_name: "InputValue_2_i14", komponente: "rl_wp1_analog", sensor: "0-10V/4-20mA", einheit: "C", phase: B }
+  AI03: { module: AIO1, channel: AI_3, pictory_name: "InputValue_3_i14", komponente: "vl_wp2_analog", sensor: "0-10V/4-20mA", einheit: "C", phase: B }
+  AI04: { module: AIO1, channel: AI_4, pictory_name: "InputValue_4_i14", komponente: "rl_wp2_analog", sensor: "0-10V/4-20mA", einheit: "C", phase: B }
+
+# Analog-Ausgaenge 0-10V.
+ao:
+  AO01: { module: AIO1, channel: AO_1, pictory_name: "OutputValue_1_i14", komponente: "wp1_vl_soll",      bereich: [20, 55], einheit: "C", phase: B }
+  AO02: { module: AIO1, channel: AO_2, pictory_name: "OutputValue_2_i14", komponente: "wp2_vl_soll",      bereich: [20, 55], einheit: "C", phase: B }
+  AO03: { module: AIO2, channel: AO_1, pictory_name: "OutputValue_1_i13", komponente: "bwwp_vl_soll",     bereich: [40, 65], einheit: "C", phase: B }
+  AO04: { module: AIO2, channel: AO_2, pictory_name: "OutputValue_2_i13", komponente: "sv_nebengeb_pct",  bereich: [0, 100],  einheit: "%", phase: B }
+  AO05: { module: AIO3, channel: AO_1, pictory_name: "OutputValue_1_i12", komponente: "sv_hk_backup_pct", bereich: [0, 100],  einheit: "%", phase: B }
+  AO06: { module: AIO3, channel: AO_2, pictory_name: "OutputValue_2_i12", komponente: "sv_wp1_pct",       bereich: [0, 100],  einheit: "%", phase: B, beschreibung: "WP1 in Sammelkreis" }
+  AO07: { module: AIO4, channel: AO_1, pictory_name: "OutputValue_1",     komponente: "sv_wp2_pct",       bereich: [0, 100],  einheit: "%", phase: B, beschreibung: "WP2 in Sammelkreis" }
+  AO08: { module: AIO4, channel: AO_2, pictory_name: "OutputValue_2",     komponente: "sv_pool_pct",      bereich: [0, 100],  einheit: "%", phase: E, beschreibung: "Pool-Senke" }
+  AO09: { module: AIO5, channel: AO_1, pictory_name: "OutputValue_1_i07", komponente: "pool_filter_pct",  bereich: [0, 100],  einheit: "%", phase: E }
+  AO10: { module: AIO5, channel: AO_2, pictory_name: "OutputValue_2_i07", komponente: "reserve_ao",       bereich: [0, 100],  einheit: "%", phase: "-" }
