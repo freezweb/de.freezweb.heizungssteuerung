@@ -127,7 +127,7 @@ nur an den 2 RTD-Kanaelen pro Modul bereit; die 4 AI sind Spannungs-/Stromeingae
 |---|---|---|---|
 | Waveshare RS485-to-ETH | Modbus-Gateway WP-Bus | 1 | 50 EUR |
 | Waveshare RS485-to-ETH | Modbus-Gateway Klima-OG-Bus | 1 | 50 EUR |
-| Waveshare RS485-to-ETH | Modbus-Gateway BW-WP/Pool-WP-Bus | 1 | 50 EUR |
+| Waveshare RS485-to-ETH | Modbus-Gateway BW-WP/Pool-/Filterperipherie | 1 | 50 EUR |
 | Koppelrelais 24V -> 230V/16A | Pumpen, WP-Freigaben, Brunnen, Tor | ~20 | je 8-12 EUR |
 | Hutschienen-Netzteil 24V/5A | I/O-Versorgung Slave-Schrank | 1 | 40 EUR |
 | PT1000 Anlegefuehler | neue Sensoren erganzend | ~6 | je 15 EUR |
@@ -149,131 +149,227 @@ nur an den 2 RTD-Kanaelen pro Modul bereit; die 4 AI sind Spannungs-/Stromeingae
 
 ### 4.1 Haupt-RevPi Digital
 
+Physische Klemmenlogik fuer die Hauptsteuerung:
+
+- Karte 1 von links = DIO Adresse 27 / PiCtory `DIO2`: `DO1.1-DO1.14`, `DI1.1-DI1.14` = Software `DO15-DO28`, `DI15-DI28`
+- Karte 2 von links = DIO Adresse 28 / PiCtory `DIO1`: `DO2.1-DO2.14`, `DI2.1-DI2.14` = Software `DO01-DO14`, `DI01-DI14`
+
 **Digitale Ausgaenge (DO):**
 
-| # | Beschreibung | Phase |
-|---|---|---|
-| DO01 | Olbrenner Freigabe (uebergangsweise) | A -> entfaellt B |
-| DO02 | Ladepumpe Brauchwasserspeicher (uebergangsweise) | A -> entfaellt B |
-| DO03 | WP1 Freigabe (potentialfrei) | B |
-| DO04 | WP2 Freigabe (potentialfrei) | B |
-| DO05 | Brauchwasser-WP Freigabe | B |
-| DO06 | Brunnenpumpe Magnetventil | C |
-| DO07 | Pool-Filterpumpe Freigabe | E |
-| DO08 | WP1 in Sammel-/Gesamtwaermekreis AUF | B |
-| DO09 | WP1 in Sammel-/Gesamtwaermekreis ZU | B |
-| DO10 | WP2 in Sammel-/Gesamtwaermekreis AUF | B |
-| DO11 | WP2 in Sammel-/Gesamtwaermekreis ZU | B |
-| DO12 | 3WV Pool-Heizkreis AUF | E |
-| DO13 | 3WV Pool-Heizkreis ZU | E |
-| DO14 | 3WV Nebengebaude AUF | B |
-| DO15 | 3WV Nebengebaude ZU | B |
-| DO16 | 3WV Heizkorper-Backup OG AUF | B |
-| DO17 | 3WV Heizkorper-Backup OG ZU | B |
-| DO18 | Pumpe Nebengebaude | B |
-| DO19 | Pumpe Pool-Heizkreis | E |
-| DO20 | Tor "ganz" Impuls (250 ms via Koppelrelais) | A |
-| DO21 | Tor "halb" Impuls | A |
-| DO22-DO30 | Reserve | - |
+| # | Physisch | Beschreibung | Phase |
+|---|---|---|---|
+| DO01 | DO2.1 | Olbrenner Freigabe (uebergangsweise) | A -> entfaellt B |
+| DO02 | DO2.2 | Ladepumpe Brauchwasserspeicher (uebergangsweise) | A -> entfaellt B |
+| DO03 | DO2.3 | WP1 Freigabe (potentialfrei) | B |
+| DO04 | DO2.4 | WP2 Freigabe (potentialfrei) | B |
+| DO05 | DO2.5 | Brauchwasser-WP Freigabe | B |
+| DO06 | DO2.6 | Brunnenpumpe Magnetventil | C |
+| DO07 | DO2.7 | Pool-Filterpumpe Freigabe | E |
+| DO08 | DO2.8 | WP1 in Sammel-/Gesamtwaermekreis AUF | B |
+| DO09 | DO2.9 | WP1 in Sammel-/Gesamtwaermekreis ZU | B |
+| DO10 | DO2.10 | WP2 in Sammel-/Gesamtwaermekreis AUF | B |
+| DO11 | DO2.11 | WP2 in Sammel-/Gesamtwaermekreis ZU | B |
+| DO12 | DO2.12 | 3WV Pool-Heizkreis AUF | E |
+| DO13 | DO2.13 | 3WV Pool-Heizkreis ZU | E |
+| DO14 | DO2.14 | 3WV Nebengebaude AUF | B |
+| DO15 | DO1.1 | 3WV Nebengebaude ZU | B |
+| DO16 | DO1.2 | Reserve (HK-Backup-Mischer sitzt am Keller-Slave) | - |
+| DO17 | DO1.3 | Reserve (HK-Backup-Mischer sitzt am Keller-Slave) | - |
+| DO18 | DO1.4 | Pumpe Nebengebaude | B |
+| DO19 | DO1.5 | Pumpe Pool-Heizkreis | E |
+| DO20 | DO1.6 | Tor "ganz" Impuls (1000 ms via Koppelrelais) | A |
+| DO21 | DO1.7 | Tor "halb" Impuls (1000 ms via Koppelrelais) | A |
+| DO22 | DO1.8 | Reserve | - |
+| DO23 | DO1.9 | Reserve | - |
+| DO24 | DO1.10 | Reserve | - |
+| DO25 | DO1.11 | Reserve | - |
+| DO26 | DO1.12 | Reserve | - |
+| DO27 | DO1.13 | Reserve | - |
+| DO28 | DO1.14 | Reserve | - |
 
 **Digitale Eingange (DI):**
 
-| # | Beschreibung | Phase |
-|---|---|---|
-| DI01 | Endschalter Tor "ganz zu" | A |
-| DI02 | Endschalter Tor "halb zu" | A |
-| DI03 | Lichtschranke Tor (Sicherheit, NC) | A |
-| DI04 | SG-Ready 1 (EVU, reserviert) | - |
-| DI05 | SG-Ready 2 (EVU, reserviert) | - |
-| DI06 | PV-Ueberschuss-Signal von HA | F |
-| DI07 | PV-Mangel-Signal von HA | F |
-| DI08 | Sammelstoerung WP1 | B |
-| DI09 | Sammelstoerung WP2 | B |
-| DI10 | Sammelstoerung BW-WP | B |
-| DI11 | Stromungswachter Brunnen | C |
-| DI12 | Druckwachter Heizkreis (optional) | - |
-| DI13-DI16 | Reserve | - |
+| # | Physisch | Beschreibung | Phase |
+|---|---|---|---|
+| DI01 | DI2.1 | Endschalter linker Torfluegel geschlossen | A |
+| DI02 | DI2.2 | Endschalter rechter Torfluegel geschlossen | A |
+| DI03 | DI2.3 | Lichtschranke Tor (Sicherheit, NC: 1=sicher/frei, 0=unterbrochen) | A |
+| DI04 | DI2.4 | SG-Ready 1 (EVU, reserviert) | - |
+| DI05 | DI2.5 | SG-Ready 2 (EVU, reserviert) | - |
+| DI06 | DI2.6 | Reserve (PV-Ueberschuss kommt direkt per HA/MQTT) | - |
+| DI07 | DI2.7 | Reserve (PV-Mangel kommt direkt per HA/MQTT) | - |
+| DI08 | DI2.8 | Sammelstoerung WP1 | B |
+| DI09 | DI2.9 | Sammelstoerung WP2 | B |
+| DI10 | DI2.10 | Sammelstoerung BW-WP | B |
+| DI11 | DI2.11 | Stromungswachter Brunnen | C |
+| DI12 | DI2.12 | Druckwachter Heizkreis (optional) | - |
+| DI13 | DI2.13 | Reserve | - |
+| DI14 | DI2.14 | Reserve | - |
+| DI15 | DI1.1 | Reserve | - |
+| DI16 | DI1.2 | Reserve | - |
 
 ### 4.2 Haupt-RevPi Analog (AIO #1-8)
 
+Physische AIO-Karten der Hauptsteuerung:
+
+- Karte 3 von links = AIO Adresse 29 / PiCtory `AIO1`
+- Karte 4 von links = AIO Adresse 30 / PiCtory `AIO2`
+- Karte 5 von links = AIO Adresse 31 / PiCtory `AIO3`
+- Karte 6 von links = AIO Adresse 32 / PiCtory `AIO4`
+- Karte 7 von links = AIO Adresse 33 / PiCtory `AIO5`
+- Karte 8 von links = AIO Adresse 34 / PiCtory `AIO6`
+- Karte 9 von links = AIO Adresse 35 / PiCtory `AIO7`
+- Karte 10 von links = AIO Adresse 36 / PiCtory `AIO8`
+
 **RTD (16 direkte Pt1000-Kanaele auf 8 AIO):**
 
-| # | AIO | Kanal | Beschreibung |
-|---|---|---|---|
-| RTD01 | 1 | RTD1 | Vorlauf Kessel/WP-Sammelvorlauf |
-| RTD02 | 1 | RTD2 | Ruecklauf Kessel/WP-Sammelruecklauf |
-| RTD03 | 2 | RTD1 | Brauchwasser oben |
-| RTD04 | 2 | RTD2 | Brauchwasser unten / Ladetemperatur |
-| RTD05 | 3 | RTD1 | Aussentemperatur (Nordwand, beschattet) |
-| RTD06 | 3 | RTD2 | Brunnenwasser-Eintritt WT |
-| RTD07 | 4 | RTD1 | Brunnenwasser-Austritt WT |
-| RTD08 | 4 | RTD2 | Kuehlkreis-Vorlauf (kalte Seite WT zum OG) |
-| RTD09 | 5 | RTD1 | Kuehlkreis-Ruecklauf vom OG |
-| RTD10 | 5 | RTD2 | Pool-Wassertemperatur |
-| RTD11 | 6 | RTD1 | Pool-WT Vorlauf |
-| RTD12 | 6 | RTD2 | Pool-WT Ruecklauf |
-| RTD13 | 7 | RTD1 | Vorlauf Nebengebaude |
-| RTD14 | 7 | RTD2 | Ruecklauf Nebengebaude |
-| RTD15 | 8 | RTD1 | WP1 Verdampfertemperatur / Reserve je nach WP-Modbus |
-| RTD16 | 8 | RTD2 | BW-WP Vorlauf / Reserve je nach BW-WP-Modbus |
+| # | Physisch | AIO | Kanal | Beschreibung |
+|---|---|---|---|---|
+| RTD01 | RTD3.1 | 1 | RTD1 | Vorlauf Kessel/WP-Sammelvorlauf |
+| RTD02 | RTD3.2 | 1 | RTD2 | Ruecklauf Kessel/WP-Sammelruecklauf |
+| RTD03 | RTD4.1 | 2 | RTD1 | Brauchwasser oben |
+| RTD04 | RTD4.2 | 2 | RTD2 | Brauchwasser unten / Ladetemperatur |
+| RTD05 | RTD5.1 | 3 | RTD1 | Aussentemperatur (Nordwand, beschattet) |
+| RTD06 | RTD5.2 | 3 | RTD2 | Brunnenwasser-Eintritt WT |
+| RTD07 | RTD6.1 | 4 | RTD1 | Brunnenwasser-Austritt WT |
+| RTD08 | RTD6.2 | 4 | RTD2 | Kuehlkreis-Vorlauf (kalte Seite WT zum OG) |
+| RTD09 | RTD7.1 | 5 | RTD1 | Kuehlkreis-Ruecklauf vom OG |
+| RTD10 | RTD7.2 | 5 | RTD2 | Pool-Wassertemperatur |
+| RTD11 | RTD8.1 | 6 | RTD1 | Pool-WT Vorlauf |
+| RTD12 | RTD8.2 | 6 | RTD2 | Pool-WT Ruecklauf |
+| RTD13 | RTD9.1 | 7 | RTD1 | Vorlauf Nebengebaude |
+| RTD14 | RTD9.2 | 7 | RTD2 | Ruecklauf Nebengebaude |
+| RTD15 | RTD10.1 | 8 | RTD1 | WP1 Verdampfertemperatur / Reserve je nach WP-Modbus |
+| RTD16 | RTD10.2 | 8 | RTD2 | BW-WP Vorlauf / Reserve je nach BW-WP-Modbus |
 
 **AI (32 Kanaele V/I - fuer 0-10V/4-20mA, nicht direkte PT1000):**
 
-| # | AIO | Kanal | Beschreibung |
-|---|---|---|---|
-| AI01 | 1 | AI1 | WP1 Vorlauf analoger Messumformer (optional; primaer Modbus) |
-| AI02 | 1 | AI2 | WP1 Ruecklauf analoger Messumformer (optional; primaer Modbus) |
-| AI03 | 1 | AI3 | WP2 Vorlauf analoger Messumformer (optional; primaer Modbus) |
-| AI04 | 1 | AI4 | WP2 Ruecklauf analoger Messumformer (optional; primaer Modbus) |
-| AI05-AI32 | 2-8 | AI1-AI4 | Reserve fuer 0-10V/4-20mA-Signale, Druck, Durchfluss, Leistung |
+| # | Physisch | AIO | Kanal | Beschreibung |
+|---|---|---|---|---|
+| AI01 | AI3.1 | 1 | AI1 | WP1 Vorlauf analoger Messumformer (optional; primaer Modbus) |
+| AI02 | AI3.2 | 1 | AI2 | WP1 Ruecklauf analoger Messumformer (optional; primaer Modbus) |
+| AI03 | AI3.3 | 1 | AI3 | WP2 Vorlauf analoger Messumformer (optional; primaer Modbus) |
+| AI04 | AI3.4 | 1 | AI4 | WP2 Ruecklauf analoger Messumformer (optional; primaer Modbus) |
+| AI05 | AI4.1 | 2 | AI1 | Reserve fuer 0-10V/4-20mA |
+| AI06 | AI4.2 | 2 | AI2 | Reserve fuer 0-10V/4-20mA |
+| AI07 | AI4.3 | 2 | AI3 | Reserve fuer 0-10V/4-20mA |
+| AI08 | AI4.4 | 2 | AI4 | Reserve fuer 0-10V/4-20mA |
+| AI09 | AI5.1 | 3 | AI1 | Reserve fuer 0-10V/4-20mA |
+| AI10 | AI5.2 | 3 | AI2 | Reserve fuer 0-10V/4-20mA |
+| AI11 | AI5.3 | 3 | AI3 | Reserve fuer 0-10V/4-20mA |
+| AI12 | AI5.4 | 3 | AI4 | Reserve fuer 0-10V/4-20mA |
+| AI13 | AI6.1 | 4 | AI1 | Reserve fuer 0-10V/4-20mA |
+| AI14 | AI6.2 | 4 | AI2 | Reserve fuer 0-10V/4-20mA |
+| AI15 | AI6.3 | 4 | AI3 | Reserve fuer 0-10V/4-20mA |
+| AI16 | AI6.4 | 4 | AI4 | Reserve fuer 0-10V/4-20mA |
+| AI17 | AI7.1 | 5 | AI1 | Reserve fuer 0-10V/4-20mA |
+| AI18 | AI7.2 | 5 | AI2 | Reserve fuer 0-10V/4-20mA |
+| AI19 | AI7.3 | 5 | AI3 | Reserve fuer 0-10V/4-20mA |
+| AI20 | AI7.4 | 5 | AI4 | Reserve fuer 0-10V/4-20mA |
+| AI21 | AI8.1 | 6 | AI1 | Reserve fuer 0-10V/4-20mA |
+| AI22 | AI8.2 | 6 | AI2 | Reserve fuer 0-10V/4-20mA |
+| AI23 | AI8.3 | 6 | AI3 | Reserve fuer 0-10V/4-20mA |
+| AI24 | AI8.4 | 6 | AI4 | Reserve fuer 0-10V/4-20mA |
+| AI25 | AI9.1 | 7 | AI1 | Reserve fuer 0-10V/4-20mA |
+| AI26 | AI9.2 | 7 | AI2 | Reserve fuer 0-10V/4-20mA |
+| AI27 | AI9.3 | 7 | AI3 | Reserve fuer 0-10V/4-20mA |
+| AI28 | AI9.4 | 7 | AI4 | Reserve fuer 0-10V/4-20mA |
+| AI29 | AI10.1 | 8 | AI1 | Reserve fuer 0-10V/4-20mA |
+| AI30 | AI10.2 | 8 | AI2 | Reserve fuer 0-10V/4-20mA |
+| AI31 | AI10.3 | 8 | AI3 | Reserve fuer 0-10V/4-20mA |
+| AI32 | AI10.4 | 8 | AI4 | Reserve fuer 0-10V/4-20mA |
 
 **AO (10 Kanaele 0-10V):**
 
-| # | AIO | Kanal | Beschreibung |
-|---|---|---|---|
-| AO01 | 1 | AO1 | WP1 VL-Sollwert |
-| AO02 | 1 | AO2 | WP2 VL-Sollwert |
-| AO03 | 2 | AO1 | BW-WP VL-Sollwert |
-| AO04 | 2 | AO2 | 3WV Nebengebaude (zukuenftig 0-10V) |
-| AO05 | 3 | AO1 | 3WV Heizkorper-Backup OG (zukuenftig) |
-| AO06 | 3 | AO2 | WP1 in Sammel-/Gesamtwaermekreis (zukuenftig 0-10V) |
-| AO07 | 4 | AO1 | WP2 in Sammel-/Gesamtwaermekreis (zukuenftig 0-10V) |
-| AO08 | 4 | AO2 | Pool-Senke am Gesamtwaermekreis (zukuenftig 0-10V) |
-| AO09 | 5 | AO1 | Filterpumpe Pool Drehzahl |
-| AO10 | 5 | AO2 | Reserve |
-| AO11-AO16 | 6-8 | AO1-AO2 | Reserve |
+| # | Physisch | AIO | Kanal | Beschreibung |
+|---|---|---|---|---|
+| AO01 | AO3.1 | 1 | AO1 | WP1 VL-Sollwert |
+| AO02 | AO3.2 | 1 | AO2 | WP2 VL-Sollwert |
+| AO03 | AO4.1 | 2 | AO1 | BW-WP VL-Sollwert |
+| AO04 | AO4.2 | 2 | AO2 | 3WV Nebengebaude (zukuenftig 0-10V) |
+| AO05 | AO5.1 | 3 | AO1 | Reserve (HK-Backup-Mischer sitzt am Keller-Slave) |
+| AO06 | AO5.2 | 3 | AO2 | WP1 in Sammel-/Gesamtwaermekreis (zukuenftig 0-10V) |
+| AO07 | AO6.1 | 4 | AO1 | WP2 in Sammel-/Gesamtwaermekreis (zukuenftig 0-10V) |
+| AO08 | AO6.2 | 4 | AO2 | Pool-Senke am Gesamtwaermekreis (zukuenftig 0-10V) |
+| AO09 | AO7.1 | 5 | AO1 | Filterpumpe Pool Drehzahl |
+| AO10 | AO7.2 | 5 | AO2 | Reserve |
+| AO11 | AO8.1 | 6 | AO1 | Reserve |
+| AO12 | AO8.2 | 6 | AO2 | Reserve |
+| AO13 | AO9.1 | 7 | AO1 | Reserve |
+| AO14 | AO9.2 | 7 | AO2 | Reserve |
+| AO15 | AO10.1 | 8 | AO1 | Reserve |
+| AO16 | AO10.2 | 8 | AO2 | Reserve |
 
 ### 4.3 Slave-RevPi Hauptkeller (spater)
 
+Geplante physische Klemmenlogik fuer den Keller-Slave:
+
+- Keller-Karte 1 = DIO links der CPU: `K-DO1.1-K-DO1.14`, `K-DI1.1-K-DI1.14`
+- Keller-Karte 2 = erste AIO rechts der CPU: `K-RTD2.1-K-RTD2.2`, `K-AI2.1-K-AI2.4`, `K-AO2.1-K-AO2.2`
+- Keller-Karte 3 = zweite AIO rechts der CPU: `K-RTD3.1-K-RTD3.2`, `K-AI3.1-K-AI3.4`, `K-AO3.1-K-AO3.2`
+- Keller-Karte 4 = dritte AIO rechts der CPU: `K-RTD4.1-K-RTD4.2`, `K-AI4.1-K-AI4.4`, `K-AO4.1-K-AO4.2`
+
 **DIO (14 DI + 14 DO):**
 
-| # | Beschreibung |
-|---|---|
-| K-DO01 | Pumpe Mischer FBH-EG |
-| K-DO02 | Pumpe Mischer Klimakreis-OG |
-| K-DO03 | 3WV FBH-EG AUF |
-| K-DO04 | 3WV FBH-EG ZU |
-| K-DO05 | 3WV Klima-OG AUF |
-| K-DO06 | 3WV Klima-OG ZU |
-| K-DO07-K-DO14 | Reserve |
-| K-DI01 | Druckwachter Heizkreis (optional) |
-| K-DI02 | Stromungswachter Mischerkreis (optional) |
-| K-DI03-K-DI14 | Reserve |
+| # | Physisch | Beschreibung |
+|---|---|---|
+| K-DO01 | K-DO1.1 | Pumpe Mischer FBH-EG |
+| K-DO02 | K-DO1.2 | Pumpe Mischer Klimakreis-OG |
+| K-DO03 | K-DO1.3 | 3WV FBH-EG AUF |
+| K-DO04 | K-DO1.4 | 3WV FBH-EG ZU |
+| K-DO05 | K-DO1.5 | 3WV Klima-OG AUF |
+| K-DO06 | K-DO1.6 | 3WV Klima-OG ZU |
+| K-DO07 | K-DO1.7 | 3WV Heizkorper-Backup OG AUF |
+| K-DO08 | K-DO1.8 | 3WV Heizkorper-Backup OG ZU |
+| K-DO09 | K-DO1.9 | Pumpe Heizkorper-Backup OG |
+| K-DO10 | K-DO1.10 | Reserve |
+| K-DO11 | K-DO1.11 | Reserve |
+| K-DO12 | K-DO1.12 | Reserve |
+| K-DO13 | K-DO1.13 | Reserve |
+| K-DO14 | K-DO1.14 | Reserve |
+| K-DI01 | K-DI1.1 | Druckwachter Heizkreis (optional) |
+| K-DI02 | K-DI1.2 | Stromungswachter Mischerkreis (optional) |
+| K-DI03 | K-DI1.3 | Reserve |
+| K-DI04 | K-DI1.4 | Reserve |
+| K-DI05 | K-DI1.5 | Reserve |
+| K-DI06 | K-DI1.6 | Reserve |
+| K-DI07 | K-DI1.7 | Reserve |
+| K-DI08 | K-DI1.8 | Reserve |
+| K-DI09 | K-DI1.9 | Reserve |
+| K-DI10 | K-DI1.10 | Reserve |
+| K-DI11 | K-DI1.11 | Reserve |
+| K-DI12 | K-DI1.12 | Reserve |
+| K-DI13 | K-DI1.13 | Reserve |
+| K-DI14 | K-DI1.14 | Reserve |
 
 **AIO (3x AIO = 12 AI + 6 RTD + 6 AO):**
 
-| # | Beschreibung |
-|---|---|
-| K-RTD01 | Sammelvorlauf nach Mischern |
-| K-RTD02 | Vorlauf FBH-EG nach Mischer |
-| K-RTD03 | Ruecklauf FBH-EG |
-| K-RTD04 | Vorlauf Klimakreis-OG nach Mischer |
-| K-RTD05 | Ruecklauf Klimakreis-OG |
-| K-RTD06 | Reserve |
-| K-AI01-K-AI12 | Reserve fuer 0-10V/4-20mA |
-| K-AO01 | Stellsignal Mischer FBH (zukuenftig 0-10V) |
-| K-AO02 | Stellsignal Mischer Klima-OG (zukuenftig 0-10V) |
-| K-AO03-K-AO06 | Reserve |
+| # | Physisch | Beschreibung |
+|---|---|---|
+| K-RTD01 | K-RTD2.1 | Vorlauf FBH-EG nach Mischer |
+| K-RTD02 | K-RTD2.2 | Ruecklauf FBH-EG |
+| K-RTD03 | K-RTD3.1 | Vorlauf Klimakreis-OG nach Mischer |
+| K-RTD04 | K-RTD3.2 | Ruecklauf Klimakreis-OG |
+| K-RTD05 | K-RTD4.1 | Vorlauf Heizkorper-Backup OG |
+| K-RTD06 | K-RTD4.2 | Ruecklauf Heizkorper-Backup OG |
+| K-AI01 | K-AI2.1 | Reserve fuer 0-10V/4-20mA |
+| K-AI02 | K-AI2.2 | Reserve fuer 0-10V/4-20mA |
+| K-AI03 | K-AI2.3 | Reserve fuer 0-10V/4-20mA |
+| K-AI04 | K-AI2.4 | Reserve fuer 0-10V/4-20mA |
+| K-AI05 | K-AI3.1 | Reserve fuer 0-10V/4-20mA |
+| K-AI06 | K-AI3.2 | Reserve fuer 0-10V/4-20mA |
+| K-AI07 | K-AI3.3 | Reserve fuer 0-10V/4-20mA |
+| K-AI08 | K-AI3.4 | Reserve fuer 0-10V/4-20mA |
+| K-AI09 | K-AI4.1 | Reserve fuer 0-10V/4-20mA |
+| K-AI10 | K-AI4.2 | Reserve fuer 0-10V/4-20mA |
+| K-AI11 | K-AI4.3 | Reserve fuer 0-10V/4-20mA |
+| K-AI12 | K-AI4.4 | Reserve fuer 0-10V/4-20mA |
+| K-AO01 | K-AO2.1 | Stellsignal Mischer FBH (zukuenftig 0-10V) |
+| K-AO02 | K-AO2.2 | Stellsignal Mischer Klima-OG (zukuenftig 0-10V) |
+| K-AO03 | K-AO3.1 | Stellsignal Mischer Heizkorper-Backup OG (zukuenftig 0-10V) |
+| K-AO04 | K-AO3.2 | Reserve |
+| K-AO05 | K-AO4.1 | Reserve |
+| K-AO06 | K-AO4.2 | Reserve |
 
 ### 4.4 Modbus-Geraete (separate RS485-Busse ueber Waveshare-Gateways)
 
@@ -332,12 +428,14 @@ Siehe [docs/hydraulik.md](docs/hydraulik.md).
 2. **HA-Anforderungen abrufen** (per MQTT-Subscribe, gecached)
 3. **Anforderungsberechnung**:
    - Hoechster geforderter VL aller aktiven Senken am Gesamtwaermekreis + Aufschlag (Mischer-Reserve) = WP-VL-Soll
+   - Anforderungen werden nur verarbeitet, wenn die jeweilige Senke in HA/State freigegeben ist
 4. **WP-Steuerung** (Sequenz):
    - WP1 und WP2 speisen beide denselben Gesamtwaermekreis; keine feste Zuordnung WP/Haus/Pool
+   - Jede Waermequelle hat eine Freigabe: Oelbrenner, WP1, WP2, BWWP
    - Bei kleiner Anforderung: eine WP
    - Bei mehreren aktiven Senken oder hoher Last: beide WPs parallel
    - Wechselrhythmus (alle 24 h) damit Laufzeit gleich verteilt
-   - Bei PV-Ueberschuss + Pool unter Maxtemp: Pool vorrangig laden
+   - Bei PV-Ueberschuss aus HA/MQTT + Pool unter Maxtemp: Pool vorrangig laden
 5. **Mischer-Regelung** (an Slave-CPU):
    - PI-Regler auf Mischer-Vorlauf zu Soll
    - Soll vom Master per Modbus-TCP uebergeben
@@ -351,6 +449,17 @@ Siehe [docs/hydraulik.md](docs/hydraulik.md).
 - Bei Timeout: automatischer Rueckfall auf Auto
 - Persistierung: Hand-Stati ueberleben Neustart
 - In HA sichtbar: pro Kanal eine Switch-Entitat "Hand-Modus" + Number/Switch fur den Wert
+
+### 6.4.1 Quellen-/Senkenfreigaben
+
+- Jede Waermequelle ist per HA-Schalter freigebbar/sperrbar:
+  `oelbrenner`, `wp1`, `wp2`, `bwwp`.
+- Jeder Heizkreis bzw. jede Senke ist per HA-Schalter freigebbar/sperrbar:
+  `fbh_eg`, `klima_og`, `nebengeb`, `hk_backup`, `pool`.
+- Freigaben werden lokal auf dem RevPi in `state/freigaben.json` persistiert.
+- Startzustand: Oelbrenner und FBH-EG freigegeben; WP1/WP2/BWWP/Pool/etc.
+  gesperrt, bis sie nach Einbau bewusst in HA aktiviert werden.
+- So kann der Oelbrenner parallel im System bleiben, bis das Oel leer ist.
 
 ### 6.5 Failsafe-Verhalten
 - **Trigger**: MQTT-Verbindung > 60 s verloren ODER HA-Heartbeat-Topic > 5 min nicht aktualisiert
@@ -368,9 +477,9 @@ Siehe [docs/hydraulik.md](docs/hydraulik.md).
 - HA sieht **immer** die aktuelle Ziel-VL
 
 ### 6.7 PV-Integration (Phase F)
-- 2 DI vom HA (Shelly-Output mit Optokoppler oder MQTT-Topic):
-  - `PV_UEBERSCHUSS`: WPs duerfen Pool aufladen ueber Soll, max. 40 Grad
-  - `PV_MANGEL`: WPs auf Sparmodus drosseln (z.B. nur WP1, max. 50% Leistung)
+- PV-Signale kommen direkt aus Home Assistant per MQTT, nicht ueber RevPi-DI:
+  - `heizung/pv/ueberschuss/set`: WPs duerfen Pool aufladen ueber Soll, max. 40 Grad
+  - `heizung/pv/mangel/set`: WPs auf Sparmodus drosseln (z.B. nur WP1, max. 50% Leistung)
 - Logik: Pool wird als thermischer Puffer genutzt
 - Der Pool ist dabei eine Senke am gemeinsamen Gesamtwaermekreis, nicht fest einer bestimmten WP zugeordnet.
 
@@ -391,6 +500,7 @@ Eigenes Dashboard `Heizung` mit:
 - **Tor-Karte** 4 Buttons + Status + Lichtschranke
 - **Heizkurve-Karte** 3 Stuetzpunkt-Slider + Plot
 - **Failsafe-Karte** Status + manueller Force-Failsafe-Schalter
+- **Freigabe-Karten** fuer Quellen und Senken; nur gesetzte Haken werden durch die Regelung verwendet
 
 Verlaufskurven & History: nativ ueber HA-Recorder + InfluxDB-Add-on.
 
@@ -413,7 +523,7 @@ Verlaufskurven & History: nativ ueber HA-Recorder + InfluxDB-Add-on.
 | **C - Brunnen-Kuhlung** | Brunnenpumpe + WT-Sensoren, Sommerkuhlung freigegeben | B |
 | **D - WP-Umbau (Hardware-Tag)** | Brenner raus, 2x 16 kW WP rein, BW-WP rein, alle 3WV-Selektoren, Modbus-RTU zu WPs | WPs beschafft + Heizungsbauer |
 | **E - Klima-OG + Pool** | Klima-Innengerate + Pool-Hydraulik + WT + Filter | D, Klima-Modelle beschafft |
-| **F - PV-Integration** | DI-Signale von HA, PV-Uberschuss-Logik | PV in Betrieb |
+| **F - PV-Integration** | HA/MQTT-Signale, PV-Uberschuss-Logik | PV in Betrieb |
 | **G - Tuning** | Heizkurve fein, COP-Monitoring, Hand-Timeouts final | im Betrieb |
 
 ## 11. Offene Punkte / Risiken
@@ -440,9 +550,9 @@ Verlaufskurven & History: nativ ueber HA-Recorder + InfluxDB-Add-on.
 **Phase A:**
 - HA-Heizungsanforderung schaltet Brenner ein -> DO01 = HIGH
 - Brenner im Failsafe (HA aus): bleibt an wenn AI Aussen < 5 Grad
-- Tor "ganz auf" via HA -> Impuls 250 ms am DO20
+- Tor "ganz auf" via HA -> Impuls 1000 ms am DO20
 - Endschalter "zu" -> DI01 aendert in HA sichtbar
-- Lichtschranke unterbrechen waehrend Tor schliesst: sofortiger Stopp-Impuls
+- Lichtschranke NC: DI03=1 zeigt in HA sicher/frei, Unterbrechung DI03=0 zeigt unsicher; Unterbrechung waehrend Tor schliesst: sofortiger Stopp-Impuls
 
 **Phase B:**
 - Slave-CPU ping ueber VLAN 25

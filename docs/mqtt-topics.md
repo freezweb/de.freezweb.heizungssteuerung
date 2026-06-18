@@ -13,6 +13,15 @@ Broker: `mqtt.esrv.center` mit User `vbnet`/`vbnet`. Basis-Pfad: `heizung/...`
 | `heizung/gesamt/active` | RevPi -> | `0` / `1` | yes |
 | `heizung/gesamt/vl_soll/state` | RevPi -> | Gemeinsamer Soll-Vorlauf fuer WP1/WP2 | yes |
 | `heizung/routing/state` | RevPi -> | JSON mit aktiven Senken, Quellenanzahl, Pool/BWWP-Status | yes |
+| `heizung/brauchwasser/ladung_aktiv` | RevPi -> | `0` / `1`, aktuelle Speicherladung ueber Oelbrenner + BW-Ladepumpe | yes |
+| `heizung/brauchwasser/grund` | RevPi -> | Regelgrund, z.B. `unter_einschaltschwelle`, `soll_erreicht`, `sensor_bw_oben_ungueltig` | yes |
+| `heizung/brauchwasser/state` | RevPi -> | JSON mit Freigabe, Aktivstatus, Temperaturen, Sollwert, Hysterese und Grund | yes |
+| `heizung/pv/ueberschuss/state` | RevPi -> | `0` / `1`, von HA empfangenes PV-Ueberschuss-Signal | yes |
+| `heizung/pv/mangel/state` | RevPi -> | `0` / `1`, von HA empfangenes PV-Mangel-Signal | yes |
+| `heizung/freigabe/state` | RevPi -> | JSON mit allen Quellen-/Senkenfreigaben | yes |
+| `heizung/freigabe/quellen/<quelle>/state` | RevPi -> | `0` / `1` fuer `oelbrenner`, `wp1`, `wp2`, `bwwp` | yes |
+| `heizung/freigabe/senken/<senke>/state` | RevPi -> | `0` / `1` fuer `brauchwasser`, `fbh_eg`, `klima_og`, `nebengeb`, `hk_backup`, `pool` | yes |
+| `heizung/regler/<name>/state` | RevPi -> | Reglerparameter, z.B. `mischer_reserve_k` | yes |
 
 ## Komponenten-State (RevPi publisht)
 | Topic | Payload | Beispiel |
@@ -23,6 +32,10 @@ Broker: `mqtt.esrv.center` mit User `vbnet`/`vbnet`. Basis-Pfad: `heizung/...`
 | `heizung/mischer/fbh/state` | JSON | `{"position_pct": 60, "vl_soll": 35.0, "vl_ist": 34.8, "hand": false}` |
 | `heizung/mischer/klima_og/state` | JSON | s.o. |
 | `heizung/pumpe/<name>/state` | JSON | `{"an": true, "hand": false}` |
+| `heizung/do/<komponente>/state` | `0` / `1` | Tatsachlich geschriebener Digitalausgang |
+| `heizung/ao/<komponente>/state` | float | Tatsachlich geschriebener Analogausgang |
+| `heizung/<komponente>/hand/mode/state` | `0` / `1` | Handbetrieb aktiv |
+| `heizung/<komponente>/hand/value/state` | bool/float | Aktueller Handwert |
 | `heizung/temp/<sensorname>/state` | float | `45.2` |
 | `heizung/tor/status` | string | `offen` / `halb_offen` / `zu` / `unbekannt` |
 | `heizung/anforderung/<kreis>/aktuell` | JSON | `{"vl_soll": 42, "aktiv": true, "quelle": "ha"}` (vom RevPi rueckgespiegelt) |
@@ -39,12 +52,42 @@ zugeordnet; beide koennen jede aktive Senke bedienen.
 | `heizung/anforderung/nebengeb/set` | JSON | dito |
 | `heizung/anforderung/pool/set` | JSON | Pool als Senke am Gesamtwaermekreis |
 | `heizung/anforderung/bwwp/set` | JSON | dito |
+| `heizung/anforderung/<kreis>/aktiv/set` | `0` / `1` | Direkter HA-MQTT-Switch fuer Anforderung |
+| `heizung/anforderung/<kreis>/vl_soll/set` | Zahl | Direkter HA-MQTT-Number fuer Sollwert |
 | `heizung/<komponente>/hand/set` | JSON `{"hand": true, "wert": 80}` | Hand-Modus aktivieren mit Wert |
 | `heizung/<komponente>/hand/auto` | leer | Hand-Modus deaktivieren |
-| `heizung/tor/ganz/cmd` | leer | Impuls 250 ms am DO20 |
-| `heizung/tor/halb/cmd` | leer | Impuls 250 ms am DO21 |
+| `heizung/freigabe/quellen/<quelle>/set` | `0` / `1` | Waermequelle erlauben/sperren |
+| `heizung/freigabe/senken/<senke>/set` | `0` / `1` | Heizkreis/Senke erlauben/sperren |
+| `heizung/regler/mischer_reserve_k/set` | Zahl `0..15` | Aufschlag auf hoechste Senkenanforderung |
+| `heizung/regler/wp_parallel_ab_aktive_kreise/set` | Zahl `1..10` | Ab wie vielen aktiven Senken beide WPs laufen duerfen |
+| `heizung/regler/brauchwasser_soll_c/set` | Zahl `30..70` | Abschalttemperatur der aktuellen Brauchwasserladung |
+| `heizung/regler/brauchwasser_hysterese_k/set` | Zahl `1..20` | Einschaltdifferenz unterhalb des Sollwerts |
+| `heizung/pv/ueberschuss/set` | `0` / `1` | HA setzt PV-Ueberschuss; kein physischer RevPi-DI |
+| `heizung/pv/mangel/set` | `0` / `1` | HA setzt PV-Mangel; kein physischer RevPi-DI |
+| `heizung/tor/oeffnen_ganz/cmd` | leer | Oeffnen beider Fluegel, wenn nicht beide Fluegel bereits nicht-geschlossen sind |
+| `heizung/tor/oeffnen_halb/cmd` | leer | Oeffnen rechter Fluegel, wenn rechter Fluegel geschlossen ist |
+| `heizung/tor/schliessen/cmd` | leer | Schliessen, wenn nicht beide Fluegel bereits geschlossen sind |
+| `heizung/tor/ganz/cmd` | leer | Legacy-Alias fuer `oeffnen_ganz` |
+| `heizung/tor/halb/cmd` | leer | Legacy-Alias fuer `oeffnen_halb` |
 | `heizung/heizkurve/set` | JSON `{"stuetzpunkte":[{"aussen":-12,"vl":45}, ...]}` | Heizkurve aktualisieren |
 | `heizung/failsafe/force` | `0`/`1` | Failsafe manuell forcieren (Test) |
+
+Freigabe-Regel: Eine HA-Anforderung wird nur verarbeitet, wenn die zugehoerige
+Senke freigegeben ist. Eine Waermequelle wird nur verwendet, wenn ihre Freigabe
+gesetzt ist. Startdefaults: Oelbrenner und FBH-EG erlaubt, WP1/WP2/BWWP/Pool
+gesperrt bis zum bewussten Haken in HA.
+
+Brauchwasser-Regel: Die aktuelle Speicherladung ist keine HA-Anforderung,
+sondern ein eigener Regler. Wenn `freigabe/senken/brauchwasser` und
+`freigabe/quellen/oelbrenner` gesetzt sind, der obere Speicherfuehler plausibel
+ist und unter `brauchwasser_soll_c - brauchwasser_hysterese_k` faellt, werden
+`DO01` Brenner und `DO02` Ladepumpe Brauchwasser aktiviert. Die Ladung bleibt
+bis `brauchwasser_soll_c` aktiv. Bei unplausiblem Fuehlerwert bleibt sie aus.
+
+Der RevPi publiziert die Direktzustande zurueck:
+
+- `heizung/anforderung/<kreis>/aktiv/state`
+- `heizung/anforderung/<kreis>/vl_soll/state`
 
 ## Home Assistant Auto-Discovery
 Der Service publisht beim Start unter `homeassistant/...` die Discovery-Configs

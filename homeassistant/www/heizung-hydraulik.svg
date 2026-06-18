@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Hydraulikplan Gesamtwaermekreis">
+  <defs>
+    <style>
+      .bg { fill: #18222b; }
+      .panel { fill: #23313d; stroke: #5d7182; stroke-width: 2; }
+      .box { fill: #2d3d4a; stroke: #8ea3b5; stroke-width: 2; rx: 8; }
+      .source { fill: #345744; stroke: #9bd38a; stroke-width: 3; }
+      .sink { fill: #3d4d64; stroke: #9bb7e7; stroke-width: 3; }
+      .storage { fill: #4a4158; stroke: #c8a8ff; stroke-width: 3; }
+      .pipe-hot { fill: none; stroke: #d94b3d; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+      .pipe-cold { fill: none; stroke: #3d7bd9; stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+      .pipe-warm { fill: none; stroke: #caa64b; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+      .pipe-dhw { fill: none; stroke: #d48bd8; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+      .txt { font-family: Arial, Helvetica, sans-serif; fill: #f5f7fa; font-size: 22px; font-weight: 700; }
+      .small { font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 500; fill: #d7e0e8; }
+      .tiny { font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: 500; fill: #c7d2dd; }
+      .label { font-family: Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 700; fill: #ffffff; }
+      .valve { fill: #5a4d2f; stroke: #ffd26c; stroke-width: 2.5; }
+      .pump { fill: #2f5561; stroke: #78d7f0; stroke-width: 2.5; }
+      .pump-off { fill: #34434c; stroke: #7890a0; stroke-width: 2; }
+      .arrow { fill: none; stroke: #f5f7fa; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1600" height="900"/>
+  <rect class="panel" x="32" y="50" width="350" height="800" rx="8"/>
+  <rect class="panel" x="420" y="50" width="740" height="800" rx="8"/>
+  <rect class="panel" x="1200" y="50" width="368" height="800" rx="8"/>
+
+  <text class="txt" x="62" y="92">Quellen</text>
+  <text class="txt" x="450" y="92">Gesamtwaermekreis</text>
+  <text class="txt" x="1230" y="92">Abgaenge</text>
+
+  <path class="pipe-hot" d="M585 142 V780"/>
+  <path class="pipe-cold" d="M1020 142 V780"/>
+  <text class="small" x="535" y="125">VL</text>
+  <text class="small" x="997" y="125">RL</text>
+  <rect class="box" x="650" y="210" width="300" height="112" rx="8"/>
+  <text class="label" x="690" y="252">Sammelkreis</text>
+  <text class="small" x="690" y="282">gemeinsamer VL/RL</text>
+
+  <rect class="source" x="72" y="125" width="205" height="95" rx="8"/>
+  <text class="label" x="112" y="164">Oelbrenner</text>
+  <text class="tiny" x="112" y="190">Kessel / Bestand</text>
+  <path class="pipe-hot" d="M277 157 H585"/>
+  <path class="pipe-cold" d="M1020 205 H310 V205 H277"/>
+  <circle class="pump" cx="330" cy="157" r="20"/>
+
+  <rect class="source" x="72" y="258" width="205" height="105" rx="8"/>
+  <text class="label" x="122" y="298">WP1</text>
+  <text class="tiny" x="112" y="326">Monoblock</text>
+  <path class="pipe-hot" d="M277 295 H360 M420 295 H585"/>
+  <path class="pipe-cold" d="M1020 342 H310 V342 H277"/>
+  <circle class="pump" cx="325" cy="295" r="20"/>
+  <polygon class="valve" points="370,270 420,295 370,320"/>
+
+  <rect class="source" x="72" y="400" width="205" height="105" rx="8"/>
+  <text class="label" x="122" y="440">WP2</text>
+  <text class="tiny" x="112" y="468">Monoblock</text>
+  <path class="pipe-hot" d="M277 437 H360 M420 437 H585"/>
+  <path class="pipe-cold" d="M1020 485 H310 V485 H277"/>
+  <circle class="pump" cx="325" cy="437" r="20"/>
+  <polygon class="valve" points="370,412 420,437 370,462"/>
+
+  <rect class="source" x="72" y="543" width="205" height="105" rx="8"/>
+  <text class="label" x="106" y="583">BWWP</text>
+  <text class="tiny" x="112" y="611">spaeter separat</text>
+  <path class="pipe-warm" d="M277 580 H585"/>
+  <circle class="pump-off" cx="325" cy="580" r="20"/>
+
+  <rect class="storage" x="72" y="702" width="205" height="105" rx="8"/>
+  <text class="label" x="105" y="742">BW Speicher</text>
+  <text class="tiny" x="112" y="770">aktuell Abgang</text>
+  <path class="pipe-dhw" d="M585 740 H352 M310 740 H277"/>
+  <path class="pipe-cold" d="M277 790 H310 V790 H1020"/>
+  <circle class="pump" cx="330" cy="740" r="20"/>
+
+  <g id="abgang-fbh">
+    <rect class="sink" x="1325" y="112" width="195" height="84" rx="8"/>
+    <text class="label" x="1372" y="146">FBH EG</text>
+    <text class="tiny" x="1360" y="172">Keller-Slave</text>
+    <path class="pipe-hot" d="M585 154 H1110 M1170 154 H1325"/>
+    <path class="pipe-cold" d="M1325 190 H1020"/>
+    <polygon class="valve" points="1120,130 1170,154 1120,178"/>
+    <circle class="pump-off" cx="1235" cy="154" r="20"/>
+  </g>
+
+  <g id="abgang-klima">
+    <rect class="sink" x="1325" y="228" width="195" height="84" rx="8"/>
+    <text class="label" x="1360" y="262">Klima OG</text>
+    <text class="tiny" x="1360" y="288">Heizen/Kuehlen</text>
+    <path class="pipe-hot" d="M585 270 H1110 M1170 270 H1325"/>
+    <path class="pipe-cold" d="M1325 306 H1020"/>
+    <polygon class="valve" points="1120,246 1170,270 1120,294"/>
+    <circle class="pump-off" cx="1235" cy="270" r="20"/>
+  </g>
+
+  <g id="abgang-hk">
+    <rect class="sink" x="1325" y="344" width="195" height="84" rx="8"/>
+    <text class="label" x="1352" y="378">HK Backup</text>
+    <text class="tiny" x="1360" y="404">OG Heizkoerper</text>
+    <path class="pipe-hot" d="M585 386 H1110 M1170 386 H1325"/>
+    <path class="pipe-cold" d="M1325 422 H1020"/>
+    <polygon class="valve" points="1120,362 1170,386 1120,410"/>
+    <circle class="pump-off" cx="1235" cy="386" r="20"/>
+  </g>
+
+  <g id="abgang-nebengeb">
+    <rect class="sink" x="1325" y="460" width="195" height="84" rx="8"/>
+    <text class="label" x="1348" y="494">Nebengeb.</text>
+    <text class="tiny" x="1360" y="520">3WM + Pumpe</text>
+    <path class="pipe-hot" d="M585 502 H1110 M1170 502 H1325"/>
+    <path class="pipe-cold" d="M1325 538 H1020"/>
+    <polygon class="valve" points="1120,478 1170,502 1120,526"/>
+    <circle class="pump" cx="1235" cy="502" r="20"/>
+  </g>
+
+  <g id="abgang-pool">
+    <rect class="sink" x="1325" y="576" width="195" height="84" rx="8"/>
+    <text class="label" x="1382" y="610">Pool</text>
+    <text class="tiny" x="1360" y="636">WT + Filter</text>
+    <path class="pipe-hot" d="M585 618 H1110 M1170 618 H1325"/>
+    <path class="pipe-cold" d="M1325 654 H1020"/>
+    <polygon class="valve" points="1120,594 1170,618 1120,642"/>
+    <circle class="pump" cx="1235" cy="618" r="20"/>
+    <circle class="pump" cx="1285" cy="618" r="16"/>
+  </g>
+
+  <g id="abgang-brauchwasser">
+    <rect class="storage" x="1325" y="720" width="195" height="84" rx="8"/>
+    <text class="label" x="1360" y="754">BW aktuell</text>
+    <text class="tiny" x="1360" y="780">Pumpe, kein 3WM</text>
+    <path class="pipe-dhw" d="M585 762 H1325"/>
+    <path class="pipe-cold" d="M1325 798 H1020"/>
+    <circle class="pump" cx="1235" cy="762" r="20"/>
+  </g>
+</svg>

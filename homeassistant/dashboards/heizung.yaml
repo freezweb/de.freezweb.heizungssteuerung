@@ -1,0 +1,316 @@
+﻿title: Heizung
+views:
+  - title: Hydraulik
+    path: heizung
+    icon: mdi:heat-pump
+    cards:
+      - type: picture-elements
+        image: /local/heizung-hydraulik.svg
+        aspect_ratio: "16:9"
+        elements:
+          - type: state-label
+            entity: sensor.heizung_hauptsteuerung_heizung_gesamt_vl_soll
+            style: { left: 45%, top: 19%, color: "#ffffff", font-weight: 700, text-shadow: "0 1px 3px #000" }
+          - type: state-label
+            entity: binary_sensor.heizung_hauptsteuerung_heizung_gesamt_aktiv
+            prefix: "Kreis: "
+            style: { left: 45%, top: 24%, color: "#ffffff", font-weight: 700, text-shadow: "0 1px 3px #000" }
+          - type: state-label
+            entity: sensor.heizung_hauptsteuerung_heizung_vl_sammel
+            prefix: "VL "
+            style: { left: 45%, top: 31%, color: "#ffdddd", font-weight: 700, text-shadow: "0 1px 3px #000" }
+          - type: state-label
+            entity: sensor.heizung_hauptsteuerung_heizung_rl_sammel
+            prefix: "RL "
+            style: { left: 45%, top: 67%, color: "#dde8ff", font-weight: 700, text-shadow: "0 1px 3px #000" }
+          - type: state-label
+            entity: sensor.heizung_hauptsteuerung_heizung_aussen
+            prefix: "Aussen "
+            style: { left: 8%, top: 13%, color: "#ffffff", font-weight: 700, text-shadow: "0 1px 3px #000" }
+          - type: state-label
+            entity: sensor.heizung_hauptsteuerung_pool_wasser
+            prefix: "Pool "
+            style: { left: 83%, top: 77%, color: "#ffffff", font-weight: 700, text-shadow: "0 1px 3px #000" }
+          - type: state-label
+            entity: sensor.heizung_hauptsteuerung_nebengebaeude_vl
+            prefix: "Neb VL "
+            style: { left: 83%, top: 52%, color: "#ffffff", font-weight: 700, text-shadow: "0 1px 3px #000" }
+          - type: state-label
+            entity: sensor.heizung_hauptsteuerung_brauchwasser_oben
+            prefix: "BW "
+            style: { left: 16%, top: 77%, color: "#ffffff", font-weight: 700, text-shadow: "0 1px 3px #000" }
+          - type: state-icon
+            entity: binary_sensor.heizung_hauptsteuerung_heizung_failsafe_aktiv
+            style: { left: 92%, top: 10%, color: "#ffcc00" }
+          - type: state-label
+            entity: sensor.heizung_hauptsteuerung_heizung_routing
+            prefix: "Aktiv: "
+            style: { left: 50%, top: 91%, color: "#ffffff", font-weight: 700, text-shadow: "0 1px 3px #000" }
+
+      - type: entities
+        title: Freigaben Quellen
+        entities:
+          - entity: switch.heizung_hauptsteuerung_freigabe_oelbrenner
+          - entity: switch.heizung_hauptsteuerung_freigabe_wp1
+          - entity: switch.heizung_hauptsteuerung_freigabe_wp2
+          - entity: switch.heizung_hauptsteuerung_freigabe_bwwp
+
+      - type: entities
+        title: Freigaben Heizkreise und Senken
+        entities:
+          - entity: switch.heizung_hauptsteuerung_freigabe_fbh_eg
+          - entity: switch.heizung_hauptsteuerung_freigabe_klima_og
+          - entity: switch.heizung_hauptsteuerung_freigabe_nebengebaeude
+          - entity: switch.heizung_hauptsteuerung_freigabe_hk_backup
+          - entity: switch.heizung_hauptsteuerung_freigabe_pool
+          - entity: switch.heizung_hauptsteuerung_freigabe_brauchwasser
+
+      - type: entities
+        title: Anforderungen Gesamtwaermekreis
+        entities:
+          - entity: switch.heizung_hauptsteuerung_anforderung_fbh_eg
+          - entity: number.heizung_hauptsteuerung_vl_soll_fbh_eg
+          - entity: switch.heizung_hauptsteuerung_anforderung_klima_og
+          - entity: number.heizung_hauptsteuerung_vl_soll_klima_og
+          - entity: switch.heizung_hauptsteuerung_anforderung_nebengebaeude
+          - entity: number.heizung_hauptsteuerung_vl_soll_nebengebaeude
+          - entity: switch.heizung_hauptsteuerung_anforderung_hk_backup
+          - entity: number.heizung_hauptsteuerung_vl_soll_hk_backup
+          - entity: switch.heizung_hauptsteuerung_anforderung_pool
+          - entity: number.heizung_hauptsteuerung_vl_soll_pool
+          - entity: switch.heizung_hauptsteuerung_anforderung_bwwp
+          - entity: number.heizung_hauptsteuerung_vl_soll_bwwp
+
+      - type: entities
+        title: PV Signale aus Home Assistant
+        entities:
+          - entity: switch.heizung_hauptsteuerung_pv_ueberschuss
+          - entity: switch.heizung_hauptsteuerung_pv_mangel
+
+      - type: entities
+        title: Reglerwerte
+        entities:
+          - entity: number.heizung_hauptsteuerung_mischer_reserve_k
+          - entity: number.heizung_hauptsteuerung_wp_parallel_ab_aktive_kreise
+          - entity: number.heizung_hauptsteuerung_brauchwasser_soll_c
+          - entity: number.heizung_hauptsteuerung_brauchwasser_hysterese_k
+
+      - type: entities
+        title: Brauchwasser
+        entities:
+          - entity: switch.heizung_hauptsteuerung_freigabe_brauchwasser
+          - entity: binary_sensor.heizung_hauptsteuerung_brauchwasser_ladung_aktiv
+          - entity: sensor.heizung_hauptsteuerung_brauchwasser_ladegrund
+          - entity: sensor.heizung_hauptsteuerung_brauchwasser_oben
+          - entity: sensor.heizung_hauptsteuerung_brauchwasser_unten
+          - entity: number.heizung_hauptsteuerung_brauchwasser_soll_c
+          - entity: number.heizung_hauptsteuerung_brauchwasser_hysterese_k
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_brenner
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_bw_lade
+
+      - type: entities
+        title: Handbetrieb Digitale Ausgaenge
+        show_header_toggle: false
+        entities:
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_brenner
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_brenner
+          - entity: switch.heizung_hauptsteuerung_handwert_brenner
+          - entity: button.heizung_hauptsteuerung_auto_brenner
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_bw_lade
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_pumpe_bw_lade
+          - entity: switch.heizung_hauptsteuerung_handwert_pumpe_bw_lade
+          - entity: button.heizung_hauptsteuerung_auto_pumpe_bw_lade
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_wp1_freigabe
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_wp1_freigabe
+          - entity: switch.heizung_hauptsteuerung_handwert_wp1_freigabe
+          - entity: button.heizung_hauptsteuerung_auto_wp1_freigabe
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_wp2_freigabe
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_wp2_freigabe
+          - entity: switch.heizung_hauptsteuerung_handwert_wp2_freigabe
+          - entity: button.heizung_hauptsteuerung_auto_wp2_freigabe
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_bwwp_freigabe
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_bwwp_freigabe
+          - entity: switch.heizung_hauptsteuerung_handwert_bwwp_freigabe
+          - entity: button.heizung_hauptsteuerung_auto_bwwp_freigabe
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_brunnen_mv
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_brunnen_mv
+          - entity: switch.heizung_hauptsteuerung_handwert_brunnen_mv
+          - entity: button.heizung_hauptsteuerung_auto_brunnen_mv
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_pool_filter
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_pool_filter
+          - entity: switch.heizung_hauptsteuerung_handwert_pool_filter
+          - entity: button.heizung_hauptsteuerung_auto_pool_filter
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_sv_wp1_auf
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_wp1_auf
+          - entity: switch.heizung_hauptsteuerung_handwert_sv_wp1_auf
+          - entity: button.heizung_hauptsteuerung_auto_sv_wp1_auf
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_sv_wp1_zu
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_wp1_zu
+          - entity: switch.heizung_hauptsteuerung_handwert_sv_wp1_zu
+          - entity: button.heizung_hauptsteuerung_auto_sv_wp1_zu
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_sv_wp2_auf
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_wp2_auf
+          - entity: switch.heizung_hauptsteuerung_handwert_sv_wp2_auf
+          - entity: button.heizung_hauptsteuerung_auto_sv_wp2_auf
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_sv_wp2_zu
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_wp2_zu
+          - entity: switch.heizung_hauptsteuerung_handwert_sv_wp2_zu
+          - entity: button.heizung_hauptsteuerung_auto_sv_wp2_zu
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_sv_pool_auf
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_pool_auf
+          - entity: switch.heizung_hauptsteuerung_handwert_sv_pool_auf
+          - entity: button.heizung_hauptsteuerung_auto_sv_pool_auf
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_sv_pool_zu
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_pool_zu
+          - entity: switch.heizung_hauptsteuerung_handwert_sv_pool_zu
+          - entity: button.heizung_hauptsteuerung_auto_sv_pool_zu
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_sv_nebengeb_auf
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_nebengeb_auf
+          - entity: switch.heizung_hauptsteuerung_handwert_sv_nebengeb_auf
+          - entity: button.heizung_hauptsteuerung_auto_sv_nebengeb_auf
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_sv_nebengeb_zu
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_nebengeb_zu
+          - entity: switch.heizung_hauptsteuerung_handwert_sv_nebengeb_zu
+          - entity: button.heizung_hauptsteuerung_auto_sv_nebengeb_zu
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do16
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do16
+          - entity: switch.heizung_hauptsteuerung_handwert_reserve_do16
+          - entity: button.heizung_hauptsteuerung_auto_reserve_do16
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do17
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do17
+          - entity: switch.heizung_hauptsteuerung_handwert_reserve_do17
+          - entity: button.heizung_hauptsteuerung_auto_reserve_do17
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_nebengeb
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_pumpe_nebengeb
+          - entity: switch.heizung_hauptsteuerung_handwert_pumpe_nebengeb
+          - entity: button.heizung_hauptsteuerung_auto_pumpe_nebengeb
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_pool
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_pumpe_pool
+          - entity: switch.heizung_hauptsteuerung_handwert_pumpe_pool
+          - entity: button.heizung_hauptsteuerung_auto_pumpe_pool
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_tor_ganz
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_tor_ganz
+          - entity: switch.heizung_hauptsteuerung_handwert_tor_ganz
+          - entity: button.heizung_hauptsteuerung_auto_tor_ganz
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_tor_halb
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_tor_halb
+          - entity: switch.heizung_hauptsteuerung_handwert_tor_halb
+          - entity: button.heizung_hauptsteuerung_auto_tor_halb
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do22
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do22
+          - entity: switch.heizung_hauptsteuerung_handwert_reserve_do22
+          - entity: button.heizung_hauptsteuerung_auto_reserve_do22
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do23
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do23
+          - entity: switch.heizung_hauptsteuerung_handwert_reserve_do23
+          - entity: button.heizung_hauptsteuerung_auto_reserve_do23
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do24
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do24
+          - entity: switch.heizung_hauptsteuerung_handwert_reserve_do24
+          - entity: button.heizung_hauptsteuerung_auto_reserve_do24
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do25
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do25
+          - entity: switch.heizung_hauptsteuerung_handwert_reserve_do25
+          - entity: button.heizung_hauptsteuerung_auto_reserve_do25
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do26
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do26
+          - entity: switch.heizung_hauptsteuerung_handwert_reserve_do26
+          - entity: button.heizung_hauptsteuerung_auto_reserve_do26
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do27
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do27
+          - entity: switch.heizung_hauptsteuerung_handwert_reserve_do27
+          - entity: button.heizung_hauptsteuerung_auto_reserve_do27
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do28
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do28
+          - entity: switch.heizung_hauptsteuerung_handwert_reserve_do28
+          - entity: button.heizung_hauptsteuerung_auto_reserve_do28
+
+      - type: entities
+        title: Handbetrieb Analoge Ausgaenge
+        show_header_toggle: false
+        entities:
+          - entity: sensor.heizung_hauptsteuerung_ausgang_wp1_vl_soll
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_wp1_vl_soll
+          - entity: number.heizung_hauptsteuerung_handwert_wp1_vl_soll
+          - entity: button.heizung_hauptsteuerung_auto_wp1_vl_soll
+          - entity: sensor.heizung_hauptsteuerung_ausgang_wp2_vl_soll
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_wp2_vl_soll
+          - entity: number.heizung_hauptsteuerung_handwert_wp2_vl_soll
+          - entity: button.heizung_hauptsteuerung_auto_wp2_vl_soll
+          - entity: sensor.heizung_hauptsteuerung_ausgang_bwwp_vl_soll
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_bwwp_vl_soll
+          - entity: number.heizung_hauptsteuerung_handwert_bwwp_vl_soll
+          - entity: button.heizung_hauptsteuerung_auto_bwwp_vl_soll
+          - entity: sensor.heizung_hauptsteuerung_ausgang_sv_nebengeb_prozent
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_nebengeb_prozent
+          - entity: number.heizung_hauptsteuerung_handwert_sv_nebengeb_prozent
+          - entity: button.heizung_hauptsteuerung_auto_sv_nebengeb_prozent
+          - entity: sensor.heizung_hauptsteuerung_ausgang_reserve_ao05
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_ao05
+          - entity: number.heizung_hauptsteuerung_handwert_reserve_ao05
+          - entity: button.heizung_hauptsteuerung_auto_reserve_ao05
+          - entity: sensor.heizung_hauptsteuerung_ausgang_sv_wp1_prozent
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_wp1_prozent
+          - entity: number.heizung_hauptsteuerung_handwert_sv_wp1_prozent
+          - entity: button.heizung_hauptsteuerung_auto_sv_wp1_prozent
+          - entity: sensor.heizung_hauptsteuerung_ausgang_sv_wp2_prozent
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_wp2_prozent
+          - entity: number.heizung_hauptsteuerung_handwert_sv_wp2_prozent
+          - entity: button.heizung_hauptsteuerung_auto_sv_wp2_prozent
+          - entity: sensor.heizung_hauptsteuerung_ausgang_sv_pool_prozent
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_pool_prozent
+          - entity: number.heizung_hauptsteuerung_handwert_sv_pool_prozent
+          - entity: button.heizung_hauptsteuerung_auto_sv_pool_prozent
+          - entity: sensor.heizung_hauptsteuerung_ausgang_pool_filter_prozent
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_pool_filter_prozent
+          - entity: number.heizung_hauptsteuerung_handwert_pool_filter_prozent
+          - entity: button.heizung_hauptsteuerung_auto_pool_filter_prozent
+          - entity: sensor.heizung_hauptsteuerung_ausgang_reserve_ao10
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_ao10
+          - entity: number.heizung_hauptsteuerung_handwert_reserve_ao10
+          - entity: button.heizung_hauptsteuerung_auto_reserve_ao10
+
+      - type: glance
+        title: Status
+        entities:
+          - entity: binary_sensor.heizung_hauptsteuerung_heizung_gesamt_aktiv
+            name: Gesamt
+          - entity: binary_sensor.heizung_hauptsteuerung_heizung_failsafe_aktiv
+            name: Failsafe
+          - entity: binary_sensor.heizung_hauptsteuerung_wp1_stoerung
+            name: WP1 Stoerung
+          - entity: binary_sensor.heizung_hauptsteuerung_wp2_stoerung
+            name: WP2 Stoerung
+          - entity: binary_sensor.heizung_hauptsteuerung_tor_fluegel_links_zu
+            name: Tor links zu
+          - entity: binary_sensor.heizung_hauptsteuerung_tor_fluegel_rechts_zu
+            name: Tor rechts zu
+          - entity: binary_sensor.heizung_hauptsteuerung_tor_lichtschranke
+            name: Lichtschranke
+
+      - type: history-graph
+        title: Temperaturen
+        hours_to_show: 24
+        entities:
+          - sensor.heizung_hauptsteuerung_heizung_vl_sammel
+          - sensor.heizung_hauptsteuerung_heizung_rl_sammel
+          - sensor.heizung_hauptsteuerung_heizung_gesamt_vl_soll
+          - sensor.heizung_hauptsteuerung_pool_wasser
+          - sensor.heizung_hauptsteuerung_brauchwasser_oben
+          - sensor.heizung_hauptsteuerung_brauchwasser_unten
+          - sensor.heizung_hauptsteuerung_nebengebaeude_vl
+
+      - type: entities
+        title: Tor
+        entities:
+          - entity: button.heizung_hauptsteuerung_tor_oeffnen_ganz
+          - entity: button.heizung_hauptsteuerung_tor_oeffnen_halb
+          - entity: button.heizung_hauptsteuerung_tor_schliessen
+          - entity: binary_sensor.heizung_hauptsteuerung_tor_fluegel_links_zu
+          - entity: binary_sensor.heizung_hauptsteuerung_tor_fluegel_rechts_zu
+          - entity: binary_sensor.heizung_hauptsteuerung_tor_lichtschranke
+          - entity: switch.heizung_hauptsteuerung_handwert_tor_ganz
+          - entity: button.heizung_hauptsteuerung_auto_tor_ganz
+          - entity: switch.heizung_hauptsteuerung_handwert_tor_halb
+          - entity: button.heizung_hauptsteuerung_auto_tor_halb
+

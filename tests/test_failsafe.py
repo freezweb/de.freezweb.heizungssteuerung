@@ -50,3 +50,48 @@ def test_failsafe_uses_fallback_when_outside_sensor_invalid():
     assert "outside_sensor_loss" in state.reasons
     assert state.vl_soll == 50.0
 
+
+def test_failsafe_can_ignore_commissioning_signals():
+    monitor = FailsafeMonitor(
+        HeatingCurve(points=((-12.0, 45.0), (0.0, 38.0), (15.0, 25.0)), vl_min=25.0, vl_max=55.0),
+        mqtt_timeout_s=60.0,
+        ha_heartbeat_timeout_s=300.0,
+        fallback_vl_without_outside_sensor=50.0,
+        require_mqtt_activity=False,
+        require_ha_heartbeat=False,
+        require_outside_sensor=False,
+    )
+
+    state = monitor.evaluate(
+        now_ts=1_000.0,
+        mqtt_connected=True,
+        last_mqtt_seen_ts=999.0,
+        last_ha_heartbeat_ts=None,
+        outside_temp_c=None,
+    )
+
+    assert state.active is False
+    assert state.reasons == ()
+    assert state.vl_soll == 50.0
+
+
+def test_failsafe_can_ignore_idle_mqtt_connection():
+    monitor = FailsafeMonitor(
+        HeatingCurve(points=((-12.0, 45.0), (0.0, 38.0), (15.0, 25.0)), vl_min=25.0, vl_max=55.0),
+        mqtt_timeout_s=60.0,
+        ha_heartbeat_timeout_s=300.0,
+        fallback_vl_without_outside_sensor=50.0,
+        require_mqtt_activity=False,
+        require_ha_heartbeat=False,
+        require_outside_sensor=False,
+    )
+
+    state = monitor.evaluate(
+        now_ts=1_000.0,
+        mqtt_connected=True,
+        last_mqtt_seen_ts=1.0,
+        last_ha_heartbeat_ts=None,
+        outside_temp_c=None,
+    )
+
+    assert state.active is False

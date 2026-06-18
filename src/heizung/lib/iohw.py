@@ -77,12 +77,13 @@ class RevPiIO(BaseIO):
             raise RuntimeError("revpimodio2 ist nicht installiert") from exc
 
         try:
-            self._revpi = revpimodio2.RevPiModIO(autorefresh=True)
+            self._revpi = revpimodio2.RevPiModIO(autorefresh=False)
         except Exception as exc:  # pragma: no cover - abhaengig von PiCtory/Hardwarezustand
             raise RuntimeError("RevPi-I/O konnte nicht initialisiert werden") from exc
         self._missing_ios: set[str] = set()
 
     async def read_all(self) -> HardwareSnapshot:
+        self._revpi.readprocimg()
         di = {
             channel_id: bool(io.value)
             for channel_id, channel in self.io_map.di.items()
@@ -114,11 +115,13 @@ class RevPiIO(BaseIO):
         io = self._try_get_io(channel)
         if io is not None:
             io.value = bool(value)
+            self._revpi.writeprocimg()
 
     async def write_ao(self, channel: ChannelConfig, value: float) -> None:
         io = self._try_get_io(channel)
         if io is not None:
-            io.value = _clamp_ao(channel, float(value))
+            io.value = int(round(_clamp_ao(channel, float(value))))
+            self._revpi.writeprocimg()
 
     async def close(self) -> None:
         self._revpi.exit()
@@ -148,6 +151,8 @@ def create_io_backend(io_map: IoMap, backend: str = "auto") -> BaseIO:
 
 
 def _clamp_ao(channel: ChannelConfig, value: float) -> float:
+    if value <= 0:
+        return 0.0
     if channel.bereich is None:
         return value
     low, high = channel.bereich

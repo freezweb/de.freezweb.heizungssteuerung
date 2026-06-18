@@ -1,0 +1,384 @@
+mqtt:
+  sensor:
+    - name: "Heizung Gesamt VL Soll"
+      unique_id: heizung_gesamt_vl_soll
+      state_topic: "heizung/gesamt/vl_soll/state"
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+
+    - name: "Heizung Failsafe Grund"
+      unique_id: heizung_failsafe_grund
+      state_topic: "heizung/failsafe/grund"
+
+    - name: "Heizung Routing"
+      unique_id: heizung_routing_json
+      state_topic: "heizung/routing/state"
+      value_template: "{{ value_json.common_demands | join(', ') if value_json.common_demands is defined else value }}"
+      json_attributes_topic: "heizung/routing/state"
+
+    - name: "Heizung VL Sammel"
+      unique_id: heizung_temp_vl_sammel
+      state_topic: "heizung/temp/vl_sammel/state"
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+
+    - name: "Heizung RL Sammel"
+      unique_id: heizung_temp_rl_sammel
+      state_topic: "heizung/temp/rl_sammel/state"
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+
+    - name: "Heizung Aussen"
+      unique_id: heizung_temp_aussen
+      state_topic: "heizung/temp/aussen/state"
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+
+    - name: "Pool Wasser"
+      unique_id: heizung_temp_pool_wasser
+      state_topic: "heizung/temp/pool_wasser/state"
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+
+    - name: "Pool WT VL"
+      unique_id: heizung_temp_pool_wt_vl
+      state_topic: "heizung/temp/pool_wt_vl/state"
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+
+    - name: "Pool WT RL"
+      unique_id: heizung_temp_pool_wt_rl
+      state_topic: "heizung/temp/pool_wt_rl/state"
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+
+    - name: "Nebengebaeude VL"
+      unique_id: heizung_temp_vl_nebengeb
+      state_topic: "heizung/temp/vl_nebengeb/state"
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+
+    - name: "Nebengebaeude RL"
+      unique_id: heizung_temp_rl_nebengeb
+      state_topic: "heizung/temp/rl_nebengeb/state"
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+
+    - name: "Brauchwasser Oben"
+      unique_id: heizung_temp_bw_oben
+      state_topic: "heizung/temp/bw_oben/state"
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+
+    - name: "Brauchwasser Unten"
+      unique_id: heizung_temp_bw_unten
+      state_topic: "heizung/temp/bw_unten/state"
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+
+    - name: "Brauchwasser Ladegrund"
+      unique_id: heizung_brauchwasser_ladegrund
+      state_topic: "heizung/brauchwasser/grund"
+
+  binary_sensor:
+    - name: "Heizung Gesamt Aktiv"
+      unique_id: heizung_gesamt_active
+      state_topic: "heizung/gesamt/active"
+      payload_on: "1"
+      payload_off: "0"
+
+    - name: "Heizung Failsafe Aktiv"
+      unique_id: heizung_failsafe_active
+      state_topic: "heizung/failsafe/active"
+      payload_on: "1"
+      payload_off: "0"
+      device_class: problem
+
+    - name: "Brauchwasser Ladung Aktiv"
+      unique_id: heizung_brauchwasser_ladung_aktiv
+      state_topic: "heizung/brauchwasser/ladung_aktiv"
+      payload_on: "1"
+      payload_off: "0"
+
+    - name: "Tor Fluegel Links Zu"
+      unique_id: heizung_tor_fluegel_links_zu
+      state_topic: "heizung/di/tor_fluegel_links_zu/state"
+      payload_on: "1"
+      payload_off: "0"
+
+    - name: "Tor Fluegel Rechts Zu"
+      unique_id: heizung_tor_fluegel_rechts_zu
+      state_topic: "heizung/di/tor_fluegel_rechts_zu/state"
+      payload_on: "1"
+      payload_off: "0"
+
+    - name: "Tor Lichtschranke"
+      unique_id: heizung_tor_lichtschranke
+      state_topic: "heizung/di/tor_lichtschranke/state"
+      payload_on: "0"
+      payload_off: "1"
+      device_class: safety
+
+    - name: "WP1 Stoerung"
+      unique_id: heizung_wp1_stoerung
+      state_topic: "heizung/di/wp1_stoerung/state"
+      payload_on: "1"
+      payload_off: "0"
+      device_class: problem
+
+    - name: "WP2 Stoerung"
+      unique_id: heizung_wp2_stoerung
+      state_topic: "heizung/di/wp2_stoerung/state"
+      payload_on: "1"
+      payload_off: "0"
+      device_class: problem
+
+  switch:
+    - name: "Freigabe Oelbrenner"
+      unique_id: heizung_freigabe_oelbrenner
+      state_topic: "heizung/freigabe/quellen/oelbrenner/state"
+      command_topic: "heizung/freigabe/quellen/oelbrenner/set"
+      payload_on: "1"
+      payload_off: "0"
+      state_on: "1"
+      state_off: "0"
+
+    - name: "Freigabe WP1"
+      unique_id: heizung_freigabe_wp1
+      state_topic: "heizung/freigabe/quellen/wp1/state"
+      command_topic: "heizung/freigabe/quellen/wp1/set"
+      payload_on: "1"
+      payload_off: "0"
+      state_on: "1"
+      state_off: "0"
+
+    - name: "Freigabe WP2"
+      unique_id: heizung_freigabe_wp2
+      state_topic: "heizung/freigabe/quellen/wp2/state"
+      command_topic: "heizung/freigabe/quellen/wp2/set"
+      payload_on: "1"
+      payload_off: "0"
+      state_on: "1"
+      state_off: "0"
+
+    - name: "Freigabe BWWP"
+      unique_id: heizung_freigabe_bwwp
+      state_topic: "heizung/freigabe/quellen/bwwp/state"
+      command_topic: "heizung/freigabe/quellen/bwwp/set"
+      payload_on: "1"
+      payload_off: "0"
+      state_on: "1"
+      state_off: "0"
+
+    - name: "Freigabe FBH EG"
+      unique_id: heizung_freigabe_fbh_eg
+      state_topic: "heizung/freigabe/senken/fbh_eg/state"
+      command_topic: "heizung/freigabe/senken/fbh_eg/set"
+      payload_on: "1"
+      payload_off: "0"
+      state_on: "1"
+      state_off: "0"
+
+    - name: "Freigabe Klima OG"
+      unique_id: heizung_freigabe_klima_og
+      state_topic: "heizung/freigabe/senken/klima_og/state"
+      command_topic: "heizung/freigabe/senken/klima_og/set"
+      payload_on: "1"
+      payload_off: "0"
+      state_on: "1"
+      state_off: "0"
+
+    - name: "Freigabe Nebengebaeude"
+      unique_id: heizung_freigabe_nebengeb
+      state_topic: "heizung/freigabe/senken/nebengeb/state"
+      command_topic: "heizung/freigabe/senken/nebengeb/set"
+      payload_on: "1"
+      payload_off: "0"
+      state_on: "1"
+      state_off: "0"
+
+    - name: "Freigabe HK Backup"
+      unique_id: heizung_freigabe_hk_backup
+      state_topic: "heizung/freigabe/senken/hk_backup/state"
+      command_topic: "heizung/freigabe/senken/hk_backup/set"
+      payload_on: "1"
+      payload_off: "0"
+      state_on: "1"
+      state_off: "0"
+
+    - name: "Freigabe Pool"
+      unique_id: heizung_freigabe_pool
+      state_topic: "heizung/freigabe/senken/pool/state"
+      command_topic: "heizung/freigabe/senken/pool/set"
+      payload_on: "1"
+      payload_off: "0"
+      state_on: "1"
+      state_off: "0"
+
+    - name: "Freigabe Brauchwasser"
+      unique_id: heizung_freigabe_brauchwasser
+      state_topic: "heizung/freigabe/senken/brauchwasser/state"
+      command_topic: "heizung/freigabe/senken/brauchwasser/set"
+      payload_on: "1"
+      payload_off: "0"
+      state_on: "1"
+      state_off: "0"
+
+    - name: "PV Ueberschuss"
+      unique_id: heizung_pv_ueberschuss
+      state_topic: "heizung/pv/ueberschuss/state"
+      command_topic: "heizung/pv/ueberschuss/set"
+      payload_on: "1"
+      payload_off: "0"
+      state_on: "1"
+      state_off: "0"
+
+    - name: "PV Mangel"
+      unique_id: heizung_pv_mangel
+      state_topic: "heizung/pv/mangel/state"
+      command_topic: "heizung/pv/mangel/set"
+      payload_on: "1"
+      payload_off: "0"
+      state_on: "1"
+      state_off: "0"
+
+  button:
+    - name: "Tor Oeffnen Ganz"
+      unique_id: heizung_tor_oeffnen_ganz
+      command_topic: "heizung/tor/oeffnen_ganz/cmd"
+      payload_press: "1"
+
+    - name: "Tor Oeffnen Halb"
+      unique_id: heizung_tor_oeffnen_halb
+      command_topic: "heizung/tor/oeffnen_halb/cmd"
+      payload_press: "1"
+
+    - name: "Tor Schliessen"
+      unique_id: heizung_tor_schliessen
+      command_topic: "heizung/tor/schliessen/cmd"
+      payload_press: "1"
+
+input_boolean:
+  heizung_anf_fbh_eg:
+    name: "Anforderung FBH EG"
+  heizung_anf_klima_og:
+    name: "Anforderung Klima OG"
+  heizung_anf_nebengeb:
+    name: "Anforderung Nebengebaeude"
+  heizung_anf_pool:
+    name: "Anforderung Pool"
+  heizung_anf_bwwp:
+    name: "Anforderung BWWP"
+
+input_number:
+  heizung_vl_fbh_eg:
+    name: "VL Soll FBH EG"
+    min: 20
+    max: 55
+    step: 0.5
+    unit_of_measurement: "°C"
+  heizung_vl_klima_og:
+    name: "VL Soll Klima OG"
+    min: 7
+    max: 55
+    step: 0.5
+    unit_of_measurement: "°C"
+  heizung_vl_nebengeb:
+    name: "VL Soll Nebengebaeude"
+    min: 20
+    max: 55
+    step: 0.5
+    unit_of_measurement: "°C"
+  heizung_vl_pool:
+    name: "VL Soll Pool"
+    min: 20
+    max: 45
+    step: 0.5
+    unit_of_measurement: "°C"
+  heizung_vl_bwwp:
+    name: "VL Soll BWWP"
+    min: 40
+    max: 65
+    step: 0.5
+    unit_of_measurement: "°C"
+
+script:
+  heizung_publish_demands:
+    alias: "Heizung Anforderungen senden"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "heizung/anforderung/fbh_eg/set"
+          payload_template: >-
+            {"aktiv": {{ is_state('input_boolean.heizung_anf_fbh_eg', 'on') | lower }},
+             "vl_soll": {{ states('input_number.heizung_vl_fbh_eg') | float }},
+             "quelle": "ha"}
+      - service: mqtt.publish
+        data:
+          topic: "heizung/anforderung/klima_og/set"
+          payload_template: >-
+            {"aktiv": {{ is_state('input_boolean.heizung_anf_klima_og', 'on') | lower }},
+             "vl_soll": {{ states('input_number.heizung_vl_klima_og') | float }},
+             "quelle": "ha"}
+      - service: mqtt.publish
+        data:
+          topic: "heizung/anforderung/nebengeb/set"
+          payload_template: >-
+            {"aktiv": {{ is_state('input_boolean.heizung_anf_nebengeb', 'on') | lower }},
+             "vl_soll": {{ states('input_number.heizung_vl_nebengeb') | float }},
+             "quelle": "ha"}
+      - service: mqtt.publish
+        data:
+          topic: "heizung/anforderung/pool/set"
+          payload_template: >-
+            {"aktiv": {{ is_state('input_boolean.heizung_anf_pool', 'on') | lower }},
+             "vl_soll": {{ states('input_number.heizung_vl_pool') | float }},
+             "quelle": "ha"}
+      - service: mqtt.publish
+        data:
+          topic: "heizung/anforderung/bwwp/set"
+          payload_template: >-
+            {"aktiv": {{ is_state('input_boolean.heizung_anf_bwwp', 'on') | lower }},
+             "vl_soll": {{ states('input_number.heizung_vl_bwwp') | float }},
+             "quelle": "ha"}
+
+automation:
+  - alias: "Heizung Anforderungen bei Aenderung senden"
+    id: heizung_publish_demands_on_change
+    trigger:
+      - platform: state
+        entity_id:
+          - input_boolean.heizung_anf_fbh_eg
+          - input_boolean.heizung_anf_klima_og
+          - input_boolean.heizung_anf_nebengeb
+          - input_boolean.heizung_anf_pool
+          - input_boolean.heizung_anf_bwwp
+          - input_number.heizung_vl_fbh_eg
+          - input_number.heizung_vl_klima_og
+          - input_number.heizung_vl_nebengeb
+          - input_number.heizung_vl_pool
+          - input_number.heizung_vl_bwwp
+    action:
+      - service: script.heizung_publish_demands
+
+  - alias: "Heizung HA Heartbeat"
+    id: heizung_ha_heartbeat
+    trigger:
+      - platform: time_pattern
+        seconds: "/60"
+    action:
+      - service: mqtt.publish
+        data:
+          topic: "heizung/ha/heartbeat"
+          payload_template: "{{ now().timestamp() | int }}"

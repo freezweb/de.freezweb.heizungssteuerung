@@ -16,7 +16,7 @@ Stand: 2026-06-16
 | Standort | Module | Begruendung |
 |---|---|---|
 | Heizungsraum Hauptsteuerung | 2x DIO + 8x AIO + CPU | 21 DO, 16 DI, 16 direkte RTD, 10 AO; Connect-4-Limit voll genutzt |
-| Hauptkeller Slave | 1x DIO + 3x AIO + CPU | Mischer/Pumpen lokal, 5 RTD benoetigt, Reserven vorhanden |
+| Hauptkeller Slave | 1x DIO + 3x AIO + CPU | Mischer/Pumpen lokal, 6 RTD fuer 3 Kreise VL/RL, Reserven vorhanden |
 | Reserve | 2x CPU + 17x DI | Fuer spaetere Eingangsstationen, Zaehler, Taster, Stoermeldungen |
 
 ## Offene Designentscheidung

@@ -34,6 +34,7 @@ class MqttBridge:
         self.last_seen_ts: float | None = None
         self.last_ha_heartbeat_ts: float | None = None
         self.demands: dict[str, Demand] = {}
+        self.pv: dict[str, bool] = {"ueberschuss": False, "mangel": False}
         self._commands: queue.SimpleQueue[MqttCommand] = queue.SimpleQueue()
         self._client: Any = None
 
@@ -101,6 +102,19 @@ class MqttBridge:
         topic = self.config.get("topics", {}).get("heartbeat", f"{self.base}/heartbeat")
         self.publish(topic, str(uptime_s))
 
+    def set_default_demands(self, defaults: dict[str, Any]) -> None:
+        for name, raw in defaults.items():
+            if not isinstance(raw, dict):
+                continue
+            self.demands.setdefault(
+                str(name),
+                Demand(
+                    aktiv=bool(raw.get("aktiv", False)),
+                    vl_soll=float(raw["vl_soll"]) if raw.get("vl_soll") is not None else None,
+                    quelle=str(raw.get("quelle", "default")),
+                ),
+            )
+
     def _on_connect(self, client: Any, _userdata: Any, _flags: Any, reason_code: Any, _properties: Any = None) -> None:
         if _reason_code_value(reason_code) != 0:
             log.warning("MQTT-Verbindung fehlgeschlagen: %s", reason_code)
@@ -111,6 +125,11 @@ class MqttBridge:
         self.publish(status_topic, "online", retain=True)
         for topic in (
             f"{self.base}/anforderung/+/set",
+            f"{self.base}/anforderung/+/aktiv/set",
+            f"{self.base}/anforderung/+/vl_soll/set",
+            f"{self.base}/freigabe/+/+/set",
+            f"{self.base}/regler/+/set",
+            f"{self.base}/pv/+/set",
             f"{self.base}/+/hand/set",
             f"{self.base}/+/hand/auto",
             f"{self.base}/tor/+/cmd",
@@ -134,6 +153,8 @@ class MqttBridge:
         except json.JSONDecodeError:
             payload = payload_raw
 
+        log.info("MQTT Kommando empfangen: %s payload=%r", topic, payload_raw)
+
         if topic == f"{self.base}/ha/heartbeat":
             self.last_ha_heartbeat_ts = time.time()
             return
@@ -146,6 +167,36 @@ class MqttBridge:
             )
             return
 
+        if len(parts) == 5 and parts[1] == "anforderung" and parts[4] == "set":
+            current = self.demands.get(parts[2], Demand(False, None))
+            if parts[3] == "aktiv":
+                self.demands[parts[2]] = Demand(
+                    aktiv=_as_bool(payload),
+                    vl_soll=current.vl_soll,
+                    quelle="ha",
+                )
+                return
+            if parts[3] == "vl_soll":
+                self.demands[parts[2]] = Demand(
+                    aktiv=current.aktiv,
+                    vl_soll=float(str(payload).replace(",", ".")),
+                    quelle="ha",
+                )
+                return
+
+        if len(parts) == 5 and parts[1] == "freigabe" and parts[4] == "set":
+            self._commands.put(MqttCommand("freigabe_set", f"{parts[2]}/{parts[3]}", payload))
+            return
+
+        if len(parts) == 4 and parts[1] == "regler" and parts[3] == "set":
+            self._commands.put(MqttCommand("regler_set", parts[2], payload))
+            return
+
+        if len(parts) == 4 and parts[1] == "pv" and parts[3] == "set":
+            if parts[2] in self.pv:
+                self.pv[parts[2]] = _as_bool(payload)
+            return
+
         if len(parts) == 4 and parts[2] == "hand" and parts[3] == "set":
             self._commands.put(MqttCommand("hand_set", parts[1], payload))
             return
@@ -155,7 +206,13 @@ class MqttBridge:
             return
 
         if len(parts) == 4 and parts[1] == "tor" and parts[3] == "cmd":
-            self._commands.put(MqttCommand("pulse", f"tor_{parts[2]}", payload))
+            command_name = {
+                "ganz": "oeffnen_ganz",
+                "halb": "oeffnen_halb",
+                "auf": "oeffnen_ganz",
+                "zu": "schliessen",
+            }.get(parts[2], parts[2])
+            self._commands.put(MqttCommand("tor_command", command_name, payload))
             return
 
         if topic == f"{self.base}/failsafe/force":
@@ -167,3 +224,13 @@ def _reason_code_value(reason_code: Any) -> int:
         return int(reason_code)
     except (TypeError, ValueError):
         return int(getattr(reason_code, "value", 1))
+
+
+def _as_bool(value: Any) -> bool:
+    if isinstance(value, dict):
+        for key in ("aktiv", "enabled", "state", "value"):
+            if key in value:
+                return _as_bool(value[key])
+    if isinstance(value, str):
+        return value.strip().lower() in {"1", "true", "on", "yes", "ja", "ein"}
+    return bool(value)

@@ -60,11 +60,17 @@ class FailsafeMonitor:
         mqtt_timeout_s: float,
         ha_heartbeat_timeout_s: float,
         fallback_vl_without_outside_sensor: float,
+        require_mqtt_activity: bool = True,
+        require_ha_heartbeat: bool = True,
+        require_outside_sensor: bool = True,
     ) -> None:
         self.heating_curve = heating_curve
         self.mqtt_timeout_s = mqtt_timeout_s
         self.ha_heartbeat_timeout_s = ha_heartbeat_timeout_s
         self.fallback_vl_without_outside_sensor = fallback_vl_without_outside_sensor
+        self.require_mqtt_activity = require_mqtt_activity
+        self.require_ha_heartbeat = require_ha_heartbeat
+        self.require_outside_sensor = require_outside_sensor
         self.force = False
 
     @classmethod
@@ -75,6 +81,9 @@ class FailsafeMonitor:
             mqtt_timeout_s=float(raw.get("mqtt_timeout_s", 60)),
             ha_heartbeat_timeout_s=float(raw.get("ha_heartbeat_timeout_s", 300)),
             fallback_vl_without_outside_sensor=float(raw.get("fallback_vl_ohne_aussenfuehler", 50)),
+            require_mqtt_activity=bool(raw.get("mqtt_activity_required", True)),
+            require_ha_heartbeat=bool(raw.get("ha_heartbeat_required", True)),
+            require_outside_sensor=bool(raw.get("outside_sensor_required", True)),
         )
 
     def evaluate(
@@ -92,19 +101,23 @@ class FailsafeMonitor:
             reasons.append("force")
         if not mqtt_connected:
             reasons.append("mqtt_disconnected")
-        elif last_mqtt_seen_ts is None or now_ts - last_mqtt_seen_ts > self.mqtt_timeout_s:
+        elif self.require_mqtt_activity and (
+            last_mqtt_seen_ts is None or now_ts - last_mqtt_seen_ts > self.mqtt_timeout_s
+        ):
             reasons.append("mqtt_timeout")
 
-        if last_ha_heartbeat_ts is None:
-            reasons.append("ha_heartbeat_missing")
-        elif now_ts - last_ha_heartbeat_ts > self.ha_heartbeat_timeout_s:
-            reasons.append("ha_heartbeat_timeout")
+        if self.require_ha_heartbeat:
+            if last_ha_heartbeat_ts is None:
+                reasons.append("ha_heartbeat_missing")
+            elif now_ts - last_ha_heartbeat_ts > self.ha_heartbeat_timeout_s:
+                reasons.append("ha_heartbeat_timeout")
 
-        if outside_temp_c is None or not -40.0 <= outside_temp_c <= 80.0:
-            reasons.append("outside_sensor_loss")
+        outside_valid = outside_temp_c is not None and -40.0 <= outside_temp_c <= 80.0
+        if not outside_valid:
+            if self.require_outside_sensor:
+                reasons.append("outside_sensor_loss")
             vl_soll = self.fallback_vl_without_outside_sensor
         else:
             vl_soll = self.heating_curve.target_flow(outside_temp_c)
 
         return FailsafeState(active=bool(reasons), reasons=tuple(reasons), vl_soll=vl_soll)
-

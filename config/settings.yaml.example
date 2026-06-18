@@ -5,10 +5,48 @@ regelung:
   mischer_reserve_k: 5           # Aufschlag auf WP-VL gegenueber hoechster Mischer-Anforderung
   oelbrenner_unterstuetzung: true # Phase A: alter Kessel darf gemeinsame Waermeanforderung bedienen
 
+regler:
+  # Live geaenderte Reglerparameter aus HA werden hier persistiert.
+  state_persist_path: "state/regler.json"
+
 hydraulik:
   # Alle diese Anforderungen haengen am gemeinsamen Gesamtwaermekreis.
   # Beide Haupt-WPs speisen diesen Kreis; Pool/Nebengebaeude/Haus sind Senken.
   common_heat_demands: [fbh_eg, klima_og, nebengeb, pool, hk_backup]
+
+freigaben:
+  # Persistente Live-Aenderungen landen in state/freigaben.json.
+  # Startzustand: Oelbrenner darf den Bestand weiter versorgen; WPs werden erst
+  # nach Einbau/Freigabe in HA in die Sequenz aufgenommen.
+  state_persist_path: "state/freigaben.json"
+  quellen:
+    oelbrenner: true
+    wp1: false
+    wp2: false
+    bwwp: false
+  senken:
+    brauchwasser: true
+    fbh_eg: true
+    klima_og: false
+    nebengeb: false
+    hk_backup: false
+    pool: false
+
+anforderungen:
+  fbh_eg: { aktiv: false, vl_soll: 35, quelle: default }
+  klima_og: { aktiv: false, vl_soll: 18, quelle: default }
+  nebengeb: { aktiv: false, vl_soll: 38, quelle: default }
+  hk_backup: { aktiv: false, vl_soll: 50, quelle: default }
+  pool: { aktiv: false, vl_soll: 38, quelle: default }
+  bwwp: { aktiv: false, vl_soll: 50, quelle: default }
+
+brauchwasser:
+  # Aktuelle Bestands-Brauchwasserbereitung ueber Oelbrenner + Ladepumpe.
+  # Abschaltbar ueber Freigabe Senke "brauchwasser" in HA.
+  soll_c: 50
+  hysterese_k: 5
+  sensor_min_c: -20
+  sensor_max_c: 95
 
 heizkurve:
   # Stuetzpunkte (Aussentemperatur -> VL-Soll); HA kann diese ueberschreiben
@@ -41,6 +79,11 @@ pool:
 failsafe:
   mqtt_timeout_s: 60
   ha_heartbeat_timeout_s: 300
+  # Inbetriebnahme: HA-Heartbeat und Aussenfuehler noch nicht als harte
+  # Failsafe-Bedingung verwenden, sonst zieht der Bestandskessel sofort an.
+  mqtt_activity_required: false
+  ha_heartbeat_required: false
+  outside_sensor_required: false
   fallback_vl_ohne_aussenfuehler: 50
   pumpen_an_im_failsafe: true
 
