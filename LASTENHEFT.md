@@ -315,13 +315,13 @@ Geplante physische Klemmenlogik fuer den Keller-Slave:
 |---|---|---|
 | K-DO01 | K-DO1.1 | Pumpe Mischer FBH-EG |
 | K-DO02 | K-DO1.2 | Pumpe Mischer Klimakreis-OG |
-| K-DO03 | K-DO1.3 | 3WV FBH-EG AUF |
-| K-DO04 | K-DO1.4 | 3WV FBH-EG ZU |
-| K-DO05 | K-DO1.5 | 3WV Klima-OG AUF |
-| K-DO06 | K-DO1.6 | 3WV Klima-OG ZU |
-| K-DO07 | K-DO1.7 | 3WV Heizkorper-Backup OG AUF |
-| K-DO08 | K-DO1.8 | 3WV Heizkorper-Backup OG ZU |
-| K-DO09 | K-DO1.9 | Pumpe Heizkorper-Backup OG |
+| K-DO03 | K-DO1.3 | Pumpe Heizkorper-Backup OG |
+| K-DO04 | K-DO1.4 | FU Brunnenpumpe Freigabe / Run |
+| K-DO05 | K-DO1.5 | Reserve |
+| K-DO06 | K-DO1.6 | Reserve |
+| K-DO07 | K-DO1.7 | Reserve |
+| K-DO08 | K-DO1.8 | Reserve |
+| K-DO09 | K-DO1.9 | Reserve |
 | K-DO10 | K-DO1.10 | Reserve |
 | K-DO11 | K-DO1.11 | Reserve |
 | K-DO12 | K-DO1.12 | Reserve |
@@ -352,7 +352,7 @@ Geplante physische Klemmenlogik fuer den Keller-Slave:
 | K-RTD04 | K-RTD3.2 | Ruecklauf Klimakreis-OG |
 | K-RTD05 | K-RTD4.1 | Vorlauf Heizkorper-Backup OG |
 | K-RTD06 | K-RTD4.2 | Ruecklauf Heizkorper-Backup OG |
-| K-AI01 | K-AI2.1 | Reserve fuer 0-10V/4-20mA |
+| K-AI01 | K-AI2.1 | Brunnen-Drucksensor 4-20mA, 0-10 bar |
 | K-AI02 | K-AI2.2 | Reserve fuer 0-10V/4-20mA |
 | K-AI03 | K-AI2.3 | Reserve fuer 0-10V/4-20mA |
 | K-AI04 | K-AI2.4 | Reserve fuer 0-10V/4-20mA |
@@ -364,10 +364,10 @@ Geplante physische Klemmenlogik fuer den Keller-Slave:
 | K-AI10 | K-AI4.2 | Reserve fuer 0-10V/4-20mA |
 | K-AI11 | K-AI4.3 | Reserve fuer 0-10V/4-20mA |
 | K-AI12 | K-AI4.4 | Reserve fuer 0-10V/4-20mA |
-| K-AO01 | K-AO2.1 | Stellsignal Mischer FBH (zukuenftig 0-10V) |
-| K-AO02 | K-AO2.2 | Stellsignal Mischer Klima-OG (zukuenftig 0-10V) |
-| K-AO03 | K-AO3.1 | Stellsignal Mischer Heizkorper-Backup OG (zukuenftig 0-10V) |
-| K-AO04 | K-AO3.2 | Reserve |
+| K-AO01 | K-AO2.1 | FU Brunnenpumpe Drehzahlsollwert 0-10V/4-20mA |
+| K-AO02 | K-AO2.2 | Stellsignal Mischer FBH 0-10V |
+| K-AO03 | K-AO3.1 | Stellsignal Mischer Klima-OG 0-10V |
+| K-AO04 | K-AO3.2 | Stellsignal Mischer Heizkorper-Backup OG 0-10V |
 | K-AO05 | K-AO4.1 | Reserve |
 | K-AO06 | K-AO4.2 | Reserve |
 
@@ -460,6 +460,36 @@ Siehe [docs/hydraulik.md](docs/hydraulik.md).
 - Startzustand: Oelbrenner und FBH-EG freigegeben; WP1/WP2/BWWP/Pool/etc.
   gesperrt, bis sie nach Einbau bewusst in HA aktiviert werden.
 - So kann der Oelbrenner parallel im System bleiben, bis das Oel leer ist.
+
+### 6.4.2 Brunnenpumpe Konstantdruck (Keller)
+
+- Die Brunnenpumpe sitzt im Keller und bekommt einen Frequenzumrichter.
+- Druckmessung: PT-506 Drucksensor, 4-20 mA, 0-10 bar, in der Brunnenleitung.
+- Anschluss Drucksensor an Keller-AIO1 / K-AI01:
+  - RevPi AIO Input 1 ist in PiCtory auf 4-20 mA parametriert.
+  - Fuer Strommessung muss am AIO Input 1 die Bruecke `*` zu `+` gesetzt sein.
+  - 2-Leiter-Sensor: +24 V -> Sensor +, Sensor -/Signal -> AIO Input 1 `+`,
+    AIO Input 1 `-` -> 0 V.
+  - Unter 4 mA meldet die AIO-Karte Range-Fehler; rot blinkende IN-LED ist
+    dann erwartbar. Aktuell muss bei 0 bar ca. 4 mA bzw. 4000 uA im Prozessbild
+    anliegen.
+- Ausgaenge am Keller-RevPi:
+  - `brunnen_fu_soll`: Analogausgang 0-10V/4-20mA als Drehzahlsollwert zum FU.
+  - `brunnen_pumpe_freigabe`: optionaler DO als FU-Run/Freigabe.
+- Der vorhandene 100-l-Druckspeicher bleibt im System.
+- Regelstrategie:
+  - Wenn kein Abnehmer offen ist, steigt der Druck bis `brunnen_max_druck_bar`; dann wird abgeschaltet.
+  - Erst bei Unterschreiten von `brunnen_min_druck_bar` wird wieder gestartet.
+  - Wenn ein Abnehmer offen ist, regelt der FU-Sollwert auf `brunnen_regeldruck_bar`.
+- In HA einstellbar:
+  - `brunnen_min_druck_bar`
+  - `brunnen_max_druck_bar`
+  - `brunnen_regeldruck_bar`
+- In HA sichtbar:
+  - aktueller Druck
+  - FU-Sollwert in %
+  - aktiv/inaktiv
+  - Regelgrund (`bereit`, `minderdruck_start`, `regelt`, `maxdruck_erreicht`, `sensor_unplausibel`)
 
 ### 6.5 Failsafe-Verhalten
 - **Trigger**: MQTT-Verbindung > 60 s verloren ODER HA-Heartbeat-Topic > 5 min nicht aktualisiert

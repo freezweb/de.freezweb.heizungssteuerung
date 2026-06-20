@@ -7,13 +7,16 @@ import os
 import signal
 import sys
 import time
+from dataclasses import replace
 from typing import Any
 
 from .lib.brauchwasser import BrauchwasserState, compute_brauchwasser
-from .lib.config import AppConfig, ChannelConfig, ConfigError
+from .lib.brunnen import BrunnenPressureState, compute_brunnen_pressure
+from .lib.config import AppConfig, ChannelConfig, ConfigError, IoMap, load_yaml, resolve_config_file
 from .lib.failsafe import FailsafeMonitor, FailsafeState
 from .lib.freigaben import Freigaben
 from .lib.hand_auto import HandAutoManager
+from .lib.intercpu import KellerModbusClient
 from .lib.iohw import BaseIO, HardwareSnapshot, create_io_backend
 from .lib.mqtt_bridge import MqttBridge
 from .lib.regler import ReglerParameter
@@ -33,14 +36,26 @@ async def run() -> int:
         return 2
 
     _apply_log_level(app_config.setting("logging.level", "INFO"))
-    cycle_s = float(app_config.setting("regelung.zyklus_ms", 1000)) / 1000
+    cycle_s = float(app_config.setting("regelung.fast_zyklus_ms", 100)) / 1000
+    heating_divider = max(1, int(app_config.setting("regelung.heizung_divider", 10)))
     default_hand_timeout = app_config.setting("hand.default_timeout_min")
     hand_state_path = app_config.state_path(app_config.setting("hand.state_persist_path", "state/hand_state.json"))
     freigaben_state_path = app_config.state_path(app_config.setting("freigaben.state_persist_path", "state/freigaben.json"))
     regler_state_path = app_config.state_path(app_config.setting("regler.state_persist_path", "state/regler.json"))
 
+    keller_client: KellerModbusClient | None = None
+    controller_config = app_config
+    keller_io_map = _load_keller_io_map(app_config) if _controller_role(app_config) == "haupt" else None
+    if keller_io_map is not None and bool(app_config.setting("intercpu.keller.enabled", True)):
+        host = str(app_config.setting("intercpu.keller.host", "10.1.25.11"))
+        port = int(app_config.setting("intercpu.keller.port", 502))
+        timeout_s = float(app_config.setting("intercpu.keller.timeout_s", 1.0))
+        keller_client = KellerModbusClient(host, port, keller_io_map, timeout_s=timeout_s)
+        controller_config = replace(app_config, io_map=_merge_io_maps(app_config.io_map, keller_io_map))
+        log.info("Keller-Slave per Modbus aktiviert: %s:%s", host, port)
+
     io_backend = create_io_backend(app_config.io_map, os.environ.get("HEIZUNG_IO_BACKEND", "auto"))
-    hand_auto = HandAutoManager(app_config.io_map, StateStore(hand_state_path), default_hand_timeout)
+    hand_auto = HandAutoManager(controller_config.io_map, StateStore(hand_state_path), default_hand_timeout)
     freigaben = Freigaben.from_settings(app_config.settings, StateStore(freigaben_state_path))
     regler = ReglerParameter.from_settings(app_config.settings, StateStore(regler_state_path))
     failsafe_monitor = FailsafeMonitor.from_settings(app_config.settings)
@@ -48,7 +63,7 @@ async def run() -> int:
     mqtt.set_default_demands(app_config.setting("anforderungen", {}))
     mqtt.start()
 
-    log.info("Heizungssteuerung gestartet, Zyklus %.3fs", cycle_s)
+    log.info("Heizungssteuerung gestartet, schneller Zyklus %.3fs, Heizungsdivider %s", cycle_s, heating_divider)
     stop = asyncio.Event()
     boot_ts = time.time()
 
@@ -65,16 +80,30 @@ async def run() -> int:
             pass
 
     last_heartbeat_tick = -1
+    cycle_count = 0
     brauchwasser_ladung_active = False
+    brunnen_active = False
+    brunnen_speed_pct = 0.0
+    applied_do: dict[str, bool] = {}
+    applied_ao: dict[str, float] = {}
     try:
         while not stop.is_set():
             started = time.monotonic()
             now_ts = time.time()
 
             snapshot = await io_backend.read_all()
+            if keller_client is not None:
+                try:
+                    keller_snapshot = await keller_client.read_snapshot()
+                    snapshot = _merge_snapshots(snapshot, keller_snapshot)
+                    mqtt.peer_last_seen_ts = now_ts
+                    mqtt.peer_online = True
+                except Exception as exc:
+                    mqtt.peer_online = False
+                    log.warning("Keller-Slave Modbus nicht erreichbar: %s", exc)
             await _handle_mqtt_commands(
                 mqtt,
-                app_config,
+                controller_config,
                 hand_auto,
                 freigaben,
                 regler,
@@ -89,42 +118,92 @@ async def run() -> int:
                 mqtt_connected=mqtt.connected,
                 last_mqtt_seen_ts=mqtt.last_seen_ts,
                 last_ha_heartbeat_ts=mqtt.last_ha_heartbeat_ts,
-                outside_temp_c=_sensor_value_by_component(app_config, snapshot, "aussen"),
+                outside_temp_c=_sensor_value_by_component(controller_config, snapshot, "aussen"),
             )
 
-            routing_state, brauchwasser_state, auto_do, auto_ao = _compute_auto_outputs(
-                app_config,
-                mqtt,
-                snapshot,
-                failsafe_state,
-                freigaben,
-                regler,
-                brauchwasser_ladung_active,
-            )
-            brauchwasser_ladung_active = brauchwasser_state.active
-            applied_do, applied_ao = await _write_outputs(app_config, io_backend, hand_auto, auto_do, auto_ao, now_ts)
-
-            _publish_state(
-                mqtt,
-                app_config,
-                snapshot,
-                failsafe_state,
+            heating_tick = cycle_count % heating_divider == 0
+            if heating_tick:
+                routing_state, brauchwasser_state, brunnen_state, auto_do, auto_ao = _compute_auto_outputs(
+                    controller_config,
+                    mqtt,
+                    snapshot,
+                    failsafe_state,
+                    freigaben,
+                    regler,
+                    brauchwasser_ladung_active,
+                    brunnen_active,
+                    brunnen_speed_pct,
+                    cycle_s,
+                )
+                brauchwasser_ladung_active = brauchwasser_state.active
+            else:
+                brunnen_state = _compute_fast_brunnen_outputs(
+                    controller_config,
+                    snapshot,
+                    regler,
+                    brunnen_active,
+                    brunnen_speed_pct,
+                    cycle_s,
+                    auto_do,
+                    auto_ao,
+                )
+            brunnen_active = brunnen_state.active
+            brunnen_speed_pct = brunnen_state.speed_pct
+            write_only = None if heating_tick else _brunnen_output_ids(controller_config)
+            written_do, written_ao = await _write_outputs(
+                controller_config,
+                app_config.io_map,
+                io_backend,
                 hand_auto,
-                freigaben,
-                regler,
-                routing_state,
-                brauchwasser_state,
-                applied_do,
-                applied_ao,
+                auto_do,
+                auto_ao,
+                now_ts,
+                keller_client,
+                only_channel_ids=write_only,
+                keller_fallback_do=applied_do,
+                keller_fallback_ao=applied_ao,
             )
+            applied_do.update(written_do)
+            applied_ao.update(written_ao)
+            if keller_client is not None and mqtt.peer_online is not False:
+                mqtt.peer_last_seen_ts = now_ts
+                mqtt.peer_online = True
+
+            if heating_tick:
+                _publish_state(
+                    mqtt,
+                    controller_config,
+                    snapshot,
+                    failsafe_state,
+                    hand_auto,
+                    freigaben,
+                    regler,
+                    routing_state,
+                    brauchwasser_state,
+                    brunnen_state,
+                    applied_do,
+                    applied_ao,
+                )
             uptime_s = int(now_ts - boot_ts)
             heartbeat_tick = uptime_s // 30
             if heartbeat_tick != last_heartbeat_tick:
                 last_heartbeat_tick = heartbeat_tick
                 mqtt.publish_heartbeat(uptime_s)
 
+            cycle_count += 1
+            await _update_cpu_leds(
+                io_backend,
+                app_config,
+                mqtt,
+                failsafe_state,
+                now_ts,
+                boot_ts,
+                cycle_count // max(1, heating_divider // 2),
+            )
+
             await _sleep_remaining(stop, cycle_s, started)
     finally:
+        await io_backend.set_cpu_leds({"A1": "off", "A2": "off", "A3": "off", "A4": "off", "A5": "off"})
         mqtt.stop()
         await io_backend.close()
 
@@ -138,6 +217,109 @@ async def _sleep_remaining(stop: asyncio.Event, cycle_s: float, started: float) 
         await asyncio.wait_for(stop.wait(), timeout=remaining)
     except TimeoutError:
         return
+
+
+def _load_keller_io_map(app_config: AppConfig) -> IoMap | None:
+    try:
+        raw = load_yaml(resolve_config_file(app_config.config_dir, "io_map.keller.yaml"))
+    except ConfigError:
+        return None
+    return IoMap.from_dict(raw)
+
+
+def _merge_io_maps(main: IoMap, keller: IoMap) -> IoMap:
+    return IoMap(
+        revpi=dict(main.revpi),
+        do={**main.do, **keller.do},
+        di={**main.di, **keller.di},
+        ai={**main.ai, **keller.ai},
+        ao={**main.ao, **keller.ao},
+        rtd={**main.rtd, **keller.rtd},
+    )
+
+
+def _merge_snapshots(main: HardwareSnapshot, keller: HardwareSnapshot) -> HardwareSnapshot:
+    return HardwareSnapshot(
+        di={**main.di, **keller.di},
+        ai={**main.ai, **keller.ai},
+        rtd={**main.rtd, **keller.rtd},
+        do={**main.do, **keller.do},
+        ao={**main.ao, **keller.ao},
+    )
+
+
+async def _update_cpu_leds(
+    io_backend: BaseIO,
+    app_config: AppConfig,
+    mqtt: MqttBridge,
+    failsafe_state: FailsafeState,
+    now_ts: float,
+    boot_ts: float,
+    cycle_count: int,
+) -> None:
+    settings = app_config.setting("leds", {})
+    if isinstance(settings, dict) and settings.get("enabled") is False:
+        return
+
+    role = _controller_role(app_config)
+    peer_timeout_s = float((settings or {}).get("peer_timeout_s", 90) if isinstance(settings, dict) else 90)
+    heartbeat_interval_s = float(
+        (settings or {}).get("heartbeat_interval_s", 1.0) if isinstance(settings, dict) else 1.0
+    )
+    ha_timeout_s = float(app_config.setting("failsafe.ha_heartbeat_timeout_s", 300))
+    ha_required = bool(app_config.setting("failsafe.ha_heartbeat_required", False))
+
+    colors = {
+        "A1": _heartbeat_led_color(now_ts, boot_ts, heartbeat_interval_s),
+        "A2": _peer_led_color(mqtt, now_ts, boot_ts, peer_timeout_s),
+    }
+    if role == "haupt":
+        colors.update(
+            {
+                "A3": "green" if mqtt.connected else "red",
+                "A4": _freshness_led_color(mqtt.last_ha_heartbeat_ts, now_ts, ha_timeout_s, required=ha_required),
+                "A5": "red" if failsafe_state.active else "green",
+            }
+        )
+    else:
+        colors.update({"A3": "off", "A4": "off", "A5": "off"})
+
+    await io_backend.set_cpu_leds(colors)
+
+
+def _heartbeat_led_color(now_ts: float, boot_ts: float, interval_s: float) -> str:
+    interval_s = max(0.2, float(interval_s))
+    return "blue" if int((now_ts - boot_ts) / interval_s) % 2 else "yellow"
+
+
+def _controller_role(app_config: AppConfig) -> str:
+    leds = app_config.mqtt.get("leds", {})
+    if isinstance(leds, dict) and leds.get("role"):
+        role = str(leds["role"]).strip().lower()
+        if role in {"haupt", "main"}:
+            return "haupt"
+        if role in {"keller", "slave"}:
+            return "keller"
+
+    client_id = str(app_config.mqtt.get("broker", {}).get("client_id", "")).lower()
+    hostname = str(app_config.io_map.revpi.get("hostname", "")).lower()
+    if "keller" in client_id or hostname.endswith("107293"):
+        return "keller"
+    return "haupt"
+
+
+def _peer_led_color(mqtt: MqttBridge, now_ts: float, boot_ts: float, timeout_s: float) -> str:
+    if mqtt.peer_last_seen_ts is not None and now_ts - mqtt.peer_last_seen_ts <= timeout_s and mqtt.peer_online is not False:
+        return "green"
+    if now_ts - boot_ts < timeout_s:
+        return "yellow"
+    return "red"
+
+
+def _freshness_led_color(last_seen_ts: float | None, now_ts: float, timeout_s: float, *, required: bool) -> str:
+    if last_seen_ts is not None and now_ts - last_seen_ts <= timeout_s:
+        return "green"
+    return "red" if required else "yellow"
 
 
 async def _handle_mqtt_commands(
@@ -237,7 +419,10 @@ def _compute_auto_outputs(
     freigaben: Freigaben,
     regler: ReglerParameter,
     brauchwasser_previous_active: bool,
-) -> tuple[RoutingState, BrauchwasserState, dict[str, bool], dict[str, float]]:
+    brunnen_previous_active: bool,
+    brunnen_previous_speed_pct: float,
+    cycle_s: float = 1.0,
+) -> tuple[RoutingState, BrauchwasserState, BrunnenPressureState, dict[str, bool], dict[str, float]]:
     routing_state, routed_do, routed_ao = compute_routing(
         regler.as_settings(app_config.settings),
         mqtt.demands,
@@ -259,32 +444,111 @@ def _compute_auto_outputs(
         auto["DO01"] = auto["DO01"] or brauchwasser_state.active
     if "DO02" in auto:
         auto["DO02"] = brauchwasser_state.active
+
+    brunnen_state = compute_brunnen_pressure(
+        app_config,
+        snapshot,
+        regler,
+        brunnen_previous_active,
+        brunnen_previous_speed_pct,
+        cycle_s,
+    )
+    brunnen_do = app_config.io_map.by_component("brunnen_pumpe_freigabe")
+    if brunnen_do is not None and brunnen_do.kind == "do" and brunnen_do.id in auto:
+        auto[brunnen_do.id] = brunnen_state.active
+
     auto_ao = {channel_id: 0.0 for channel_id in app_config.io_map.ao}
     for channel_id, value in routed_ao.items():
         if channel_id in auto_ao:
             auto_ao[channel_id] = value
-    return routing_state, brauchwasser_state, auto, auto_ao
+    brunnen_ao = app_config.io_map.by_component("brunnen_fu_soll")
+    if brunnen_ao is not None and brunnen_ao.kind == "ao" and brunnen_ao.id in auto_ao:
+        auto_ao[brunnen_ao.id] = brunnen_state.speed_pct
+    return routing_state, brauchwasser_state, brunnen_state, auto, auto_ao
+
+
+def _compute_fast_brunnen_outputs(
+    app_config: AppConfig,
+    snapshot: HardwareSnapshot,
+    regler: ReglerParameter,
+    brunnen_previous_active: bool,
+    brunnen_previous_speed_pct: float,
+    cycle_s: float,
+    auto_do: dict[str, bool],
+    auto_ao: dict[str, float],
+) -> BrunnenPressureState:
+    brunnen_state = compute_brunnen_pressure(
+        app_config,
+        snapshot,
+        regler,
+        brunnen_previous_active,
+        brunnen_previous_speed_pct,
+        cycle_s,
+    )
+    brunnen_do = app_config.io_map.by_component("brunnen_pumpe_freigabe")
+    if brunnen_do is not None and brunnen_do.kind == "do" and brunnen_do.id in auto_do:
+        auto_do[brunnen_do.id] = brunnen_state.active
+    brunnen_ao = app_config.io_map.by_component("brunnen_fu_soll")
+    if brunnen_ao is not None and brunnen_ao.kind == "ao" and brunnen_ao.id in auto_ao:
+        auto_ao[brunnen_ao.id] = brunnen_state.speed_pct
+    return brunnen_state
+
+
+def _brunnen_output_ids(app_config: AppConfig) -> set[str]:
+    ids: set[str] = set()
+    for component in ("brunnen_pumpe_freigabe", "brunnen_fu_soll"):
+        channel = app_config.io_map.by_component(component)
+        if channel is not None and channel.kind in {"do", "ao"}:
+            ids.add(channel.id)
+    return ids
 
 
 async def _write_outputs(
     app_config: AppConfig,
+    local_io_map: IoMap,
     io_backend: BaseIO,
     hand_auto: HandAutoManager,
     auto_do: dict[str, bool],
     auto_ao: dict[str, float],
     now_ts: float,
+    keller_client: KellerModbusClient | None = None,
+    only_channel_ids: set[str] | None = None,
+    keller_fallback_do: dict[str, bool] | None = None,
+    keller_fallback_ao: dict[str, float] | None = None,
 ) -> tuple[dict[str, bool], dict[str, float]]:
     applied_do: dict[str, bool] = {}
     applied_ao: dict[str, float] = {}
+    keller_do: dict[str, bool] = {}
+    keller_ao: dict[str, float] = {}
     for channel_id, channel in app_config.io_map.do.items():
+        if only_channel_ids is not None and channel_id not in only_channel_ids:
+            continue
         value, _hand = hand_auto.apply(channel, auto_do.get(channel_id, False), now_ts)
         applied_do[channel_id] = bool(value)
-        await io_backend.write_do(channel, applied_do[channel_id])
+        if channel_id in local_io_map.do:
+            await io_backend.write_do(channel, applied_do[channel_id])
+        else:
+            keller_do[channel_id] = applied_do[channel_id]
 
     for channel_id, channel in app_config.io_map.ao.items():
+        if only_channel_ids is not None and channel_id not in only_channel_ids:
+            continue
         value, _hand = hand_auto.apply(channel, auto_ao.get(channel_id, 0.0), now_ts)
         applied_ao[channel_id] = float(value)
-        await io_backend.write_ao(channel, applied_ao[channel_id])
+        if channel_id in local_io_map.ao:
+            await io_backend.write_ao(channel, applied_ao[channel_id])
+        else:
+            keller_ao[channel_id] = applied_ao[channel_id]
+
+    if keller_client is not None and (keller_do or keller_ao):
+        for channel_id in keller_client.io_map.do:
+            keller_do.setdefault(channel_id, (keller_fallback_do or {}).get(channel_id, auto_do.get(channel_id, False)))
+        for channel_id in keller_client.io_map.ao:
+            keller_ao.setdefault(channel_id, (keller_fallback_ao or {}).get(channel_id, auto_ao.get(channel_id, 0.0)))
+        try:
+            await keller_client.write_outputs(keller_do, keller_ao, enabled=True)
+        except Exception as exc:
+            log.warning("Keller-Slave Modbus Schreiben fehlgeschlagen: %s", exc)
     return applied_do, applied_ao
 
 
@@ -298,6 +562,7 @@ def _publish_state(
     regler: ReglerParameter,
     routing_state: RoutingState,
     brauchwasser_state: BrauchwasserState,
+    brunnen_state: BrunnenPressureState,
     applied_do: dict[str, bool],
     applied_ao: dict[str, float],
 ) -> None:
@@ -313,6 +578,11 @@ def _publish_state(
     mqtt.publish(f"{base}/brauchwasser/ladung_aktiv", "1" if brauchwasser_state.active else "0", retain=True)
     mqtt.publish(f"{base}/brauchwasser/grund", brauchwasser_state.reason, retain=True)
     mqtt.publish_json(f"{base}/brauchwasser/state", brauchwasser_state.as_payload(), retain=True)
+    mqtt.publish(f"{base}/brunnen/active", "1" if brunnen_state.active else "0", retain=True)
+    mqtt.publish(f"{base}/brunnen/grund", brunnen_state.reason, retain=True)
+    mqtt.publish(f"{base}/brunnen/druck_bar/state", "" if brunnen_state.pressure_bar is None else f"{brunnen_state.pressure_bar:.2f}", retain=True)
+    mqtt.publish(f"{base}/brunnen/fu_soll_pct/state", f"{brunnen_state.speed_pct:.1f}", retain=True)
+    mqtt.publish_json(f"{base}/brunnen/state", brunnen_state.as_payload(), retain=True)
     for name, active in sorted(mqtt.pv.items()):
         mqtt.publish(f"{base}/pv/{name}/state", "1" if active else "0", retain=True)
     mqtt.publish_json(f"{base}/freigabe/state", freigaben.snapshot(), retain=True)

@@ -14,6 +14,9 @@ def test_regler_parameters_overlay_settings(tmp_path: Path):
     assert regler.set("wp_parallel_ab_aktive_kreise", 3) is True
     assert regler.set("brauchwasser_soll_c", "52,5") is True
     assert regler.set("brauchwasser_hysterese_k", 6) is True
+    assert regler.set("brunnen_min_druck_bar", "2,1") is True
+    assert regler.set("brunnen_max_druck_bar", "4,5") is True
+    assert regler.set("brunnen_regeldruck_bar", "3,3") is True
 
     settings = regler.as_settings({"regelung": {}, "wp": {}})
 
@@ -21,6 +24,9 @@ def test_regler_parameters_overlay_settings(tmp_path: Path):
     assert settings["wp"]["parallel_ab_aktive_kreise"] == 3
     assert settings["brauchwasser"]["soll_c"] == 52.5
     assert settings["brauchwasser"]["hysterese_k"] == 6.0
+    assert settings["brunnen"]["min_druck_bar"] == 2.1
+    assert settings["brunnen"]["max_druck_bar"] == 4.5
+    assert settings["brunnen"]["regeldruck_bar"] == 3.3
 
 
 def test_regler_parameters_persist(tmp_path: Path):

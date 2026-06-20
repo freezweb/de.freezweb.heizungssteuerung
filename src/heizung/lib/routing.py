@@ -134,6 +134,9 @@ def compute_routing(
         "DO17": False,
         "DO18": "nebengeb" in common_active,
         "DO19": pool_active,
+        "K-DO01": "fbh_eg" in common_active,
+        "K-DO02": "klima_og" in common_active,
+        "K-DO03": "hk_backup" in common_active,
     }
 
     ao = {
@@ -146,6 +149,9 @@ def compute_routing(
         "AO07": 100.0 if "wp2" in active_wps else 0.0,
         "AO08": 100.0 if pool_active else 0.0,
         "AO09": float(_setting(settings, "pool.filter_speed_pct", 100)) if pool_active else 0.0,
+        "K-AO02": 100.0 if "fbh_eg" in common_active else 0.0,
+        "K-AO03": 100.0 if "klima_og" in common_active else 0.0,
+        "K-AO04": 100.0 if "hk_backup" in common_active else 0.0,
     }
 
     return state, do, ao

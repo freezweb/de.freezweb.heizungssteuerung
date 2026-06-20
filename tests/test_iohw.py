@@ -1,7 +1,7 @@
 import sys
 
 from heizung.lib.config import ChannelConfig, IoMap
-from heizung.lib.iohw import RevPiIO, SimulatedIO, create_io_backend
+from heizung.lib.iohw import RevPiIO, SimulatedIO, _raw_ai_value, create_io_backend
 
 
 async def test_simulated_io_writes_outputs():
@@ -83,6 +83,74 @@ async def test_revpi_writes_process_image_after_do_write():
     assert fake_revpi.write_calls == 1
 
 
+async def test_revpi_writes_grouped_dio_bits_without_overwriting_word():
+    class FakeOutput:
+        value = 0b0010
+
+    class FakeRevPi:
+        io = {"Output_0": FakeOutput()}
+
+        def __init__(self):
+            self.write_calls = 0
+
+        def writeprocimg(self):
+            self.write_calls += 1
+            return True
+
+    fake_revpi = FakeRevPi()
+    io = object.__new__(RevPiIO)
+    io.io_map = IoMap(revpi={}, do={}, di={}, ai={}, ao={})
+    io._revpi = fake_revpi
+    io._missing_ios = set()
+
+    await io.write_do(ChannelConfig("K-DO01", "do", "Output_0", "pumpe", channel="O_1"), True)
+    await io.write_do(ChannelConfig("K-DO02", "do", "Output_0", "pumpe2", channel="O_2"), False)
+    await io.write_do(ChannelConfig("K-DO04", "do", "Output_0", "freigabe", channel="O_4"), True)
+
+    assert fake_revpi.io["Output_0"].value == 0b1001
+    assert fake_revpi.write_calls == 3
+
+
+async def test_revpi_sets_cpu_leds_with_color_values():
+    class FakeCore:
+        def __init__(self):
+            self.values = {}
+
+        def __setattr__(self, key, value):
+            if key == "values":
+                object.__setattr__(self, key, value)
+            else:
+                self.values[key] = value
+
+    class FakeRevPi:
+        def __init__(self):
+            self.core = FakeCore()
+            self.write_calls = 0
+
+        def writeprocimg(self):
+            self.write_calls += 1
+            return True
+
+    fake_revpi = FakeRevPi()
+    io = object.__new__(RevPiIO)
+    io.io_map = IoMap(revpi={}, do={}, di={}, ai={}, ao={})
+    io._revpi = fake_revpi
+    io._missing_ios = set()
+
+    await io.set_cpu_leds({"A1": "blue", "A2": "gelb", "A3": "rot"})
+
+    assert fake_revpi.core.values == {"A1": 4, "A2": 3, "A3": 2}
+    assert fake_revpi.write_calls == 1
+
+
+async def test_simulated_io_stores_cpu_leds():
+    io = SimulatedIO(IoMap(revpi={}, do={}, di={}, ai={}, ao={}))
+
+    await io.set_cpu_leds({"a1": "gruen", "A2": "unknown"})
+
+    assert io.cpu_leds == {"A1": "green", "A2": "off"}
+
+
 def test_revpi_missing_io_attribute_error_is_ignored():
     class MissingIo:
         def __getitem__(self, key):
@@ -96,6 +164,13 @@ def test_revpi_missing_io_attribute_error_is_ignored():
 
     assert io._try_get_io(channel) is None
     assert io._missing_ios == {"DI01->DIO_I_1"}
+
+
+def test_ai_pressure_channel_converts_microampere_to_milliampere():
+    channel = ChannelConfig("AI01", "ai", "AI", "brunnen_druck", einheit="bar", sensor="4-20mA Drucksensor")
+
+    assert _raw_ai_value(12000, channel) == 12.0
+    assert _raw_ai_value(2, channel) == 0.002
 
 
 def test_auto_backend_falls_back_when_revpi_init_fails(monkeypatch):

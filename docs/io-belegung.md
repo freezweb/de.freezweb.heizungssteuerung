@@ -66,41 +66,53 @@ fuer 0-10V/4-20mA-Messumformer, nicht fuer direkte PT1000.
 
 ## Slave-Steuerung Hauptkeller
 
-Ist-Stand 2026-06-17:
+Ist-Stand 2026-06-18:
 
 - RevPi #2 ist unter `10.1.25.11` erreichbar.
-- `heizung.service` ist dort bewusst `disabled/inactive`.
-- Die aktuell aufgespielte `io_map.yaml` ist noch eine Kopie der Hauptsteuerung
-  und **keine** gueltige Slave-Belegung.
-- `piTest -d` meldet die konfigurierten Erweiterungsmodule als `NOT present`;
-  die zweite Steuerung ist damit elektrisch/PiCtory-seitig noch nicht
-  betriebsbereit.
+- Auf dem Keller-RevPi laeuft **keine eigene Heizungsregelung**.
+- `heizung.service` ist dort `disabled/inactive`.
+- `heizung-keller-slave.service` ist der aktive Autostart-Service.
+- Der Keller-RevPi stellt seine I/O nur per Modbus TCP auf Port `502` bereit.
+- Die Hauptsteuerung `10.1.25.10` liest Keller-Sensoren per Modbus, berechnet
+  die Regelung zentral und schreibt die gewuenschten Keller-Ausgaenge zurueck.
+- `piTest -d` meldet die Keller-Erweiterungsmodule bis zur Spannungsversorgung
+  als `NOT present`.
 
-Geplante Belegung:
+Belegung:
 
 | Modul | Zweck |
 |---|---|
-| DIO | 14 DI + 14 DO fuer Pumpen, Mischer AUF/ZU, lokale Kontakte |
+| DIO | 14 DI + 14 DO fuer Pumpen, FU-Freigabe, lokale Kontakte |
 | CPU | RevPi #2, 10.1.25.11 |
-| AIO x3 | 6 RTD fuer Mischerkreise + 6 AO Reserve + 12 AI Reserve |
+| AIO x3 | 6 RTD fuer Mischerkreise + AO fuer Mischer/FU + AI fuer Drucksensor/Reserve |
 
 Vorgeschlagene lokale I/O-Zuordnung fuer den Slave:
 
 | Kanal | Funktion |
 |---|---|
-| DO01/DO02 | Mischer FBH EG AUF/ZU |
-| DO03 | Pumpe FBH EG |
-| DO04/DO05 | Mischer Klima OG AUF/ZU |
-| DO06 | Pumpe Klima OG |
-| DO07/DO08 | Mischer HK-Backup OG AUF/ZU |
-| DO09 | Pumpe HK-Backup OG |
-| DO10-DO14 | Reserve |
+| DO01 | Pumpe FBH EG |
+| DO02 | Pumpe Klima OG |
+| DO03 | Pumpe HK-Backup OG |
+| DO04 | FU Brunnenpumpe Freigabe / Run |
+| DO05-DO14 | Reserve |
 | DI01-DI03 | Stoer-/Rueckmeldekontakte FBH/Klima/HK |
 | DI04-DI14 | Reserve |
 | RTD01/RTD02 | FBH EG VL/RL |
 | RTD03/RTD04 | Klima OG VL/RL |
 | RTD05/RTD06 | HK-Backup OG VL/RL |
-| AO01-AO03 | optionale stetige Mischerstellungen FBH/Klima/HK |
-| AO04-AO06 | Reserve |
+| AI01 | PT-506 Brunnen-Drucksensor 4-20 mA, 0-10 bar |
+| AI02-AI12 | Reserve 0-10V/4-20mA |
+| AO01 | FU Brunnenpumpe Drehzahlsollwert |
+| AO02-AO04 | stetige Mischerstellungen FBH/Klima/HK |
+| AO05-AO06 | Reserve |
+
+Brunnenregelung: Der Drucksensor und die FU-Ausgaenge sitzen am Keller-RevPi,
+aber die Konstantdruckregelung laeuft zentral auf der Hauptsteuerung. Der
+Keller-RevPi fuehrt nur die per Modbus TCP geschriebenen DO/AO-Sollwerte aus.
+
+Wichtig fuer AI01: RevPi-AIO-Strommessung braucht die Bruecke `*` zu `+` am
+jeweiligen Eingang. Bei K-AI01/AIO Input 1 muss bei 0 bar ca. 4 mA anliegen;
+ein Wert nahe 0 mA setzt `InputStatus` auf Unterbereich und laesst die IN-LED
+rot blinken.
 
 Siehe [LASTENHEFT.md](../LASTENHEFT.md#43-slave-revpi-hauptkeller-spater).

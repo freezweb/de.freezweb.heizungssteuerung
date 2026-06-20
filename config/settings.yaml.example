@@ -1,9 +1,33 @@
 # Globale Einstellungen Heizungssteuerung
 
 regelung:
-  zyklus_ms: 1000               # Hauptregelkreis-Zyklus
+  fast_zyklus_ms: 100            # schneller I/O-/Brunnen-Zyklus
+  heizung_divider: 10            # Heizungsrouting/Brauchwasser/MQTT nur jeden 10. schnellen Zyklus
   mischer_reserve_k: 5           # Aufschlag auf WP-VL gegenueber hoechster Mischer-Anforderung
   oelbrenner_unterstuetzung: true # Phase A: alter Kessel darf gemeinsame Waermeanforderung bedienen
+
+leds:
+  enabled: true
+  peer_timeout_s: 90
+  heartbeat_interval_s: 1.0
+  # CPU-eigene LEDs RevPi Connect 4:
+  # A1: Heartbeat, wechselt alle heartbeat_interval_s blau/gelb
+  # A2: Verbindung zur anderen CPU (gruen=ok, gelb=Start/Warten, rot=kein Heartbeat)
+  # Hauptsteuerung zusaetzlich:
+  # A3: MQTT Broker, A4: HA-Heartbeat, A5: Failsafe
+  # Kellersteuerung: A3-A5 bleiben aus
+
+intercpu:
+  keller:
+    enabled: true
+    host: "10.1.25.11"
+    port: 502
+    timeout_s: 1.0
+  keller_slave:
+    host: "0.0.0.0"
+    port: 502
+    zyklus_ms: 100
+    watchdog_s: 5
 
 regler:
   # Live geaenderte Reglerparameter aus HA werden hier persistiert.
@@ -47,6 +71,28 @@ brauchwasser:
   hysterese_k: 5
   sensor_min_c: -20
   sensor_max_c: 95
+
+brunnen:
+  # Konstantdruckregelung fuer die Brunnenpumpe am FU.
+  # Physisch sitzt die Pumpe im Keller; die realen Kanäle gehoeren daher auf den Keller-RevPi:
+  # - AI:  brunnen_druck (4-20 mA, 0-10 bar)
+  # - AO:  brunnen_fu_soll (0-10 V oder 4-20 mA zum FU)
+  # - DO:  brunnen_pumpe_freigabe (optional FU-Run/Freigabe)
+  min_druck_bar: 2.2      # Unterschreiten -> Pumpe startet
+  max_druck_bar: 4.2      # Ueberschreiten -> Pumpe stoppt (kein Abnehmer offen)
+  regeldruck_bar: 3.2     # Konstantdruck waehrend ein Abnehmer offen ist
+  druck_sensor_signal: "4-20ma" # 0 mA / Rohwert 0 = Leitungsbruch/nicht angeschlossen
+  druck_sensor_bereich_bar: 10.0
+  druck_sensor_min_ma: 4.0
+  druck_sensor_max_ma: 20.0
+  druck_sensor_min_bar: -0.2
+  druck_sensor_max_bar: 10.5
+  fu_min_pct: 20
+  fu_max_pct: 100
+  fu_start_pct: 45
+  kp_pct_pro_bar: 18
+  fu_ramp_up_pct_s: 35     # 0 -> 100% in ca. 3 s, auch bei 0 bar
+  fu_ramp_down_pct_s: 60   # Druckanstieg schneller abfangen, aber ohne hartes Flattern
 
 heizkurve:
   # Stuetzpunkte (Aussentemperatur -> VL-Soll); HA kann diese ueberschreiben

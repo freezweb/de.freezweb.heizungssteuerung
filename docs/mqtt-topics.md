@@ -16,6 +16,11 @@ Broker: `mqtt.esrv.center` mit User `vbnet`/`vbnet`. Basis-Pfad: `heizung/...`
 | `heizung/brauchwasser/ladung_aktiv` | RevPi -> | `0` / `1`, aktuelle Speicherladung ueber Oelbrenner + BW-Ladepumpe | yes |
 | `heizung/brauchwasser/grund` | RevPi -> | Regelgrund, z.B. `unter_einschaltschwelle`, `soll_erreicht`, `sensor_bw_oben_ungueltig` | yes |
 | `heizung/brauchwasser/state` | RevPi -> | JSON mit Freigabe, Aktivstatus, Temperaturen, Sollwert, Hysterese und Grund | yes |
+| `heizung/brunnen/active` | RevPi -> | `0` / `1`, Brunnenpumpe/FU aktiv | yes |
+| `heizung/brunnen/druck_bar/state` | RevPi -> | Leitungsdruck in bar vom 4-20-mA-Sensor | yes |
+| `heizung/brunnen/fu_soll_pct/state` | RevPi -> | Drehzahlsollwert an den FU in Prozent | yes |
+| `heizung/brunnen/grund` | RevPi -> | Regelgrund, z.B. `bereit`, `minderdruck_start`, `regelt`, `maxdruck_erreicht`, `sensor_unplausibel` | yes |
+| `heizung/brunnen/state` | RevPi -> | JSON mit Aktivstatus, Druck, FU-Sollwert, Min/Max/Regeldruck und Grund | yes |
 | `heizung/pv/ueberschuss/state` | RevPi -> | `0` / `1`, von HA empfangenes PV-Ueberschuss-Signal | yes |
 | `heizung/pv/mangel/state` | RevPi -> | `0` / `1`, von HA empfangenes PV-Mangel-Signal | yes |
 | `heizung/freigabe/state` | RevPi -> | JSON mit allen Quellen-/Senkenfreigaben | yes |
@@ -62,6 +67,9 @@ zugeordnet; beide koennen jede aktive Senke bedienen.
 | `heizung/regler/wp_parallel_ab_aktive_kreise/set` | Zahl `1..10` | Ab wie vielen aktiven Senken beide WPs laufen duerfen |
 | `heizung/regler/brauchwasser_soll_c/set` | Zahl `30..70` | Abschalttemperatur der aktuellen Brauchwasserladung |
 | `heizung/regler/brauchwasser_hysterese_k/set` | Zahl `1..20` | Einschaltdifferenz unterhalb des Sollwerts |
+| `heizung/regler/brunnen_min_druck_bar/set` | Zahl `0..9.5` | Unterschreiten startet Brunnenpumpe/FU |
+| `heizung/regler/brunnen_max_druck_bar/set` | Zahl `0.2..10` | Ueberschreiten stoppt Brunnenpumpe/FU |
+| `heizung/regler/brunnen_regeldruck_bar/set` | Zahl `0..10` | Konstantdruck-Sollwert bei offenem Verbraucher |
 | `heizung/pv/ueberschuss/set` | `0` / `1` | HA setzt PV-Ueberschuss; kein physischer RevPi-DI |
 | `heizung/pv/mangel/set` | `0` / `1` | HA setzt PV-Mangel; kein physischer RevPi-DI |
 | `heizung/tor/oeffnen_ganz/cmd` | leer | Oeffnen beider Fluegel, wenn nicht beide Fluegel bereits nicht-geschlossen sind |
@@ -83,6 +91,15 @@ sondern ein eigener Regler. Wenn `freigabe/senken/brauchwasser` und
 ist und unter `brauchwasser_soll_c - brauchwasser_hysterese_k` faellt, werden
 `DO01` Brenner und `DO02` Ladepumpe Brauchwasser aktiviert. Die Ladung bleibt
 bis `brauchwasser_soll_c` aktiv. Bei unplausiblem Fuehlerwert bleibt sie aus.
+
+Brunnen-Konstantdruck: Die Brunnenpumpe sitzt im Keller und wird lokal ueber
+FU geregelt. Ein 4-20-mA-Drucksensor 0-10 bar liefert `brunnen_druck`; der
+FU bekommt `brunnen_fu_soll` als Analogausgang und optional eine digitale
+Freigabe `brunnen_pumpe_freigabe`. Sinkt der Druck unter
+`brunnen_min_druck_bar`, startet die Pumpe. Im Betrieb regelt der FU-Sollwert
+auf `brunnen_regeldruck_bar`. Steigt der Druck ueber
+`brunnen_max_druck_bar`, wird abgeschaltet, weil kein Verbraucher mehr offen
+ist und der 100-l-Druckspeicher gefuellt ist.
 
 Der RevPi publiziert die Direktzustande zurueck:
 
@@ -106,3 +123,21 @@ Beispiel `homeassistant/sensor/heizung_aussen/config`:
   "expire_after": 120
 }
 ```
+
+## CPU-LEDs
+
+Die RevPi-Connect-4-internen LEDs werden direkt ueber `RevPiLED`/`core.A1..A5`
+gesetzt:
+
+| CPU | LED | Bedeutung |
+|---|---|---|
+| Haupt + Keller | A1 | Heartbeat: wechselt pro Zyklus blau/gelb |
+| Haupt + Keller | A2 | Verbindung zur anderen CPU: gruen ok, gelb Start/Warten, rot kein aktueller Modbus-Watchdog |
+| Haupt | A3 | MQTT-Broker verbunden: gruen/rot |
+| Haupt | A4 | Home-Assistant-Heartbeat: gruen ok, gelb optional/fehlt, rot wenn als Pflicht konfiguriert und fehlt |
+| Haupt | A5 | Failsafe: gruen normal, rot aktiv |
+| Keller | A3-A5 | aus |
+
+Der Keller-RevPi publiziert keine eigenen MQTT-Regelwerte. Er laeuft als
+Modbus-TCP-I/O-Slave; alle MQTT-Status-/Reglerwerte kommen von der
+Hauptsteuerung.

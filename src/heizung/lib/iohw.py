@@ -34,6 +34,9 @@ class BaseIO:
     async def write_ao(self, channel: ChannelConfig, value: float) -> None:
         raise NotImplementedError
 
+    async def set_cpu_leds(self, colors: dict[str, str]) -> None:
+        return None
+
     async def pulse(self, channel: ChannelConfig, duration_ms: int) -> None:
         await self.write_do(channel, True)
         await asyncio.sleep(duration_ms / 1000)
@@ -51,6 +54,7 @@ class SimulatedIO(BaseIO):
         self.rtd_values = {channel_id: None for channel_id in io_map.rtd}
         self.do_values = {channel_id: False for channel_id in io_map.do}
         self.ao_values = {channel_id: 0.0 for channel_id in io_map.ao}
+        self.cpu_leds: dict[str, str] = {}
 
     async def read_all(self) -> HardwareSnapshot:
         return HardwareSnapshot(
@@ -67,6 +71,9 @@ class SimulatedIO(BaseIO):
     async def write_ao(self, channel: ChannelConfig, value: float) -> None:
         self.ao_values[channel.id] = _clamp_ao(channel, float(value))
 
+    async def set_cpu_leds(self, colors: dict[str, str]) -> None:
+        self.cpu_leds.update({name.upper(): _normalize_led_color(color) for name, color in colors.items()})
+
 
 class RevPiIO(BaseIO):
     def __init__(self, io_map: IoMap) -> None:
@@ -81,6 +88,7 @@ class RevPiIO(BaseIO):
         except Exception as exc:  # pragma: no cover - abhaengig von PiCtory/Hardwarezustand
             raise RuntimeError("RevPi-I/O konnte nicht initialisiert werden") from exc
         self._missing_ios: set[str] = set()
+        self._cpu_led_colors: dict[str, str] = {}
 
     async def read_all(self) -> HardwareSnapshot:
         self._revpi.readprocimg()
@@ -90,7 +98,7 @@ class RevPiIO(BaseIO):
             if (io := self._try_get_io(channel)) is not None
         }
         ai = {
-            channel_id: _raw_temp_value(io.value)
+            channel_id: _raw_ai_value(io.value, channel)
             for channel_id, channel in self.io_map.ai.items()
             if (io := self._try_get_io(channel)) is not None
         }
@@ -100,7 +108,7 @@ class RevPiIO(BaseIO):
             if (io := self._try_get_io(channel)) is not None
         }
         do = {
-            channel_id: bool(io.value)
+            channel_id: _read_do_value(io.value, channel)
             for channel_id, channel in self.io_map.do.items()
             if (io := self._try_get_io(channel)) is not None
         }
@@ -114,13 +122,48 @@ class RevPiIO(BaseIO):
     async def write_do(self, channel: ChannelConfig, value: bool) -> None:
         io = self._try_get_io(channel)
         if io is not None:
-            io.value = bool(value)
+            if _is_grouped_dio(channel):
+                current = int(getattr(io, "value", 0) or 0)
+                bit = _channel_bit_index(channel)
+                if bit is not None:
+                    if value:
+                        current |= 1 << bit
+                    else:
+                        current &= ~(1 << bit)
+                    io.value = current
+                else:
+                    io.value = bool(value)
+            else:
+                io.value = bool(value)
             self._revpi.writeprocimg()
 
     async def write_ao(self, channel: ChannelConfig, value: float) -> None:
         io = self._try_get_io(channel)
         if io is not None:
             io.value = int(round(_clamp_ao(channel, float(value))))
+            self._revpi.writeprocimg()
+
+    async def set_cpu_leds(self, colors: dict[str, str]) -> None:
+        core = getattr(self._revpi, "core", None)
+        if core is None:
+            return
+        changed = False
+        cached_colors = getattr(self, "_cpu_led_colors", {})
+        self._cpu_led_colors = cached_colors
+        for name, color in colors.items():
+            led_name = name.upper()
+            normalized_color = _normalize_led_color(color)
+            if cached_colors.get(led_name) == normalized_color:
+                continue
+            if not led_name.startswith("A"):
+                continue
+            try:
+                setattr(core, led_name, _LED_COLORS[normalized_color])
+                cached_colors[led_name] = normalized_color
+                changed = True
+            except (AttributeError, ValueError, KeyError) as exc:
+                log.debug("CPU-LED %s konnte nicht gesetzt werden: %s", led_name, exc)
+        if changed:
             self._revpi.writeprocimg()
 
     async def close(self) -> None:
@@ -170,3 +213,89 @@ def _raw_temp_value(raw: Any) -> float | None:
     if abs(value) > 200:
         return value / 10
     return value
+
+
+def _raw_ai_value(raw: Any, channel: ChannelConfig) -> float | None:
+    if raw is None:
+        return None
+    try:
+        value = float(raw)
+    except (TypeError, ValueError):
+        return None
+    if _is_current_input(channel):
+        return value / 1000.0
+    if _is_voltage_input(channel):
+        return value / 1000.0
+    # AI-Kanaele mit physikalischer Nicht-Temperatur-Skalierung werden im
+    # jeweiligen Regler passend skaliert.
+    if channel.einheit and channel.einheit.lower() not in {"c", "grad c", "°c"}:
+        return value
+    return _raw_temp_value(value)
+
+
+def _is_current_input(channel: ChannelConfig) -> bool:
+    text = f"{channel.sensor or ''} {channel.einheit or ''}".lower()
+    return "ma" in text or "4-20" in text or "0-20" in text or "0-24" in text
+
+
+def _is_voltage_input(channel: ChannelConfig) -> bool:
+    text = f"{channel.sensor or ''} {channel.einheit or ''}".lower()
+    return "0-10v" in text or "0-5v" in text or "10v" in text or "5v" in text
+
+
+def _read_do_value(raw: Any, channel: ChannelConfig) -> bool:
+    if _is_grouped_dio(channel):
+        bit = _channel_bit_index(channel)
+        if bit is not None:
+            try:
+                return bool(int(raw) & (1 << bit))
+            except (TypeError, ValueError):
+                return False
+    return bool(raw)
+
+
+def _is_grouped_dio(channel: ChannelConfig) -> bool:
+    return channel.pictory_name.startswith(("Input_", "Output_"))
+
+
+def _channel_bit_index(channel: ChannelConfig) -> int | None:
+    raw = channel.channel or channel.id
+    for prefix in ("O_", "I_", "DO", "DI", "K-DO", "K-DI"):
+        if str(raw).startswith(prefix):
+            raw = str(raw)[len(prefix) :]
+            break
+    try:
+        index = int(str(raw).split("_", 1)[0])
+    except (TypeError, ValueError):
+        return None
+    return max(0, index - 1)
+
+
+_LED_COLORS = {
+    "off": 0,
+    "green": 1,
+    "red": 2,
+    "yellow": 3,
+    "blue": 4,
+    "magenta": 6,
+    "white": 7,
+}
+
+
+def _normalize_led_color(color: str) -> str:
+    normalized = str(color).strip().lower()
+    aliases = {
+        "aus": "off",
+        "gruen": "green",
+        "grün": "green",
+        "rot": "red",
+        "gelb": "yellow",
+        "blau": "blue",
+        "violett": "magenta",
+        "weiss": "white",
+        "weiß": "white",
+    }
+    normalized = aliases.get(normalized, normalized)
+    if normalized not in _LED_COLORS:
+        return "off"
+    return normalized

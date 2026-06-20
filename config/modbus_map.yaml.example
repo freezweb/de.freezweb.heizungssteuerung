@@ -78,4 +78,20 @@ slaves:
     address: 1
     host: "10.1.25.11"
     port: 502
-    # Register werden vom Slave-Service definiert
+    register:
+      # Holding Register: Hauptsteuerung -> Keller-Slave
+      command_counter: { typ: "holding", addr: 0, datatype: "uint16", scale: 1, rw: "w" }
+      enable:          { typ: "holding", addr: 1, datatype: "uint16", scale: 1, rw: "w" }
+      do_bitmask:      { typ: "holding", addr: 10, datatype: "uint16", scale: 1, rw: "w", einheit: "bit0=K-DO01" }
+      ao01_pct_x10:    { typ: "holding", addr: 20, datatype: "uint16", scale: 0.1, rw: "w" }
+      ao02_pct_x10:    { typ: "holding", addr: 21, datatype: "uint16", scale: 0.1, rw: "w" }
+      ao03_pct_x10:    { typ: "holding", addr: 22, datatype: "uint16", scale: 0.1, rw: "w" }
+      ao04_pct_x10:    { typ: "holding", addr: 23, datatype: "uint16", scale: 0.1, rw: "w" }
+
+      # Input Register: Keller-Slave -> Hauptsteuerung
+      status:          { typ: "input", addr: 0, datatype: "uint16", scale: 1, rw: "r", einheit: "bit0=ready,bit1=master_fresh,bit2=io_ok" }
+      last_command:    { typ: "input", addr: 1, datatype: "uint16", scale: 1, rw: "r" }
+      do_feedback:     { typ: "input", addr: 10, datatype: "uint16", scale: 1, rw: "r" }
+      ao_feedback_1:   { typ: "input", addr: 20, datatype: "uint16", scale: 0.1, rw: "r" }
+      ai01_x100:       { typ: "input", addr: 100, datatype: "int16", scale: 0.01, rw: "r", einheit: "bar" }
+      rtd01_x10:       { typ: "input", addr: 120, datatype: "int16", scale: 0.1, rw: "r", einheit: "C" }

@@ -33,6 +33,8 @@ class MqttBridge:
         self.connected = False
         self.last_seen_ts: float | None = None
         self.last_ha_heartbeat_ts: float | None = None
+        self.peer_last_seen_ts: float | None = None
+        self.peer_online: bool | None = None
         self.demands: dict[str, Demand] = {}
         self.pv: dict[str, bool] = {"ueberschuss": False, "mangel": False}
         self._commands: queue.SimpleQueue[MqttCommand] = queue.SimpleQueue()
@@ -102,6 +104,25 @@ class MqttBridge:
         topic = self.config.get("topics", {}).get("heartbeat", f"{self.base}/heartbeat")
         self.publish(topic, str(uptime_s))
 
+    def _peer_status_topic(self) -> str:
+        leds = self.config.get("leds", {})
+        if leds.get("peer_status_topic"):
+            return str(leds["peer_status_topic"])
+        broker = self.config.get("broker", {})
+        status_topic, _heartbeat_topic = _default_peer_topics(self.base, str(broker.get("client_id", "")))
+        return status_topic
+
+    def _peer_heartbeat_topic(self) -> str:
+        leds = self.config.get("leds", {})
+        if leds.get("peer_heartbeat_topic"):
+            return str(leds["peer_heartbeat_topic"])
+        broker = self.config.get("broker", {})
+        _status_topic, heartbeat_topic = _default_peer_topics(self.base, str(broker.get("client_id", "")))
+        return heartbeat_topic
+
+    def _peer_topics(self) -> tuple[str, str]:
+        return self._peer_status_topic(), self._peer_heartbeat_topic()
+
     def set_default_demands(self, defaults: dict[str, Any]) -> None:
         for name, raw in defaults.items():
             if not isinstance(raw, dict):
@@ -135,6 +156,7 @@ class MqttBridge:
             f"{self.base}/tor/+/cmd",
             f"{self.base}/failsafe/force",
             f"{self.base}/ha/heartbeat",
+            *self._peer_topics(),
         ):
             client.subscribe(topic)
         log.info("MQTT verbunden")
@@ -157,6 +179,12 @@ class MqttBridge:
 
         if topic == f"{self.base}/ha/heartbeat":
             self.last_ha_heartbeat_ts = time.time()
+            return
+
+        if topic in self._peer_topics():
+            self.peer_last_seen_ts = time.time()
+            if topic == self._peer_status_topic():
+                self.peer_online = _as_bool(payload)
             return
 
         if len(parts) == 4 and parts[1] == "anforderung" and parts[3] == "set" and isinstance(payload, dict):
@@ -232,5 +260,11 @@ def _as_bool(value: Any) -> bool:
             if key in value:
                 return _as_bool(value[key])
     if isinstance(value, str):
-        return value.strip().lower() in {"1", "true", "on", "yes", "ja", "ein"}
+        return value.strip().lower() in {"1", "true", "on", "online", "yes", "ja", "ein"}
     return bool(value)
+
+
+def _default_peer_topics(base: str, client_id: str) -> tuple[str, str]:
+    if "keller" in client_id.lower():
+        return f"{base}/status", f"{base}/heartbeat"
+    return f"{base}/keller/status", f"{base}/keller/heartbeat"
