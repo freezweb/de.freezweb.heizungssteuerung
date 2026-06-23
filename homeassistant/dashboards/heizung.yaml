@@ -96,6 +96,42 @@ views:
           - entity: number.heizung_hauptsteuerung_brauchwasser_hysterese_k
 
       - type: entities
+        title: Brunnenpumpe Konstantdruck
+        entities:
+          - entity: sensor.heizung_hauptsteuerung_brunnen_druck
+            name: Druck
+          - entity: sensor.heizung_hauptsteuerung_brunnen_regelgrund
+            name: Regelgrund
+          - entity: sensor.heizung_hauptsteuerung_brunnen_fu_soll
+            name: FU Soll
+          - entity: sensor.heizung_hauptsteuerung_brunnen_fluss
+            name: Fluss
+          - entity: sensor.heizung_hauptsteuerung_brunnen_kein_durchfluss
+            name: Kein Fluss
+          - entity: sensor.heizung_hauptsteuerung_brunnen_abschaltung_in
+            name: Stop in
+          - entity: binary_sensor.heizung_hauptsteuerung_brunnenpumpe_aktiv
+            name: Aktiv
+          - entity: number.heizung_hauptsteuerung_brunnen_min_druck
+            name: Min Druck
+          - entity: number.heizung_hauptsteuerung_brunnen_regeldruck
+            name: Regeldruck
+          - entity: number.heizung_hauptsteuerung_brunnen_max_druck
+            name: Max Druck
+          - entity: number.heizung_hauptsteuerung_brunnen_fu_start
+            name: FU Start
+          - entity: number.heizung_hauptsteuerung_brunnen_kp
+            name: Kp
+          - entity: number.heizung_hauptsteuerung_brunnen_fu_rampe_hoch
+            name: Rampe hoch
+          - entity: number.heizung_hauptsteuerung_brunnen_fu_rampe_runter
+            name: Rampe runter
+          - entity: number.heizung_hauptsteuerung_brunnen_flow_min
+            name: Min Flow
+          - entity: number.heizung_hauptsteuerung_brunnen_flow_timeout
+            name: Stop nach
+
+      - type: entities
         title: Brauchwasser
         entities:
           - entity: switch.heizung_hauptsteuerung_freigabe_brauchwasser

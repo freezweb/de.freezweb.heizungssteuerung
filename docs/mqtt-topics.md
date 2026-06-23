@@ -19,8 +19,11 @@ Broker: `mqtt.esrv.center` mit User `vbnet`/`vbnet`. Basis-Pfad: `heizung/...`
 | `heizung/brunnen/active` | RevPi -> | `0` / `1`, Brunnenpumpe/FU aktiv | yes |
 | `heizung/brunnen/druck_bar/state` | RevPi -> | Leitungsdruck in bar vom 4-20-mA-Sensor | yes |
 | `heizung/brunnen/fu_soll_pct/state` | RevPi -> | Drehzahlsollwert an den FU in Prozent | yes |
+| `heizung/brunnen/fluss_l_min/state` | RevPi -> | Momentaner Durchfluss vom Modbus-Flowmeter in L/min | yes |
+| `heizung/brunnen/kein_durchfluss_s/state` | RevPi -> | Sekunden seit letztem echten Durchfluss, leer wenn kein frischer Modbuswert vorliegt | yes |
+| `heizung/brunnen/abschaltung_in_s/state` | RevPi -> | Restzeit bis Flow-basierter Abschaltung in Sekunden, leer wenn Timer nicht laeuft | yes |
 | `heizung/brunnen/grund` | RevPi -> | Regelgrund, z.B. `bereit`, `minderdruck_start`, `regelt`, `maxdruck_erreicht`, `sensor_unplausibel` | yes |
-| `heizung/brunnen/state` | RevPi -> | JSON mit Aktivstatus, Druck, FU-Sollwert, Min/Max/Regeldruck und Grund | yes |
+| `heizung/brunnen/state` | RevPi -> | JSON mit Aktivstatus, Druck, FU-Sollwert, Flow, Min/Max/Regeldruck und Grund | yes |
 | `heizung/pv/ueberschuss/state` | RevPi -> | `0` / `1`, von HA empfangenes PV-Ueberschuss-Signal | yes |
 | `heizung/pv/mangel/state` | RevPi -> | `0` / `1`, von HA empfangenes PV-Mangel-Signal | yes |
 | `heizung/freigabe/state` | RevPi -> | JSON mit allen Quellen-/Senkenfreigaben | yes |
@@ -70,6 +73,12 @@ zugeordnet; beide koennen jede aktive Senke bedienen.
 | `heizung/regler/brunnen_min_druck_bar/set` | Zahl `0..9.5` | Unterschreiten startet Brunnenpumpe/FU |
 | `heizung/regler/brunnen_max_druck_bar/set` | Zahl `0.2..10` | Ueberschreiten stoppt Brunnenpumpe/FU |
 | `heizung/regler/brunnen_regeldruck_bar/set` | Zahl `0..10` | Konstantdruck-Sollwert bei offenem Verbraucher |
+| `heizung/regler/brunnen_fu_start_pct/set` | Zahl `0..100` | Start-Sollwert beim Anlaufen der Brunnenpumpe |
+| `heizung/regler/brunnen_kp_pct_pro_bar/set` | Zahl `0..200` | Proportionalverstaerkung in Prozent je bar Druckabweichung |
+| `heizung/regler/brunnen_fu_ramp_up_pct_s/set` | Zahl `1..500` | Maximale Erhoehung des FU-Sollwerts pro Sekunde |
+| `heizung/regler/brunnen_fu_ramp_down_pct_s/set` | Zahl `1..1000` | Maximale Reduzierung des FU-Sollwerts pro Sekunde |
+| `heizung/regler/brunnen_flow_min_l_min/set` | Zahl `0..20` | Darunter gilt der Flowmeter als kein echter Durchfluss |
+| `heizung/regler/brunnen_flow_timeout_s/set` | Zahl `10..1800` | So lange kein Durchfluss -> Brunnenpumpe/FU stoppt |
 | `heizung/pv/ueberschuss/set` | `0` / `1` | HA setzt PV-Ueberschuss; kein physischer RevPi-DI |
 | `heizung/pv/mangel/set` | `0` / `1` | HA setzt PV-Mangel; kein physischer RevPi-DI |
 | `heizung/tor/oeffnen_ganz/cmd` | leer | Oeffnen beider Fluegel, wenn nicht beide Fluegel bereits nicht-geschlossen sind |
@@ -101,6 +110,11 @@ Run-/Sicherheitsfreigabe. Sinkt der Druck unter
 auf `brunnen_regeldruck_bar`. Steigt der Druck ueber
 `brunnen_max_druck_bar`, wird abgeschaltet, weil kein Verbraucher mehr offen
 ist und der 100-l-Druckspeicher gefuellt ist.
+Zusaetzlich liest die Hauptsteuerung den ESPHome-Wasserzaehler lokal per
+Modbus. Wenn der Momentandurchfluss laenger als
+`brunnen_flow_timeout_s` unter `brunnen_flow_min_l_min` bleibt, wird mit
+Regelgrund `kein_durchfluss_stop` abgeschaltet, auch wenn der Druck den
+Maxdruck nicht erreicht.
 
 Der RevPi publiziert die Direktzustande zurueck:
 

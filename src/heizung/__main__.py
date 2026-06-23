@@ -14,6 +14,7 @@ from .lib.brauchwasser import BrauchwasserState, compute_brauchwasser
 from .lib.brunnen import BrunnenPressureState, compute_brunnen_pressure
 from .lib.config import AppConfig, ChannelConfig, ConfigError, IoMap, load_yaml, resolve_config_file
 from .lib.failsafe import FailsafeMonitor, FailsafeState
+from .lib.flowmeter import FlowmeterModbusClient, FlowmeterModbusConfig
 from .lib.freigaben import Freigaben
 from .lib.hand_auto import HandAutoManager
 from .lib.intercpu import KellerModbusClient
@@ -59,6 +60,8 @@ async def run() -> int:
     freigaben = Freigaben.from_settings(app_config.settings, StateStore(freigaben_state_path))
     regler = ReglerParameter.from_settings(app_config.settings, StateStore(regler_state_path))
     failsafe_monitor = FailsafeMonitor.from_settings(app_config.settings)
+    flowmeter_config = FlowmeterModbusConfig.from_settings(app_config.settings)
+    flowmeter = FlowmeterModbusClient(flowmeter_config) if flowmeter_config.enabled else None
     mqtt = MqttBridge(app_config.mqtt)
     mqtt.set_default_demands(app_config.setting("anforderungen", {}))
     mqtt.start()
@@ -85,6 +88,12 @@ async def run() -> int:
     brauchwasser_ladung_active = False
     brunnen_active = False
     brunnen_speed_pct = 0.0
+    brunnen_flow_l_min: float | None = None
+    brunnen_flow_last_seen_ts: float | None = None
+    brunnen_no_flow_since_ts: float | None = None
+    flowmeter_next_poll_ts = 0.0
+    flowmeter_task: asyncio.Task[float] | None = None
+    flowmeter_last_error_log_ts = 0.0
     applied_do: dict[str, bool] = {}
     applied_ao: dict[str, float] = {}
     try:
@@ -94,6 +103,28 @@ async def run() -> int:
             if mqtt.connected and not ha_discovery_published:
                 _publish_ha_discovery(mqtt, controller_config)
                 ha_discovery_published = True
+            if flowmeter is not None:
+                if flowmeter_task is not None and flowmeter_task.done():
+                    try:
+                        brunnen_flow_l_min = flowmeter_task.result()
+                        brunnen_flow_last_seen_ts = now_ts
+                    except Exception as exc:
+                        if now_ts - flowmeter_last_error_log_ts >= 60:
+                            flowmeter_last_error_log_ts = now_ts
+                            log.warning("Brunnen-Flowmeter Modbus nicht erreichbar: %s", exc)
+                    flowmeter_task = None
+                    flowmeter_next_poll_ts = now_ts + max(0.2, flowmeter_config.poll_interval_s)
+                if flowmeter_task is None and now_ts >= flowmeter_next_poll_ts:
+                    flowmeter_task = asyncio.create_task(flowmeter.read_flow_l_min())
+
+            brunnen_flow_l_min, brunnen_no_flow_s, brunnen_no_flow_since_ts = _brunnen_flow_runtime(
+                app_config,
+                regler,
+                brunnen_flow_l_min,
+                brunnen_flow_last_seen_ts,
+                brunnen_no_flow_since_ts,
+                now_ts,
+            )
 
             snapshot = await io_backend.read_all()
             if keller_client is not None:
@@ -138,6 +169,8 @@ async def run() -> int:
                     brunnen_active,
                     brunnen_speed_pct,
                     cycle_s,
+                    brunnen_flow_l_min,
+                    brunnen_no_flow_s,
                 )
                 brauchwasser_ladung_active = brauchwasser_state.active
             else:
@@ -148,6 +181,8 @@ async def run() -> int:
                     brunnen_active,
                     brunnen_speed_pct,
                     cycle_s,
+                    brunnen_flow_l_min,
+                    brunnen_no_flow_s,
                     auto_do,
                     auto_ao,
                 )
@@ -208,6 +243,8 @@ async def run() -> int:
             await _sleep_remaining(stop, cycle_s, started)
     finally:
         await io_backend.set_cpu_leds({"A1": "off", "A2": "off", "A3": "off", "A4": "off", "A5": "off"})
+        if flowmeter_task is not None:
+            flowmeter_task.cancel()
         mqtt.stop()
         await io_backend.close()
 
@@ -240,6 +277,26 @@ def _merge_io_maps(main: IoMap, keller: IoMap) -> IoMap:
         ao={**main.ao, **keller.ao},
         rtd={**main.rtd, **keller.rtd},
     )
+
+
+def _brunnen_flow_runtime(
+    app_config: AppConfig,
+    regler: ReglerParameter,
+    flow_l_min: float | None,
+    flow_last_seen_ts: float | None,
+    no_flow_since_ts: float | None,
+    now_ts: float,
+) -> tuple[float | None, float | None, float | None]:
+    stale_timeout_s = float(app_config.setting("brunnen.flow_stale_timeout_s", 15.0))
+    if flow_l_min is None or flow_last_seen_ts is None or now_ts - flow_last_seen_ts > stale_timeout_s:
+        return None, None, None
+
+    if flow_l_min > float(regler.brunnen_flow_min_l_min):
+        return flow_l_min, 0.0, None
+
+    if no_flow_since_ts is None:
+        no_flow_since_ts = now_ts
+    return flow_l_min, max(0.0, now_ts - no_flow_since_ts), no_flow_since_ts
 
 
 def _merge_snapshots(main: HardwareSnapshot, keller: HardwareSnapshot) -> HardwareSnapshot:
@@ -426,6 +483,8 @@ def _compute_auto_outputs(
     brunnen_previous_active: bool,
     brunnen_previous_speed_pct: float,
     cycle_s: float = 1.0,
+    brunnen_flow_l_min: float | None = None,
+    brunnen_no_flow_s: float | None = None,
 ) -> tuple[RoutingState, BrauchwasserState, BrunnenPressureState, dict[str, bool], dict[str, float]]:
     routing_state, routed_do, routed_ao = compute_routing(
         regler.as_settings(app_config.settings),
@@ -456,6 +515,8 @@ def _compute_auto_outputs(
         brunnen_previous_active,
         brunnen_previous_speed_pct,
         cycle_s,
+        brunnen_flow_l_min,
+        brunnen_no_flow_s,
     )
     brunnen_do = app_config.io_map.by_component("brunnen_pumpe_freigabe")
     if brunnen_do is not None and brunnen_do.kind == "do" and brunnen_do.id in auto:
@@ -478,6 +539,8 @@ def _compute_fast_brunnen_outputs(
     brunnen_previous_active: bool,
     brunnen_previous_speed_pct: float,
     cycle_s: float,
+    brunnen_flow_l_min: float | None,
+    brunnen_no_flow_s: float | None,
     auto_do: dict[str, bool],
     auto_ao: dict[str, float],
 ) -> BrunnenPressureState:
@@ -488,6 +551,8 @@ def _compute_fast_brunnen_outputs(
         brunnen_previous_active,
         brunnen_previous_speed_pct,
         cycle_s,
+        brunnen_flow_l_min,
+        brunnen_no_flow_s,
     )
     brunnen_do = app_config.io_map.by_component("brunnen_pumpe_freigabe")
     if brunnen_do is not None and brunnen_do.kind == "do" and brunnen_do.id in auto_do:
@@ -586,6 +651,21 @@ def _publish_state(
     mqtt.publish(f"{base}/brunnen/grund", brunnen_state.reason, retain=True)
     mqtt.publish(f"{base}/brunnen/druck_bar/state", "" if brunnen_state.pressure_bar is None else f"{brunnen_state.pressure_bar:.2f}", retain=True)
     mqtt.publish(f"{base}/brunnen/fu_soll_pct/state", f"{brunnen_state.speed_pct:.1f}", retain=True)
+    mqtt.publish(
+        f"{base}/brunnen/fluss_l_min/state",
+        "" if brunnen_state.flow_l_min is None else f"{brunnen_state.flow_l_min:.2f}",
+        retain=True,
+    )
+    mqtt.publish(
+        f"{base}/brunnen/kein_durchfluss_s/state",
+        "" if brunnen_state.no_flow_s is None else f"{brunnen_state.no_flow_s:.0f}",
+        retain=True,
+    )
+    mqtt.publish(
+        f"{base}/brunnen/abschaltung_in_s/state",
+        "" if brunnen_state.flow_shutdown_remaining_s is None else f"{brunnen_state.flow_shutdown_remaining_s:.0f}",
+        retain=True,
+    )
     mqtt.publish_json(f"{base}/brunnen/state", brunnen_state.as_payload(), retain=True)
     for name, active in sorted(mqtt.pv.items()):
         mqtt.publish(f"{base}/pv/{name}/state", "1" if active else "0", retain=True)
@@ -655,6 +735,40 @@ def _publish_ha_discovery(mqtt: MqttBridge, app_config: AppConfig) -> None:
         "manufacturer": device.get("manufacturer", "Freezweb"),
         "sw_version": device.get("sw_version", "0.0.1"),
     }
+
+    for regler_number in _regler_number_definitions():
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "number",
+            regler_number["object_name"],
+            {
+                "name": regler_number["name"],
+                "state_topic": f"{mqtt.base}/regler/{regler_number['key']}/state",
+                "command_topic": f"{mqtt.base}/regler/{regler_number['key']}/set",
+                "min": regler_number["min"],
+                "max": regler_number["max"],
+                "step": regler_number["step"],
+                "mode": "box",
+                "unit_of_measurement": regler_number["unit"],
+                "device": device_payload,
+            },
+        )
+
+    for sensor in _brunnen_sensor_definitions(mqtt.base):
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "sensor",
+            sensor["object_name"],
+            {
+                "name": sensor["name"],
+                "state_topic": sensor["state_topic"],
+                "unit_of_measurement": sensor["unit"],
+                "state_class": "measurement",
+                "device": device_payload,
+            },
+        )
 
     for channel in app_config.io_map.do.values():
         _publish_discovery_entity(
@@ -790,6 +904,151 @@ def _publish_discovery_entity(
         "payload_not_available": "offline",
     }
     mqtt.publish_json(f"{prefix}/{component}/{unique_id}/config", entity_payload, retain=True)
+
+
+def _brunnen_sensor_definitions(base: str) -> list[dict[str, str]]:
+    return [
+        {
+            "object_name": "brunnen_fluss",
+            "name": "Brunnen Fluss",
+            "state_topic": f"{base}/brunnen/fluss_l_min/state",
+            "unit": "L/min",
+        },
+        {
+            "object_name": "brunnen_kein_durchfluss",
+            "name": "Brunnen kein Durchfluss",
+            "state_topic": f"{base}/brunnen/kein_durchfluss_s/state",
+            "unit": "s",
+        },
+        {
+            "object_name": "brunnen_abschaltung_in",
+            "name": "Brunnen Abschaltung in",
+            "state_topic": f"{base}/brunnen/abschaltung_in_s/state",
+            "unit": "s",
+        },
+    ]
+
+
+def _regler_number_definitions() -> list[dict[str, Any]]:
+    return [
+        {
+            "key": "mischer_reserve_k",
+            "object_name": "mischer_reserve_k",
+            "name": "Mischer Reserve K",
+            "min": 0,
+            "max": 15,
+            "step": 0.5,
+            "unit": "K",
+        },
+        {
+            "key": "wp_parallel_ab_aktive_kreise",
+            "object_name": "wp_parallel_ab_aktive_kreise",
+            "name": "WP parallel ab aktive Kreise",
+            "min": 1,
+            "max": 10,
+            "step": 1,
+            "unit": "",
+        },
+        {
+            "key": "brauchwasser_soll_c",
+            "object_name": "brauchwasser_soll_c",
+            "name": "Brauchwasser Soll C",
+            "min": 30,
+            "max": 70,
+            "step": 0.5,
+            "unit": "C",
+        },
+        {
+            "key": "brauchwasser_hysterese_k",
+            "object_name": "brauchwasser_hysterese_k",
+            "name": "Brauchwasser Hysterese K",
+            "min": 1,
+            "max": 20,
+            "step": 0.5,
+            "unit": "K",
+        },
+        {
+            "key": "brunnen_min_druck_bar",
+            "object_name": "brunnen_min_druck",
+            "name": "Brunnen Min Druck",
+            "min": 0,
+            "max": 9.5,
+            "step": 0.1,
+            "unit": "bar",
+        },
+        {
+            "key": "brunnen_max_druck_bar",
+            "object_name": "brunnen_max_druck",
+            "name": "Brunnen Max Druck",
+            "min": 0.2,
+            "max": 10,
+            "step": 0.1,
+            "unit": "bar",
+        },
+        {
+            "key": "brunnen_regeldruck_bar",
+            "object_name": "brunnen_regeldruck",
+            "name": "Brunnen Regeldruck",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "unit": "bar",
+        },
+        {
+            "key": "brunnen_fu_start_pct",
+            "object_name": "brunnen_fu_start",
+            "name": "Brunnen FU Start",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+        },
+        {
+            "key": "brunnen_kp_pct_pro_bar",
+            "object_name": "brunnen_kp",
+            "name": "Brunnen Kp",
+            "min": 0,
+            "max": 200,
+            "step": 1,
+            "unit": "%/bar",
+        },
+        {
+            "key": "brunnen_fu_ramp_up_pct_s",
+            "object_name": "brunnen_fu_rampe_hoch",
+            "name": "Brunnen FU Rampe hoch",
+            "min": 1,
+            "max": 500,
+            "step": 5,
+            "unit": "%/s",
+        },
+        {
+            "key": "brunnen_fu_ramp_down_pct_s",
+            "object_name": "brunnen_fu_rampe_runter",
+            "name": "Brunnen FU Rampe runter",
+            "min": 1,
+            "max": 1000,
+            "step": 5,
+            "unit": "%/s",
+        },
+        {
+            "key": "brunnen_flow_min_l_min",
+            "object_name": "brunnen_flow_min",
+            "name": "Brunnen Flow Min",
+            "min": 0,
+            "max": 20,
+            "step": 0.1,
+            "unit": "L/min",
+        },
+        {
+            "key": "brunnen_flow_timeout_s",
+            "object_name": "brunnen_flow_timeout",
+            "name": "Brunnen Flow Timeout",
+            "min": 10,
+            "max": 1800,
+            "step": 10,
+            "unit": "s",
+        },
+    ]
 
 
 def _display_name(channel: ChannelConfig) -> str:

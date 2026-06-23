@@ -1,0 +1,212 @@
+esphome:
+  name: wasserverbrauch-pumpe
+  friendly_name: Wasserverbrauch pumpe
+  on_boot:
+    priority: -100
+    then:
+      - lambda: |-
+          static AsyncServer *server = nullptr;
+          if (server != nullptr) {
+            return;
+          }
+          server = new AsyncServer(502);
+          server->onClient([](void *arg, AsyncClient *client) {
+            if (client == nullptr) {
+              return;
+            }
+            struct ModbusRxBuffer {
+              uint8_t data[260];
+              size_t len;
+            };
+            auto *rx = new ModbusRxBuffer();
+            rx->len = 0;
+
+            client->onData([](void *arg, AsyncClient *client, void *data, size_t len) {
+              auto *rx = static_cast<ModbusRxBuffer *>(arg);
+              const auto *bytes = static_cast<const uint8_t *>(data);
+              if (client == nullptr || rx == nullptr || bytes == nullptr || len == 0) {
+                return;
+              }
+              if (rx->len + len > sizeof(rx->data)) {
+                client->close();
+                return;
+              }
+              for (size_t i = 0; i < len; i++) {
+                rx->data[rx->len + i] = bytes[i];
+              }
+              rx->len += len;
+
+              while (rx->len >= 12) {
+                uint16_t mbap_len = (uint16_t(rx->data[4]) << 8) | rx->data[5];
+                size_t frame_len = 6 + mbap_len;
+                if (mbap_len < 6 || frame_len > 260) {
+                  client->close();
+                  return;
+                }
+                if (rx->len < frame_len) {
+                  return;
+                }
+
+                const uint8_t *req = rx->data;
+                uint16_t protocol = (uint16_t(req[2]) << 8) | req[3];
+                uint8_t unit = req[6];
+                uint8_t fn = req[7];
+                uint16_t start = (uint16_t(req[8]) << 8) | req[9];
+                uint16_t count = (uint16_t(req[10]) << 8) | req[11];
+
+                auto send_exception = [&](uint8_t code) {
+                  uint8_t resp[9] = {
+                    req[0], req[1], 0, 0, 0, 3, unit,
+                    static_cast<uint8_t>(fn | 0x80), code
+                  };
+                  client->write(reinterpret_cast<const char *>(resp), sizeof(resp));
+                };
+
+                if (protocol != 0 || (unit != 1 && unit != 0 && unit != 255)) {
+                  size_t rest = rx->len - frame_len;
+                  for (size_t i = 0; i < rest; i++) rx->data[i] = rx->data[frame_len + i];
+                  rx->len = rest;
+                  continue;
+                }
+                if (fn != 3 && fn != 4) {
+                  send_exception(1);
+                  size_t rest = rx->len - frame_len;
+                  for (size_t i = 0; i < rest; i++) rx->data[i] = rx->data[frame_len + i];
+                  rx->len = rest;
+                  continue;
+                }
+                if (count < 1 || count > 60) {
+                  send_exception(3);
+                  size_t rest = rx->len - frame_len;
+                  for (size_t i = 0; i < rest; i++) rx->data[i] = rx->data[frame_len + i];
+                  rx->len = rest;
+                  continue;
+                }
+                if (start + count > 10) {
+                  send_exception(2);
+                  size_t rest = rx->len - frame_len;
+                  for (size_t i = 0; i < rest; i++) rx->data[i] = rx->data[frame_len + i];
+                  rx->len = rest;
+                  continue;
+                }
+
+                float flow = id(wasserfluss).state;
+                if (!(flow >= 0.0f)) {
+                  flow = 0.0f;
+                }
+                float flow_scaled = flow * 100.0f + 0.5f;
+                if (flow_scaled > 65535.0f) flow_scaled = 65535.0f;
+                uint16_t flow_raw = static_cast<uint16_t>(flow_scaled);
+
+                float total = id(wasserverbrauch_gesamt).state;
+                if (!(total >= 0.0f)) {
+                  total = 0.0f;
+                }
+                double total_scaled = double(total) * 1000.0 + 0.5;
+                if (total_scaled > 4294967295.0) total_scaled = 4294967295.0;
+                uint32_t total_raw = static_cast<uint32_t>(total_scaled);
+
+                auto reg_value = [&](uint16_t address) -> uint16_t {
+                  if (address == 0) return flow_raw;
+                  if (address == 1) return static_cast<uint16_t>(total_raw >> 16);
+                  if (address == 2) return static_cast<uint16_t>(total_raw & 0xFFFF);
+                  return 0;
+                };
+
+                uint8_t resp[260];
+                resp[0] = req[0];
+                resp[1] = req[1];
+                resp[2] = 0;
+                resp[3] = 0;
+                resp[4] = 0;
+                resp[5] = static_cast<uint8_t>(3 + count * 2);
+                resp[6] = unit;
+                resp[7] = fn;
+                resp[8] = static_cast<uint8_t>(count * 2);
+                for (uint16_t i = 0; i < count; i++) {
+                  uint16_t value = reg_value(start + i);
+                  resp[9 + i * 2] = static_cast<uint8_t>(value >> 8);
+                  resp[10 + i * 2] = static_cast<uint8_t>(value & 0xFF);
+                }
+                client->write(reinterpret_cast<const char *>(resp), 9 + count * 2);
+                size_t rest = rx->len - frame_len;
+                for (size_t i = 0; i < rest; i++) rx->data[i] = rx->data[frame_len + i];
+                rx->len = rest;
+              }
+            }, rx);
+
+            client->onDisconnect([](void *arg, AsyncClient *client) {
+              delete static_cast<ModbusRxBuffer *>(arg);
+              delete client;
+            }, rx);
+
+            client->onError([](void *arg, AsyncClient *client, int8_t error) {
+              (void) arg;
+              (void) client;
+              ESP_LOGW("flow_modbus_tcp", "Clientfehler: %d", error);
+            }, rx);
+          }, nullptr);
+          server->begin();
+          ESP_LOGI("flow_modbus_tcp", "Modbus TCP Server auf Port 502 gestartet");
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+logger:
+  level: INFO
+
+async_tcp:
+
+api:
+  encryption:
+    key: "AfBwn2KhTKfeXDzJoOcba7N/fdi+ELOOxI7ZRTsYBhw="
+
+ota:
+  - platform: esphome
+    password: "9e76ddbcb6fda2537f1ac3ded4027458"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Wasserverbrauch-Pumpe"
+    password: "BUwSYlznSF0D"
+
+captive_portal:
+
+sensor:
+  - platform: pulse_counter
+    pin:
+      number: GPIO27
+      mode:
+        input: true
+        pullup: true
+
+    name: "Wasserdurchfluss"
+    id: wasserfluss
+    unit_of_measurement: "L/min"
+    device_class: volume_flow_rate
+    state_class: measurement
+    accuracy_decimals: 2
+    update_interval: 5s
+
+    filters:
+      - lambda: |-
+          if (x <= 0) return 0;
+          float hz = x / 60.0;
+          return (hz + 4.0) / 8.0;
+
+    total:
+      name: "Wasserverbrauch Gesamt"
+      id: wasserverbrauch_gesamt
+      unit_of_measurement: "L"
+      device_class: water
+      state_class: total_increasing
+      accuracy_decimals: 3
+
+      filters:
+        - multiply: 0.0020833333

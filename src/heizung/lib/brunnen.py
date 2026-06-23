@@ -19,6 +19,9 @@ class BrunnenPressureState:
     max_bar: float
     setpoint_bar: float
     reason: str
+    flow_l_min: float | None = None
+    no_flow_s: float | None = None
+    flow_shutdown_remaining_s: float | None = None
 
     def as_payload(self) -> dict[str, Any]:
         return {
@@ -29,6 +32,9 @@ class BrunnenPressureState:
             "max_bar": self.max_bar,
             "setpoint_bar": self.setpoint_bar,
             "reason": self.reason,
+            "flow_l_min": self.flow_l_min,
+            "no_flow_s": self.no_flow_s,
+            "flow_shutdown_remaining_s": self.flow_shutdown_remaining_s,
         }
 
 
@@ -39,6 +45,8 @@ def compute_brunnen_pressure(
     previous_active: bool,
     previous_speed_pct: float,
     cycle_s: float = 1.0,
+    flow_l_min: float | None = None,
+    no_flow_s: float | None = None,
 ) -> BrunnenPressureState:
     """Regelt den FU-Sollwert auf Konstantdruck mit Ein-/Ausschalt-Hysterese."""
     pressure = _pressure_by_component(app_config, snapshot, "brunnen_druck")
@@ -49,15 +57,56 @@ def compute_brunnen_pressure(
     if max_bar <= min_bar:
         max_bar = min_bar + 0.2
     setpoint_bar = max(min_bar, min(max_bar, setpoint_bar))
+    flow_remaining_s = _flow_shutdown_remaining(regler, flow_l_min, no_flow_s)
 
     min_valid = float(app_config.setting("brunnen.druck_sensor_min_bar", -0.2))
     max_valid = float(app_config.setting("brunnen.druck_sensor_max_bar", 10.5))
     if pressure is None or pressure < min_valid or pressure > max_valid:
-        return BrunnenPressureState(False, pressure, 0.0, min_bar, max_bar, setpoint_bar, "sensor_unplausibel")
+        return BrunnenPressureState(
+            False,
+            pressure,
+            0.0,
+            min_bar,
+            max_bar,
+            setpoint_bar,
+            "sensor_unplausibel",
+            flow_l_min,
+            no_flow_s,
+            flow_remaining_s,
+        )
 
     if previous_active:
+        if (
+            flow_l_min is not None
+            and no_flow_s is not None
+            and flow_l_min <= float(regler.brunnen_flow_min_l_min)
+            and no_flow_s >= float(regler.brunnen_flow_timeout_s)
+        ):
+            return BrunnenPressureState(
+                False,
+                pressure,
+                0.0,
+                min_bar,
+                max_bar,
+                setpoint_bar,
+                "kein_durchfluss_stop",
+                flow_l_min,
+                no_flow_s,
+                flow_remaining_s,
+            )
         if pressure >= max_bar:
-            return BrunnenPressureState(False, pressure, 0.0, min_bar, max_bar, setpoint_bar, "maxdruck_erreicht")
+            return BrunnenPressureState(
+                False,
+                pressure,
+                0.0,
+                min_bar,
+                max_bar,
+                setpoint_bar,
+                "maxdruck_erreicht",
+                flow_l_min,
+                no_flow_s,
+                flow_remaining_s,
+            )
         active = True
         reason = "regelt"
     else:
@@ -65,14 +114,16 @@ def compute_brunnen_pressure(
         reason = "minderdruck_start" if active else "bereit"
 
     if not active:
-        return BrunnenPressureState(False, pressure, 0.0, min_bar, max_bar, setpoint_bar, reason)
+        return BrunnenPressureState(
+            False, pressure, 0.0, min_bar, max_bar, setpoint_bar, reason, flow_l_min, no_flow_s, flow_remaining_s
+        )
 
     min_speed = float(app_config.setting("brunnen.fu_min_pct", 0.0))
     max_speed = float(app_config.setting("brunnen.fu_max_pct", 100.0))
-    start_speed = float(app_config.setting("brunnen.fu_start_pct", 45.0))
-    kp = float(app_config.setting("brunnen.kp_pct_pro_bar", 18.0))
-    ramp_up_pct_s = float(app_config.setting("brunnen.fu_ramp_up_pct_s", 35.0))
-    ramp_down_pct_s = float(app_config.setting("brunnen.fu_ramp_down_pct_s", 60.0))
+    start_speed = float(regler.brunnen_fu_start_pct)
+    kp = float(regler.brunnen_kp_pct_pro_bar)
+    ramp_up_pct_s = float(regler.brunnen_fu_ramp_up_pct_s)
+    ramp_down_pct_s = float(regler.brunnen_fu_ramp_down_pct_s)
 
     base_speed = previous_speed_pct if previous_active and previous_speed_pct > 0 else start_speed
     target_speed = base_speed + (setpoint_bar - pressure) * kp
@@ -85,7 +136,21 @@ def compute_brunnen_pressure(
         down_step=max(0.0, ramp_down_pct_s) * max(0.0, cycle_s),
     )
 
-    return BrunnenPressureState(True, pressure, next_speed, min_bar, max_bar, setpoint_bar, reason)
+    return BrunnenPressureState(
+        True, pressure, next_speed, min_bar, max_bar, setpoint_bar, reason, flow_l_min, no_flow_s, flow_remaining_s
+    )
+
+
+def _flow_shutdown_remaining(
+    regler: ReglerParameter,
+    flow_l_min: float | None,
+    no_flow_s: float | None,
+) -> float | None:
+    if flow_l_min is None or no_flow_s is None:
+        return None
+    if flow_l_min > float(regler.brunnen_flow_min_l_min):
+        return None
+    return max(0.0, float(regler.brunnen_flow_timeout_s) - no_flow_s)
 
 
 def _pressure_by_component(app_config: AppConfig, snapshot: HardwareSnapshot, component: str) -> float | None:

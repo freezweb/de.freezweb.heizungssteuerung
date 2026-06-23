@@ -90,10 +90,23 @@ brunnen:
   druck_sensor_max_bar: 10.5
   fu_min_pct: 0
   fu_max_pct: 100
-  fu_start_pct: 45
-  kp_pct_pro_bar: 18
-  fu_ramp_up_pct_s: 35     # 0 -> 100% in ca. 3 s, auch bei 0 bar
-  fu_ramp_down_pct_s: 60   # Druckanstieg schneller abfangen, aber ohne hartes Flattern
+  fu_start_pct: 20
+  kp_pct_pro_bar: 25
+  fu_ramp_up_pct_s: 25     # starke Pumpe: langsam hoch, ca. 4 s von 0 -> 100%
+  fu_ramp_down_pct_s: 500  # bei schliessendem Hahn sehr schnell Druckspitzen abfangen
+  flow_min_l_min: 0.2      # darunter gilt der Flowmeter als "kein Wasserverbrauch"
+  flow_timeout_s: 120      # so lange kein Flow -> Brunnenpumpe stoppen
+  flow_stale_timeout_s: 15 # wenn Modbuswert aelter ist, wird er ignoriert
+  flow_modbus:
+    enabled: true
+    host: wasserverbrauch-pumpe.local
+    port: 502
+    unit_id: 1
+    register_type: input
+    register: 0
+    scale: 100             # Registerwert = L/min * 100
+    timeout_s: 0.3
+    poll_interval_s: 1.0
 
 heizkurve:
   # Stuetzpunkte (Aussentemperatur -> VL-Soll); HA kann diese ueberschreiben

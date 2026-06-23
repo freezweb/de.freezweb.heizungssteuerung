@@ -80,8 +80,19 @@ durchlaeuft (kein Frost), Kernsanierung 2000-2003 -> Heizlastniveau ca. 55-70 W/
 - **Pool-Waerme aus PV-Ueberschuss** (30 kWp + 100 kWh Speicher) -> realistisch
 - **Brauchwasser-WP** bleibt separat (200 L, eigener Steuerkreis)
 
-### 2.5 Modell-Vorschlaege Monoblock 16 kW mit Modbus
-Konkrete Auswahl folgt vor Bestellung. Marktuebliche Kandidaten:
+### 2.5 WP-Modell-Favorit Monoblock
+
+**Favorit Stand 2026-06-23: Sunex NEXUS M18 EVI 18 kW Monoblock-Waermepumpe (R32)**
+
+- Link: https://www.thermona-shop.de/sunex-nexus-m18-evi-18-kw-monoblock-waermepumpe-fuer-groessere-gebaeude-r32-47395
+- Preis bei Pruefung: 2.262,99 EUR inkl. MwSt., zzgl. Versand
+- Auslegung: 2 Stueck = 36 kW nominal; alternativ 3 kleinere Geraete nur bei deutlich besserem Preis/Modbus-Konzept.
+- Passt zur Anlage, weil das Haus bereits auf Niedertemperatur bis ca. 55 Grad ausgelegt ist.
+- Wichtige Daten laut Shop: 18 kW, max. VL 55 Grad, SCOP W35 4,58, SCOP W55 3,47, 400 V / 3~, R32, Betrieb -25 bis +45 Grad, empfohlener Heizwasserdurchfluss 3,1 m3/h.
+- Achtung: Umwaelzpumpe ist laut Shop nicht integriert; Hydraulikpumpe, Sicherheitsgruppe, Magnetfilter und Frostschutzkonzept separat planen.
+- Vor Bestellung zwingend klaeren: Modbus/Steuerungsdoku, externe Freigabe ueber Linkage Switch, Sollwertvorgabe, Fehler-/Statusregister, Gewaehrleistungsbedingungen bei Eigenintegration.
+
+Weitere marktuebliche Kandidaten als Vergleich:
 Heiko Thermal Plus 16 kW, Midea V8 16 kW, HeyHeat, Solar2Heat.
 
 Pflichtkriterien:
@@ -480,19 +491,46 @@ Siehe [docs/hydraulik.md](docs/hydraulik.md).
   - `brunnen_pumpe_freigabe`: optionaler DO als zusaetzliche FU-Run/Freigabe;
     der normale Regel-Stopp erfolgt ueber `brunnen_fu_soll = 0 %`.
 - Der vorhandene 100-l-Druckspeicher bleibt im System.
+- Durchflusserkennung:
+  - Der vorhandene ESPHome-Zaehler `wasserverbrauch-pumpe` misst den aktuellen
+    Verbrauch als `Wasserdurchfluss` in L/min und den Gesamtzaehler in Liter.
+  - Die Steuerung nutzt fuer die Pumpenabschaltung den Momentanwert, nicht den
+    Gesamtzaehler. Der Gesamtzaehler bleibt nur fuer Verbrauchsstatistik.
+  - Ziel-Schnittstelle ist lokales Modbus vom ESP32 zur Hauptsteuerung; die
+    aktuelle ESPHome-Basiskonfig liegt unter `docs/esphome/wasserverbrauch-pumpe.yaml`.
+  - Geplantes Register: Input-Register 0 = `Wasserdurchfluss L/min * 100`,
+    z.B. 125 = 1,25 L/min.
 - Regelstrategie:
   - Wenn kein Abnehmer offen ist, steigt der Druck bis `brunnen_max_druck_bar`; dann wird abgeschaltet.
+  - Falls der Druck diesen Abschaltpunkt wegen Pumpenkennlinie/Bypass nicht erreicht:
+    Wenn der Flowmeter laenger als `brunnen_flow_timeout_s` unter
+    `brunnen_flow_min_l_min` bleibt, wird ebenfalls abgeschaltet.
   - Erst bei Unterschreiten von `brunnen_min_druck_bar` wird wieder gestartet.
   - Wenn ein Abnehmer offen ist, regelt der FU-Sollwert auf `brunnen_regeldruck_bar`.
 - In HA einstellbar:
   - `brunnen_min_druck_bar`
   - `brunnen_max_druck_bar`
   - `brunnen_regeldruck_bar`
+  - `brunnen_fu_start_pct`
+  - `brunnen_kp_pct_pro_bar`
+  - `brunnen_fu_ramp_up_pct_s`
+  - `brunnen_fu_ramp_down_pct_s`
+  - `brunnen_flow_min_l_min`
+  - `brunnen_flow_timeout_s`
+  - Startwerte fuer die schnelle mehrstufige Kreiselpumpe: Start 20 %, Kp 25 %/bar,
+    Rampe hoch 25 %/s, Rampe runter 500 %/s. Die Pumpe regelt damit bewusst
+    langsam hoch, nimmt aber bei schliessendem Hahn bzw. schlagartigem Druckanstieg
+    sehr schnell Leistung weg. Bei Ueberschwingen zuerst Kp senken oder Maxdruck
+    knapper setzen; bei zu traegem Druckaufbau Rampe hoch schrittweise erhoehen.
 - In HA sichtbar:
   - aktueller Druck
   - FU-Sollwert in %
+  - Durchfluss in L/min
+  - Zeit ohne Durchfluss in s
+  - Restzeit bis zur Flow-Abschaltung in s
   - aktiv/inaktiv
-  - Regelgrund (`bereit`, `minderdruck_start`, `regelt`, `maxdruck_erreicht`, `sensor_unplausibel`)
+  - Regelgrund (`bereit`, `minderdruck_start`, `regelt`, `maxdruck_erreicht`,
+    `kein_durchfluss_stop`, `sensor_unplausibel`)
 
 ### 6.5 Failsafe-Verhalten
 - **Trigger**: MQTT-Verbindung > 60 s verloren ODER HA-Heartbeat-Topic > 5 min nicht aktualisiert
@@ -563,7 +601,7 @@ Verlaufskurven & History: nativ ueber HA-Recorder + InfluxDB-Add-on.
 
 | # | Thema | Entscheidung benoetigt bis |
 |---|---|---|
-| O1 | Konkretes WP-Modell (2x 16 kW Monoblock mit Modbus) | Vor Phase D |
+| O1 | WP-Favorit Sunex NEXUS M18 EVI 18 kW pruefen: Modbus-/Linkage-Doku, Lieferumfang, Gewaehrleistung | Vor Phase D |
 | O2 | Konkretes Klima-Innengerat-Modell + Modbus-Doku | Vor Phase E |
 | O3 | Brauchwasser-WP-Modell | Vor Phase D |
 | O4 | 3WV-Stellantriebe: 230V/Auf-Zu beibehalten oder 0-10V? | sukzessive |

@@ -85,6 +85,31 @@ def test_brunnen_stops_at_max_pressure():
     assert state.reason == "maxdruck_erreicht"
 
 
+def test_brunnen_stops_after_no_flow_timeout():
+    regler = ReglerParameter.from_settings(_config().settings)
+    regler.set("brunnen_flow_min_l_min", 0.2)
+    regler.set("brunnen_flow_timeout_s", 120)
+
+    state = compute_brunnen_pressure(_config(), _snapshot(3.1), regler, True, 45.0, 0.1, 0.0, 121.0)
+
+    assert state.active is False
+    assert state.speed_pct == 0.0
+    assert state.reason == "kein_durchfluss_stop"
+    assert state.flow_shutdown_remaining_s == 0.0
+
+
+def test_brunnen_keeps_running_before_no_flow_timeout():
+    regler = ReglerParameter.from_settings(_config().settings)
+    regler.set("brunnen_flow_min_l_min", 0.2)
+    regler.set("brunnen_flow_timeout_s", 120)
+
+    state = compute_brunnen_pressure(_config(), _snapshot(3.1), regler, True, 45.0, 0.1, 0.0, 60.0)
+
+    assert state.active is True
+    assert state.reason == "regelt"
+    assert state.flow_shutdown_remaining_s == 60.0
+
+
 def test_brunnen_regulates_speed_around_setpoint():
     regler = ReglerParameter.from_settings(_config().settings)
 
