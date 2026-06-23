@@ -1,7 +1,7 @@
 import sys
 
 from heizung.lib.config import ChannelConfig, IoMap
-from heizung.lib.iohw import RevPiIO, SimulatedIO, _raw_ai_value, create_io_backend
+from heizung.lib.iohw import RevPiIO, SimulatedIO, _raw_ai_value, _raw_ao_output_value, create_io_backend
 
 
 async def test_simulated_io_writes_outputs():
@@ -81,6 +81,52 @@ async def test_revpi_writes_process_image_after_do_write():
 
     assert fake_revpi.io["O_1"].value is True
     assert fake_revpi.write_calls == 1
+
+
+def test_revpi_aio_percent_output_is_scaled_to_millivolt():
+    channel = ChannelConfig(
+        "K-AO01",
+        "ao",
+        "OutputValue_465_1",
+        "brunnen_fu_soll",
+        bereich=(0.0, 100.0),
+        einheit="%",
+        signal="0-10V",
+    )
+
+    assert _raw_ao_output_value(channel, 0.0) == 0.0
+    assert _raw_ao_output_value(channel, 50.0) == 5000.0
+    assert _raw_ao_output_value(channel, 100.0) == 10000.0
+
+
+def test_revpi_aio_temperature_output_is_scaled_over_configured_range():
+    channel = ChannelConfig(
+        "AO01",
+        "ao",
+        "OutputValue_1",
+        "wp1_vl_soll",
+        bereich=(20.0, 55.0),
+        einheit="C",
+        signal="0-10V",
+    )
+
+    assert round(_raw_ao_output_value(channel, 37.5)) == 5000
+
+
+def test_revpi_aio_current_output_uses_microampere():
+    channel = ChannelConfig(
+        "K-AO01",
+        "ao",
+        "OutputValue_465_1",
+        "brunnen_fu_soll",
+        bereich=(0.0, 100.0),
+        einheit="%",
+        signal="4-20mA",
+    )
+
+    assert _raw_ao_output_value(channel, 0.0) == 4000.0
+    assert _raw_ao_output_value(channel, 50.0) == 12000.0
+    assert _raw_ao_output_value(channel, 100.0) == 20000.0
 
 
 async def test_revpi_writes_grouped_dio_bits_without_overwriting_word():
@@ -169,8 +215,25 @@ def test_revpi_missing_io_attribute_error_is_ignored():
 def test_ai_pressure_channel_converts_microampere_to_milliampere():
     channel = ChannelConfig("AI01", "ai", "AI", "brunnen_druck", einheit="bar", sensor="4-20mA Drucksensor")
 
+    assert _raw_ai_value(4000, channel) == 4.0
     assert _raw_ai_value(12000, channel) == 12.0
-    assert _raw_ai_value(2, channel) == 0.002
+    assert _raw_ai_value(20000, channel) == 20.0
+
+
+def test_ai_pressure_channel_can_convert_shunt_millivolt_to_milliampere():
+    channel = ChannelConfig(
+        "AI01",
+        "ai",
+        "AI",
+        "brunnen_druck",
+        einheit="bar",
+        sensor="4-20mA Drucksensor",
+        signal="shunt-mv",
+    )
+
+    assert _raw_ai_value(1000, channel) == 4.0
+    assert _raw_ai_value(3000, channel) == 12.0
+    assert _raw_ai_value(5000, channel) == 20.0
 
 
 def test_auto_backend_falls_back_when_revpi_init_fails(monkeypatch):

@@ -76,8 +76,8 @@ brunnen:
   # Konstantdruckregelung fuer die Brunnenpumpe am FU.
   # Physisch sitzt die Pumpe im Keller; die realen Kanäle gehoeren daher auf den Keller-RevPi:
   # - AI:  brunnen_druck (4-20 mA, 0-10 bar)
-  # - AO:  brunnen_fu_soll (0-10 V oder 4-20 mA zum FU)
-  # - DO:  brunnen_pumpe_freigabe (optional FU-Run/Freigabe)
+  # - AO:  brunnen_fu_soll (4-20 mA zum FU; FU ist so skaliert, dass 0% = Stop)
+  # - DO:  brunnen_pumpe_freigabe (optionale zusaetzliche FU-Run/Freigabe)
   min_druck_bar: 2.2      # Unterschreiten -> Pumpe startet
   max_druck_bar: 4.2      # Ueberschreiten -> Pumpe stoppt (kein Abnehmer offen)
   regeldruck_bar: 3.2     # Konstantdruck waehrend ein Abnehmer offen ist
@@ -85,9 +85,10 @@ brunnen:
   druck_sensor_bereich_bar: 10.0
   druck_sensor_min_ma: 4.0
   druck_sensor_max_ma: 20.0
+  druck_sensor_min_ma_toleranz: 0.2
   druck_sensor_min_bar: -0.2
   druck_sensor_max_bar: 10.5
-  fu_min_pct: 20
+  fu_min_pct: 0
   fu_max_pct: 100
   fu_start_pct: 45
   kp_pct_pro_bar: 18

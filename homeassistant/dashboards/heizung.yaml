@@ -132,6 +132,10 @@ views:
           - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_bwwp_freigabe
           - entity: switch.heizung_hauptsteuerung_handwert_bwwp_freigabe
           - entity: button.heizung_hauptsteuerung_auto_bwwp_freigabe
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_brunnenpumpe_freigabe
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_brunnenpumpe_freigabe
+          - entity: switch.heizung_hauptsteuerung_handwert_brunnenpumpe_freigabe
+          - entity: button.heizung_hauptsteuerung_auto_brunnenpumpe_freigabe
           - entity: binary_sensor.heizung_hauptsteuerung_ausgang_brunnen_mv
           - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_brunnen_mv
           - entity: switch.heizung_hauptsteuerung_handwert_brunnen_mv
@@ -229,6 +233,10 @@ views:
         title: Handbetrieb Analoge Ausgaenge
         show_header_toggle: false
         entities:
+          - entity: sensor.heizung_hauptsteuerung_ausgang_brunnen_fu_soll
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_brunnen_fu_soll
+          - entity: number.heizung_hauptsteuerung_handwert_brunnen_fu_soll
+          - entity: button.heizung_hauptsteuerung_auto_brunnen_fu_soll
           - entity: sensor.heizung_hauptsteuerung_ausgang_wp1_vl_soll
           - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_wp1_vl_soll
           - entity: number.heizung_hauptsteuerung_handwert_wp1_vl_soll

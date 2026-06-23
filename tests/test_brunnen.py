@@ -23,7 +23,7 @@ def _config(settings=None):
                 "min_druck_bar": 2.2,
                 "max_druck_bar": 4.2,
                 "regeldruck_bar": 3.2,
-                "fu_min_pct": 20,
+                "fu_min_pct": 0,
                 "fu_max_pct": 100,
                 "fu_start_pct": 45,
                 "kp_pct_pro_bar": 20,
@@ -103,6 +103,16 @@ def test_brunnen_scales_4_20ma_pressure_sensor():
 
     assert state.pressure_bar == 5.0
     assert state.active is False
+
+
+def test_brunnen_accepts_slightly_low_zero_bar_current():
+    config = _config({"brunnen": {"druck_sensor_signal": "4-20ma", "min_druck_bar": 2.2, "max_druck_bar": 4.2, "regeldruck_bar": 3.2}})
+    regler = ReglerParameter.from_settings(config.settings)
+
+    state = compute_brunnen_pressure(config, _snapshot(3.95), regler, False, 0.0)
+
+    assert state.pressure_bar == 0.0
+    assert state.reason == "minderdruck_start"
 
 
 def test_brunnen_treats_zero_current_as_sensor_fault_for_4_20ma():

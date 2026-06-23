@@ -140,7 +140,7 @@ class RevPiIO(BaseIO):
     async def write_ao(self, channel: ChannelConfig, value: float) -> None:
         io = self._try_get_io(channel)
         if io is not None:
-            io.value = int(round(_clamp_ao(channel, float(value))))
+            io.value = int(round(_raw_ao_output_value(channel, float(value))))
             self._revpi.writeprocimg()
 
     async def set_cpu_leds(self, colors: dict[str, str]) -> None:
@@ -202,6 +202,30 @@ def _clamp_ao(channel: ChannelConfig, value: float) -> float:
     return max(low, min(high, value))
 
 
+def _raw_ao_output_value(channel: ChannelConfig, value: float) -> float:
+    logical = _clamp_ao(channel, value)
+    if not channel.pictory_name.startswith("OutputValue_"):
+        return logical
+
+    percent = _ao_logical_percent(channel, logical)
+    signal = str(channel.signal or "0-10v").strip().lower()
+    if "4-20" in signal and "ma" in signal:
+        return 4000.0 + percent * 16000.0
+    if "0-20" in signal and "ma" in signal:
+        return percent * 20000.0
+    return percent * 10000.0
+
+
+def _ao_logical_percent(channel: ChannelConfig, value: float) -> float:
+    if channel.bereich is not None:
+        low, high = channel.bereich
+        if high > low:
+            return max(0.0, min(1.0, (value - low) / (high - low)))
+    if str(channel.einheit or "").strip() == "%":
+        return max(0.0, min(1.0, value / 100.0))
+    return max(0.0, min(1.0, value / 10000.0))
+
+
 def _raw_temp_value(raw: Any) -> float | None:
     if raw is None:
         return None
@@ -223,7 +247,7 @@ def _raw_ai_value(raw: Any, channel: ChannelConfig) -> float | None:
     except (TypeError, ValueError):
         return None
     if _is_current_input(channel):
-        return value / 1000.0
+        return _raw_current_input_ma(value, channel)
     if _is_voltage_input(channel):
         return value / 1000.0
     # AI-Kanaele mit physikalischer Nicht-Temperatur-Skalierung werden im
@@ -236,6 +260,15 @@ def _raw_ai_value(raw: Any, channel: ChannelConfig) -> float | None:
 def _is_current_input(channel: ChannelConfig) -> bool:
     text = f"{channel.sensor or ''} {channel.einheit or ''}".lower()
     return "ma" in text or "4-20" in text or "0-20" in text or "0-24" in text
+
+
+def _raw_current_input_ma(value: float, channel: ChannelConfig) -> float:
+    # RevPi AIO current inputs can appear either as microamps (4000..20000)
+    # or, if PiCtory is intentionally left in voltage mode, as millivolts
+    # across the 250-ohm current shunt (about 1000..5000).
+    if "shunt" in str(channel.signal or "").strip().lower():
+        return value / 250.0
+    return value / 1000.0
 
 
 def _is_voltage_input(channel: ChannelConfig) -> bool:

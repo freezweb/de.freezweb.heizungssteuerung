@@ -94,8 +94,9 @@ bis `brauchwasser_soll_c` aktiv. Bei unplausiblem Fuehlerwert bleibt sie aus.
 
 Brunnen-Konstantdruck: Die Brunnenpumpe sitzt im Keller und wird lokal ueber
 FU geregelt. Ein 4-20-mA-Drucksensor 0-10 bar liefert `brunnen_druck`; der
-FU bekommt `brunnen_fu_soll` als Analogausgang und optional eine digitale
-Freigabe `brunnen_pumpe_freigabe`. Sinkt der Druck unter
+FU bekommt `brunnen_fu_soll` als Analogausgang; der FU ist so skaliert, dass
+`0 %` den FU stoppt. `brunnen_pumpe_freigabe` ist eine optionale zusaetzliche
+Run-/Sicherheitsfreigabe. Sinkt der Druck unter
 `brunnen_min_druck_bar`, startet die Pumpe. Im Betrieb regelt der FU-Sollwert
 auf `brunnen_regeldruck_bar`. Steigt der Druck ueber
 `brunnen_max_druck_bar`, wird abgeschaltet, weil kein Verbraucher mehr offen

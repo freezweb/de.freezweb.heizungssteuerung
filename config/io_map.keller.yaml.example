@@ -30,10 +30,10 @@ rtd:
   K-RTD06: { module: K-AIO3, channel: RTD_2, pictory_name: "RTDValue_643_2", komponente: "hk_backup_rl", sensor: PT1000, einheit: "C", phase: B }
 
 ai:
-  K-AI01: { module: K-AIO1, channel: AI_1, pictory_name: "InputValue_465_1", komponente: "brunnen_druck", sensor: "4-20mA Drucksensor 0-10bar", einheit: "bar", phase: C }
+  K-AI01: { module: K-AIO1, channel: AI_1, pictory_name: "InputValue_465_1", komponente: "brunnen_druck", sensor: "4-20mA Drucksensor 0-10bar", einheit: "bar", signal: "4-20mA", phase: C }
 
 ao:
-  K-AO01: { module: K-AIO1, channel: AO_1, pictory_name: "OutputValue_465_1", komponente: "brunnen_fu_soll", beschreibung: "FU Brunnenpumpe Drehzahlsollwert", bereich: [0, 100], einheit: "%", phase: C }
-  K-AO02: { module: K-AIO1, channel: AO_2, pictory_name: "OutputValue_465_2", komponente: "mischer_fbh_eg_pct", bereich: [0, 100], einheit: "%", phase: B }
-  K-AO03: { module: K-AIO2, channel: AO_1, pictory_name: "OutputValue_554_1", komponente: "mischer_klima_og_pct", bereich: [0, 100], einheit: "%", phase: B }
-  K-AO04: { module: K-AIO2, channel: AO_2, pictory_name: "OutputValue_554_2", komponente: "mischer_hk_backup_pct", bereich: [0, 100], einheit: "%", phase: B }
+  K-AO01: { module: K-AIO1, channel: AO_1, pictory_name: "OutputValue_465_1", komponente: "brunnen_fu_soll", beschreibung: "FU Brunnenpumpe Drehzahlsollwert", bereich: [0, 100], einheit: "%", signal: "4-20mA", phase: C }
+  K-AO02: { module: K-AIO1, channel: AO_2, pictory_name: "OutputValue_465_2", komponente: "mischer_fbh_eg_pct", bereich: [0, 100], einheit: "%", signal: "0-10V", phase: B }
+  K-AO03: { module: K-AIO2, channel: AO_1, pictory_name: "OutputValue_554_1", komponente: "mischer_klima_og_pct", bereich: [0, 100], einheit: "%", signal: "0-10V", phase: B }
+  K-AO04: { module: K-AIO2, channel: AO_2, pictory_name: "OutputValue_554_2", komponente: "mischer_hk_backup_pct", bereich: [0, 100], einheit: "%", signal: "0-10V", phase: B }

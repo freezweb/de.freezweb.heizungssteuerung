@@ -91,6 +91,12 @@ mqtt:
       unique_id: heizung_brauchwasser_ladegrund
       state_topic: "heizung/brauchwasser/grund"
 
+    - name: "Ausgang Brunnen FU Soll"
+      unique_id: heizung_hauptsteuerung_ausgang_brunnen_fu_soll
+      state_topic: "heizung/ao/brunnen_fu_soll/state"
+      unit_of_measurement: "%"
+      state_class: measurement
+
   binary_sensor:
     - name: "Heizung Gesamt Aktiv"
       unique_id: heizung_gesamt_active
@@ -143,6 +149,24 @@ mqtt:
       payload_on: "1"
       payload_off: "0"
       device_class: problem
+
+    - name: "Ausgang Brunnen Pumpe Freigabe"
+      unique_id: heizung_hauptsteuerung_ausgang_brunnen_pumpe_freigabe
+      state_topic: "heizung/do/brunnen_pumpe_freigabe/state"
+      payload_on: "1"
+      payload_off: "0"
+
+    - name: "Hand Aktiv Brunnen Pumpe Freigabe"
+      unique_id: heizung_hauptsteuerung_hand_aktiv_brunnen_pumpe_freigabe
+      state_topic: "heizung/brunnen_pumpe_freigabe/hand/mode/state"
+      payload_on: "1"
+      payload_off: "0"
+
+    - name: "Hand Aktiv Brunnen FU Soll"
+      unique_id: heizung_hauptsteuerung_hand_aktiv_brunnen_fu_soll
+      state_topic: "heizung/brunnen_fu_soll/hand/mode/state"
+      payload_on: "1"
+      payload_off: "0"
 
   switch:
     - name: "Freigabe Oelbrenner"
@@ -253,7 +277,37 @@ mqtt:
       state_on: "1"
       state_off: "0"
 
+    - name: "Handwert Brunnen Pumpe Freigabe"
+      unique_id: heizung_hauptsteuerung_handwert_brunnen_pumpe_freigabe
+      state_topic: "heizung/brunnen_pumpe_freigabe/hand/value/state"
+      command_topic: "heizung/brunnen_pumpe_freigabe/hand/set"
+      payload_on: "1"
+      payload_off: "0"
+      state_on: "1"
+      state_off: "0"
+
+  number:
+    - name: "Handwert Brunnen FU Soll"
+      unique_id: heizung_hauptsteuerung_handwert_brunnen_fu_soll
+      state_topic: "heizung/brunnen_fu_soll/hand/value/state"
+      command_topic: "heizung/brunnen_fu_soll/hand/set"
+      min: 0
+      max: 100
+      step: 0.1
+      unit_of_measurement: "%"
+      mode: box
+
   button:
+    - name: "Auto Brunnen Pumpe Freigabe"
+      unique_id: heizung_hauptsteuerung_auto_brunnen_pumpe_freigabe
+      command_topic: "heizung/brunnen_pumpe_freigabe/hand/auto"
+      payload_press: "1"
+
+    - name: "Auto Brunnen FU Soll"
+      unique_id: heizung_hauptsteuerung_auto_brunnen_fu_soll
+      command_topic: "heizung/brunnen_fu_soll/hand/auto"
+      payload_press: "1"
+
     - name: "Tor Oeffnen Ganz"
       unique_id: heizung_tor_oeffnen_ganz
       command_topic: "heizung/tor/oeffnen_ganz/cmd"

@@ -102,7 +102,7 @@ Vorgeschlagene lokale I/O-Zuordnung fuer den Slave:
 | RTD05/RTD06 | HK-Backup OG VL/RL |
 | AI01 | PT-506 Brunnen-Drucksensor 4-20 mA, 0-10 bar |
 | AI02-AI12 | Reserve 0-10V/4-20mA |
-| AO01 | FU Brunnenpumpe Drehzahlsollwert |
+| AO01 | FU Brunnenpumpe Drehzahlsollwert 4-20 mA |
 | AO02-AO04 | stetige Mischerstellungen FBH/Klima/HK |
 | AO05-AO06 | Reserve |
 

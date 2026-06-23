@@ -52,6 +52,7 @@ class ChannelConfig:
     impuls_ms: int | None = None
     einheit: str | None = None
     sensor: str | None = None
+    signal: str | None = None
     polaritaet: str | None = None
     bereich: tuple[float, float] | None = None
 
@@ -75,6 +76,7 @@ class ChannelConfig:
             impuls_ms=raw.get("impuls_ms"),
             einheit=raw.get("einheit"),
             sensor=raw.get("sensor"),
+            signal=raw.get("signal") or raw.get("ausgangssignal"),
             polaritaet=raw.get("polaritaet"),
             bereich=parsed_range,
         )

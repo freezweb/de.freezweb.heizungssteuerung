@@ -80,6 +80,7 @@ async def run() -> int:
             pass
 
     last_heartbeat_tick = -1
+    ha_discovery_published = False
     cycle_count = 0
     brauchwasser_ladung_active = False
     brunnen_active = False
@@ -90,6 +91,9 @@ async def run() -> int:
         while not stop.is_set():
             started = time.monotonic()
             now_ts = time.time()
+            if mqtt.connected and not ha_discovery_published:
+                _publish_ha_discovery(mqtt, controller_config)
+                ha_discovery_published = True
 
             snapshot = await io_backend.read_all()
             if keller_client is not None:
@@ -634,6 +638,164 @@ def _publish_state(
         mqtt.publish(f"{base}/ao/{channel.komponente}/state", f"{value:.1f}", retain=True)
         mqtt.publish(f"{base}/{channel.komponente}/hand/mode/state", "1" if hand else "0", retain=True)
         mqtt.publish(f"{base}/{channel.komponente}/hand/value/state", str((hand or {}).get("wert", 0.0)), retain=True)
+
+
+def _publish_ha_discovery(mqtt: MqttBridge, app_config: AppConfig) -> None:
+    discovery = app_config.mqtt.get("ha_discovery", {})
+    if discovery.get("enabled", True) is False:
+        return
+    prefix = str(discovery.get("prefix", "homeassistant")).strip("/")
+    device = discovery.get("device", {})
+    if not isinstance(device, dict):
+        device = {}
+    device_payload = {
+        "identifiers": device.get("identifiers", ["heizung-haupt"]),
+        "name": device.get("name", "Heizung Hauptsteuerung"),
+        "model": device.get("model", "RevPi Connect 4"),
+        "manufacturer": device.get("manufacturer", "Freezweb"),
+        "sw_version": device.get("sw_version", "0.0.1"),
+    }
+
+    for channel in app_config.io_map.do.values():
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "binary_sensor",
+            f"ausgang_{channel.komponente}",
+            {
+                "name": f"Ausgang {_display_name(channel)}",
+                "state_topic": f"{mqtt.base}/do/{channel.komponente}/state",
+                "payload_on": "1",
+                "payload_off": "0",
+                "device": device_payload,
+            },
+        )
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "binary_sensor",
+            f"hand_aktiv_{channel.komponente}",
+            {
+                "name": f"Hand aktiv {_display_name(channel)}",
+                "state_topic": f"{mqtt.base}/{channel.komponente}/hand/mode/state",
+                "payload_on": "1",
+                "payload_off": "0",
+                "device": device_payload,
+            },
+        )
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "switch",
+            f"handwert_{channel.komponente}",
+            {
+                "name": f"Handwert {_display_name(channel)}",
+                "state_topic": f"{mqtt.base}/{channel.komponente}/hand/value/state",
+                "command_topic": f"{mqtt.base}/{channel.komponente}/hand/set",
+                "payload_on": "1",
+                "payload_off": "0",
+                "state_on": "1",
+                "state_off": "0",
+                "device": device_payload,
+            },
+        )
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "button",
+            f"auto_{channel.komponente}",
+            {
+                "name": f"Auto {_display_name(channel)}",
+                "command_topic": f"{mqtt.base}/{channel.komponente}/hand/auto",
+                "payload_press": "1",
+                "device": device_payload,
+            },
+        )
+
+    for channel in app_config.io_map.ao.values():
+        unit = channel.einheit or "%"
+        low, high = channel.bereich or (0.0, 100.0)
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "sensor",
+            f"ausgang_{channel.komponente}",
+            {
+                "name": f"Ausgang {_display_name(channel)}",
+                "state_topic": f"{mqtt.base}/ao/{channel.komponente}/state",
+                "unit_of_measurement": unit,
+                "state_class": "measurement",
+                "device": device_payload,
+            },
+        )
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "binary_sensor",
+            f"hand_aktiv_{channel.komponente}",
+            {
+                "name": f"Hand aktiv {_display_name(channel)}",
+                "state_topic": f"{mqtt.base}/{channel.komponente}/hand/mode/state",
+                "payload_on": "1",
+                "payload_off": "0",
+                "device": device_payload,
+            },
+        )
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "number",
+            f"handwert_{channel.komponente}",
+            {
+                "name": f"Handwert {_display_name(channel)}",
+                "state_topic": f"{mqtt.base}/{channel.komponente}/hand/value/state",
+                "command_topic": f"{mqtt.base}/{channel.komponente}/hand/set",
+                "min": low,
+                "max": high,
+                "step": 0.1,
+                "mode": "box",
+                "unit_of_measurement": unit,
+                "device": device_payload,
+            },
+        )
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "button",
+            f"auto_{channel.komponente}",
+            {
+                "name": f"Auto {_display_name(channel)}",
+                "command_topic": f"{mqtt.base}/{channel.komponente}/hand/auto",
+                "payload_press": "1",
+                "device": device_payload,
+            },
+        )
+    log.info("Home-Assistant MQTT-Discovery publiziert")
+
+
+def _publish_discovery_entity(
+    mqtt: MqttBridge,
+    prefix: str,
+    component: str,
+    object_name: str,
+    payload: dict[str, Any],
+) -> None:
+    unique_id = f"heizung_hauptsteuerung_{object_name}"
+    entity_payload = {
+        **payload,
+        "unique_id": unique_id,
+        "object_id": unique_id,
+        "availability_topic": f"{mqtt.base}/status",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+    }
+    mqtt.publish_json(f"{prefix}/{component}/{unique_id}/config", entity_payload, retain=True)
+
+
+def _display_name(channel: ChannelConfig) -> str:
+    if channel.beschreibung:
+        return channel.beschreibung
+    return channel.komponente.replace("_", " ").title()
 
 
 def _coerce_output_value(channel: ChannelConfig, value: Any) -> Any:

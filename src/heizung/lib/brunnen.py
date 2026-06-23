@@ -67,7 +67,7 @@ def compute_brunnen_pressure(
     if not active:
         return BrunnenPressureState(False, pressure, 0.0, min_bar, max_bar, setpoint_bar, reason)
 
-    min_speed = float(app_config.setting("brunnen.fu_min_pct", 20.0))
+    min_speed = float(app_config.setting("brunnen.fu_min_pct", 0.0))
     max_speed = float(app_config.setting("brunnen.fu_max_pct", 100.0))
     start_speed = float(app_config.setting("brunnen.fu_start_pct", 45.0))
     kp = float(app_config.setting("brunnen.kp_pct_pro_bar", 18.0))
@@ -113,13 +113,18 @@ def _scale_pressure(app_config: AppConfig, raw_value: float) -> float | None:
 
     min_ma = float(app_config.setting("brunnen.druck_sensor_min_ma", 4.0))
     max_ma = float(app_config.setting("brunnen.druck_sensor_max_ma", 20.0))
+    min_ma_tolerated = max(0.0, min_ma - float(app_config.setting("brunnen.druck_sensor_min_ma_toleranz", 0.2)))
     if min_ma <= raw <= max_ma:
         return max(0.0, min(sensor_max_bar, (raw - min_ma) / (max_ma - min_ma) * sensor_max_bar))
+    if min_ma_tolerated <= raw < min_ma:
+        return 0.0
 
     # RevPi-AIO kann je nach PiCtory-Skalierung Mikroampere oder 0.001 mA liefern.
     raw_ma = raw / 1000.0
     if min_ma <= raw_ma <= max_ma:
         return max(0.0, min(sensor_max_bar, (raw_ma - min_ma) / (max_ma - min_ma) * sensor_max_bar))
+    if min_ma_tolerated <= raw_ma < min_ma:
+        return 0.0
 
     return None
 

@@ -364,7 +364,7 @@ Geplante physische Klemmenlogik fuer den Keller-Slave:
 | K-AI10 | K-AI4.2 | Reserve fuer 0-10V/4-20mA |
 | K-AI11 | K-AI4.3 | Reserve fuer 0-10V/4-20mA |
 | K-AI12 | K-AI4.4 | Reserve fuer 0-10V/4-20mA |
-| K-AO01 | K-AO2.1 | FU Brunnenpumpe Drehzahlsollwert 0-10V/4-20mA |
+| K-AO01 | K-AO2.1 | FU Brunnenpumpe Drehzahlsollwert 4-20mA |
 | K-AO02 | K-AO2.2 | Stellsignal Mischer FBH 0-10V |
 | K-AO03 | K-AO3.1 | Stellsignal Mischer Klima-OG 0-10V |
 | K-AO04 | K-AO3.2 | Stellsignal Mischer Heizkorper-Backup OG 0-10V |
@@ -474,8 +474,11 @@ Siehe [docs/hydraulik.md](docs/hydraulik.md).
     dann erwartbar. Aktuell muss bei 0 bar ca. 4 mA bzw. 4000 uA im Prozessbild
     anliegen.
 - Ausgaenge am Keller-RevPi:
-  - `brunnen_fu_soll`: Analogausgang 0-10V/4-20mA als Drehzahlsollwert zum FU.
-  - `brunnen_pumpe_freigabe`: optionaler DO als FU-Run/Freigabe.
+  - `brunnen_fu_soll`: Analogausgang 4-20 mA als Drehzahlsollwert zum FU.
+    In der Handbedienung entspricht 0 % = 4 mA, 50 % = 12 mA, 100 % = 20 mA.
+    Der FU ist am AVI-Eingang so skaliert, dass 0 % Ausgang den FU stoppt.
+  - `brunnen_pumpe_freigabe`: optionaler DO als zusaetzliche FU-Run/Freigabe;
+    der normale Regel-Stopp erfolgt ueber `brunnen_fu_soll = 0 %`.
 - Der vorhandene 100-l-Druckspeicher bleibt im System.
 - Regelstrategie:
   - Wenn kein Abnehmer offen ist, steigt der Druck bis `brunnen_max_druck_bar`; dann wird abgeschaltet.
