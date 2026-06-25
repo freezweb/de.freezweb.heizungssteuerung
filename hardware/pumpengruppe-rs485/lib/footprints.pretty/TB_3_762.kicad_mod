@@ -1,0 +1,11 @@
+(footprint "TB_3_762"
+  (version 20240108)
+  (generator "codex")
+  (layer "F.Cu")
+  (descr "3-pin terminal block, 7.62 mm pitch")
+  (attr through_hole)
+  (fp_rect (start -4 -11) (end 4 11) (stroke (width 0.12) (type solid)) (fill no) (layer "F.SilkS"))
+  (pad "1" thru_hole circle (at 0 -7.62) (size 2.8 2.8) (drill 1.4) (layers "*.Cu" "*.Mask"))
+  (pad "2" thru_hole circle (at 0 0) (size 2.8 2.8) (drill 1.4) (layers "*.Cu" "*.Mask"))
+  (pad "3" thru_hole circle (at 0 7.62) (size 2.8 2.8) (drill 1.4) (layers "*.Cu" "*.Mask"))
+)

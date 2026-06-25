@@ -139,6 +139,7 @@ nur an den 2 RTD-Kanaelen pro Modul bereit; die 4 AI sind Spannungs-/Stromeingae
 | Waveshare RS485-to-ETH | Modbus-Gateway WP-Bus | 1 | 50 EUR |
 | Waveshare RS485-to-ETH | Modbus-Gateway Klima-OG-Bus | 1 | 50 EUR |
 | Waveshare RS485-to-ETH | Modbus-Gateway BW-WP/Pool-/Filterperipherie | 1 | 50 EUR |
+| Dezentrale RS485-Pumpengruppen-Platine | je Mischerkreis: 3WV Auf/Zu, Pumpe, VL/RL-RTD, ESP32 OTA | 3+ | Eigenentwicklung |
 | Koppelrelais 24V -> 230V/16A | Pumpen, WP-Freigaben, Brunnen, Tor | ~20 | je 8-12 EUR |
 | Hutschienen-Netzteil 24V/5A | I/O-Versorgung Slave-Schrank | 1 | 40 EUR |
 | PT1000 Anlegefuehler | neue Sensoren erganzend | ~6 | je 15 EUR |
@@ -311,7 +312,17 @@ Physische AIO-Karten der Hauptsteuerung:
 | AO15 | AO10.1 | 8 | AO1 | Reserve |
 | AO16 | AO10.2 | 8 | AO2 | Reserve |
 
-### 4.3 Slave-RevPi Hauptkeller (spater)
+### 4.3 Slave-RevPi Hauptkeller / dezentrale Pumpengruppen (spater)
+
+Designentscheidung Stand 2026-06-25: Die Mischerkreise im Hauptkeller sollen
+bevorzugt ueber dezentrale RS485-Pumpengruppen-Platinen laufen, nicht mehr
+zwingend ueber direkte DIO/AIO-Kanaele des Keller-RevPi. Jede Platine schaltet
+lokal Pumpe, 3WV AUF und 3WV ZU, misst VL/RL per RTD und berechnet die
+Mischer-Laufzeit aus der per Modbus vorgegebenen Zielposition selbst. Details:
+[docs/pumpengruppe-rs485-platine.md](docs/pumpengruppe-rs485-platine.md).
+
+Die folgende RevPi-I/O-Planung bleibt als Rueckfall-/Reservevariante bestehen,
+falls einzelne Kreise direkt auf den Keller-RevPi gelegt werden.
 
 Geplante physische Klemmenlogik fuer den Keller-Slave:
 
@@ -394,6 +405,12 @@ Geplante physische Klemmenlogik fuer den Keller-Slave:
 
 **Bus 3 (Slave-Steuerung Hauptkeller, RS485-ETH ins VLAN):** Klima-OG
 - Slave 20-24: 5x Klima-Innengerate OG
+
+**Bus 4 (Hauptkeller, RTU, Pumpengruppen):** dezentrale Mischerkreis-Platinen
+- Slave 30: Pumpengruppe FBH-EG
+- Slave 31: Pumpengruppe Klimakreis-OG
+- Slave 32: Pumpengruppe Heizkoerper-Backup OG
+- Registerentwurf siehe `docs/pumpengruppe-rs485-platine.md`
 
 **Inter-CPU-Kommunikation:**
 - Slave-RevPi exponiert seine Werte als Modbus-TCP Server (Port 502)
@@ -503,22 +520,29 @@ Siehe [docs/hydraulik.md](docs/hydraulik.md).
 - Regelstrategie:
   - Wenn kein Abnehmer offen ist, steigt der Druck bis `brunnen_max_druck_bar`; dann wird abgeschaltet.
   - Falls der Druck diesen Abschaltpunkt wegen Pumpenkennlinie/Bypass nicht erreicht:
-    Wenn der Flowmeter laenger als `brunnen_flow_timeout_s` unter
-    `brunnen_flow_min_l_min` bleibt, wird ebenfalls abgeschaltet.
-  - Erst bei Unterschreiten von `brunnen_min_druck_bar` wird wieder gestartet.
+    Der Kein-Durchfluss-Timer wird erst aktiv, wenn der Druck im Bereich des
+    Regeldrucks liegt (`brunnen_regeldruck_bar` minus Toleranz). Bleibt der
+    Flowmeter dann laenger als `brunnen_flow_timeout_s` unter
+    `brunnen_flow_min_l_min`, wird ebenfalls abgeschaltet.
+  - Bei zu niedrigem Druck laeuft der Kein-Durchfluss-Timer nicht, damit die
+    Pumpe trotz Tropfschlauch/kleiner Abnahme Druck aufbauen kann.
+  - Im Normalbetrieb wird erst bei Unterschreiten von `brunnen_min_druck_bar`
+    gestartet.
   - Wenn ein Abnehmer offen ist, regelt der FU-Sollwert auf `brunnen_regeldruck_bar`.
 - In HA einstellbar:
   - `brunnen_min_druck_bar`
   - `brunnen_max_druck_bar`
   - `brunnen_regeldruck_bar`
   - `brunnen_fu_start_pct`
+  - `brunnen_fu_max_pct`
   - `brunnen_kp_pct_pro_bar`
   - `brunnen_fu_ramp_up_pct_s`
   - `brunnen_fu_ramp_down_pct_s`
   - `brunnen_flow_min_l_min`
   - `brunnen_flow_timeout_s`
-  - Startwerte fuer die schnelle mehrstufige Kreiselpumpe: Start 20 %, Kp 25 %/bar,
-    Rampe hoch 25 %/s, Rampe runter 500 %/s. Die Pumpe regelt damit bewusst
+  - `brunnen_flow_stop_tolerance_bar`
+  - Startwerte fuer die schnelle mehrstufige Kreiselpumpe: Start 20 %, FU Max
+    zunaechst testweise 60-100 %, Kp 25 %/bar, Rampe hoch 25 %/s, Rampe runter 500 %/s. Die Pumpe regelt damit bewusst
     langsam hoch, nimmt aber bei schliessendem Hahn bzw. schlagartigem Druckanstieg
     sehr schnell Leistung weg. Bei Ueberschwingen zuerst Kp senken oder Maxdruck
     knapper setzen; bei zu traegem Druckaufbau Rampe hoch schrittweise erhoehen.
@@ -604,7 +628,7 @@ Verlaufskurven & History: nativ ueber HA-Recorder + InfluxDB-Add-on.
 | O1 | WP-Favorit Sunex NEXUS M18 EVI 18 kW pruefen: Modbus-/Linkage-Doku, Lieferumfang, Gewaehrleistung | Vor Phase D |
 | O2 | Konkretes Klima-Innengerat-Modell + Modbus-Doku | Vor Phase E |
 | O3 | Brauchwasser-WP-Modell | Vor Phase D |
-| O4 | 3WV-Stellantriebe: 230V/Auf-Zu beibehalten oder 0-10V? | sukzessive |
+| O4 | 3WV-Stellantriebe: 230V/Auf-Zu mit dezentraler RS485-Pumpengruppen-Platine finalisieren | Vor KiCad/Fertigung |
 | O5 | Schaltschrank Slave-Steuerung Hauptkeller Groesse + Lieferant | Vor Phase B |
 | O6 | Modbus-Register-Listen sammeln + dokumentieren | je nach Geraet |
 | O7 | HK-Backup OG: Eigener Strang oder ueber Klimakreis-OG? | Vor Phase E |
@@ -628,6 +652,7 @@ Verlaufskurven & History: nativ ueber HA-Recorder + InfluxDB-Add-on.
 **Phase B:**
 - Slave-CPU ping ueber VLAN 25
 - Modbus-TCP-Request vom Master liest Mischer-Status
+- RS485-Pumpengruppen antworten auf Modbus, schalten Pumpe und fahren Zielposition per Laufzeitlogik an
 - Bei Slave-CPU-Crash: Master loggt Verbindungsverlust, faellt auf Failsafe
 
 **Phase D:**

@@ -74,11 +74,13 @@ zugeordnet; beide koennen jede aktive Senke bedienen.
 | `heizung/regler/brunnen_max_druck_bar/set` | Zahl `0.2..10` | Ueberschreiten stoppt Brunnenpumpe/FU |
 | `heizung/regler/brunnen_regeldruck_bar/set` | Zahl `0..10` | Konstantdruck-Sollwert bei offenem Verbraucher |
 | `heizung/regler/brunnen_fu_start_pct/set` | Zahl `0..100` | Start-Sollwert beim Anlaufen der Brunnenpumpe |
+| `heizung/regler/brunnen_fu_max_pct/set` | Zahl `0..100` | Obere FU-Grenze fuer Inbetriebnahme/Leistungsschutz |
 | `heizung/regler/brunnen_kp_pct_pro_bar/set` | Zahl `0..200` | Proportionalverstaerkung in Prozent je bar Druckabweichung |
 | `heizung/regler/brunnen_fu_ramp_up_pct_s/set` | Zahl `1..500` | Maximale Erhoehung des FU-Sollwerts pro Sekunde |
 | `heizung/regler/brunnen_fu_ramp_down_pct_s/set` | Zahl `1..1000` | Maximale Reduzierung des FU-Sollwerts pro Sekunde |
 | `heizung/regler/brunnen_flow_min_l_min/set` | Zahl `0..20` | Darunter gilt der Flowmeter als kein echter Durchfluss |
 | `heizung/regler/brunnen_flow_timeout_s/set` | Zahl `10..1800` | So lange kein Durchfluss -> Brunnenpumpe/FU stoppt |
+| `heizung/regler/brunnen_flow_stop_tolerance_bar/set` | Zahl `0..2` | Flow-Stop-Timer erst ab Regeldruck minus Toleranz |
 | `heizung/pv/ueberschuss/set` | `0` / `1` | HA setzt PV-Ueberschuss; kein physischer RevPi-DI |
 | `heizung/pv/mangel/set` | `0` / `1` | HA setzt PV-Mangel; kein physischer RevPi-DI |
 | `heizung/tor/oeffnen_ganz/cmd` | leer | Oeffnen beider Fluegel, wenn nicht beide Fluegel bereits nicht-geschlossen sind |

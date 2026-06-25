@@ -1,0 +1,10 @@
+(footprint "JP_2_254"
+  (version 20240108)
+  (generator "codex")
+  (layer "F.Cu")
+  (descr "2-pin jumper, 2.54 mm pitch")
+  (attr through_hole)
+  (fp_rect (start -3 -2) (end 3 2) (stroke (width 0.1) (type solid)) (fill no) (layer "F.SilkS"))
+  (pad "1" thru_hole circle (at -1.27 0) (size 1.6 1.6) (drill 0.8) (layers "*.Cu" "*.Mask"))
+  (pad "2" thru_hole circle (at 1.27 0) (size 1.6 1.6) (drill 0.8) (layers "*.Cu" "*.Mask"))
+)

@@ -96,6 +96,7 @@ brunnen:
   fu_ramp_down_pct_s: 500  # bei schliessendem Hahn sehr schnell Druckspitzen abfangen
   flow_min_l_min: 0.2      # darunter gilt der Flowmeter als "kein Wasserverbrauch"
   flow_timeout_s: 120      # so lange kein Flow -> Brunnenpumpe stoppen
+  flow_stop_regeldruck_tolerance_bar: 0.2 # Flow-Timer erst ab Regeldruck minus Toleranz
   flow_stale_timeout_s: 15 # wenn Modbuswert aelter ist, wird er ignoriert
   flow_modbus:
     enabled: true

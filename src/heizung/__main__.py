@@ -11,7 +11,7 @@ from dataclasses import replace
 from typing import Any
 
 from .lib.brauchwasser import BrauchwasserState, compute_brauchwasser
-from .lib.brunnen import BrunnenPressureState, compute_brunnen_pressure
+from .lib.brunnen import BrunnenPressureState, brunnen_flow_timer_armed, compute_brunnen_pressure
 from .lib.config import AppConfig, ChannelConfig, ConfigError, IoMap, load_yaml, resolve_config_file
 from .lib.failsafe import FailsafeMonitor, FailsafeState
 from .lib.flowmeter import FlowmeterModbusClient, FlowmeterModbusConfig
@@ -117,15 +117,6 @@ async def run() -> int:
                 if flowmeter_task is None and now_ts >= flowmeter_next_poll_ts:
                     flowmeter_task = asyncio.create_task(flowmeter.read_flow_l_min())
 
-            brunnen_flow_l_min, brunnen_no_flow_s, brunnen_no_flow_since_ts = _brunnen_flow_runtime(
-                app_config,
-                regler,
-                brunnen_flow_l_min,
-                brunnen_flow_last_seen_ts,
-                brunnen_no_flow_since_ts,
-                now_ts,
-            )
-
             snapshot = await io_backend.read_all()
             if keller_client is not None:
                 try:
@@ -136,6 +127,17 @@ async def run() -> int:
                 except Exception as exc:
                     mqtt.peer_online = False
                     log.warning("Keller-Slave Modbus nicht erreichbar: %s", exc)
+
+            brunnen_flow_l_min, brunnen_no_flow_s, brunnen_no_flow_since_ts = _brunnen_flow_runtime(
+                controller_config,
+                regler,
+                brunnen_flow_l_min,
+                brunnen_flow_last_seen_ts,
+                brunnen_no_flow_since_ts,
+                brunnen_active,
+                brunnen_flow_timer_armed(controller_config, snapshot, regler),
+                now_ts,
+            )
             await _handle_mqtt_commands(
                 mqtt,
                 controller_config,
@@ -285,11 +287,16 @@ def _brunnen_flow_runtime(
     flow_l_min: float | None,
     flow_last_seen_ts: float | None,
     no_flow_since_ts: float | None,
+    pump_active: bool,
+    timer_armed: bool,
     now_ts: float,
 ) -> tuple[float | None, float | None, float | None]:
     stale_timeout_s = float(app_config.setting("brunnen.flow_stale_timeout_s", 15.0))
     if flow_l_min is None or flow_last_seen_ts is None or now_ts - flow_last_seen_ts > stale_timeout_s:
         return None, None, None
+
+    if not pump_active or not timer_armed:
+        return flow_l_min, None, None
 
     if flow_l_min > float(regler.brunnen_flow_min_l_min):
         return flow_l_min, 0.0, None
@@ -658,12 +665,12 @@ def _publish_state(
     )
     mqtt.publish(
         f"{base}/brunnen/kein_durchfluss_s/state",
-        "" if brunnen_state.no_flow_s is None else f"{brunnen_state.no_flow_s:.0f}",
+        "0" if brunnen_state.no_flow_s is None else f"{brunnen_state.no_flow_s:.0f}",
         retain=True,
     )
     mqtt.publish(
         f"{base}/brunnen/abschaltung_in_s/state",
-        "" if brunnen_state.flow_shutdown_remaining_s is None else f"{brunnen_state.flow_shutdown_remaining_s:.0f}",
+        "0" if brunnen_state.flow_shutdown_remaining_s is None else f"{brunnen_state.flow_shutdown_remaining_s:.0f}",
         retain=True,
     )
     mqtt.publish_json(f"{base}/brunnen/state", brunnen_state.as_payload(), retain=True)
@@ -1004,6 +1011,15 @@ def _regler_number_definitions() -> list[dict[str, Any]]:
             "unit": "%",
         },
         {
+            "key": "brunnen_fu_max_pct",
+            "object_name": "brunnen_fu_max",
+            "name": "Brunnen FU Max",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+        },
+        {
             "key": "brunnen_kp_pct_pro_bar",
             "object_name": "brunnen_kp",
             "name": "Brunnen Kp",
@@ -1047,6 +1063,15 @@ def _regler_number_definitions() -> list[dict[str, Any]]:
             "max": 1800,
             "step": 10,
             "unit": "s",
+        },
+        {
+            "key": "brunnen_flow_stop_tolerance_bar",
+            "object_name": "brunnen_flow_stop_toleranz",
+            "name": "Brunnen Flow Stop Toleranz",
+            "min": 0,
+            "max": 2,
+            "step": 0.1,
+            "unit": "bar",
         },
     ]
 

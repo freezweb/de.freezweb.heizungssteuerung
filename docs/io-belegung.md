@@ -78,6 +78,13 @@ Ist-Stand 2026-06-18:
 - `piTest -d` meldet die Keller-Erweiterungsmodule bis zur Spannungsversorgung
   als `NOT present`.
 
+Planungsstand 2026-06-25: Die drei Mischerkreise sollen bevorzugt ueber
+dezentrale RS485-Pumpengruppen-Platinen laufen. Diese Boards schalten lokal
+Pumpe, 3WV AUF/ZU, messen VL/RL und setzen die vom Master vorgegebene
+Zielposition per Laufzeitlogik um. Der direkte RevPi-I/O-Plan unten bleibt als
+Reserve-/Rueckfallvariante. Hardwareentwurf:
+[pumpengruppe-rs485-platine.md](pumpengruppe-rs485-platine.md).
+
 Belegung:
 
 | Modul | Zweck |

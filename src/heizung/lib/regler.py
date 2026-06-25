@@ -20,11 +20,13 @@ class ReglerParameter:
     brunnen_max_druck_bar: float = 4.2
     brunnen_regeldruck_bar: float = 3.2
     brunnen_fu_start_pct: float = 35.0
+    brunnen_fu_max_pct: float = 100.0
     brunnen_kp_pct_pro_bar: float = 35.0
     brunnen_fu_ramp_up_pct_s: float = 80.0
     brunnen_fu_ramp_down_pct_s: float = 160.0
     brunnen_flow_min_l_min: float = 0.2
     brunnen_flow_timeout_s: float = 120.0
+    brunnen_flow_stop_tolerance_bar: float = 0.2
 
     @classmethod
     def from_settings(cls, settings: dict[str, Any], store: StateStore | None = None) -> "ReglerParameter":
@@ -38,11 +40,13 @@ class ReglerParameter:
             brunnen_max_druck_bar=float(_setting(settings, "brunnen.max_druck_bar", 4.2)),
             brunnen_regeldruck_bar=float(_setting(settings, "brunnen.regeldruck_bar", 3.2)),
             brunnen_fu_start_pct=float(_setting(settings, "brunnen.fu_start_pct", 35.0)),
+            brunnen_fu_max_pct=float(_setting(settings, "brunnen.fu_max_pct", 100.0)),
             brunnen_kp_pct_pro_bar=float(_setting(settings, "brunnen.kp_pct_pro_bar", 35.0)),
             brunnen_fu_ramp_up_pct_s=float(_setting(settings, "brunnen.fu_ramp_up_pct_s", 80.0)),
             brunnen_fu_ramp_down_pct_s=float(_setting(settings, "brunnen.fu_ramp_down_pct_s", 160.0)),
             brunnen_flow_min_l_min=float(_setting(settings, "brunnen.flow_min_l_min", 0.2)),
             brunnen_flow_timeout_s=float(_setting(settings, "brunnen.flow_timeout_s", 120.0)),
+            brunnen_flow_stop_tolerance_bar=float(_setting(settings, "brunnen.flow_stop_regeldruck_tolerance_bar", 0.2)),
         )
         if store is not None:
             regler._apply_saved(store.load())
@@ -78,6 +82,8 @@ class ReglerParameter:
             self.brunnen_regeldruck_bar = max(self.brunnen_min_druck_bar, min(self.brunnen_max_druck_bar, value_float))
         elif name == "brunnen_fu_start_pct":
             self.brunnen_fu_start_pct = max(0.0, min(100.0, float(str(value).replace(",", "."))))
+        elif name == "brunnen_fu_max_pct":
+            self.brunnen_fu_max_pct = max(0.0, min(100.0, float(str(value).replace(",", "."))))
         elif name == "brunnen_kp_pct_pro_bar":
             self.brunnen_kp_pct_pro_bar = max(0.0, min(200.0, float(str(value).replace(",", "."))))
         elif name == "brunnen_fu_ramp_up_pct_s":
@@ -88,6 +94,8 @@ class ReglerParameter:
             self.brunnen_flow_min_l_min = max(0.0, min(20.0, float(str(value).replace(",", "."))))
         elif name == "brunnen_flow_timeout_s":
             self.brunnen_flow_timeout_s = max(10.0, min(1800.0, float(str(value).replace(",", "."))))
+        elif name == "brunnen_flow_stop_tolerance_bar":
+            self.brunnen_flow_stop_tolerance_bar = max(0.0, min(2.0, float(str(value).replace(",", "."))))
         else:
             return False
         self.save()
@@ -103,11 +111,15 @@ class ReglerParameter:
         settings.setdefault("brunnen", {})["max_druck_bar"] = self.brunnen_max_druck_bar
         settings.setdefault("brunnen", {})["regeldruck_bar"] = self.brunnen_regeldruck_bar
         settings.setdefault("brunnen", {})["fu_start_pct"] = self.brunnen_fu_start_pct
+        settings.setdefault("brunnen", {})["fu_max_pct"] = self.brunnen_fu_max_pct
         settings.setdefault("brunnen", {})["kp_pct_pro_bar"] = self.brunnen_kp_pct_pro_bar
         settings.setdefault("brunnen", {})["fu_ramp_up_pct_s"] = self.brunnen_fu_ramp_up_pct_s
         settings.setdefault("brunnen", {})["fu_ramp_down_pct_s"] = self.brunnen_fu_ramp_down_pct_s
         settings.setdefault("brunnen", {})["flow_min_l_min"] = self.brunnen_flow_min_l_min
         settings.setdefault("brunnen", {})["flow_timeout_s"] = self.brunnen_flow_timeout_s
+        settings.setdefault("brunnen", {})[
+            "flow_stop_regeldruck_tolerance_bar"
+        ] = self.brunnen_flow_stop_tolerance_bar
         return settings
 
     def snapshot(self) -> dict[str, float | int]:
@@ -120,11 +132,13 @@ class ReglerParameter:
             "brunnen_max_druck_bar": self.brunnen_max_druck_bar,
             "brunnen_regeldruck_bar": self.brunnen_regeldruck_bar,
             "brunnen_fu_start_pct": self.brunnen_fu_start_pct,
+            "brunnen_fu_max_pct": self.brunnen_fu_max_pct,
             "brunnen_kp_pct_pro_bar": self.brunnen_kp_pct_pro_bar,
             "brunnen_fu_ramp_up_pct_s": self.brunnen_fu_ramp_up_pct_s,
             "brunnen_fu_ramp_down_pct_s": self.brunnen_fu_ramp_down_pct_s,
             "brunnen_flow_min_l_min": self.brunnen_flow_min_l_min,
             "brunnen_flow_timeout_s": self.brunnen_flow_timeout_s,
+            "brunnen_flow_stop_tolerance_bar": self.brunnen_flow_stop_tolerance_bar,
         }
 
     def save(self) -> None:
@@ -152,11 +166,13 @@ class ReglerParameter:
                     self.set(name, value)
                 elif name in {
                     "brunnen_fu_start_pct",
+                    "brunnen_fu_max_pct",
                     "brunnen_kp_pct_pro_bar",
                     "brunnen_fu_ramp_up_pct_s",
                     "brunnen_fu_ramp_down_pct_s",
                     "brunnen_flow_min_l_min",
                     "brunnen_flow_timeout_s",
+                    "brunnen_flow_stop_tolerance_bar",
                 }:
                     self.set(name, value)
             except (TypeError, ValueError):

@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "FW_Pumpengruppe")(type "KiCad")(uri "${KIPRJMOD}/lib/symbols/FW_Pumpengruppe.kicad_sym")(options "")(descr "Local symbols for Freezweb RS485 pump group board"))
+)

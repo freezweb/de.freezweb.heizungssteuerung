@@ -1,4 +1,4 @@
-from heizung.lib.brunnen import compute_brunnen_pressure
+from heizung.lib.brunnen import brunnen_flow_timer_armed, compute_brunnen_pressure
 from heizung.lib.config import AppConfig, ChannelConfig, IoMap
 from heizung.lib.iohw import HardwareSnapshot
 from heizung.lib.regler import ReglerParameter
@@ -75,6 +75,16 @@ def test_brunnen_100ms_cycle_reaches_full_speed_after_about_three_seconds():
     assert 98.0 <= speed <= 100.0
 
 
+def test_brunnen_respects_fu_max_limit():
+    regler = ReglerParameter.from_settings(_config().settings)
+    regler.set("brunnen_fu_max_pct", 60)
+
+    state = compute_brunnen_pressure(_config(), _snapshot(0.0), regler, True, 58.0, cycle_s=1.0)
+
+    assert state.active is True
+    assert state.speed_pct == 60.0
+
+
 def test_brunnen_stops_at_max_pressure():
     regler = ReglerParameter.from_settings(_config().settings)
 
@@ -96,6 +106,37 @@ def test_brunnen_stops_after_no_flow_timeout():
     assert state.speed_pct == 0.0
     assert state.reason == "kein_durchfluss_stop"
     assert state.flow_shutdown_remaining_s == 0.0
+
+
+def test_brunnen_no_flow_timeout_does_not_stop_below_regeldruck_window():
+    regler = ReglerParameter.from_settings(_config().settings)
+    regler.set("brunnen_flow_min_l_min", 0.2)
+    regler.set("brunnen_flow_timeout_s", 120)
+
+    state = compute_brunnen_pressure(
+        _config(),
+        _snapshot(1.5),
+        regler,
+        True,
+        45.0,
+        0.1,
+        0.0,
+        121.0,
+    )
+
+    assert state.active is True
+    assert state.reason == "regelt"
+    assert state.speed_pct > 0.0
+
+
+def test_brunnen_flow_timer_is_only_armed_near_regeldruck():
+    regler = ReglerParameter.from_settings(_config().settings)
+
+    assert brunnen_flow_timer_armed(_config(), _snapshot(3.1), regler) is True
+    assert brunnen_flow_timer_armed(_config(), _snapshot(2.8), regler) is False
+
+    regler.set("brunnen_flow_stop_tolerance_bar", 0.5)
+    assert brunnen_flow_timer_armed(_config(), _snapshot(2.8), regler) is True
 
 
 def test_brunnen_keeps_running_before_no_flow_timeout():

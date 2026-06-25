@@ -120,6 +120,8 @@ views:
             name: Max Druck
           - entity: number.heizung_hauptsteuerung_brunnen_fu_start
             name: FU Start
+          - entity: number.heizung_hauptsteuerung_brunnen_fu_max
+            name: FU Max
           - entity: number.heizung_hauptsteuerung_brunnen_kp
             name: Kp
           - entity: number.heizung_hauptsteuerung_brunnen_fu_rampe_hoch
@@ -130,6 +132,8 @@ views:
             name: Min Flow
           - entity: number.heizung_hauptsteuerung_brunnen_flow_timeout
             name: Stop nach
+          - entity: number.heizung_hauptsteuerung_brunnen_flow_stop_toleranz
+            name: Stop Toleranz
 
       - type: entities
         title: Brauchwasser
