@@ -21,8 +21,8 @@ vor Fertigung/Inbetriebnahme von einer Elektrofachkraft geprueft werden.
 - Anschluss an RS485-Bus mit RJ45-Daisychain plus Schraubklemmen fuer YSTY.
 - Ausgangslogik:
   - Pumpe AN/AUS
-  - Mischer AUF
-  - Mischer ZU
+  - Mischerfreigabe AN/AUS
+  - Mischerrichtung AUF/ZU ueber Umschaltrelais
 - Eingangssensorik:
   - Vorlauf RTD, 2-Draht, PT100/PT1000
   - Ruecklauf RTD, 2-Draht, PT100/PT1000
@@ -45,15 +45,20 @@ RJ45-Pinout:
 
 | RJ45 Pin | Signal |
 |---:|---|
-| 4 | RS485 D+ |
-| 5 | RS485 D- |
-| 7 | GND/COM |
-| 8 | GND/COM |
-| 1,2,3,6 | nicht belegt |
+| 1 | BUS_5V |
+| 2 | BUS_5V |
+| 3,6 | nicht belegt |
+| 4 | RS485 A / D+ |
+| 5 | RS485 B / D- |
+| 7 | RS485_GND / COM |
+| 8 | RS485_GND / COM |
 
 Alle vier RS485-Anschluesse liegen elektrisch parallel. Die beiden RJ45-Buchsen
 sind fuer kurze Patchkabel zwischen Pumpengruppen gedacht. Die Schraubklemmen
 sind fuer ankommende/weitergehende YSTY-Leitung gedacht.
+BUS_5V wird ueber eine selbstrueckstellende Sicherung auf die lokale 5V-Schiene
+gekoppelt. Fuer diese Hilfsversorgung muss COM mit lokaler 0V verbunden werden;
+dadurch ist die RJ45-Weitergabe als gemeinsamer SELV-Bus zu betrachten.
 
 ## Blockschaltbild
 
@@ -65,11 +70,10 @@ flowchart LR
     REG --> ESP[ESP32-WROOM]
 
     X1 --> RELP[Relais Pumpe]
-    X1 --> RELA[Relais Mischer AUF]
-    X1 --> RELZ[Relais Mischer ZU]
+    X1 --> RELM[Mischer-Freigaberelais]
+    RELM --> RELD[SPDT-Richtungsrelais]
     RELP --> X2[Pumpenausgang]
-    RELA --> X3[Mischer L_AUF]
-    RELZ --> X3
+    RELD --> X3[Mischer L_AUF / L_ZU]
 
     ESP --> DRV[Relais-Treiber + Verriegelung]
     ESP --> RTD1[MAX31865 Vorlauf]
@@ -85,15 +89,15 @@ flowchart LR
 
 | Funktion | Empfehlung |
 |---|---|
-| MCU | ESP32-WROOM-32U oder vergleichbares ESP32-Modul mit externer Antenne |
-| 230 V -> 5 V | zugelassenes AC/DC-Modul, z.B. Mean Well IRM-05-5 oder RAC05-05SK/277 |
+| MCU | ESP32-WROOM-32D oder vergleichbares ESP32-Modul mit PCB-Antenne und Keepout am Platinenrand |
+| 230 V -> 5 V | guenstiges zugelassenes AC/DC-Modul mit KiCad-Standardfootprint, z.B. HLK-5M05/HLK-5Mxx |
 | 3.3 V | Buck/LDO mit Reserve fuer WLAN-Spitzenstrom, mindestens 600 mA Peak |
-| RS485 | isoliert, z.B. ISO1410 + isolierter DC/DC oder ADM2587E-Klasse |
+| RS485 | guenstige Standard-Transceiverklasse MAX3485/SP3485/SN65HVD im SOIC-8; DE/RE ueber ESP-GPIO `RS485_DE` |
 | RTD | 2x MAX31865 oder gleichwertig, je Kanal eigener Praezisionsreferenzwiderstand |
-| Relais | 3x 250 V AC, passend zur Pumpenlast/Inrush; fuer Pumpenausgang 16-A-Klasse bevorzugen |
-| Relais-Treiber | Low-Side-Treiber mit Freilaufpfad; Relais-Spulen aus 5 V oder 12 V Hilfsspannung |
+| Relais | 1x Pumpenrelais, 1x Mischerfreigabe, 1x Mischer-SPDT-Richtung; 250 V AC passend zur Last/Inrush |
+| Relais-Treiber | Diskret mit AO3400A-kompatiblem NMOS, 100R Gate, 100k Pulldown, SS14 Freilauf; guenstige Standardteile |
 | Eingangsschutz RTD | Serienwiderstand, RC-Filter, ESD/Surge nach Leitungslage |
-| Bus-Schutz | TVS fuer D+/D-/GND, optional GDT/CMC bei langen Leitungen |
+| Bus-Schutz | diskret mit Standard-TVS/Serienwiderstaenden nach Leitungslage; keine teuren Sondermodule |
 
 PT1000 ist fuer 2-Draht-Fuehler bevorzugt, weil Leitungswiderstand weniger stark
 ins Messergebnis eingeht. PT100 wird unterstuetzt, sollte aber als
@@ -108,22 +112,30 @@ Die Platine schaltet nur die Phase:
   - `N` durchverbunden
   - `PE` durchverbunden
 - Mischerausgang X3:
-  - `L_AUF` ueber Relais K2
-  - `L_ZU` ueber Relais K3
+  - K2 schaltet `L_FUSED` auf `MIX_L_EN`
+  - K3 ist ein SPDT-Umschaltrelais: gemeinsamer Kontakt `MIX_L_EN`,
+    NC = `L_ZU`, NO = `L_AUF`
   - `N` durchverbunden
   - `PE` durchverbunden
 
-K2 und K3 muessen doppelt gesichert sein:
+K2/K3 bilden damit eine echte Hardware-Verriegelung: Ohne K2 liegt am Mischer
+gar keine Phase an; K3 kann elektrisch nur eine Richtung verbinden. AUF und ZU
+koennen durch diese Kontaktlogik nicht gleichzeitig gespeist werden.
 
-- Software-Interlock: nie AUF und ZU gleichzeitig aktiv.
-- Hardware-Interlock im Treiber, z.B. gegenseitiges Sperren der Treiberstufen
-  oder zwangsgefuehrte Logik, damit ein Firmwarefehler nicht beide Relais
-  gleichzeitig anziehen kann.
+Zusaetzliche Logik:
+
+- Software-Interlock bleibt trotzdem aktiv und schaltet vor Richtungswechsel
+  immer erst K2 aus.
 - Umschaltpause zwischen AUF/ZU mindestens 500 ms.
 
-Empfohlen: RC-Snubber oder MOV je induktiver Last nach konkreter Pumpen- und
+Netzseitig ist ein diskreter MOV 275 VAC zwischen L/N vorzusehen. Empfohlen:
+RC-Snubber oder MOV je induktiver Last nach konkreter Pumpen- und
 Stellantriebs-Spezifikation. Fuer Pumpen mit hoher Einschaltspitze Relais nicht
 nach Nennstrom allein auswaehlen, sondern nach Inrush-/Motorlast-Datenblatt.
+
+Die 230-V-Kontrollanzeige bleibt vollstaendig auf der Netzseite: zwei
+hochohmige 1206-Serienwiderstaende, LED und antiparallele Schutzdiode. Keine
+LED-Leitung darf in den SELV-Bereich laufen.
 
 ## Leiterplatte und Sicherheitsabstaende
 
@@ -149,6 +161,23 @@ Layout-Ziele:
 - Leiterbahnbreite fuer Pumpenphase nach realem Strom, Kupferdicke und
   Temperaturhub dimensionieren; fuer 5 A Dauerstrom auf 35 um Kupfer nicht unter
   ca. 3 mm planen, fuer mehr Strom 70 um Kupfer oder deutlich breitere Flaechen.
+- KiCad-Netclasses im Projekt:
+  - `MAINS_230V_LOAD`: `L_IN`, `L_FUSED`, `L_PUMP`, `MIX_L_EN`, `L_OPEN`,
+    `L_CLOSE`, `N`; Routingbreite 4,0 mm.
+  - `PE_230V`: `PE`; Routingbreite 5,0 mm, bevorzugt trotzdem kurz/grossflaechig
+    oder extern ueber Klemmenblock fuehren.
+  - `MAINS_230V_CONTROL`: diskrete 230-V-Anzeige; Routingbreite 0,6 mm.
+  - `SELV_POWER_5V`: `+5V`, `BUS_5V`, `GND`, `RS485_GND`, `USB_VBUS`;
+    Routingbreite 1,0 mm.
+  - `SELV_POWER_3V3`: `+3V3`; Routingbreite 0,5 mm.
+  - `RELAY_COIL_5V`: Relaisspulen-Low-Side-Netze; Routingbreite 0,5 mm.
+  - `RS485_BUS`: `RS485_A`, `RS485_B`, `RS485_TERM`; Routingbreite 0,35 mm.
+  - `SELV_SIGNAL`: ESP-, SPI-, UART-, USB-CC/Daten-, LED- und RTD-Signale;
+    Routingbreite 0,25 mm.
+- Die Netclass-Clearances sind bauteilkompatible CAD-Mindestwerte. Die
+  sicherheitsrelevante Trennung 230 V zu SELV wird nicht durch diese Werte
+  ersetzt, sondern muss ueber die 8-mm-Zonierung/Fraesnut und DRC-/Sichtpruefung
+  eingehalten werden.
 - Sicherung vor den Relaiskontakten vorsehen; Wert nach Leitungsschutz,
   Klemmenrating und Pumpenlast festlegen.
 - DRC-Regeln im CAD getrennt fuer Netze `MAINS_L/N`, `MAINS_SW`, `PE`, `SELV`,
@@ -261,8 +290,15 @@ einheitlich konfiguriert werden.
 Hardware:
 
 - 120-Ohm-Abschluss per Jumper/DIP nur am letzten Busgeraet.
-- Umsetzung im KiCad-Entwurf: `R3 = 120R` plus `JP1 RS485_TERM_ON`; Jumper
-  offen = kein Abschluss, Jumper geschlossen = Abschluss zwischen D+ und D-.
+- Umsetzung im KiCad-Entwurf: `R3 = 120R` plus `JP1 RS485_TERM_ON_PARK`.
+  `JP1` ist als 1x3-Header ausgelegt: Jumper auf `1-2` = Abschluss zwischen
+  D+ und D-, Jumper auf `2-3` = Parkposition/Aus, damit die Bruecke nicht
+  verloren geht.
+- `U4` ist kein teures isoliertes RS485-Modul mehr, sondern ein SOIC-8
+  Standardtransceiver. Dadurch ist `COM`/0V als gemeinsamer SELV-Bus zu planen.
+- RJ45 Pin 1/2 kann 5 V zwischen Pumpengruppen weiterreichen. Die lokale
+  Einspeisung ist ueber PTC geschuetzt; die 0V-Verbindung muss fuer diese
+  Betriebsart bestueckt sein.
 - Bias-Widerstaende nur einmal pro Bus aktivieren, bevorzugt am Master/Gateway.
 - RJ45 und Schraubklemmen duerfen nicht als Stern verdrahtet werden; sie sind
   nur mechanische Alternativen fuer dieselbe Linien-Topologie.
@@ -276,11 +312,17 @@ Hardware:
   `VL`, `RL`, `RS485`.
 - Service-Taste fuer WLAN-Konfigurationsmodus und Status-LED im SELV-Bereich
   sind sinnvoll, aber kein Display erforderlich.
-- USB-C-Serviceanschluss auf SELV-Seite fuer Firmware/Debug. Bei klassischem
+- 24 adressierbare 5-V-RGB-LEDs `D60-D83` (einheitlich SK6812MINI/3535, WS2812-kompatibles Datenprotokoll) an ESP32
+  GPIO21 (`RGB_DATA`), mit `R60=330R` Dateneingangswiderstand und je LED 100nF
+  Pufferkondensator `C60-C83`.
+  `D60-D63` sind freie Status-LEDs; `D64-D83` bilden eine senkrechte
+  Ventilstandanzeige mit einer LED je 5 %.
+- USB-C-Serviceanschluss auf SELV-Seite fuer Firmware/Debug, mechanisch an der
+  Platinenkante mit Steckrichtung nach aussen. Bei klassischem
   ESP32-WROOM ist dafuer ein USB-UART-Baustein noetig; D+/D- duerfen nicht
   direkt an den ESP32-WROOM gehen.
-- ESP-Antenne extern ausfuehren, z.B. ESP32-WROOM-32U mit U.FL-Pigtail zur
-  Antenne ausserhalb der Platine/des Schaltschrankbereichs.
+- ESP32-WROOM-32D so platzieren, dass die PCB-Antenne am Platinenrand sitzt
+  und der Antennen-Keepout nicht durch Kupfer, Bauteile oder Gehaeuse verdeckt wird.
 
 ## Offene Entscheidungen vor KiCad
 

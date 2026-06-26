@@ -1,0 +1,10 @@
+(footprint "LED_0603"
+  (version 20240108)
+  (generator "codex")
+  (layer "F.Cu")
+  (descr "0603 LED, pin 1 anode, pin 2 cathode")
+  (attr smd)
+  (fp_rect (start -1.6 -0.8) (end 1.6 0.8) (stroke (width 0.1) (type solid)) (fill no) (layer "F.SilkS"))
+  (pad "1" smd rect (at -0.8 0) (size 0.8 0.8) (layers "F.Cu" "F.Paste" "F.Mask"))
+  (pad "2" smd rect (at 0.8 0) (size 0.8 0.8) (layers "F.Cu" "F.Paste" "F.Mask"))
+)

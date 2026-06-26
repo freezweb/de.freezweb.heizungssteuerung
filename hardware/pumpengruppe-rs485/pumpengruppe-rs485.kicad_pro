@@ -39,9 +39,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.8,
-          "height": 1.27,
-          "width": 1.27
+          "drill": 0.0,
+          "height": 0.95,
+          "width": 0.9
         },
         "silk_line_width": 0.15,
         "silk_text_italic": false,
@@ -69,7 +69,13 @@
           "thermal_relief_spoke_width": 0.5
         }
       },
-      "diff_pair_dimensions": [],
+      "diff_pair_dimensions": [
+        {
+          "gap": 0.0,
+          "via_gap": 0.0,
+          "width": 0.0
+        }
+      ],
       "drc_exclusions": [],
       "meta": {
         "version": 2
@@ -203,7 +209,9 @@
           "td_width_to_size_filter_ratio": 0.9
         }
       ],
-      "track_widths": [],
+      "track_widths": [
+        0.0
+      ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
           "corner_radius_percentage": 80,
@@ -230,7 +238,12 @@
           "spacing": 0.6
         }
       },
-      "via_dimensions": [],
+      "via_dimensions": [
+        {
+          "diameter": 0.0,
+          "drill": 0.0
+        }
+      ],
       "zones_allow_external_fillets": false
     },
     "ipc2581": {
@@ -240,7 +253,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": ""
+      "sch_revision": "A-preliminary"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -512,6 +525,21 @@
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
+      },
+      {
+        "clearance": 0.8,
+        "diff_pair_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "230V",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 0,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 1.5,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3
       }
     ],
     "meta": {
@@ -519,7 +547,68 @@
     },
     "net_colors": null,
     "netclass_assignments": null,
-    "netclass_patterns": []
+    "netclass_patterns": [
+      {
+        "netclass": "230V",
+        "pattern": "N"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/L_FUSED"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/L_IN"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/N"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/PE"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/L_CLOSE"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/L_OPEN"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "L_FUSED"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "L_IN"
+      },
+      {
+        "netclass": "Default",
+        "pattern": "N"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "PE"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "L_OPEN"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "L_CLOSE"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "MIX_L_EN"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "L_PUMP"
+      }
+    ]
   },
   "pcbnew": {
     "last_paths": {
@@ -649,7 +738,7 @@
       {
         "filename": "pumpengruppe-rs485.kicad_sch",
         "name": "pumpengruppe-rs485",
-        "uuid": "00000000-0000-0000-0000-000000000000"
+        "uuid": "d5e42fe8-0c45-43b8-a242-42b955d18b37"
       }
     ],
     "used_designators": "",
@@ -658,7 +747,7 @@
   "sheets": [
     [
       "d5e42fe8-0c45-43b8-a242-42b955d18b37",
-      ""
+      "pumpengruppe-rs485"
     ]
   ],
   "text_variables": {},

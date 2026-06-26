@@ -1,0 +1,11 @@
+(footprint "SOT23_NMOS"
+  (version 20240108)
+  (generator "codex")
+  (layer "F.Cu")
+  (descr "Generic SOT-23 NMOS, pin 1 gate, 2 source, 3 drain")
+  (attr smd)
+  (fp_rect (start -1.8 -1.6) (end 1.8 1.6) (stroke (width 0.12) (type solid)) (fill no) (layer "F.SilkS"))
+  (pad "1" smd rect (at -0.95 -0.95) (size 0.8 0.55) (layers "F.Cu" "F.Paste" "F.Mask"))
+  (pad "2" smd rect (at -0.95 0.95) (size 0.8 0.55) (layers "F.Cu" "F.Paste" "F.Mask"))
+  (pad "3" smd rect (at 0.95 0) (size 0.8 0.65) (layers "F.Cu" "F.Paste" "F.Mask"))
+)
