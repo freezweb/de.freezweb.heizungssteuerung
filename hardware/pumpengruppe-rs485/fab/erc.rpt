@@ -1,4 +1,4 @@
-ERC report (2026-06-25T16:29:54, Encoding UTF8)
+ERC report (2026-06-26T09:52:41, Encoding UTF8)
 Report includes: Errors, Warnings
 
 ***** Sheet /
@@ -109,7 +109,7 @@ Report includes: Errors, Warnings
     @(169.84 mm, 69.92 mm): Label 'UART_TX'
 [label_dangling]: Label not connected
     ; error
-    @(169.84 mm, 75.00 mm): Label 'RS485_DE'
+    @(169.84 mm, 77.54 mm): Label 'RS485_DE'
 [label_dangling]: Label not connected
     ; error
     @(169.84 mm, 80.08 mm): Label 'UART_RX'
@@ -206,7 +206,10 @@ Report includes: Errors, Warnings
     @(29.92 mm, 130.08 mm): Symbol X3 Pin 4 [Pin_4, Passive, Line]
 [endpoint_off_grid]: Symbol pin or wire end off connection grid
     ; warning
-    @(55.00 mm, 58.81 mm): Symbol F1 Pin 2 [Passive, Line]
+    @(54.61 mm, 50.80 mm): Wire, length 0.552 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(54.61 mm, 58.42 mm): Wire, length 0.552 mm
 [endpoint_off_grid]: Symbol pin or wire end off connection grid
     ; warning
     @(59.84 mm, 87.46 mm): Symbol K1 Pin 1 [COM, Passive, Line]
@@ -252,6 +255,9 @@ Report includes: Errors, Warnings
 [no_connect_dangling]: Unconnected "no connection" flag
     ; warning
     @(124.76 mm, 105.48 mm): No Connect
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(140.00 mm, 39.44 mm): Symbol U1 Pin 2 [VDD, Power input, Line]
 [ground_pin_not_ground]: Pin GND nicht mit dem Erdungsnetz verbunden
     ; warning
     @(140.00 mm, 110.56 mm): Symbol U1 Pin 1 [GND, Power input, Line]
@@ -261,9 +267,6 @@ Report includes: Errors, Warnings
 [endpoint_off_grid]: Symbol pin or wire end off connection grid
     ; warning
     @(144.92 mm, 150.00 mm): Symbol X5 Pin 1 [Pin_1, Passive, Line]
-[endpoint_off_grid]: Symbol pin or wire end off connection grid
-    ; warning
-    @(155.24 mm, 97.86 mm): Symbol U1 Pin 9 [IO33, Bidirectional, Line]
 [no_connect_dangling]: Unconnected "no connection" flag
     ; warning
     @(155.24 mm, 105.48 mm): No Connect
@@ -443,7 +446,7 @@ Report includes: Errors, Warnings
     ; warning
     @(405.00 mm, 48.81 mm): Symbol RV1 Pin 2 [Passive, Line]
 
- ** ERC messages: 145  Errors 63  Warnings 82
+ ** ERC messages: 146  Errors 63  Warnings 83
 
  ** Ignored checks:
     - Global label only appears once in the schematic

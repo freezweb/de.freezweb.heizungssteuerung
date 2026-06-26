@@ -163,8 +163,9 @@ Layout-Ziele:
   ca. 3 mm planen, fuer mehr Strom 70 um Kupfer oder deutlich breitere Flaechen.
 - KiCad-Netclasses im Projekt:
   - `MAINS_230V_LOAD`: `L_IN`, `L_FUSED`, `L_PUMP`, `MIX_L_EN`, `L_OPEN`,
-    `L_CLOSE`, `N`; Routingbreite 4,0 mm.
-  - `PE_230V`: `PE`; Routingbreite 5,0 mm, bevorzugt trotzdem kurz/grossflaechig
+    `L_CLOSE`, `N`; Routingbreite 2,5 mm fuer die mit 5 A abgesicherte
+    Lastseite; lokale Engstellen an Relais-/Klemmenpads kurz halten.
+  - `PE_230V`: `PE`; Routingbreite 3,0 mm, bevorzugt trotzdem kurz/grossflaechig
     oder extern ueber Klemmenblock fuehren.
   - `MAINS_230V_CONTROL`: diskrete 230-V-Anzeige; Routingbreite 0,6 mm.
   - `SELV_POWER_5V`: `+5V`, `BUS_5V`, `GND`, `RS485_GND`, `USB_VBUS`;

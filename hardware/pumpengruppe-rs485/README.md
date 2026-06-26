@@ -56,8 +56,8 @@ Aktueller Stand:
   beschriftet; am unteren Rand steht das RJ45-Pinout
   `1/2=5V 3/6=NC 4=A 5=B 7/8=GND`.
 - KiCad-Netclasses sind in `pumpengruppe-rs485.kicad_pro` gesetzt:
-  `MAINS_230V_LOAD` routet L/N/geschaltete 230-V-Lastnetze mit 4,0 mm,
-  `PE_230V` mit 5,0 mm, `SELV_POWER_5V` mit 1,0 mm, `SELV_POWER_3V3` mit
+  `MAINS_230V_LOAD` routet L/N/geschaltete 230-V-Lastnetze mit 2,5 mm
+  fuer die 5-A-Absicherung, `PE_230V` mit 3,0 mm, `SELV_POWER_5V` mit 1,0 mm, `SELV_POWER_3V3` mit
   0,5 mm, `RELAY_COIL_5V` mit 0,5 mm, `RS485_BUS` mit 0,35 mm und
   `SELV_SIGNAL` mit 0,25 mm. Die Netclass-Clearance ist bewusst
   bauteilkompatibel; die 8-mm-Trennung zwischen 230 V und SELV bleibt als
