@@ -159,20 +159,17 @@ Layout-Ziele:
 - Silkscreen-Zonierung: `230 V` und `SELV` klar markieren.
 - Testpunkte fuer 230 V nur beruehrgeschuetzt oder ganz weglassen.
 - Leiterbahnbreite fuer Pumpenphase nach realem Strom, Kupferdicke und
-  Temperaturhub dimensionieren; fuer 5 A Dauerstrom auf 35 um Kupfer nicht unter
-  ca. 3 mm planen, fuer mehr Strom 70 um Kupfer oder deutlich breitere Flaechen.
+  Temperaturhub dimensionieren. Die RevA-Datei ist auf 1,5 mm 230-V-Lastbahnen
+  gesetzt; fuer eine 5-A-Sicherung sollte PCBWay mindestens mit 70 um / 2 oz
+  Kupfer angefragt werden oder die Sicherung/Last kleiner dimensioniert werden.
+  Lokale Engstellen an Relais-/Klemmenpads kurz halten.
 - KiCad-Netclasses im Projekt:
-  - `MAINS_230V_LOAD`: `L_IN`, `L_FUSED`, `L_PUMP`, `MIX_L_EN`, `L_OPEN`,
-    `L_CLOSE`, `N`; Routingbreite 2,5 mm fuer die mit 5 A abgesicherte
-    Lastseite; lokale Engstellen an Relais-/Klemmenpads kurz halten.
-  - `PE_230V`: `PE`; Routingbreite 3,0 mm, bevorzugt trotzdem kurz/grossflaechig
-    oder extern ueber Klemmenblock fuehren.
-  - `MAINS_230V_CONTROL`: diskrete 230-V-Anzeige; Routingbreite 0,6 mm.
-  - `SELV_POWER_5V`: `+5V`, `BUS_5V`, `GND`, `RS485_GND`, `USB_VBUS`;
-    Routingbreite 1,0 mm.
-  - `SELV_POWER_3V3`: `+3V3`; Routingbreite 0,5 mm.
-  - `RELAY_COIL_5V`: Relaisspulen-Low-Side-Netze; Routingbreite 0,5 mm.
-  - `RS485_BUS`: `RS485_A`, `RS485_B`, `RS485_TERM`; Routingbreite 0,35 mm.
+  - `230V`: `L_IN`, `L_FUSED`, `L_PUMP`, `MIX_L_EN`, `L_OPEN`, `L_CLOSE`,
+    `N`, `PE`; Routingbreite 1,5 mm, Clearance 0,8 mm innerhalb der
+    230-V-Netze.
+  - `Default`: SELV/Signale; Routingbreite 0,2 mm, projektweite
+    Mindestbreite 0,2 mm. Breitere 5-V-/3V3-Power-Tracks sind im Board lokal
+    geroutet.
   - `SELV_SIGNAL`: ESP-, SPI-, UART-, USB-CC/Daten-, LED- und RTD-Signale;
     Routingbreite 0,25 mm.
 - Die Netclass-Clearances sind bauteilkompatible CAD-Mindestwerte. Die

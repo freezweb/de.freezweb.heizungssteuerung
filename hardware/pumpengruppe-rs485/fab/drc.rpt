@@ -1,87 +1,8 @@
 ** Drc report for pumpengruppe-rs485.kicad_pcb **
-** Created on 2026-06-26T10:22:09 **
+** Created on 2026-06-26T10:39:20 **
 ** Report includes: Errors, Warnings **
 
-** Found 95 DRC violations **
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,5544 mm)
-    Rule: Netzklasse "MAINS_230V_LOAD"; error
-    @(49.8000 mm, 111.0700 mm): Track [L_OPEN] on F.Cu, length 8.8762 mm
-    @(61.0000 mm, 109.5000 mm): PTH pad 1 [L_FUSED] of RV1
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,6320 mm)
-    Rule: Netzklasse "MAINS_230V_LOAD"; error
-    @(68.1500 mm, 126.6500 mm): Track [L_OPEN] on F.Cu, length 4.0305 mm
-    @(71.0000 mm, 125.0000 mm): PTH pad NC [L_CLOSE] of K3
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,2533 mm)
-    Rule: Netzklasse "MAINS_230V_LOAD"; error
-    @(58.6762 mm, 111.0700 mm): Track [L_OPEN] on F.Cu, length 13.3979 mm
-    @(61.0000 mm, 109.5000 mm): Track [L_FUSED] on F.Cu, length 11.0000 mm
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,0500 mm)
-    Rule: Netzklasse "MAINS_230V_LOAD"; error
-    @(58.6762 mm, 111.0700 mm): Track [L_OPEN] on F.Cu, length 13.3979 mm
-    @(59.1100 mm, 117.0000 mm): Track [N] on F.Cu, length 1.8900 mm
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,5033 mm)
-    Rule: Netzklasse "MAINS_230V_LOAD"; error
-    @(58.6762 mm, 111.0700 mm): Track [L_OPEN] on F.Cu, length 13.3979 mm
-    @(61.0000 mm, 109.5000 mm): PTH pad 1 [L_FUSED] of RV1
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,3008 mm)
-    Rule: Netzklasse "MAINS_230V_LOAD"; error
-    @(57.0000 mm, 40.7000 mm): Track [N] on F.Cu, length 6.0104 mm
-    @(49.8000 mm, 44.8800 mm): PTH pad 1 [L_IN] of X1
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,3003 mm)
-    Rule: Netzklasse "MAINS_230V_LOAD"; error
-    @(68.1500 mm, 120.5438 mm): Track [L_OPEN] on F.Cu, length 6.1062 mm
-    @(71.0000 mm, 120.5000 mm): PTH pad C [MIX_L_EN] of K3
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_CONTROL" Freiraum 0,8000 mm; tatsächlich 0,4500 mm)
-    Rule: Netzklasse "MAINS_230V_CONTROL"; error
-    @(61.8000 mm, 40.7000 mm): Track [N] on F.Cu, length 0.9899 mm
-    @(62.5000 mm, 43.4000 mm): Track [LED230_A] on F.Cu, length 2.0500 mm
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,3008 mm)
-    Rule: Netzklasse "MAINS_230V_LOAD"; error
-    @(52.7500 mm, 44.9500 mm): Track [N] on F.Cu, length 4.6000 mm
-    @(49.8000 mm, 44.8800 mm): PTH pad 1 [L_IN] of X1
-[clearance]: Freiraum-Verstoß (Netzklasse "PE_230V" Freiraum 0,8000 mm; tatsächlich 0,2000 mm)
-    Rule: Netzklasse "PE_230V"; error
-    @(49.8000 mm, 79.8800 mm): Track [L_PUMP] on B.Cu, length 9.3621 mm
-    @(46.8500 mm, 63.0700 mm): Track [PE] on B.Cu, length 29.1000 mm
-[drill_out_of_range]: Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)
-    Rule: Einschränkungen aus Platinenkonfiguration; error
-    @(156.1000 mm, 41.2700 mm): PTH pad 39 [GND] of U1
-[drill_out_of_range]: Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)
-    Rule: Einschränkungen aus Platinenkonfiguration; error
-    @(156.1000 mm, 42.6700 mm): PTH pad 39 [GND] of U1
-[drill_out_of_range]: Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)
-    Rule: Einschränkungen aus Platinenkonfiguration; error
-    @(156.8000 mm, 40.5700 mm): PTH pad 39 [GND] of U1
-[drill_out_of_range]: Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)
-    Rule: Einschränkungen aus Platinenkonfiguration; error
-    @(156.8000 mm, 41.9700 mm): PTH pad 39 [GND] of U1
-[drill_out_of_range]: Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)
-    Rule: Einschränkungen aus Platinenkonfiguration; error
-    @(156.8000 mm, 43.3700 mm): PTH pad 39 [GND] of U1
-[drill_out_of_range]: Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)
-    Rule: Einschränkungen aus Platinenkonfiguration; error
-    @(157.4750 mm, 41.2700 mm): PTH pad 39 [GND] of U1
-[drill_out_of_range]: Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)
-    Rule: Einschränkungen aus Platinenkonfiguration; error
-    @(157.4750 mm, 42.6700 mm): PTH pad 39 [GND] of U1
-[drill_out_of_range]: Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)
-    Rule: Einschränkungen aus Platinenkonfiguration; error
-    @(158.2000 mm, 40.5700 mm): PTH pad 39 [GND] of U1
-[drill_out_of_range]: Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)
-    Rule: Einschränkungen aus Platinenkonfiguration; error
-    @(158.2000 mm, 41.9700 mm): PTH pad 39 [GND] of U1
-[drill_out_of_range]: Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)
-    Rule: Einschränkungen aus Platinenkonfiguration; error
-    @(158.2000 mm, 43.3700 mm): PTH pad 39 [GND] of U1
-[drill_out_of_range]: Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)
-    Rule: Einschränkungen aus Platinenkonfiguration; error
-    @(158.9000 mm, 41.2700 mm): PTH pad 39 [GND] of U1
-[drill_out_of_range]: Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)
-    Rule: Einschränkungen aus Platinenkonfiguration; error
-    @(158.9000 mm, 42.6700 mm): PTH pad 39 [GND] of U1
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(100.2000 mm, 98.3000 mm): Track [+5V] on F.Cu, length 1.4849 mm
+** Found 72 DRC violations **
 [silk_edge_clearance]: Silkscreen clipped by board edge
     Rule: Einschränkungen aus Platinenkonfiguration zum Bestückungsdruck; warning
     @(81.0000 mm, 38.0000 mm): Rectangle on Edge.Cuts
@@ -328,23 +249,7 @@
     @(98.1000 mm, 102.2000 mm): Rectangle of R5 on F.Silkscreen
     @(101.7000 mm, 104.2000 mm): Reference field of Q2
 
-** Found 4 unconnected pads **
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(90.4615 mm, 85.2000 mm): Track [+5V] on F.Cu, length 1.0770 mm
-    @(89.5000 mm, 78.0000 mm): Track [+5V] on F.Cu, length 2.1213 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(110.4000 mm, 122.0000 mm): Track [GND] on F.Cu, length 2.9698 mm
-    @(122.0250 mm, 118.4250 mm): Track [GND] on F.Cu, length 4.8000 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(175.9000 mm, 56.5000 mm): Track [+3V3] on F.Cu, length 8.2024 mm
-    @(175.9000 mm, 46.5000 mm): Pad 16 [+3V3] of U2 on F.Cu
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(112.5000 mm, 88.7500 mm): Pad 1 [RGB_DOUT_15] of D74 on F.Cu
-    @(116.0000 mm, 95.3000 mm): Pad 3 [RGB_DOUT_15] of D75 on F.Cu
+** Found 0 unconnected pads **
 
 ** Found 0 Footprint errors **
 

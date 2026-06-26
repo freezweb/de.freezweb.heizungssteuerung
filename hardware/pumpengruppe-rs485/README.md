@@ -56,20 +56,19 @@ Aktueller Stand:
   beschriftet; am unteren Rand steht das RJ45-Pinout
   `1/2=5V 3/6=NC 4=A 5=B 7/8=GND`.
 - KiCad-Netclasses sind in `pumpengruppe-rs485.kicad_pro` gesetzt:
-  `MAINS_230V_LOAD` routet L/N/geschaltete 230-V-Lastnetze mit 2,5 mm
-  fuer die 5-A-Absicherung, `PE_230V` mit 3,0 mm, `SELV_POWER_5V` mit 1,0 mm, `SELV_POWER_3V3` mit
-  0,5 mm, `RELAY_COIL_5V` mit 0,5 mm, `RS485_BUS` mit 0,35 mm und
-  `SELV_SIGNAL` mit 0,25 mm. Die Netclass-Clearance ist bewusst
-  bauteilkompatibel; die 8-mm-Trennung zwischen 230 V und SELV bleibt als
-  physische Keepout-/Fraesnut-Regel beim Layout zwingend einzuhalten.
+  `230V` routet L/N/geschaltete 230-V-Lastnetze und PE mit 1,5 mm und
+  0,8 mm Clearance innerhalb der 230-V-Netze. Fuer die 5-A-Sicherung sollte die
+  Bestellung mit mindestens 70 um / 2 oz Kupfer angefragt werden oder die
+  tatsaechliche Last/Sicherung entsprechend reduziert werden. Die 8-mm-Trennung
+  zwischen 230 V und SELV bleibt als physische Keepout-/Fraesnut-Regel beim
+  Layout zwingend einzuhalten.
 
-Wichtig: RevA ist eine Routing-/Review-Grundlage, noch keine freigegebene
-Fertigungsrevision. Die PCB-Netze/Ratsnest sind gesetzt, aber die Leiterbahnen
-sind bewusst nicht geroutet. Vor Fertigung muessen Routing, 230-V-Abstaende,
-Relais-/Sicherungsrating, PE-Fuehrung, Leiterbahnbreiten, EMV-Schutz,
-Gehaeuseintegration und DRC vollstaendig geprueft werden. Wenn die
-RJ45-5V-Weitergabe bestueckt/genutzt wird, ist die RS485-/SELV-Masse gemeinsam;
-das Isolationskonzept muss dann als gemeinsamer SELV-Bus bewertet werden.
+Wichtig: RevA ist elektrisch geroutet und hat keine offenen Netze im KiCad-DRC.
+Vor einer Netzspannungs-Freigabe bleiben trotzdem Relais-/Sicherungsrating,
+PE-Fuehrung, Gehaeuseintegration, Beruehrschutz, EMV-Schutz und die
+Herstellerfreigabe fuer 230-V-Abstaende zu pruefen. Wenn die RJ45-5V-Weitergabe
+bestueckt/genutzt wird, ist die RS485-/SELV-Masse gemeinsam; das
+Isolationskonzept muss dann als gemeinsamer SELV-Bus bewertet werden.
 
 ## Export
 
@@ -80,4 +79,5 @@ cd hardware\pumpengruppe-rs485
 .\export-fab.ps1
 ```
 
-Das Skript erzeugt Gerber, Excellon-Drill, BOM und eine ZIP-Datei in `fab/`.
+Das Skript erzeugt Gerber, Excellon-Drill, BOM, Pick-and-Place/XY-Datei und
+eine ZIP-Datei in `fab/`.

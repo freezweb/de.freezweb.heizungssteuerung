@@ -1,4 +1,4 @@
-ERC report (2026-06-26T10:22:02, Encoding UTF8)
+ERC report (2026-06-26T10:37:33, Encoding UTF8)
 Report includes: Errors, Warnings
 
 ***** Sheet /
@@ -109,7 +109,7 @@ Report includes: Errors, Warnings
     @(169.84 mm, 69.92 mm): Label 'UART_TX'
 [label_dangling]: Label not connected
     ; error
-    @(169.84 mm, 75.00 mm): Label 'RS485_DE'
+    @(169.84 mm, 77.54 mm): Label 'RS485_DE'
 [label_dangling]: Label not connected
     ; error
     @(169.84 mm, 80.08 mm): Label 'UART_RX'
@@ -136,7 +136,7 @@ Report includes: Errors, Warnings
     @(180.00 mm, 90.24 mm): Label '+3V3'
 [pin_not_connected]: Pin not connected
     ; error
-    @(181.61 mm, 256.54 mm): Symbol X6 Hidden pin B1 [GND, Passive, Line]
+    @(181.61 mm, 256.54 mm): Symbol X6 Pin A1 [GND, Passive, Line]
 [label_dangling]: Label not connected
     ; error
     @(190.16 mm, 77.54 mm): Label 'RS485_B'
