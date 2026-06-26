@@ -1,44 +1,48 @@
 ** Drc report for pumpengruppe-rs485.kicad_pcb **
-** Created on 2026-06-26T09:54:54 **
+** Created on 2026-06-26T10:22:09 **
 ** Report includes: Errors, Warnings **
 
-** Found 94 DRC violations **
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,6320 mm)
-    Rule: Netzklasse "MAINS_230V_LOAD"; error
-    @(68.1500 mm, 126.6500 mm): Track [L_OPEN] on F.Cu, length 4.0305 mm
-    @(71.0000 mm, 125.0000 mm): PTH pad NC [L_CLOSE] of K3
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,3003 mm)
-    Rule: Netzklasse "MAINS_230V_LOAD"; error
-    @(68.1500 mm, 120.5438 mm): Track [L_OPEN] on F.Cu, length 6.1062 mm
-    @(71.0000 mm, 120.5000 mm): PTH pad C [MIX_L_EN] of K3
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,5033 mm)
-    Rule: Netzklasse "MAINS_230V_LOAD"; error
-    @(58.6762 mm, 111.0700 mm): Track [L_OPEN] on F.Cu, length 13.3979 mm
-    @(61.0000 mm, 109.5000 mm): PTH pad 1 [L_FUSED] of RV1
-[clearance]: Freiraum-Verstoß (Netzklasse "PE_230V" Freiraum 0,8000 mm; tatsächlich 0,2000 mm)
-    Rule: Netzklasse "PE_230V"; error
-    @(49.8000 mm, 79.8800 mm): Track [L_PUMP] on B.Cu, length 9.3621 mm
-    @(46.8500 mm, 63.0700 mm): Track [PE] on B.Cu, length 29.1000 mm
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,3008 mm)
-    Rule: Netzklasse "MAINS_230V_LOAD"; error
-    @(57.0000 mm, 40.7000 mm): Track [N] on F.Cu, length 6.0104 mm
-    @(49.8000 mm, 44.8800 mm): PTH pad 1 [L_IN] of X1
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,3008 mm)
-    Rule: Netzklasse "MAINS_230V_LOAD"; error
-    @(52.7500 mm, 44.9500 mm): Track [N] on F.Cu, length 4.6000 mm
-    @(49.8000 mm, 44.8800 mm): PTH pad 1 [L_IN] of X1
-[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,2533 mm)
-    Rule: Netzklasse "MAINS_230V_LOAD"; error
-    @(58.6762 mm, 111.0700 mm): Track [L_OPEN] on F.Cu, length 13.3979 mm
-    @(61.0000 mm, 109.5000 mm): Track [L_FUSED] on F.Cu, length 11.0000 mm
+** Found 95 DRC violations **
 [clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,5544 mm)
     Rule: Netzklasse "MAINS_230V_LOAD"; error
     @(49.8000 mm, 111.0700 mm): Track [L_OPEN] on F.Cu, length 8.8762 mm
     @(61.0000 mm, 109.5000 mm): PTH pad 1 [L_FUSED] of RV1
+[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,6320 mm)
+    Rule: Netzklasse "MAINS_230V_LOAD"; error
+    @(68.1500 mm, 126.6500 mm): Track [L_OPEN] on F.Cu, length 4.0305 mm
+    @(71.0000 mm, 125.0000 mm): PTH pad NC [L_CLOSE] of K3
+[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,2533 mm)
+    Rule: Netzklasse "MAINS_230V_LOAD"; error
+    @(58.6762 mm, 111.0700 mm): Track [L_OPEN] on F.Cu, length 13.3979 mm
+    @(61.0000 mm, 109.5000 mm): Track [L_FUSED] on F.Cu, length 11.0000 mm
+[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,0500 mm)
+    Rule: Netzklasse "MAINS_230V_LOAD"; error
+    @(58.6762 mm, 111.0700 mm): Track [L_OPEN] on F.Cu, length 13.3979 mm
+    @(59.1100 mm, 117.0000 mm): Track [N] on F.Cu, length 1.8900 mm
+[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,5033 mm)
+    Rule: Netzklasse "MAINS_230V_LOAD"; error
+    @(58.6762 mm, 111.0700 mm): Track [L_OPEN] on F.Cu, length 13.3979 mm
+    @(61.0000 mm, 109.5000 mm): PTH pad 1 [L_FUSED] of RV1
+[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,3008 mm)
+    Rule: Netzklasse "MAINS_230V_LOAD"; error
+    @(57.0000 mm, 40.7000 mm): Track [N] on F.Cu, length 6.0104 mm
+    @(49.8000 mm, 44.8800 mm): PTH pad 1 [L_IN] of X1
+[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,3003 mm)
+    Rule: Netzklasse "MAINS_230V_LOAD"; error
+    @(68.1500 mm, 120.5438 mm): Track [L_OPEN] on F.Cu, length 6.1062 mm
+    @(71.0000 mm, 120.5000 mm): PTH pad C [MIX_L_EN] of K3
 [clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_CONTROL" Freiraum 0,8000 mm; tatsächlich 0,4500 mm)
     Rule: Netzklasse "MAINS_230V_CONTROL"; error
     @(61.8000 mm, 40.7000 mm): Track [N] on F.Cu, length 0.9899 mm
     @(62.5000 mm, 43.4000 mm): Track [LED230_A] on F.Cu, length 2.0500 mm
+[clearance]: Freiraum-Verstoß (Netzklasse "MAINS_230V_LOAD" Freiraum 0,8000 mm; tatsächlich 0,3008 mm)
+    Rule: Netzklasse "MAINS_230V_LOAD"; error
+    @(52.7500 mm, 44.9500 mm): Track [N] on F.Cu, length 4.6000 mm
+    @(49.8000 mm, 44.8800 mm): PTH pad 1 [L_IN] of X1
+[clearance]: Freiraum-Verstoß (Netzklasse "PE_230V" Freiraum 0,8000 mm; tatsächlich 0,2000 mm)
+    Rule: Netzklasse "PE_230V"; error
+    @(49.8000 mm, 79.8800 mm): Track [L_PUMP] on B.Cu, length 9.3621 mm
+    @(46.8500 mm, 63.0700 mm): Track [PE] on B.Cu, length 29.1000 mm
 [drill_out_of_range]: Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)
     Rule: Einschränkungen aus Platinenkonfiguration; error
     @(156.1000 mm, 41.2700 mm): PTH pad 39 [GND] of U1

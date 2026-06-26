@@ -210,14 +210,7 @@
         }
       ],
       "track_widths": [
-        0.0,
-        0.25,
-        0.35,
-        0.5,
-        0.6,
-        1.0,
-        2.5,
-        3.0
+        0.0
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -539,116 +532,11 @@
         "diff_pair_width": 0.2,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "MAINS_230V_LOAD",
-        "pcb_color": "rgba(255, 0, 0, 0.000)",
-        "priority": 0,
-        "schematic_color": "rgba(255, 0, 0, 0.000)",
-        "track_width": 2.5,
-        "tuning_profile": "",
-        "via_diameter": 0.6,
-        "via_drill": 0.3
-      },
-      {
-        "clearance": 0.8,
-        "diff_pair_gap": 0.25,
-        "diff_pair_width": 0.2,
-        "microvia_diameter": 0.3,
-        "microvia_drill": 0.1,
-        "name": "PE_230V",
-        "pcb_color": "rgba(0, 128, 0, 0.000)",
-        "priority": 0,
-        "schematic_color": "rgba(0, 128, 0, 0.000)",
-        "track_width": 3.0,
-        "tuning_profile": "",
-        "via_diameter": 0.6,
-        "via_drill": 0.3
-      },
-      {
-        "clearance": 0.8,
-        "diff_pair_gap": 0.25,
-        "diff_pair_width": 0.2,
-        "microvia_diameter": 0.3,
-        "microvia_drill": 0.1,
-        "name": "MAINS_230V_CONTROL",
-        "pcb_color": "rgba(255, 128, 0, 0.000)",
-        "priority": 0,
-        "schematic_color": "rgba(255, 128, 0, 0.000)",
-        "track_width": 0.6,
-        "tuning_profile": "",
-        "via_diameter": 0.6,
-        "via_drill": 0.3
-      },
-      {
-        "clearance": 0.2,
-        "diff_pair_gap": 0.25,
-        "diff_pair_width": 0.2,
-        "microvia_diameter": 0.3,
-        "microvia_drill": 0.1,
-        "name": "SELV_POWER_5V",
-        "pcb_color": "rgba(255, 0, 255, 0.000)",
-        "priority": 0,
-        "schematic_color": "rgba(255, 0, 255, 0.000)",
-        "track_width": 1.0,
-        "tuning_profile": "",
-        "via_diameter": 0.6,
-        "via_drill": 0.3
-      },
-      {
-        "clearance": 0.2,
-        "diff_pair_gap": 0.25,
-        "diff_pair_width": 0.2,
-        "microvia_diameter": 0.3,
-        "microvia_drill": 0.1,
-        "name": "SELV_POWER_3V3",
-        "pcb_color": "rgba(255, 0, 255, 0.000)",
-        "priority": 0,
-        "schematic_color": "rgba(255, 0, 255, 0.000)",
-        "track_width": 0.5,
-        "tuning_profile": "",
-        "via_diameter": 0.6,
-        "via_drill": 0.3
-      },
-      {
-        "clearance": 0.2,
-        "diff_pair_gap": 0.25,
-        "diff_pair_width": 0.2,
-        "microvia_diameter": 0.3,
-        "microvia_drill": 0.1,
-        "name": "RELAY_COIL_5V",
-        "pcb_color": "rgba(0, 0, 255, 0.000)",
-        "priority": 0,
-        "schematic_color": "rgba(0, 0, 255, 0.000)",
-        "track_width": 0.5,
-        "tuning_profile": "",
-        "via_diameter": 0.6,
-        "via_drill": 0.3
-      },
-      {
-        "clearance": 0.2,
-        "diff_pair_gap": 0.25,
-        "diff_pair_width": 0.2,
-        "microvia_diameter": 0.3,
-        "microvia_drill": 0.1,
-        "name": "RS485_BUS",
-        "pcb_color": "rgba(0, 128, 255, 0.000)",
-        "priority": 0,
-        "schematic_color": "rgba(0, 128, 255, 0.000)",
-        "track_width": 0.35,
-        "tuning_profile": "",
-        "via_diameter": 0.6,
-        "via_drill": 0.3
-      },
-      {
-        "clearance": 0.2,
-        "diff_pair_gap": 0.25,
-        "diff_pair_width": 0.2,
-        "microvia_diameter": 0.3,
-        "microvia_drill": 0.1,
-        "name": "SELV_SIGNAL",
+        "name": "230V",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 0,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.25,
+        "track_width": 1.5,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.3
@@ -661,152 +549,64 @@
     "netclass_assignments": null,
     "netclass_patterns": [
       {
-        "netclass": "MAINS_230V_LOAD",
-        "pattern": "/L_FUSED"
-      },
-      {
-        "netclass": "MAINS_230V_LOAD",
-        "pattern": "/L_IN"
-      },
-      {
-        "netclass": "MAINS_230V_LOAD",
-        "pattern": "/L_CLOSE"
-      },
-      {
-        "netclass": "MAINS_230V_LOAD",
-        "pattern": "/L_OPEN"
-      },
-      {
-        "netclass": "MAINS_230V_LOAD",
-        "pattern": "/N"
-      },
-      {
-        "netclass": "MAINS_230V_LOAD",
-        "pattern": "L_FUSED"
-      },
-      {
-        "netclass": "MAINS_230V_LOAD",
-        "pattern": "L_IN"
-      },
-      {
-        "netclass": "MAINS_230V_LOAD",
-        "pattern": "L_OPEN"
-      },
-      {
-        "netclass": "MAINS_230V_LOAD",
-        "pattern": "L_CLOSE"
-      },
-      {
-        "netclass": "MAINS_230V_LOAD",
-        "pattern": "MIX_L_EN"
-      },
-      {
-        "netclass": "MAINS_230V_LOAD",
-        "pattern": "L_PUMP"
-      },
-      {
-        "netclass": "MAINS_230V_LOAD",
+        "netclass": "230V",
         "pattern": "N"
       },
       {
-        "netclass": "PE_230V",
+        "netclass": "230V",
+        "pattern": "/L_FUSED"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/L_IN"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/N"
+      },
+      {
+        "netclass": "230V",
         "pattern": "/PE"
       },
       {
-        "netclass": "PE_230V",
+        "netclass": "230V",
+        "pattern": "/L_CLOSE"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/L_OPEN"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "L_FUSED"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "L_IN"
+      },
+      {
+        "netclass": "Default",
+        "pattern": "N"
+      },
+      {
+        "netclass": "230V",
         "pattern": "PE"
       },
       {
-        "netclass": "MAINS_230V_CONTROL",
-        "pattern": "LED230_A"
+        "netclass": "230V",
+        "pattern": "L_OPEN"
       },
       {
-        "netclass": "MAINS_230V_CONTROL",
-        "pattern": "LED230_DROP"
+        "netclass": "230V",
+        "pattern": "L_CLOSE"
       },
       {
-        "netclass": "SELV_POWER_5V",
-        "pattern": "+5V"
+        "netclass": "230V",
+        "pattern": "MIX_L_EN"
       },
       {
-        "netclass": "SELV_POWER_5V",
-        "pattern": "BUS_5V"
-      },
-      {
-        "netclass": "SELV_POWER_5V",
-        "pattern": "GND"
-      },
-      {
-        "netclass": "SELV_POWER_5V",
-        "pattern": "RS485_GND"
-      },
-      {
-        "netclass": "SELV_POWER_5V",
-        "pattern": "USB_VBUS"
-      },
-      {
-        "netclass": "SELV_POWER_3V3",
-        "pattern": "+3V3"
-      },
-      {
-        "netclass": "RELAY_COIL_5V",
-        "pattern": "PUMP_COIL_L"
-      },
-      {
-        "netclass": "RELAY_COIL_5V",
-        "pattern": "MIX_ENABLE_COIL_L"
-      },
-      {
-        "netclass": "RELAY_COIL_5V",
-        "pattern": "MIX_DIR_COIL_L"
-      },
-      {
-        "netclass": "RS485_BUS",
-        "pattern": "RS485_A"
-      },
-      {
-        "netclass": "RS485_BUS",
-        "pattern": "RS485_B"
-      },
-      {
-        "netclass": "RS485_BUS",
-        "pattern": "RS485_TERM"
-      },
-      {
-        "netclass": "SELV_SIGNAL",
-        "pattern": "UART_*"
-      },
-      {
-        "netclass": "SELV_SIGNAL",
-        "pattern": "SPI_*"
-      },
-      {
-        "netclass": "SELV_SIGNAL",
-        "pattern": "RTD_*"
-      },
-      {
-        "netclass": "SELV_SIGNAL",
-        "pattern": "RGB_*"
-      },
-      {
-        "netclass": "SELV_SIGNAL",
-        "pattern": "PUMP_DRV"
-      },
-      {
-        "netclass": "SELV_SIGNAL",
-        "pattern": "MIX_ENABLE_DRV"
-      },
-      {
-        "netclass": "SELV_SIGNAL",
-        "pattern": "MIX_DIR_DRV"
-      },
-      {
-        "netclass": "SELV_SIGNAL",
-        "pattern": "RS485_DE"
-      },
-      {
-        "netclass": "SELV_SIGNAL",
-        "pattern": "USB_*"
+        "netclass": "230V",
+        "pattern": "L_PUMP"
       }
     ]
   },
