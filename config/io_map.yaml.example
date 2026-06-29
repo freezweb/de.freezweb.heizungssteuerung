@@ -77,10 +77,10 @@ di:
   DI09: { module: DIO1, channel: I_9,  pictory_name: "I_9",              komponente: "wp2_stoerung",      beschreibung: "Sammelstoerung WP2",        phase: B }
   DI10: { module: DIO1, channel: I_10, pictory_name: "I_10",             komponente: "bwwp_stoerung",     beschreibung: "Sammelstoerung BW-WP",      phase: B }
   DI11: { module: DIO1, channel: I_11, pictory_name: "I_11",             komponente: "brunnen_stroemung", beschreibung: "Stroemungswachter Brunnen", phase: C }
-  DI12: { module: DIO1, channel: I_12, pictory_name: "I_12",             komponente: "druck_heizkreis",   beschreibung: "Druckwachter Heizkreis",    phase: "-" }
-  DI13: { module: DIO1, channel: I_13, pictory_name: "I_13",             komponente: "reserve_di_13",     beschreibung: "Reserve",                   phase: "-" }
-  DI14: { module: DIO1, channel: I_14, pictory_name: "I_14",             komponente: "reserve_di_14",     beschreibung: "Reserve",                   phase: "-" }
-  DI15: { module: DIO2, channel: I_1,  pictory_name: "I_1_i17",          komponente: "reserve_di_15",     beschreibung: "Reserve",                   phase: "-" }
+  DI12: { module: DIO1, channel: I_12, pictory_name: "I_12",             komponente: "oelbrenner_wasserdruck_stoerung", beschreibung: "Oelbrenner Wasserdruck Stoerung", phase: A, polaritaet: NC_SAFE_HIGH }
+  DI13: { module: DIO1, channel: I_13, pictory_name: "I_13",             komponente: "brenner_stoerung",  beschreibung: "Oelbrenner Stoermeldung",   phase: A }
+  DI14: { module: DIO1, channel: I_14, pictory_name: "I_14",             komponente: "brenner_betrieb",   beschreibung: "Oelbrenner Betriebsmeldung", phase: A }
+  DI15: { module: DIO2, channel: I_1,  pictory_name: "I_1_i17",          komponente: "oelbrenner_stb_stoerung", beschreibung: "Oelbrenner STB Stoerung", phase: A, polaritaet: NC_SAFE_HIGH }
   DI16: { module: DIO2, channel: I_2,  pictory_name: "I_2_i17",          komponente: "reserve_di_16",     beschreibung: "Reserve",                   phase: "-" }
 
 # Direkte RTD-Kanaele fuer Pt100/Pt1000.

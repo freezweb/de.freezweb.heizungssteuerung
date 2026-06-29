@@ -60,6 +60,36 @@ BUS_5V wird ueber eine selbstrueckstellende Sicherung auf die lokale 5V-Schiene
 gekoppelt. Fuer diese Hilfsversorgung muss COM mit lokaler 0V verbunden werden;
 dadurch ist die RJ45-Weitergabe als gemeinsamer SELV-Bus zu betrachten.
 
+## Bestueckungsvarianten
+
+Es wird nur eine Leiterplatte gefertigt. Die Funktion wird ueber die
+Bestueckung unterschieden:
+
+- Vollausbau Pumpengruppe:
+  - Bestueckung nach `hardware/pumpengruppe-rs485/fab/pumpengruppe-rs485-bom.csv`
+  - Pick-and-Place nach
+    `hardware/pumpengruppe-rs485/fab/pumpengruppe-rs485-pick-place.csv`
+  - 230-V-Eingang, Netzteil, Relais, Mischer-/Pumpenausgaenge, RTD, RS485 und
+    RGB-Anzeigen bestueckt.
+- Temperatur-/RS485-Variante:
+  - Bestueckung nach
+    `hardware/pumpengruppe-rs485/fab/pumpengruppe-rs485-bom-tempinput.csv`
+  - Pick-and-Place nach
+    `hardware/pumpengruppe-rs485/fab/pumpengruppe-rs485-pick-place-tempinput.csv`
+  - Linker 230-V-/Relaisbereich bleibt DNP: `X1`, `X2`, `X3`, `F1`, `PSU1`,
+    `K1`, `K2`, `K3`, Relais-Treiber, Netz-LED und MOV werden nicht bestueckt.
+  - Versorgung erfolgt ueber `BUS_5V`/RJ45 mit `F2` und gemeinsamer
+    `COM`/0V-Kopplung ueber `R32`.
+  - Die Ventilstand-LED-Kette `D64-D83`/`C64-C83` bleibt DNP; die vier
+    Status-RGB-LEDs `D60-D63` bleiben bestueckt.
+
+Auf der PCB ist die Breakaway-Ausfuehrung als sichtbare Bestueckungsmarkierung
+und als echte Bohrperforation umgesetzt: `MB1` setzt 0,7-mm-NPTH-Mousebites in
+die oberen und unteren Materialstege des vorhandenen Isolationsschlitzes. Damit
+kann dieselbe Leiterplatte fuer Vollausbau und Temperatur-/RS485-Variante
+produziert werden. Vor Serienfertigung sollte PCBWay die Mousebite-Geometrie
+und die mechanische Reststegbreite trotzdem bestaetigen.
+
 ## Blockschaltbild
 
 ```mermaid
@@ -168,8 +198,16 @@ Layout-Ziele:
     `N`, `PE`; Routingbreite 1,5 mm, Clearance 0,8 mm innerhalb der
     230-V-Netze.
   - `Default`: SELV/Signale; Routingbreite 0,2 mm, projektweite
-    Mindestbreite 0,2 mm. Breitere 5-V-/3V3-Power-Tracks sind im Board lokal
-    geroutet.
+    Mindestbreite 0,2 mm.
+  - `SELV_POWER_0V8`: `+5V`, `BUS_5V`, `USB_VBUS`, `GND`, `RS485_GND`;
+    Routingbreite 0,8 mm fuer neue Versorgungsrouten.
+  - `Doppelte Dicke`: `+3V3`; Routingbreite 0,4 mm.
+  - Auf der RGB-/Temp-Input-Seite sind erste vorhandene 5-V-/GND-Segmente real
+    auf 0,8 mm und 3V3-Segmente auf 0,4 mm verbreitert. USB- und RJ45-Engstellen
+    bleiben bewusst schmal, weil eine globale Track-Verbreiterung dort
+    DRC-Kurzschluesse erzeugt. Diese Netze muessen fuer eine belastbare
+    Serienversion weiter gezielt mit breiten Versorgungsstaemmen bzw.
+    Kupferflaechen nachgezogen werden.
   - `SELV_SIGNAL`: ESP-, SPI-, UART-, USB-CC/Daten-, LED- und RTD-Signale;
     Routingbreite 0,25 mm.
 - Die Netclass-Clearances sind bauteilkompatible CAD-Mindestwerte. Die

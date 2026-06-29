@@ -146,6 +146,10 @@ views:
           - entity: number.heizung_hauptsteuerung_brauchwasser_soll_c
           - entity: number.heizung_hauptsteuerung_brauchwasser_hysterese_k
           - entity: binary_sensor.heizung_hauptsteuerung_ausgang_brenner
+          - entity: binary_sensor.heizung_hauptsteuerung_oelbrenner_betriebsmeldung
+          - entity: binary_sensor.heizung_hauptsteuerung_oelbrenner_stoermeldung
+          - entity: binary_sensor.heizung_hauptsteuerung_oelbrenner_wasserdruck_stoerung
+          - entity: binary_sensor.heizung_hauptsteuerung_oelbrenner_stb_stoerung
           - entity: binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_bw_lade
 
       - type: entities
@@ -329,6 +333,14 @@ views:
             name: WP1 Stoerung
           - entity: binary_sensor.heizung_hauptsteuerung_wp2_stoerung
             name: WP2 Stoerung
+          - entity: binary_sensor.heizung_hauptsteuerung_oelbrenner_stoermeldung
+            name: Brenner Stoerung
+          - entity: binary_sensor.heizung_hauptsteuerung_oelbrenner_betriebsmeldung
+            name: Brenner Betrieb
+          - entity: binary_sensor.heizung_hauptsteuerung_oelbrenner_wasserdruck_stoerung
+            name: Brenner Wasserdruck
+          - entity: binary_sensor.heizung_hauptsteuerung_oelbrenner_stb_stoerung
+            name: Brenner STB
           - entity: binary_sensor.heizung_hauptsteuerung_tor_fluegel_links_zu
             name: Tor links zu
           - entity: binary_sensor.heizung_hauptsteuerung_tor_fluegel_rechts_zu

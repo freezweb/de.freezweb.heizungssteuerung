@@ -96,6 +96,8 @@ async def run() -> int:
     flowmeter_last_error_log_ts = 0.0
     applied_do: dict[str, bool] = {}
     applied_ao: dict[str, float] = {}
+    oelbrenner_common_active = False
+    klima_og_cooling_active = False
     try:
         while not stop.is_set():
             started = time.monotonic()
@@ -160,7 +162,15 @@ async def run() -> int:
 
             heating_tick = cycle_count % heating_divider == 0
             if heating_tick:
-                routing_state, brauchwasser_state, brunnen_state, auto_do, auto_ao = _compute_auto_outputs(
+                (
+                    routing_state,
+                    brauchwasser_state,
+                    brunnen_state,
+                    auto_do,
+                    auto_ao,
+                    oelbrenner_common_active,
+                    klima_og_cooling_active,
+                ) = _compute_auto_outputs(
                     controller_config,
                     mqtt,
                     snapshot,
@@ -170,6 +180,8 @@ async def run() -> int:
                     brauchwasser_ladung_active,
                     brunnen_active,
                     brunnen_speed_pct,
+                    oelbrenner_common_active,
+                    klima_og_cooling_active,
                     cycle_s,
                     brunnen_flow_l_min,
                     brunnen_no_flow_s,
@@ -187,6 +199,7 @@ async def run() -> int:
                     brunnen_no_flow_s,
                     auto_do,
                     auto_ao,
+                    klima_og_cooling_active,
                 )
             brunnen_active = brunnen_state.active
             brunnen_speed_pct = brunnen_state.speed_pct
@@ -198,6 +211,7 @@ async def run() -> int:
                 hand_auto,
                 auto_do,
                 auto_ao,
+                snapshot,
                 now_ts,
                 keller_client,
                 only_channel_ids=write_only,
@@ -224,6 +238,7 @@ async def run() -> int:
                     brunnen_state,
                     applied_do,
                     applied_ao,
+                    klima_og_cooling_active,
                 )
             uptime_s = int(now_ts - boot_ts)
             heartbeat_tick = uptime_s // 30
@@ -489,13 +504,25 @@ def _compute_auto_outputs(
     brauchwasser_previous_active: bool,
     brunnen_previous_active: bool,
     brunnen_previous_speed_pct: float,
+    oelbrenner_previous_active: bool,
+    klima_og_cooling_previous_active: bool,
     cycle_s: float = 1.0,
     brunnen_flow_l_min: float | None = None,
     brunnen_no_flow_s: float | None = None,
-) -> tuple[RoutingState, BrauchwasserState, BrunnenPressureState, dict[str, bool], dict[str, float]]:
+) -> tuple[RoutingState, BrauchwasserState, BrunnenPressureState, dict[str, bool], dict[str, float], bool, bool]:
+    demands = dict(mqtt.demands)
+    klima_og_cooling_active = _compute_klima_og_cooling(
+        app_config,
+        demands,
+        snapshot,
+        freigaben,
+        klima_og_cooling_previous_active,
+    )
+    if klima_og_cooling_active:
+        demands.pop("klima_og", None)
     routing_state, routed_do, routed_ao = compute_routing(
         regler.as_settings(app_config.settings),
-        mqtt.demands,
+        demands,
         failsafe_state,
         freigaben,
     )
@@ -503,6 +530,15 @@ def _compute_auto_outputs(
     for channel_id, value in routed_do.items():
         if channel_id in auto:
             auto[channel_id] = value
+    oelbrenner_common_active = bool(auto.get("DO01", False))
+    if "DO01" in auto:
+        auto["DO01"] = _compute_oelbrenner_common_heat(
+            app_config,
+            snapshot,
+            routing_state,
+            oelbrenner_common_active,
+            oelbrenner_previous_active,
+        )
     brauchwasser_state = compute_brauchwasser(
         app_config,
         snapshot,
@@ -536,7 +572,82 @@ def _compute_auto_outputs(
     brunnen_ao = app_config.io_map.by_component("brunnen_fu_soll")
     if brunnen_ao is not None and brunnen_ao.kind == "ao" and brunnen_ao.id in auto_ao:
         auto_ao[brunnen_ao.id] = brunnen_state.speed_pct
-    return routing_state, brauchwasser_state, brunnen_state, auto, auto_ao
+    _apply_klima_og_cooling_outputs(app_config, regler, auto, auto_ao, klima_og_cooling_active)
+    return (
+        routing_state,
+        brauchwasser_state,
+        brunnen_state,
+        auto,
+        auto_ao,
+        bool(auto.get("DO01", False) and not brauchwasser_state.active),
+        klima_og_cooling_active,
+    )
+
+
+def _compute_klima_og_cooling(
+    app_config: AppConfig,
+    demands: dict[str, Demand],
+    snapshot: HardwareSnapshot,
+    freigaben: Freigaben,
+    previous_active: bool,
+) -> bool:
+    if not bool(app_config.setting("klima_og.kuehlung_enabled", False)):
+        return False
+    demand = demands.get("klima_og")
+    if demand is None or not demand.aktiv or demand.vl_soll is None:
+        return False
+    if not freigaben.sink_enabled("klima_og"):
+        return False
+    target_vl = float(demand.vl_soll)
+    if target_vl > float(app_config.setting("klima_og.kuehlung_max_vl_soll_c", 25.0)):
+        return False
+    actual_vl = _sensor_value_by_component(app_config, snapshot, "klima_og_vl")
+    if actual_vl is None:
+        actual_vl = _sensor_value_by_component(app_config, snapshot, "kuehl_vl")
+    if actual_vl is None:
+        return False
+    hysterese_k = max(0.1, float(app_config.setting("klima_og.kuehlung_hysterese_k", 1.0)))
+    if previous_active:
+        return actual_vl > target_vl
+    return actual_vl >= target_vl + hysterese_k
+
+
+def _apply_klima_og_cooling_outputs(
+    app_config: AppConfig,
+    regler: ReglerParameter,
+    auto_do: dict[str, bool],
+    auto_ao: dict[str, float],
+    active: bool,
+) -> None:
+    if not active:
+        return
+    _set_do_by_component(app_config, auto_do, "pumpe_klima_og", True)
+    _set_do_by_component(app_config, auto_do, "brunnen_mv", True)
+    _set_do_by_component(app_config, auto_do, "brunnen_pumpe_freigabe", True)
+    _set_ao_by_component(app_config, auto_ao, "mischer_klima_og_pct", 0.0)
+    brunnen_ao = app_config.io_map.by_component("brunnen_fu_soll")
+    if brunnen_ao is not None and brunnen_ao.kind == "ao" and brunnen_ao.id in auto_ao and auto_ao[brunnen_ao.id] <= 0:
+        auto_ao[brunnen_ao.id] = float(regler.brunnen_fu_start_pct)
+
+
+def _compute_oelbrenner_common_heat(
+    app_config: AppConfig,
+    snapshot: HardwareSnapshot,
+    routing_state: RoutingState,
+    requested: bool,
+    previous_active: bool,
+) -> bool:
+    if not requested or routing_state.vl_soll is None:
+        return False
+    vl_ist = _sensor_value_by_component(app_config, snapshot, "vl_sammel")
+    if vl_ist is None:
+        return True
+    hysterese_k = max(0.1, float(app_config.setting("regelung.oelbrenner_hysterese_k", 1.0)))
+    if vl_ist >= float(routing_state.vl_soll):
+        return False
+    if vl_ist <= float(routing_state.vl_soll) - hysterese_k:
+        return True
+    return previous_active
 
 
 def _compute_fast_brunnen_outputs(
@@ -550,6 +661,7 @@ def _compute_fast_brunnen_outputs(
     brunnen_no_flow_s: float | None,
     auto_do: dict[str, bool],
     auto_ao: dict[str, float],
+    klima_og_cooling_active: bool = False,
 ) -> BrunnenPressureState:
     brunnen_state = compute_brunnen_pressure(
         app_config,
@@ -567,7 +679,20 @@ def _compute_fast_brunnen_outputs(
     brunnen_ao = app_config.io_map.by_component("brunnen_fu_soll")
     if brunnen_ao is not None and brunnen_ao.kind == "ao" and brunnen_ao.id in auto_ao:
         auto_ao[brunnen_ao.id] = brunnen_state.speed_pct
+    _apply_klima_og_cooling_outputs(app_config, regler, auto_do, auto_ao, klima_og_cooling_active)
     return brunnen_state
+
+
+def _set_do_by_component(app_config: AppConfig, auto_do: dict[str, bool], component: str, value: bool) -> None:
+    channel = app_config.io_map.by_component(component)
+    if channel is not None and channel.kind == "do" and channel.id in auto_do:
+        auto_do[channel.id] = value
+
+
+def _set_ao_by_component(app_config: AppConfig, auto_ao: dict[str, float], component: str, value: float) -> None:
+    channel = app_config.io_map.by_component(component)
+    if channel is not None and channel.kind == "ao" and channel.id in auto_ao:
+        auto_ao[channel.id] = value
 
 
 def _brunnen_output_ids(app_config: AppConfig) -> set[str]:
@@ -576,6 +701,10 @@ def _brunnen_output_ids(app_config: AppConfig) -> set[str]:
         channel = app_config.io_map.by_component(component)
         if channel is not None and channel.kind in {"do", "ao"}:
             ids.add(channel.id)
+    burner = _burner_output_channel(app_config)
+    if burner is not None:
+        ids.add(burner.id)
+    ids.update(_heating_pump_output_ids(app_config))
     return ids
 
 
@@ -586,6 +715,7 @@ async def _write_outputs(
     hand_auto: HandAutoManager,
     auto_do: dict[str, bool],
     auto_ao: dict[str, float],
+    snapshot: HardwareSnapshot,
     now_ts: float,
     keller_client: KellerModbusClient | None = None,
     only_channel_ids: set[str] | None = None,
@@ -601,6 +731,10 @@ async def _write_outputs(
             continue
         value, _hand = hand_auto.apply(channel, auto_do.get(channel_id, False), now_ts)
         applied_do[channel_id] = bool(value)
+        if _is_hard_locked_burner_output(channel, app_config, snapshot):
+            applied_do[channel_id] = False
+        if _is_hard_locked_heating_pump_output(channel, app_config, snapshot):
+            applied_do[channel_id] = False
         if channel_id in local_io_map.do:
             await io_backend.write_do(channel, applied_do[channel_id])
         else:
@@ -628,6 +762,85 @@ async def _write_outputs(
     return applied_do, applied_ao
 
 
+def _is_hard_locked_burner_output(
+    channel: ChannelConfig,
+    app_config: AppConfig,
+    snapshot: HardwareSnapshot,
+) -> bool:
+    burner = _burner_output_channel(app_config)
+    if burner is None or channel.id != burner.id:
+        return False
+    return bool(_oelbrenner_hard_safety_reasons(app_config, snapshot))
+
+
+def _is_hard_locked_heating_pump_output(
+    channel: ChannelConfig,
+    app_config: AppConfig,
+    snapshot: HardwareSnapshot,
+) -> bool:
+    if channel.kind != "do" or channel.id not in _heating_pump_output_ids(app_config):
+        return False
+    return _oelbrenner_water_shortage_active(app_config, snapshot)
+
+
+def _burner_output_channel(app_config: AppConfig) -> ChannelConfig | None:
+    for component in ("brenner", "olbrenner_freigabe", "oelbrenner_freigabe"):
+        channel = app_config.io_map.by_component(component)
+        if channel is not None and channel.kind == "do":
+            return channel
+    return None
+
+
+def _oelbrenner_safety_reasons(app_config: AppConfig, snapshot: HardwareSnapshot) -> tuple[str, ...]:
+    reasons = list(_oelbrenner_hard_safety_reasons(app_config, snapshot))
+    if _oelbrenner_fault_active(app_config, snapshot):
+        reasons.append("stoermeldung")
+    return tuple(reasons)
+
+
+def _oelbrenner_hard_safety_reasons(app_config: AppConfig, snapshot: HardwareSnapshot) -> tuple[str, ...]:
+    checks = (
+        ("oelbrenner_wasserdruck_stoerung", True, "wasserdruck"),
+        ("oelbrenner_stb_stoerung", True, "stb"),
+    )
+    reasons: list[str] = []
+    for component, nc_safe_high, reason in checks:
+        value = _di_value_by_component(app_config, snapshot, component)
+        if value is None:
+            continue
+        if nc_safe_high:
+            if not value:
+                reasons.append(reason)
+        elif value:
+            reasons.append(reason)
+    return tuple(reasons)
+
+
+def _oelbrenner_fault_active(app_config: AppConfig, snapshot: HardwareSnapshot) -> bool:
+    return _di_value_by_component(app_config, snapshot, "brenner_stoerung") is True
+
+
+def _oelbrenner_water_shortage_active(app_config: AppConfig, snapshot: HardwareSnapshot) -> bool:
+    value = _di_value_by_component(app_config, snapshot, "oelbrenner_wasserdruck_stoerung")
+    return value is False
+
+
+def _heating_pump_output_ids(app_config: AppConfig) -> set[str]:
+    components = {
+        "pumpe_bw_lade",
+        "pumpe_nebengeb",
+        "pumpe_pool",
+        "pumpe_fbh_eg",
+        "pumpe_klima_og",
+        "pumpe_hk_backup",
+    }
+    ids: set[str] = set()
+    for channel in app_config.io_map.do.values():
+        if channel.komponente in components:
+            ids.add(channel.id)
+    return ids
+
+
 def _publish_state(
     mqtt: MqttBridge,
     app_config: AppConfig,
@@ -641,6 +854,7 @@ def _publish_state(
     brunnen_state: BrunnenPressureState,
     applied_do: dict[str, bool],
     applied_ao: dict[str, float],
+    klima_og_cooling_active: bool = False,
 ) -> None:
     base = mqtt.base
     mqtt.publish(f"{base}/failsafe/active", "1" if failsafe_state.active else "0", retain=True)
@@ -654,6 +868,10 @@ def _publish_state(
     mqtt.publish(f"{base}/brauchwasser/ladung_aktiv", "1" if brauchwasser_state.active else "0", retain=True)
     mqtt.publish(f"{base}/brauchwasser/grund", brauchwasser_state.reason, retain=True)
     mqtt.publish_json(f"{base}/brauchwasser/state", brauchwasser_state.as_payload(), retain=True)
+    mqtt.publish(f"{base}/klima_og/kuehlung_aktiv", "1" if klima_og_cooling_active else "0", retain=True)
+    oelbrenner_safety_reasons = _oelbrenner_safety_reasons(app_config, snapshot)
+    mqtt.publish(f"{base}/oelbrenner/sicherheit/ok", "0" if oelbrenner_safety_reasons else "1", retain=True)
+    mqtt.publish(f"{base}/oelbrenner/sicherheit/grund", ",".join(oelbrenner_safety_reasons), retain=True)
     mqtt.publish(f"{base}/brunnen/active", "1" if brunnen_state.active else "0", retain=True)
     mqtt.publish(f"{base}/brunnen/grund", brunnen_state.reason, retain=True)
     mqtt.publish(f"{base}/brunnen/druck_bar/state", "" if brunnen_state.pressure_bar is None else f"{brunnen_state.pressure_bar:.2f}", retain=True)
@@ -698,13 +916,13 @@ def _publish_state(
 
     for channel_id, channel in app_config.io_map.ai.items():
         value = snapshot.ai.get(channel_id)
-        if value is not None:
-            mqtt.publish(f"{base}/temp/{channel.komponente}/state", f"{value:.1f}")
+        if value is not None and _is_temperature_channel(channel):
+            _publish_temperature(mqtt, f"{base}/temp/{channel.komponente}/state", value)
 
     for channel_id, channel in app_config.io_map.rtd.items():
         value = snapshot.rtd.get(channel_id)
         if value is not None:
-            mqtt.publish(f"{base}/temp/{channel.komponente}/state", f"{value:.1f}")
+            _publish_temperature(mqtt, f"{base}/temp/{channel.komponente}/state", value)
 
     for channel_id, channel in app_config.io_map.di.items():
         value = snapshot.di.get(channel_id)
@@ -773,6 +991,77 @@ def _publish_ha_discovery(mqtt: MqttBridge, app_config: AppConfig) -> None:
                 "state_topic": sensor["state_topic"],
                 "unit_of_measurement": sensor["unit"],
                 "state_class": "measurement",
+                "device": device_payload,
+            },
+        )
+
+    for channel in list(app_config.io_map.rtd.values()) + [
+        channel for channel in app_config.io_map.ai.values() if _is_temperature_channel(channel)
+    ]:
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "sensor",
+            f"temp_{channel.komponente}",
+            {
+                "name": _display_name(channel),
+                "state_topic": f"{mqtt.base}/temp/{channel.komponente}/state",
+                "availability_topic": f"{mqtt.base}/temp/{channel.komponente}/availability",
+                "payload_available": "online",
+                "payload_not_available": "offline",
+                "unit_of_measurement": "°C",
+                "device_class": "temperature",
+                "state_class": "measurement",
+                "device": device_payload,
+            },
+        )
+
+    _publish_discovery_entity(
+        mqtt,
+        prefix,
+        "binary_sensor",
+        "klima_og_kuehlung_aktiv",
+        {
+            "name": "Klima OG Kuehlung aktiv",
+            "state_topic": f"{mqtt.base}/klima_og/kuehlung_aktiv",
+            "payload_on": "1",
+            "payload_off": "0",
+            "device": device_payload,
+        },
+    )
+
+    for demand in _demand_discovery_definitions(mqtt.base, app_config.setting("anforderungen", {})):
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "switch",
+            demand["switch_object_name"],
+            {
+                "name": demand["switch_name"],
+                "state_topic": demand["active_state_topic"],
+                "command_topic": demand["active_command_topic"],
+                "payload_on": "1",
+                "payload_off": "0",
+                "state_on": "1",
+                "state_off": "0",
+                "device": device_payload,
+            },
+        )
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "number",
+            demand["number_object_name"],
+            {
+                "name": demand["number_name"],
+                "state_topic": demand["vl_state_topic"],
+                "command_topic": demand["vl_command_topic"],
+                "min": demand["min"],
+                "max": demand["max"],
+                "step": 0.5,
+                "mode": "box",
+                "unit_of_measurement": "C",
+                "device_class": "temperature",
                 "device": device_payload,
             },
         )
@@ -891,6 +1180,28 @@ def _publish_ha_discovery(mqtt: MqttBridge, app_config: AppConfig) -> None:
                 "device": device_payload,
             },
         )
+
+    for channel in app_config.io_map.di.values():
+        payload_on = "0" if channel.polaritaet == "NC_SAFE_HIGH" else "1"
+        payload_off = "1" if channel.polaritaet == "NC_SAFE_HIGH" else "0"
+        payload: dict[str, Any] = {
+            "name": _display_name(channel),
+            "state_topic": f"{mqtt.base}/di/{channel.komponente}/state",
+            "payload_on": payload_on,
+            "payload_off": payload_off,
+            "device": device_payload,
+        }
+        if "stoerung" in channel.komponente:
+            payload["device_class"] = "problem"
+        elif channel.polaritaet == "NC_SAFE_HIGH":
+            payload["device_class"] = "safety"
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "binary_sensor",
+            channel.komponente,
+            payload,
+        )
     log.info("Home-Assistant MQTT-Discovery publiziert")
 
 
@@ -906,10 +1217,15 @@ def _publish_discovery_entity(
         **payload,
         "unique_id": unique_id,
         "object_id": unique_id,
-        "availability_topic": f"{mqtt.base}/status",
-        "payload_available": "online",
-        "payload_not_available": "offline",
     }
+    if "availability" not in entity_payload and "availability_topic" not in entity_payload:
+        entity_payload.update(
+            {
+                "availability_topic": f"{mqtt.base}/status",
+                "payload_available": "online",
+                "payload_not_available": "offline",
+            }
+        )
     mqtt.publish_json(f"{prefix}/{component}/{unique_id}/config", entity_payload, retain=True)
 
 
@@ -934,6 +1250,50 @@ def _brunnen_sensor_definitions(base: str) -> list[dict[str, str]]:
             "unit": "s",
         },
     ]
+
+
+def _demand_discovery_definitions(base: str, demand_settings: dict[str, Any]) -> list[dict[str, Any]]:
+    object_names = {
+        "fbh_eg": "fbh_eg",
+        "klima_og": "klima_og",
+        "nebengeb": "nebengebaeude",
+        "hk_backup": "hk_backup",
+        "pool": "pool",
+        "bwwp": "bwwp",
+    }
+    display_names = {
+        "fbh_eg": "FBH EG",
+        "klima_og": "Klima OG",
+        "nebengeb": "Nebengebaeude",
+        "hk_backup": "HK Backup",
+        "pool": "Pool",
+        "bwwp": "BWWP",
+    }
+    ranges = {
+        "klima_og": (7, 55),
+        "pool": (20, 45),
+        "bwwp": (40, 65),
+    }
+    definitions: list[dict[str, Any]] = []
+    for name in demand_settings:
+        object_name = object_names.get(name, name)
+        display_name = display_names.get(name, name.replace("_", " ").title())
+        low, high = ranges.get(name, (20, 55))
+        definitions.append(
+            {
+                "switch_object_name": f"anforderung_{object_name}",
+                "number_object_name": f"vl_soll_{object_name}",
+                "switch_name": f"Anforderung {display_name}",
+                "number_name": f"VL Soll {display_name}",
+                "active_state_topic": f"{base}/anforderung/{name}/aktiv/state",
+                "active_command_topic": f"{base}/anforderung/{name}/aktiv/set",
+                "vl_state_topic": f"{base}/anforderung/{name}/vl_soll/state",
+                "vl_command_topic": f"{base}/anforderung/{name}/vl_soll/set",
+                "min": low,
+                "max": high,
+            }
+        )
+    return definitions
 
 
 def _regler_number_definitions() -> list[dict[str, Any]]:
@@ -1082,6 +1442,31 @@ def _display_name(channel: ChannelConfig) -> str:
     return channel.komponente.replace("_", " ").title()
 
 
+def _publish_temperature(mqtt: MqttBridge, topic: str, value: float | None) -> None:
+    if value is None or _is_missing_temperature(value):
+        mqtt.publish(_temperature_availability_topic(topic), "offline", retain=True)
+        mqtt.publish(topic, "", retain=True)
+        return
+    mqtt.publish(_temperature_availability_topic(topic), "online", retain=True)
+    mqtt.publish(topic, f"{value:.1f}", retain=True)
+
+
+def _temperature_availability_topic(topic: str) -> str:
+    if topic.endswith("/state"):
+        return f"{topic[:-len('/state')]}/availability"
+    return f"{topic}/availability"
+
+
+def _is_temperature_channel(channel: ChannelConfig) -> bool:
+    unit = str(channel.einheit or "").strip().lower()
+    sensor = str(channel.sensor or "").strip().lower()
+    return channel.kind == "rtd" or unit in {"c", "°c", "grad c"} or "temperatur" in sensor or "pt100" in sensor
+
+
+def _is_missing_temperature(value: float) -> bool:
+    return abs(float(value)) >= 800.0
+
+
 def _coerce_output_value(channel: ChannelConfig, value: Any) -> Any:
     if channel.kind == "do":
         if isinstance(value, str):
@@ -1106,10 +1491,12 @@ def _extract_bool(payload: Any) -> bool:
 def _sensor_value_by_component(app_config: AppConfig, snapshot: HardwareSnapshot, component: str) -> float | None:
     for channel_id, channel in app_config.io_map.rtd.items():
         if channel.komponente == component:
-            return snapshot.rtd.get(channel_id)
+            value = snapshot.rtd.get(channel_id)
+            return None if value is None or _is_missing_temperature(value) else value
     for channel_id, channel in app_config.io_map.ai.items():
         if channel.komponente == component:
-            return snapshot.ai.get(channel_id)
+            value = snapshot.ai.get(channel_id)
+            return None if value is None or (_is_temperature_channel(channel) and _is_missing_temperature(value)) else value
     return None
 
 

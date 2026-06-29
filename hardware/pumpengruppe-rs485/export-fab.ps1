@@ -33,7 +33,9 @@ $Fab = Join-Path $ProjectRoot "fab"
 $Gerber = Join-Path $Fab "gerber"
 $Drill = Join-Path $Fab "drill"
 $Bom = Join-Path $Fab "pumpengruppe-rs485-bom.csv"
+$BomTemp = Join-Path $Fab "pumpengruppe-rs485-bom-tempinput.csv"
 $Pos = Join-Path $Fab "pumpengruppe-rs485-pick-place.csv"
+$PosTemp = Join-Path $Fab "pumpengruppe-rs485-pick-place-tempinput.csv"
 $Zip = Join-Path $Fab "pumpengruppe-rs485-revA-preliminary-gerber.zip"
 
 New-Item -ItemType Directory -Force -Path $Gerber, $Drill | Out-Null
@@ -61,6 +63,21 @@ Get-ChildItem -LiteralPath $Gerber, $Drill -File | Remove-Item -Force
 $DnpRefs = @("D50", "D51", "D52")
 $PosRows = Import-Csv $Pos | Where-Object { $DnpRefs -notcontains $_.Ref }
 $PosRows | Export-Csv -NoTypeInformation -Encoding UTF8 $Pos
+
+$TempDnpRefs = @(
+    "X1", "X2", "X3", "F1", "PSU1", "K1", "K2", "K3",
+    "Q1", "Q2", "Q3",
+    "R4", "R5", "R6", "R7", "R8", "R9", "R10", "R11", "R12",
+    "D1", "D2", "D3", "D10", "D11", "D12",
+    "R40", "R41", "D40", "D41", "RV1",
+    "D50", "D51", "D52"
+)
+foreach ($i in 64..83) {
+    $TempDnpRefs += "D$i"
+    $TempDnpRefs += "C$i"
+}
+$PosTempRows = Import-Csv $Pos | Where-Object { $TempDnpRefs -notcontains $_.Ref }
+$PosTempRows | Export-Csv -NoTypeInformation -Encoding UTF8 $PosTemp
 
 & $Cli.Source sch export bom `
     --output $Bom `
@@ -115,9 +132,40 @@ $PosRows | Export-Csv -NoTypeInformation -Encoding UTF8 $Pos
 "R32","0R 0603 BUS_COM to local GND link for RJ45 power sharing","FW_Pumpengruppe:R_0603","1","","Populate only when common SELV bus ground is intended"
 "@ | Set-Content -NoNewline -Encoding UTF8 $Bom
 
+@"
+"Refs","Value","Footprint","Qty","DNP","Notes"
+"U1","ESP32-WROOM-32D PCB antenna","RF_Module:ESP32-WROOM-32D","1","","Espressif ESP32-WROOM-32D"
+"U2,U3","MAX31865 RTD frontend","FW_Pumpengruppe:SOIC16_RTD","2","","MAX31865 or pin-compatible RTD frontend"
+"U4","MAX3485/SP3485 3.3V RS485 transceiver SOIC-8","Package_SO:SOIC-8_3.9x4.9mm_P1.27mm","1","","3.3 V half-duplex RS485 transceiver"
+"U5","AMS1117-3.3 compatible 3V3 regulator","FW_Pumpengruppe:LDO_SOT223","1","","SOT-223 LDO, check dissipation from 5 V"
+"U6","CP2102N USB-UART","FW_Pumpengruppe:USB_UART_QFN24","1","","Silicon Labs CP2102N QFN24"
+"J1,J2","RJ45 RS485 daisychain edge connector","Connector_RJ:RJ45_Amphenol_54602-x08_Horizontal","2","","Horizontal RJ45, edge accessible; board powered from BUS_5V"
+"J3,J4","YSTY RS485 screw terminal","FW_Pumpengruppe:TB_3_350","2","","Optional 3.5 mm RS485 screw terminal"
+"X4,X5","RTD screw terminal VL/RL","FW_Pumpengruppe:TB_2_350","2","","3.5 mm screw terminal"
+"X6","USB-C service / flash edge connector","Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12","1","","HRO TYPE-C-31-M-12 or compatible"
+"R1,R2","5k1 USB-C CC pulldown","FW_Pumpengruppe:R_0603","2","","Generic 0603 1 percent"
+"R3","120R RS485 termination","FW_Pumpengruppe:R_0603","1","","Generic 0603 1 percent"
+"JP1","RS485 termination 1x3 jumper, 1-2 on / 2-3 park","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical","1","","2.54 mm 1x3 header plus shunt"
+"R20","2k2 0603 5V indicator resistor","FW_Pumpengruppe:R_0603","1","","Generic 0603"
+"D20","0603 5V indicator LED","FW_Pumpengruppe:LED_0603","1","","Generic low-current LED"
+"R21","1k5 0603 3V3 indicator resistor","FW_Pumpengruppe:R_0603","1","","Generic 0603"
+"D21","0603 3V3 indicator LED","FW_Pumpengruppe:LED_0603","1","","Generic low-current LED"
+"R30,R31","4k7 0603 RS485 TX/RX activity LED resistor","FW_Pumpengruppe:R_0603","2","","Generic 0603"
+"D30,D31","0603 RS485 TX/RX activity LED","FW_Pumpengruppe:LED_0603","2","","Generic low-current LED"
+"R60","330R 0603 RGB data series resistor","Resistor_SMD:R_0603_1608Metric","1","","ESP32 GPIO21 to first SK6812 DIN"
+"C60-C63","100nF 16V 0603 RGB LED local decoupling capacitor","Capacitor_SMD:C_0603_1608Metric","4","","One capacitor per populated status RGB LED"
+"D60-D63","SK6812MINI 3535 5V addressable RGB LED PLCC4","LED_SMD:LED_SK6812MINI_PLCC4_3.5x3.5mm_P1.75mm","4","","Status LEDs for temperature-input variant"
+"D4","SS14 USB VBUS to +5V Schottky diode","FW_Pumpengruppe:D_SOD123","1","","SS14 or compatible Schottky"
+"F2","1812 resettable fuse BUS_5V to local +5V","Fuse:Fuse_1812_4532Metric","1","","Polyfuse sized for RJ45 5 V sharing"
+"R32","0R 0603 BUS_COM to local GND link for RJ45 power sharing","FW_Pumpengruppe:R_0603","1","","Populate for common SELV bus ground in network-powered temperature variant"
+"X1,X2,X3,F1,PSU1,K1,K2,K3,Q1-Q3,R4-R12,D1-D3,D10-D12,R40,R41,D40,D41,RV1","Left 230V / relay section not populated","various","1","DNP","Temp-input assembly variant: do not populate left mains/relay section"
+"C64-C83,D64-D83","Valve-position RGB LED chain not populated","various","1","DNP","Temp-input assembly variant uses only D60-D63 status LEDs"
+"D50-D52","Optional RS485 TVS positions","Diode_SMD:D_SOD-123","1","DNP","Optional protection footprints, not populated in base temp-input assembly"
+"@ | Set-Content -NoNewline -Encoding UTF8 $BomTemp
+
 if (Test-Path $Zip) {
     Remove-Item -LiteralPath $Zip
 }
-Compress-Archive -Path (Join-Path $Gerber "*"), (Join-Path $Drill "*"), $Bom, $Pos -DestinationPath $Zip
+Compress-Archive -Path (Join-Path $Gerber "*"), (Join-Path $Drill "*"), $Bom, $Pos, $BomTemp, $PosTemp -DestinationPath $Zip
 
 Write-Host "Fertig: $Zip"

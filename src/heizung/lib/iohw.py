@@ -235,7 +235,9 @@ def _raw_temp_value(raw: Any) -> float | None:
         return None
     # RevPi-AIO liefert PT100/1000 typischerweise in 1/10 Grad.
     if abs(value) > 200:
-        return value / 10
+        value = value / 10
+    if abs(value) >= 800:
+        return None
     return value
 
 

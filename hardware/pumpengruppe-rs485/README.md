@@ -44,6 +44,17 @@ Aktueller Stand:
   `RV1` als 275-VAC-MOV zwischen L und N.
 - RJ45 Pin 1/2 fuehren `BUS_5V`, Pin 7/8 `COM`; `F2` schuetzt die 5V-Kopplung
   mit PTC, `R32` koppelt COM auf lokale 0V fuer RJ45-Power-Sharing.
+- Es gibt zwei Bestueckungsvarianten fuer dieselbe Leiterplatte:
+  - Vollausbau Pumpengruppe: `pumpengruppe-rs485-bom.csv` und
+    `pumpengruppe-rs485-pick-place.csv`.
+  - Temperatur-/RS485-Variante: `pumpengruppe-rs485-bom-tempinput.csv` und
+    `pumpengruppe-rs485-pick-place-tempinput.csv`; dabei bleibt der linke
+    230-V-/Relaisbereich unbestueckt und die Versorgung erfolgt ueber
+    `BUS_5V`/RJ45.
+- Die Breakaway-Variante ist im Board sichtbar umgesetzt: `MB1` setzt
+  0,7-mm-NPTH-Mousebites in die oberen und unteren Materialstege des
+  vorhandenen Isolationsschlitzes. Zusaetzlich bleibt die
+  `Dwgs.User`-/Silkscreen-Markierung fuer die Bestueckungsvariante erhalten.
 - Netzteil und Relais sind so platziert, dass die Bauteile den
   MAINS/SELV-Spalt ueberbruecken: Netz-/Kontaktpins links, SELV-/Spulenpins
   rechts.
@@ -62,6 +73,14 @@ Aktueller Stand:
   tatsaechliche Last/Sicherung entsprechend reduziert werden. Die 8-mm-Trennung
   zwischen 230 V und SELV bleibt als physische Keepout-/Fraesnut-Regel beim
   Layout zwingend einzuhalten.
+- Die Netclasses fuer weitere Power-Routings sind gesetzt:
+  `SELV_POWER_0V8` fuer `+5V`, `BUS_5V`, `USB_VBUS`, `GND` und `RS485_GND`;
+  `Doppelte Dicke` mit 0,4 mm fuer `+3V3`. Auf der RGB-/Temp-Input-Seite sind
+  erste vorhandene 5-V-/GND-Segmente real auf 0,8 mm und 3V3-Segmente auf
+  0,4 mm verbreitert. Einige Engstellen an USB/RJ45 bleiben bewusst 0,2 mm,
+  weil breitere Leiterbahnen dort DRC-Kurzschluesse erzeugen wuerden. Fuer die
+  finale Serienplatine sollten diese Netze weiter gezielt als breite
+  Versorgungsstaemme bzw. Kupferflaechen nachgezogen werden.
 
 Wichtig: RevA ist elektrisch geroutet und hat keine offenen Netze im KiCad-DRC.
 Vor einer Netzspannungs-Freigabe bleiben trotzdem Relais-/Sicherungsrating,
@@ -79,5 +98,5 @@ cd hardware\pumpengruppe-rs485
 .\export-fab.ps1
 ```
 
-Das Skript erzeugt Gerber, Excellon-Drill, BOM, Pick-and-Place/XY-Datei und
-eine ZIP-Datei in `fab/`.
+Das Skript erzeugt Gerber, Excellon-Drill, beide BOM-Varianten, beide
+Pick-and-Place/XY-Dateien und eine ZIP-Datei in `fab/`.

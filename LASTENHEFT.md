@@ -199,6 +199,15 @@ Physische Klemmenlogik fuer die Hauptsteuerung:
 | DO27 | DO1.13 | Reserve | - |
 | DO28 | DO1.14 | Reserve | - |
 
+Klima-OG Kuehlmodus: Wenn die Klima-OG-Senke eine niedrigere Temperatur
+fordert, aber der Heizungsmischer bereits geschlossen bleiben muss, kann die
+Steuerung in den Brunnen-/Waermetauscherbetrieb wechseln. Dann wird DO06
+`Brunnenpumpe Magnetventil` zusammen mit K-DO02 `Pumpe Klimakreis-OG`,
+K-DO04 `FU Brunnenpumpe Freigabe` und K-AO01 `FU-Sollwert` aktiviert; K-AO03
+`Mischer Klima-OG` wird auf `0 %` gesetzt. Die Funktion bleibt per Default
+deaktiviert (`klima_og.kuehlung_enabled: false`), bis Magnetventil bzw.
+spaeter ein regelbares Ventil hydraulisch sicher eingebaut sind.
+
 **Digitale Eingange (DI):**
 
 | # | Physisch | Beschreibung | Phase |
@@ -214,11 +223,21 @@ Physische Klemmenlogik fuer die Hauptsteuerung:
 | DI09 | DI2.9 | Sammelstoerung WP2 | B |
 | DI10 | DI2.10 | Sammelstoerung BW-WP | B |
 | DI11 | DI2.11 | Stromungswachter Brunnen | C |
-| DI12 | DI2.12 | Druckwachter Heizkreis (optional) | - |
-| DI13 | DI2.13 | Reserve | - |
-| DI14 | DI2.14 | Reserve | - |
-| DI15 | DI1.1 | Reserve | - |
+| DI12 | DI2.12 | Oelbrenner Wasserdruckwachter (NC: 1=OK, 0=Stoerung) | A |
+| DI13 | DI2.13 | Oelbrenner Stoermeldung | A |
+| DI14 | DI2.14 | Oelbrenner Betriebsmeldung | A |
+| DI15 | DI1.1 | Oelbrenner Sicherheitstemperaturbegrenzer STB (NC: 1=OK, 0=Stoerung) | A |
 | DI16 | DI1.2 | Reserve | - |
+
+Sicherheitswirkung Oelbrenner Bestand:
+
+- DI12 Wasserdruckwachter offen / Wassermangel sperrt DO01 Brennerfreigabe und
+  schaltet alle Heizungs-Hauptkreis-Pumpen ab, auch im Handbetrieb:
+  DO02, DO18, DO19 sowie K-DO01 bis K-DO03.
+- DI15 STB offen sperrt DO01 Brennerfreigabe hart, auch im Handbetrieb.
+- DI13 Brenner-Stoermeldung wird gemeldet und per Telegram eskaliert, sperrt
+  DO01 aber nicht. So bleibt die normale Anforderung am Feuerungsautomaten an,
+  damit der Brenner direkt an seiner Taste entstoert werden kann.
 
 ### 4.2 Haupt-RevPi Analog (AIO #1-8)
 

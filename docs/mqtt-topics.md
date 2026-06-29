@@ -41,6 +41,11 @@ Broker: `mqtt.esrv.center` mit User `vbnet`/`vbnet`. Basis-Pfad: `heizung/...`
 | `heizung/mischer/klima_og/state` | JSON | s.o. |
 | `heizung/pumpe/<name>/state` | JSON | `{"an": true, "hand": false}` |
 | `heizung/do/<komponente>/state` | `0` / `1` | Tatsachlich geschriebener Digitalausgang |
+| `heizung/klima_og/kuehlung_aktiv` | `0` / `1` | Klima OG laeuft im Brunnen-/Waermetauscher-Kuehlmodus |
+| `heizung/di/oelbrenner_wasserdruck_stoerung/state` | `0` / `1` | DI12, Wasserdruckwachter Oelbrenner, NC: `0` = Stoerung |
+| `heizung/di/brenner_stoerung/state` | `0` / `1` | DI13, Oelbrenner Stoermeldung; `1` triggert HA-Telegram |
+| `heizung/di/brenner_betrieb/state` | `0` / `1` | DI14, Oelbrenner Betriebsmeldung |
+| `heizung/di/oelbrenner_stb_stoerung/state` | `0` / `1` | DI15, Sicherheitstemperaturbegrenzer Oelbrenner, NC: `0` = Stoerung |
 | `heizung/ao/<komponente>/state` | float | Tatsachlich geschriebener Analogausgang |
 | `heizung/<komponente>/hand/mode/state` | `0` / `1` | Handbetrieb aktiv |
 | `heizung/<komponente>/hand/value/state` | bool/float | Aktueller Handwert |
@@ -58,6 +63,7 @@ zugeordnet; beide koennen jede aktive Senke bedienen.
 | `heizung/anforderung/fbh_eg/set` | JSON `{"vl_soll": 42, "aktiv": true}` | Anforderung von HA |
 | `heizung/anforderung/klima_og/set` | JSON | dito |
 | `heizung/anforderung/nebengeb/set` | JSON | dito |
+| `heizung/anforderung/hk_backup/set` | JSON | Heizkoerper-Backup OG als Senke am Gesamtwaermekreis |
 | `heizung/anforderung/pool/set` | JSON | Pool als Senke am Gesamtwaermekreis |
 | `heizung/anforderung/bwwp/set` | JSON | dito |
 | `heizung/anforderung/<kreis>/aktiv/set` | `0` / `1` | Direkter HA-MQTT-Switch fuer Anforderung |
@@ -69,6 +75,13 @@ zugeordnet; beide koennen jede aktive Senke bedienen.
 | `heizung/regler/mischer_reserve_k/set` | Zahl `0..15` | Aufschlag auf hoechste Senkenanforderung |
 | `heizung/regler/wp_parallel_ab_aktive_kreise/set` | Zahl `1..10` | Ab wie vielen aktiven Senken beide WPs laufen duerfen |
 | `heizung/regler/brauchwasser_soll_c/set` | Zahl `30..70` | Abschalttemperatur der aktuellen Brauchwasserladung |
+
+Home Assistant schaltet die Gebaeudeanforderungen automatisch ueber die
+MQTT-Discovery-Schalter der RevPi-Steuerung:
+`sensor.heizanforderung_eg_prozent > 0` schaltet
+`switch.heizung_hauptsteuerung_anforderung_fbh_eg`, und
+`sensor.heizanforderung_og_prozent > 0` schaltet
+`switch.heizung_hauptsteuerung_anforderung_hk_backup`.
 | `heizung/regler/brauchwasser_hysterese_k/set` | Zahl `1..20` | Einschaltdifferenz unterhalb des Sollwerts |
 | `heizung/regler/brunnen_min_druck_bar/set` | Zahl `0..9.5` | Unterschreiten startet Brunnenpumpe/FU |
 | `heizung/regler/brunnen_max_druck_bar/set` | Zahl `0.2..10` | Ueberschreiten stoppt Brunnenpumpe/FU |
@@ -117,6 +130,25 @@ Modbus. Wenn der Momentandurchfluss laenger als
 `brunnen_flow_timeout_s` unter `brunnen_flow_min_l_min` bleibt, wird mit
 Regelgrund `kein_durchfluss_stop` abgeschaltet, auch wenn der Druck den
 Maxdruck nicht erreicht.
+
+## Klima OG Kuehlmodus
+
+Wenn `klima_og.kuehlung_enabled` aktiv ist, die Senke `klima_og` freigegeben
+ist und eine Klima-OG-Anforderung mit VL-Soll unter
+`klima_og.kuehlung_max_vl_soll_c` anliegt, vergleicht die Steuerung
+`klima_og_vl` mit dem Sollwert. Liegt der Vorlauf trotz geschlossenem
+Heizmischer ueber Soll plus Hysterese, wird Klima OG aus dem Heizrouting
+genommen und stattdessen der Brunnen-/Waermetauscher-Kreis aktiviert:
+
+- `mischer_klima_og_pct` wird auf `0 %` gesetzt.
+- `pumpe_klima_og`, `brunnen_mv` und `brunnen_pumpe_freigabe` werden aktiv.
+- `brunnen_fu_soll` bekommt mindestens den Brunnen-Startwert, danach regelt die
+  Brunnenlogik den Druck weiter.
+
+Der Default ist absichtlich `kuehlung_enabled: false`, damit beim ersten
+Deployment nicht ungewollt der volle Brunnenstrang oeffnet. Fuer ein spaeteres
+Regelventil kann statt des reinen Magnetventils ein eigener Stellwert ergaenzt
+werden.
 
 Der RevPi publiziert die Direktzustande zurueck:
 

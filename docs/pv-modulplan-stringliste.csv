@@ -1,0 +1,118 @@
+module_id,area,orientation,string_id,string_pos,mppt,tracker,status,note
+SD-S1-01,Schuppen Sued,Sued,SD-S1,1,RS450-200-1,T1,planned,500W JA Solar 8S string
+SD-S1-02,Schuppen Sued,Sued,SD-S1,2,RS450-200-1,T1,planned,500W JA Solar 8S string
+SD-S1-03,Schuppen Sued,Sued,SD-S1,3,RS450-200-1,T1,planned,500W JA Solar 8S string
+SD-S1-04,Schuppen Sued,Sued,SD-S1,4,RS450-200-1,T1,planned,500W JA Solar 8S string
+SD-S1-05,Schuppen Sued,Sued,SD-S1,5,RS450-200-1,T1,planned,500W JA Solar 8S string
+SD-S1-06,Schuppen Sued,Sued,SD-S1,6,RS450-200-1,T1,planned,500W JA Solar 8S string
+SD-S1-07,Schuppen Sued,Sued,SD-S1,7,RS450-200-1,T1,planned,500W JA Solar 8S string
+SD-S1-08,Schuppen Sued,Sued,SD-S1,8,RS450-200-1,T1,planned,500W JA Solar 8S string
+SD-S2-01,Schuppen Sued,Sued,SD-S2,1,RS450-200-1,T2,planned,500W JA Solar 8S string
+SD-S2-02,Schuppen Sued,Sued,SD-S2,2,RS450-200-1,T2,planned,500W JA Solar 8S string
+SD-S2-03,Schuppen Sued,Sued,SD-S2,3,RS450-200-1,T2,planned,500W JA Solar 8S string
+SD-S2-04,Schuppen Sued,Sued,SD-S2,4,RS450-200-1,T2,planned,500W JA Solar 8S string
+SD-S2-05,Schuppen Sued,Sued,SD-S2,5,RS450-200-1,T2,planned,500W JA Solar 8S string
+SD-S2-06,Schuppen Sued,Sued,SD-S2,6,RS450-200-1,T2,planned,500W JA Solar 8S string
+SD-S2-07,Schuppen Sued,Sued,SD-S2,7,RS450-200-1,T2,planned,500W JA Solar 8S string
+SD-S2-08,Schuppen Sued,Sued,SD-S2,8,RS450-200-1,T2,planned,500W JA Solar 8S string
+WO-E1-01,Wohnhaus Ost,Ost,WO-E1,1,RS450-200-1,T3,planned,500W JA Solar 8S string
+WO-E1-02,Wohnhaus Ost,Ost,WO-E1,2,RS450-200-1,T3,planned,500W JA Solar 8S string
+WO-E1-03,Wohnhaus Ost,Ost,WO-E1,3,RS450-200-1,T3,planned,500W JA Solar 8S string
+WO-E1-04,Wohnhaus Ost,Ost,WO-E1,4,RS450-200-1,T3,planned,500W JA Solar 8S string
+WO-E1-05,Wohnhaus Ost,Ost,WO-E1,5,RS450-200-1,T3,planned,500W JA Solar 8S string
+WO-E1-06,Wohnhaus Ost,Ost,WO-E1,6,RS450-200-1,T3,planned,500W JA Solar 8S string
+WO-E1-07,Wohnhaus Ost,Ost,WO-E1,7,RS450-200-1,T3,planned,500W JA Solar 8S string
+WO-E1-08,Wohnhaus Ost,Ost,WO-E1,8,RS450-200-1,T3,planned,500W JA Solar 8S string
+WW-W1-01,Wohnhaus West,West,WW-W1,1,RS450-200-1,T4,planned,500W JA Solar 8S string
+WW-W1-02,Wohnhaus West,West,WW-W1,2,RS450-200-1,T4,planned,500W JA Solar 8S string
+WW-W1-03,Wohnhaus West,West,WW-W1,3,RS450-200-1,T4,planned,500W JA Solar 8S string
+WW-W1-04,Wohnhaus West,West,WW-W1,4,RS450-200-1,T4,planned,500W JA Solar 8S string
+WW-W1-05,Wohnhaus West,West,WW-W1,5,RS450-200-1,T4,planned,500W JA Solar 8S string
+WW-W1-06,Wohnhaus West,West,WW-W1,6,RS450-200-1,T4,planned,500W JA Solar 8S string
+WW-W1-07,Wohnhaus West,West,WW-W1,7,RS450-200-1,T4,planned,500W JA Solar 8S string
+WW-W1-08,Wohnhaus West,West,WW-W1,8,RS450-200-1,T4,planned,500W JA Solar 8S string
+SD-S3-01,Schuppen Sued,Sued,SD-S3,1,RS450-200-2,T1,planned,500W JA Solar 8S string
+SD-S3-02,Schuppen Sued,Sued,SD-S3,2,RS450-200-2,T1,planned,500W JA Solar 8S string
+SD-S3-03,Schuppen Sued,Sued,SD-S3,3,RS450-200-2,T1,planned,500W JA Solar 8S string
+SD-S3-04,Schuppen Sued,Sued,SD-S3,4,RS450-200-2,T1,planned,500W JA Solar 8S string
+SD-S3-05,Schuppen Sued,Sued,SD-S3,5,RS450-200-2,T1,planned,500W JA Solar 8S string
+SD-S3-06,Schuppen Sued,Sued,SD-S3,6,RS450-200-2,T1,planned,500W JA Solar 8S string
+SD-S3-07,Schuppen Sued,Sued,SD-S3,7,RS450-200-2,T1,planned,500W JA Solar 8S string
+SD-S3-08,Schuppen Sued,Sued,SD-S3,8,RS450-200-2,T1,planned,500W JA Solar 8S string
+SD-S4-01,Schuppen Sued,Sued,SD-S4,1,RS450-200-2,T2,planned,500W JA Solar 8S string
+SD-S4-02,Schuppen Sued,Sued,SD-S4,2,RS450-200-2,T2,planned,500W JA Solar 8S string
+SD-S4-03,Schuppen Sued,Sued,SD-S4,3,RS450-200-2,T2,planned,500W JA Solar 8S string
+SD-S4-04,Schuppen Sued,Sued,SD-S4,4,RS450-200-2,T2,planned,500W JA Solar 8S string
+SD-S4-05,Schuppen Sued,Sued,SD-S4,5,RS450-200-2,T2,planned,500W JA Solar 8S string
+SD-S4-06,Schuppen Sued,Sued,SD-S4,6,RS450-200-2,T2,planned,500W JA Solar 8S string
+SD-S4-07,Schuppen Sued,Sued,SD-S4,7,RS450-200-2,T2,planned,500W JA Solar 8S string
+SD-S4-08,Schuppen Sued,Sued,SD-S4,8,RS450-200-2,T2,planned,500W JA Solar 8S string
+WO-E2-01,Wohnhaus Ost,Ost,WO-E2,1,RS450-200-2,T3,planned,500W JA Solar 8S string
+WO-E2-02,Wohnhaus Ost,Ost,WO-E2,2,RS450-200-2,T3,planned,500W JA Solar 8S string
+WO-E2-03,Wohnhaus Ost,Ost,WO-E2,3,RS450-200-2,T3,planned,500W JA Solar 8S string
+WO-E2-04,Wohnhaus Ost,Ost,WO-E2,4,RS450-200-2,T3,planned,500W JA Solar 8S string
+WO-E2-05,Wohnhaus Ost,Ost,WO-E2,5,RS450-200-2,T3,planned,500W JA Solar 8S string
+WO-E2-06,Wohnhaus Ost,Ost,WO-E2,6,RS450-200-2,T3,planned,500W JA Solar 8S string
+WO-E2-07,Wohnhaus Ost,Ost,WO-E2,7,RS450-200-2,T3,planned,500W JA Solar 8S string
+WO-E2-08,Wohnhaus Ost,Ost,WO-E2,8,RS450-200-2,T3,planned,500W JA Solar 8S string
+GH-G1-01,Haupthaus Gauben Sued,Sued,GH-G1,1,RS450-200-2,T4,planned,500W JA Solar 8S string
+GH-G1-02,Haupthaus Gauben Sued,Sued,GH-G1,2,RS450-200-2,T4,planned,500W JA Solar 8S string
+GH-G1-03,Haupthaus Gauben Sued,Sued,GH-G1,3,RS450-200-2,T4,planned,500W JA Solar 8S string
+GH-G1-04,Haupthaus Gauben Sued,Sued,GH-G1,4,RS450-200-2,T4,planned,500W JA Solar 8S string
+GH-G1-05,Haupthaus Gauben Sued,Sued,GH-G1,5,RS450-200-2,T4,planned,500W JA Solar 8S string
+GH-G1-06,Haupthaus Gauben Sued,Sued,GH-G1,6,RS450-200-2,T4,planned,500W JA Solar 8S string
+GH-G1-07,Haupthaus Gauben Sued,Sued,GH-G1,7,RS450-200-2,T4,planned,500W JA Solar 8S string
+GH-G1-08,Haupthaus Gauben Sued,Sued,GH-G1,8,RS450-200-2,T4,planned,500W JA Solar 8S string
+ZS-S1-01,PV-Zaun Sued,Sued senkrecht,ZS-S1,1,RS450-200-3,T1,planned,500W JA Solar 8S string
+ZS-S1-02,PV-Zaun Sued,Sued senkrecht,ZS-S1,2,RS450-200-3,T1,planned,500W JA Solar 8S string
+ZS-S1-03,PV-Zaun Sued,Sued senkrecht,ZS-S1,3,RS450-200-3,T1,planned,500W JA Solar 8S string
+ZS-S1-04,PV-Zaun Sued,Sued senkrecht,ZS-S1,4,RS450-200-3,T1,planned,500W JA Solar 8S string
+ZS-S1-05,PV-Zaun Sued,Sued senkrecht,ZS-S1,5,RS450-200-3,T1,planned,500W JA Solar 8S string
+ZS-S1-06,PV-Zaun Sued,Sued senkrecht,ZS-S1,6,RS450-200-3,T1,planned,500W JA Solar 8S string
+ZS-S1-07,PV-Zaun Sued,Sued senkrecht,ZS-S1,7,RS450-200-3,T1,planned,500W JA Solar 8S string
+ZS-S1-08,PV-Zaun Sued,Sued senkrecht,ZS-S1,8,RS450-200-3,T1,planned,500W JA Solar 8S string
+ZS-S2-01,PV-Zaun Sued,Sued senkrecht,ZS-S2,1,RS450-200-3,T2,planned,500W JA Solar 8S string
+ZS-S2-02,PV-Zaun Sued,Sued senkrecht,ZS-S2,2,RS450-200-3,T2,planned,500W JA Solar 8S string
+ZS-S2-03,PV-Zaun Sued,Sued senkrecht,ZS-S2,3,RS450-200-3,T2,planned,500W JA Solar 8S string
+ZS-S2-04,PV-Zaun Sued,Sued senkrecht,ZS-S2,4,RS450-200-3,T2,planned,500W JA Solar 8S string
+ZS-S2-05,PV-Zaun Sued,Sued senkrecht,ZS-S2,5,RS450-200-3,T2,planned,500W JA Solar 8S string
+ZS-S2-06,PV-Zaun Sued,Sued senkrecht,ZS-S2,6,RS450-200-3,T2,planned,500W JA Solar 8S string
+ZS-S2-07,PV-Zaun Sued,Sued senkrecht,ZS-S2,7,RS450-200-3,T2,planned,500W JA Solar 8S string
+ZS-S2-08,PV-Zaun Sued,Sued senkrecht,ZS-S2,8,RS450-200-3,T2,planned,500W JA Solar 8S string
+ZW-W1-01,PV-Zaun West,West senkrecht,ZW-W1,1,RS450-200-3,T3,planned,500W JA Solar 8S string
+ZW-W1-02,PV-Zaun West,West senkrecht,ZW-W1,2,RS450-200-3,T3,planned,500W JA Solar 8S string
+ZW-W1-03,PV-Zaun West,West senkrecht,ZW-W1,3,RS450-200-3,T3,planned,500W JA Solar 8S string
+ZW-W1-04,PV-Zaun West,West senkrecht,ZW-W1,4,RS450-200-3,T3,planned,500W JA Solar 8S string
+ZW-W1-05,PV-Zaun West,West senkrecht,ZW-W1,5,RS450-200-3,T3,planned,500W JA Solar 8S string
+ZW-W1-06,PV-Zaun West,West senkrecht,ZW-W1,6,RS450-200-3,T3,planned,500W JA Solar 8S string
+ZW-W1-07,PV-Zaun West,West senkrecht,ZW-W1,7,RS450-200-3,T3,planned,500W JA Solar 8S string
+ZW-W1-08,PV-Zaun West,West senkrecht,ZW-W1,8,RS450-200-3,T3,planned,500W JA Solar 8S string
+SN-N1-01,Schuppen Nord optional,Nord,SN-N1,1,RS450-200-4 optional,T1,optional,500W JA Solar 8S string
+SN-N1-02,Schuppen Nord optional,Nord,SN-N1,2,RS450-200-4 optional,T1,optional,500W JA Solar 8S string
+SN-N1-03,Schuppen Nord optional,Nord,SN-N1,3,RS450-200-4 optional,T1,optional,500W JA Solar 8S string
+SN-N1-04,Schuppen Nord optional,Nord,SN-N1,4,RS450-200-4 optional,T1,optional,500W JA Solar 8S string
+SN-N1-05,Schuppen Nord optional,Nord,SN-N1,5,RS450-200-4 optional,T1,optional,500W JA Solar 8S string
+SN-N1-06,Schuppen Nord optional,Nord,SN-N1,6,RS450-200-4 optional,T1,optional,500W JA Solar 8S string
+SN-N1-07,Schuppen Nord optional,Nord,SN-N1,7,RS450-200-4 optional,T1,optional,500W JA Solar 8S string
+SN-N1-08,Schuppen Nord optional,Nord,SN-N1,8,RS450-200-4 optional,T1,optional,500W JA Solar 8S string
+SN-N2-01,Schuppen Nord optional,Nord,SN-N2,1,RS450-200-4 optional,T2,optional,500W JA Solar 8S string
+SN-N2-02,Schuppen Nord optional,Nord,SN-N2,2,RS450-200-4 optional,T2,optional,500W JA Solar 8S string
+SN-N2-03,Schuppen Nord optional,Nord,SN-N2,3,RS450-200-4 optional,T2,optional,500W JA Solar 8S string
+SN-N2-04,Schuppen Nord optional,Nord,SN-N2,4,RS450-200-4 optional,T2,optional,500W JA Solar 8S string
+SN-N2-05,Schuppen Nord optional,Nord,SN-N2,5,RS450-200-4 optional,T2,optional,500W JA Solar 8S string
+SN-N2-06,Schuppen Nord optional,Nord,SN-N2,6,RS450-200-4 optional,T2,optional,500W JA Solar 8S string
+SN-N2-07,Schuppen Nord optional,Nord,SN-N2,7,RS450-200-4 optional,T2,optional,500W JA Solar 8S string
+SN-N2-08,Schuppen Nord optional,Nord,SN-N2,8,RS450-200-4 optional,T2,optional,500W JA Solar 8S string
+SN-N3-01,Schuppen Nord optional,Nord,SN-N3,1,RS450-200-4 optional,T3,optional,500W JA Solar 8S string
+SN-N3-02,Schuppen Nord optional,Nord,SN-N3,2,RS450-200-4 optional,T3,optional,500W JA Solar 8S string
+SN-N3-03,Schuppen Nord optional,Nord,SN-N3,3,RS450-200-4 optional,T3,optional,500W JA Solar 8S string
+SN-N3-04,Schuppen Nord optional,Nord,SN-N3,4,RS450-200-4 optional,T3,optional,500W JA Solar 8S string
+SN-N3-05,Schuppen Nord optional,Nord,SN-N3,5,RS450-200-4 optional,T3,optional,500W JA Solar 8S string
+SN-N3-06,Schuppen Nord optional,Nord,SN-N3,6,RS450-200-4 optional,T3,optional,500W JA Solar 8S string
+SN-N3-07,Schuppen Nord optional,Nord,SN-N3,7,RS450-200-4 optional,T3,optional,500W JA Solar 8S string
+SN-N3-08,Schuppen Nord optional,Nord,SN-N3,8,RS450-200-4 optional,T3,optional,500W JA Solar 8S string
+SN-R1-01,Schuppen Nord Rest optional,Nord,SN-R1,1,RS450-200-4 optional,T4,optional,4S Reststring nur wenn Nord belegt und Tracker frei
+SN-R1-02,Schuppen Nord Rest optional,Nord,SN-R1,2,RS450-200-4 optional,T4,optional,4S Reststring nur wenn Nord belegt und Tracker frei
+SN-R1-03,Schuppen Nord Rest optional,Nord,SN-R1,3,RS450-200-4 optional,T4,optional,4S Reststring nur wenn Nord belegt und Tracker frei
+SN-R1-04,Schuppen Nord Rest optional,Nord,SN-R1,4,RS450-200-4 optional,T4,optional,4S Reststring nur wenn Nord belegt und Tracker frei
+DACH-RES-01,Dach Reserve/offen,offen,unassigned,0,none,none,reserve,65. Dachplatz aus Angebot nur nutzen wenn sinnvoller String entsteht

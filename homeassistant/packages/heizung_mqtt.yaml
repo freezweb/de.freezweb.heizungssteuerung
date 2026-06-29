@@ -367,64 +367,45 @@ input_number:
     step: 0.5
     unit_of_measurement: "°C"
 
-script:
-  heizung_publish_demands:
-    alias: "Heizung Anforderungen senden"
-    sequence:
-      - service: mqtt.publish
-        data:
-          topic: "heizung/anforderung/fbh_eg/set"
-          payload_template: >-
-            {"aktiv": {{ is_state('input_boolean.heizung_anf_fbh_eg', 'on') | lower }},
-             "vl_soll": {{ states('input_number.heizung_vl_fbh_eg') | float }},
-             "quelle": "ha"}
-      - service: mqtt.publish
-        data:
-          topic: "heizung/anforderung/klima_og/set"
-          payload_template: >-
-            {"aktiv": {{ is_state('input_boolean.heizung_anf_klima_og', 'on') | lower }},
-             "vl_soll": {{ states('input_number.heizung_vl_klima_og') | float }},
-             "quelle": "ha"}
-      - service: mqtt.publish
-        data:
-          topic: "heizung/anforderung/nebengeb/set"
-          payload_template: >-
-            {"aktiv": {{ is_state('input_boolean.heizung_anf_nebengeb', 'on') | lower }},
-             "vl_soll": {{ states('input_number.heizung_vl_nebengeb') | float }},
-             "quelle": "ha"}
-      - service: mqtt.publish
-        data:
-          topic: "heizung/anforderung/pool/set"
-          payload_template: >-
-            {"aktiv": {{ is_state('input_boolean.heizung_anf_pool', 'on') | lower }},
-             "vl_soll": {{ states('input_number.heizung_vl_pool') | float }},
-             "quelle": "ha"}
-      - service: mqtt.publish
-        data:
-          topic: "heizung/anforderung/bwwp/set"
-          payload_template: >-
-            {"aktiv": {{ is_state('input_boolean.heizung_anf_bwwp', 'on') | lower }},
-             "vl_soll": {{ states('input_number.heizung_vl_bwwp') | float }},
-             "quelle": "ha"}
-
 automation:
-  - alias: "Heizung Anforderungen bei Aenderung senden"
-    id: heizung_publish_demands_on_change
+  - alias: "Heizung Gebaeudeanforderungen an RevPi senden"
+    id: heizung_sync_gebaeudeanforderungen_revpi
+    description: "Schaltet die RevPi-MQTT-Anforderungsschalter aus den HA-Gesamtanforderungen fuer EG und OG."
+    mode: restart
     trigger:
+      - platform: homeassistant
+        event: start
+      - platform: time_pattern
+        minutes: "/5"
       - platform: state
         entity_id:
-          - input_boolean.heizung_anf_fbh_eg
-          - input_boolean.heizung_anf_klima_og
-          - input_boolean.heizung_anf_nebengeb
-          - input_boolean.heizung_anf_pool
-          - input_boolean.heizung_anf_bwwp
-          - input_number.heizung_vl_fbh_eg
-          - input_number.heizung_vl_klima_og
-          - input_number.heizung_vl_nebengeb
-          - input_number.heizung_vl_pool
-          - input_number.heizung_vl_bwwp
+          - sensor.heizanforderung_eg_prozent
+          - sensor.heizanforderung_og_prozent
     action:
-      - service: script.heizung_publish_demands
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ states('sensor.heizanforderung_eg_prozent') | float(0) > 0 }}"
+            sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id: switch.heizung_hauptsteuerung_anforderung_fbh_eg
+        default:
+          - service: switch.turn_off
+            target:
+              entity_id: switch.heizung_hauptsteuerung_anforderung_fbh_eg
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ states('sensor.heizanforderung_og_prozent') | float(0) > 0 }}"
+            sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id: switch.heizung_hauptsteuerung_anforderung_hk_backup
+        default:
+          - service: switch.turn_off
+            target:
+              entity_id: switch.heizung_hauptsteuerung_anforderung_hk_backup
 
   - alias: "Heizung HA Heartbeat"
     id: heizung_ha_heartbeat
@@ -436,3 +417,65 @@ automation:
         data:
           topic: "heizung/ha/heartbeat"
           payload_template: "{{ now().timestamp() | int }}"
+
+  - alias: "Heizung Oelbrenner Sicherheitsmeldungen Telegram"
+    id: heizung_oelbrenner_stoerung_telegram
+    mode: queued
+    max: 10
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.heizung_hauptsteuerung_oelbrenner_stoermeldung
+        from: "off"
+        to: "on"
+        for: "00:00:02"
+      - platform: state
+        entity_id: binary_sensor.heizung_hauptsteuerung_oelbrenner_stoermeldung
+        from: "on"
+        to: "off"
+        for: "00:00:02"
+      - platform: state
+        entity_id: binary_sensor.heizung_hauptsteuerung_oelbrenner_wasserdruck_stoerung
+        from: "off"
+        to: "on"
+        for: "00:00:02"
+      - platform: state
+        entity_id: binary_sensor.heizung_hauptsteuerung_oelbrenner_wasserdruck_stoerung
+        from: "on"
+        to: "off"
+        for: "00:00:02"
+      - platform: state
+        entity_id: binary_sensor.heizung_hauptsteuerung_oelbrenner_stb_stoerung
+        from: "off"
+        to: "on"
+        for: "00:00:02"
+      - platform: state
+        entity_id: binary_sensor.heizung_hauptsteuerung_oelbrenner_stb_stoerung
+        from: "on"
+        to: "off"
+        for: "00:00:02"
+    action:
+      - service: telegram_bot.send_message
+        continue_on_error: true
+        data:
+          parse_mode: plain_text
+          chat_id:
+            - "-4649956506"
+          message: >-
+            {% set meldung = trigger.to_state.attributes.friendly_name | default(trigger.entity_id) %}
+            {% if trigger.to_state.state == 'on' %}
+            Heizung: {{ meldung }} erkannt.
+            {% else %}
+            Heizung: {{ meldung }} wieder OK.
+            {% endif %}
+            Betriebsmeldung: {{ states('binary_sensor.heizung_hauptsteuerung_oelbrenner_betriebsmeldung') }}.
+            Zeit: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}.
+      - service: persistent_notification.create
+        data:
+          title: >-
+            {% if trigger.to_state.state == 'on' %}
+            Heizung: Oelbrenner Stoerung
+            {% else %}
+            Heizung: Oelbrenner wieder OK
+            {% endif %}
+          message: >-
+            {{ trigger.to_state.attributes.friendly_name | default(trigger.entity_id) }} ist {{ 'aktiv' if trigger.to_state.state == 'on' else 'wieder OK' }}.

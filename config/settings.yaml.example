@@ -5,6 +5,7 @@ regelung:
   heizung_divider: 10            # Heizungsrouting/Brauchwasser/MQTT nur jeden 10. schnellen Zyklus
   mischer_reserve_k: 5           # Aufschlag auf WP-VL gegenueber hoechster Mischer-Anforderung
   oelbrenner_unterstuetzung: true # Phase A: alter Kessel darf gemeinsame Waermeanforderung bedienen
+  oelbrenner_hysterese_k: 1      # Brenner fuer Gesamtwaerme startet erst unter VL-Soll minus Hysterese
 
 leds:
   enabled: true
@@ -108,6 +109,14 @@ brunnen:
     scale: 100             # Registerwert = L/min * 100
     timeout_s: 0.3
     poll_interval_s: 1.0
+
+klima_og:
+  # Kuehlbetrieb ueber Brunnen/Waermetauscher ist absichtlich aus, bis Ventil
+  # und Hydraulik fertig verdrahtet sind. Aktivieren, wenn der Kuehlstrang
+  # gefahrlos oeffnen darf.
+  kuehlung_enabled: false
+  kuehlung_max_vl_soll_c: 25
+  kuehlung_hysterese_k: 1
 
 heizkurve:
   # Stuetzpunkte (Aussentemperatur -> VL-Soll); HA kann diese ueberschreiben
