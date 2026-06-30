@@ -342,7 +342,7 @@ static void startMoveTo(int16_t targetPctX10) {
   st.moveDirection = delta > 0 ? 1 : -1;
   st.moveStartPctX10 = st.positionPctX10;
   st.moveStartMs = millis();
-  uint32_t baseMs = (static_cast<uint32_t>(abs(delta)) * cfg.mixerRuntimeS * 100UL) / 1000UL;
+  uint32_t baseMs = static_cast<uint32_t>(abs(delta)) * cfg.mixerRuntimeS;
   if (targetPctX10 == 0 || targetPctX10 == 1000 || st.mode == MODE_CAL_CLOSE || st.mode == MODE_CAL_OPEN) {
     baseMs += static_cast<uint32_t>(cfg.endstopOverrunS) * 1000UL;
   }
@@ -965,9 +965,6 @@ static void handleConfigPost() {
     cfg.parity = p == "8E1" ? PARITY_8E1 : (p == "8O1" ? PARITY_8O1 : PARITY_8N1);
     rs485NeedsRestart = true;
   }
-  if (server.hasArg("pinRx")) { cfg.pinRx = argU8("pinRx", cfg.pinRx, 0, 39); rs485NeedsRestart = true; }
-  if (server.hasArg("pinTx")) { cfg.pinTx = argU8("pinTx", cfg.pinTx, 0, 39); rs485NeedsRestart = true; }
-  if (server.hasArg("pinDe")) { cfg.pinDe = argU8("pinDe", cfg.pinDe, 0, 39); rs485NeedsRestart = true; }
   if (server.hasArg("mixerRuntimeS")) cfg.mixerRuntimeS = argU16("mixerRuntimeS", cfg.mixerRuntimeS, 5, 1000);
   if (server.hasArg("endstopOverrunS")) cfg.endstopOverrunS = argU16("endstopOverrunS", cfg.endstopOverrunS, 0, 120);
   if (server.hasArg("watchdogTimeoutS")) cfg.watchdogTimeoutS = argU16("watchdogTimeoutS", cfg.watchdogTimeoutS, 1, 600);
@@ -1124,17 +1121,18 @@ static void setupOta() {
 }
 
 static void setupPins() {
-  pinMode(cfg.pinPump, OUTPUT);
-  pinMode(cfg.pinMixEnable, OUTPUT);
-  pinMode(cfg.pinMixDir, OUTPUT);
-  pinMode(cfg.pinDe, OUTPUT);
-  digitalWrite(cfg.pinDe, LOW);
+  pinMode(HwPin::PUMP_DRV, OUTPUT);
+  pinMode(HwPin::MIX_ENABLE_DRV, OUTPUT);
+  pinMode(HwPin::MIX_DIR_DRV, OUTPUT);
+  pinMode(HwPin::RS485_DE, OUTPUT);
+  digitalWrite(HwPin::RS485_DE, LOW);
   allOutputsOff();
 }
 
 static void setupRs485() {
   rs485.end();
-  rs485.begin(cfg.baud, serialConfig(), cfg.pinRx, cfg.pinTx);
+  rs485.begin(cfg.baud, serialConfig(), HwPin::RS485_RX, HwPin::RS485_TX);
+  st.rs485Configured = true;
 }
 
 void setup() {

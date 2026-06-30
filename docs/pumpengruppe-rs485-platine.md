@@ -124,6 +124,19 @@ flowchart LR
 | 3.3 V | Buck/LDO mit Reserve fuer WLAN-Spitzenstrom, mindestens 600 mA Peak |
 | RS485 | guenstige Standard-Transceiverklasse MAX3485/SP3485/SN65HVD im SOIC-8; DE/RE ueber ESP-GPIO `RS485_DE` |
 | RTD | 2x MAX31865 oder gleichwertig, je Kanal eigener Praezisionsreferenzwiderstand |
+
+Aktuelle UART-Zuordnung im KiCad-Schaltplan:
+
+- USB-C/CP2102N ist nur Service/Flash: `ESP_U0RX`/`ESP_U0TX` auf ESP-UART0.
+- RS485/MAX3485 ist getrennt: `RS485_UART_RX` auf ESP GPIO16,
+  `RS485_UART_TX` auf ESP GPIO17, `RS485_DE` auf ESP GPIO4.
+- Das PCB muss nach dieser Schaltplan-Korrektur in KiCad aus dem Schaltplan
+  aktualisiert und die alten `UART_RX`/`UART_TX`-Routen muessen ersetzt werden.
+
+Offener RTD-Punkt vor Fertigung: Die zwei MAX31865 benoetigen getrennte
+Chip-Select-Leitungen (`RTD_VL_CS` GPIO5, `RTD_RL_CS` GPIO22). Der aktuelle
+KiCad-Entwurf muss dafuer noch ein vollstaendiges MAX31865-Symbol inklusive
+CS-Pin und passende Leiterbahnen bekommen.
 | Relais | 1x Pumpenrelais, 1x Mischerfreigabe, 1x Mischer-SPDT-Richtung; 250 V AC passend zur Last/Inrush |
 | Relais-Treiber | Diskret mit AO3400A-kompatiblem NMOS, 100R Gate, 100k Pulldown, SS14 Freilauf; guenstige Standardteile |
 | Eingangsschutz RTD | Serienwiderstand, RC-Filter, ESD/Surge nach Leitungslage |

@@ -7176,10 +7176,6 @@
 		(uuid "70000000-0000-4000-8000-000000000208")
 	)
 	(no_connect
-		(at 155.24 69.92)
-		(uuid "70000000-0000-4000-8000-000000000209")
-	)
-	(no_connect
 		(at 155.24 67.38)
 		(uuid "70000000-0000-4000-8000-000000000210")
 	)
@@ -7234,6 +7230,46 @@
 			(type default)
 		)
 		(uuid "e394d600-71b1-47ef-b46e-a6a1d1a1dd26")
+	)
+	(wire
+		(pts
+			(xy 169.84 80.08) (xy 166 80.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "70000000-0000-4000-8000-00000000a010")
+	)
+	(wire
+		(pts
+			(xy 169.84 77.54) (xy 166 77.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "70000000-0000-4000-8000-00000000a011")
+	)
+	(wire
+		(pts
+			(xy 169.84 75) (xy 166 75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "70000000-0000-4000-8000-00000000a012")
+	)
+	(wire
+		(pts
+			(xy 169.84 69.92) (xy 166 69.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "70000000-0000-4000-8000-00000000a013")
 	)
 	(label "L_FUSED"
 		(at 59.84 92.54 0)
@@ -7883,7 +7919,7 @@
 		)
 		(uuid "70000000-0000-4000-8000-000000000072")
 	)
-	(label "UART_TX"
+	(label "RS485_UART_TX"
 		(at 348.81 167 0)
 		(effects
 			(font
@@ -7901,7 +7937,7 @@
 		)
 		(uuid "70000000-0000-4000-8000-000000000074")
 	)
-	(label "UART_RX"
+	(label "RS485_UART_RX"
 		(at 378.81 167 0)
 		(effects
 			(font
@@ -8036,8 +8072,8 @@
 		)
 		(uuid "70000000-0000-4000-8000-000000000089")
 	)
-	(label "UART_RX"
-		(at 169.84 80.08 0)
+	(label "RS485_UART_RX"
+		(at 166 80.08 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8046,7 +8082,7 @@
 		(uuid "70000000-0000-4000-8000-000000000090")
 	)
 	(label "RS485_DE"
-		(at 169.84 77.54 0)
+		(at 166 77.54 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8055,7 +8091,7 @@
 		(uuid "70000000-0000-4000-8000-000000000091")
 	)
 	(label "RS485_DE"
-		(at 169.84 75 0)
+		(at 166 75 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8063,8 +8099,8 @@
 		)
 		(uuid "70000000-0000-4000-8000-000000000092")
 	)
-	(label "UART_TX"
-		(at 169.84 69.92 0)
+	(label "RS485_UART_TX"
+		(at 166 69.92 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8504,7 +8540,7 @@
 		)
 		(uuid "70000000-0000-4000-8000-000000000141")
 	)
-	(label "UART_RX"
+	(label "ESP_U0RX"
 		(at 196.43 70.54 0)
 		(effects
 			(font
@@ -8513,7 +8549,7 @@
 		)
 		(uuid "70000000-0000-4000-8000-000000000142")
 	)
-	(label "UART_TX"
+	(label "ESP_U0TX"
 		(at 196.43 68 0)
 		(effects
 			(font
@@ -8756,6 +8792,24 @@
 		)
 		(uuid "70000000-0000-4000-8000-000000000169")
 	)
+	(label "RS485_UART_RX"
+		(at 155.24 80.08 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "70000000-0000-4000-8000-00000000a001")
+	)
+	(label "RS485_UART_TX"
+		(at 155.24 77.54 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "70000000-0000-4000-8000-00000000a002")
+	)
 	(label "SPI_SCK"
 		(at 155.24 75 0)
 		(effects
@@ -8774,7 +8828,7 @@
 		)
 		(uuid "70000000-0000-4000-8000-000000000171")
 	)
-	(label "UART_RX"
+	(label "ESP_U0RX"
 		(at 155.24 97.86 0)
 		(effects
 			(font
@@ -8783,7 +8837,7 @@
 		)
 		(uuid "70000000-0000-4000-8000-000000000172")
 	)
-	(label "UART_TX"
+	(label "ESP_U0TX"
 		(at 155.24 102.94 0)
 		(effects
 			(font
@@ -8800,6 +8854,15 @@
 			)
 		)
 		(uuid "70000000-0000-4000-8000-000000000174")
+	)
+	(label "RGB_DATA"
+		(at 155.24 69.92 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "70000000-0000-4000-8000-00000000a003")
 	)
 	(label "GND"
 		(at 140 39.44 0)
@@ -8998,15 +9061,6 @@
 			)
 		)
 		(uuid "70000000-0000-4000-8000-000000000229")
-	)
-	(label "RGB_DATA"
-		(at 155.24 80.08 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "74000000-0000-4000-8000-000000000100")
 	)
 	(label "RGB_DATA"
 		(at 180.34 143.51 0)
@@ -15874,306 +15928,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 255 35 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "40000000-0000-4000-8000-000000000206")
-		(property "Reference" "#FLG01"
-			(at 255 36.905 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 255 38.81 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 255 35 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 255 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 255 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "40000000-0000-4000-8000-000000000207")
-		)
-		(instances
-			(project "pumpengruppe-rs485"
-				(path "/d5e42fe8-0c45-43b8-a242-42b955d18b37"
-					(reference "#FLG01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 265 35 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "40000000-0000-4000-8000-000000000209")
-		(property "Reference" "#FLG02"
-			(at 265 36.905 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 265 38.81 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 265 35 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 265 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 265 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "40000000-0000-4000-8000-000000000210")
-		)
-		(instances
-			(project "pumpengruppe-rs485"
-				(path "/d5e42fe8-0c45-43b8-a242-42b955d18b37"
-					(reference "#FLG02")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 275 35 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "40000000-0000-4000-8000-000000000212")
-		(property "Reference" "#FLG03"
-			(at 275 36.905 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 275 38.81 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 275 35 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 275 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 275 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "40000000-0000-4000-8000-000000000213")
-		)
-		(instances
-			(project "pumpengruppe-rs485"
-				(path "/d5e42fe8-0c45-43b8-a242-42b955d18b37"
-					(reference "#FLG03")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 285 35 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "40000000-0000-4000-8000-000000000215")
-		(property "Reference" "#FLG04"
-			(at 285 36.905 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 285 38.81 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 285 35 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 285 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 285 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "40000000-0000-4000-8000-000000000216")
-		)
-		(instances
-			(project "pumpengruppe-rs485"
-				(path "/d5e42fe8-0c45-43b8-a242-42b955d18b37"
-					(reference "#FLG04")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "FW_Pumpengruppe:MAX31865_MIN")
 		(at 110 120 0)
 		(unit 1)
@@ -16575,306 +16329,6 @@
 			(project "pumpengruppe-rs485"
 				(path "/d5e42fe8-0c45-43b8-a242-42b955d18b37"
 					(reference "J2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 255 35 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "70000000-0000-4000-8000-000000000218")
-		(property "Reference" "#FLG01"
-			(at 255 36.905 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 255 38.81 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 255 35 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 255 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 255 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "70000000-0000-4000-8000-000000000219")
-		)
-		(instances
-			(project "pumpengruppe-rs485"
-				(path "/d5e42fe8-0c45-43b8-a242-42b955d18b37"
-					(reference "#FLG01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 265 35 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "70000000-0000-4000-8000-000000000221")
-		(property "Reference" "#FLG02"
-			(at 265 36.905 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 265 38.81 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 265 35 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 265 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 265 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "70000000-0000-4000-8000-000000000222")
-		)
-		(instances
-			(project "pumpengruppe-rs485"
-				(path "/d5e42fe8-0c45-43b8-a242-42b955d18b37"
-					(reference "#FLG02")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 275 35 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "70000000-0000-4000-8000-000000000224")
-		(property "Reference" "#FLG03"
-			(at 275 36.905 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 275 38.81 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 275 35 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 275 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 275 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "70000000-0000-4000-8000-000000000225")
-		)
-		(instances
-			(project "pumpengruppe-rs485"
-				(path "/d5e42fe8-0c45-43b8-a242-42b955d18b37"
-					(reference "#FLG03")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 285 35 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "70000000-0000-4000-8000-000000000227")
-		(property "Reference" "#FLG04"
-			(at 285 36.905 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 285 38.81 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 285 35 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 285 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 285 35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "70000000-0000-4000-8000-000000000228")
-		)
-		(instances
-			(project "pumpengruppe-rs485"
-				(path "/d5e42fe8-0c45-43b8-a242-42b955d18b37"
-					(reference "#FLG04")
 					(unit 1)
 				)
 			)

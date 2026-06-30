@@ -21,6 +21,14 @@ Aktueller Stand:
   Funktionspins gesetzt.
 - Gerber/Drill/BOM lassen sich per `export-fab.ps1` erzeugen.
 - USB-C-Serviceanschluss mit USB-UART-Funktion ist eingeplant.
+- UART-Topologie im Schaltplan ist getrennt:
+  `U6` USB-UART liegt nur auf ESP-UART0 (`ESP_U0RX`/`ESP_U0TX`) fuer
+  Firmware/Debug. `U4` MAX3485 liegt separat auf dem RS485-UART
+  (`RS485_UART_RX` = ESP GPIO16, `RS485_UART_TX` = ESP GPIO17,
+  `RS485_DE` = ESP GPIO4). Nach dieser Korrektur muss die PCB-Datei in KiCad
+  aus dem Schaltplan aktualisiert und das Routing fuer diese Netze neu gezogen
+  werden; alte `UART_RX`/`UART_TX`-Routen im PCB duerfen nicht als
+  Fertigungsstand gelten.
 - ESP32 ist als WROOM-32D mit PCB-Antenne vorgesehen; Antennenseite am
   Platinenrand platzieren und Keepout freihalten.
 - Relais werden nicht direkt vom ESP geschaltet: pro Relais sind 100R
@@ -36,10 +44,16 @@ Aktueller Stand:
   an `RGB_DATA`/ESP32 GPIO21. `D60-D63` bleiben allgemeine Status-LEDs,
   `D64-D83` bilden den senkrechten Ventilstand-Balken mit 5-%-Schritten;
   die 20er-Leiste ist im 4,8-mm-Raster gesetzt, damit Courtyards nicht kollidieren.
+- RTD-Hinweis: Die Firmware erwartet fuer die beiden MAX31865 getrennte
+  Chip-Select-Leitungen (`RTD_VL_CS` = GPIO5, `RTD_RL_CS` = GPIO22). Der
+  aktuelle KiCad-Schaltplan/PCB muss dafuer noch mit einem vollstaendigen
+  MAX31865-Symbol inklusive CS-Pin und passenden Netzen nachgezogen werden,
+  bevor die Temperaturmessung als produzierbar gilt.
 - Netzteil ist auf ein guenstiges KiCad-Standardfootprint fuer
   `HLK-5M05`/`HLK-5Mxx` umgestellt.
 - RS485 ist auf eine guenstige Standardtransceiver-Schaltung umgestellt:
-  `U4` = MAX3485/SP3485-Klasse im SOIC-8, `RS485_DE` vom ESP fuer DE/RE.
+  `U4` = MAX3485/SP3485-Klasse im SOIC-8 mit getrennten UART-Netzen zum ESP,
+  `RS485_DE` vom ESP fuer DE/RE.
 - Ueberspannungsschutz auf der Netzseite ist diskret vorgesehen:
   `RV1` als 275-VAC-MOV zwischen L und N.
 - RJ45 Pin 1/2 fuehren `BUS_5V`, Pin 7/8 `COM`; `F2` schuetzt die 5V-Kopplung
