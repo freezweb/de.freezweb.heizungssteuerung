@@ -1,0 +1,10 @@
+(footprint "TB_2_350"
+  (version 20240108)
+  (generator "codex")
+  (layer "F.Cu")
+  (descr "2-pin terminal block, 3.50 mm pitch")
+  (attr through_hole)
+  (fp_rect (start -4 -4) (end 4 4) (stroke (width 0.12) (type solid)) (fill no) (layer "F.SilkS"))
+  (pad "1" thru_hole circle (at -1.75 0) (size 2 2) (drill 1) (layers "*.Cu" "*.Mask"))
+  (pad "2" thru_hole circle (at 1.75 0) (size 2 2) (drill 1) (layers "*.Cu" "*.Mask"))
+)

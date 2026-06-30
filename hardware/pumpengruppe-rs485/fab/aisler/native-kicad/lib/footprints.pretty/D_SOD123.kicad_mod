@@ -1,0 +1,11 @@
+(footprint "D_SOD123"
+  (version 20240108)
+  (generator "codex")
+  (layer "F.Cu")
+  (descr "Generic SOD-123 diode")
+  (attr smd)
+  (fp_rect (start -2.5 -1.2) (end 2.5 1.2) (stroke (width 0.12) (type solid)) (fill no) (layer "F.SilkS"))
+  (fp_line (start -1.5 -1.2) (end -1.5 1.2) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
+  (pad "1" smd rect (at -1.8 0) (size 1.2 1.2) (layers "F.Cu" "F.Paste" "F.Mask"))
+  (pad "2" smd rect (at 1.8 0) (size 1.2 1.2) (layers "F.Cu" "F.Paste" "F.Mask"))
+)

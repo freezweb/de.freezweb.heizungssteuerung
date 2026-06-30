@@ -21,7 +21,7 @@ Nebengebaude + Hoftor.
 | Standort | Inhalt | Anbindung |
 |---|---|---|
 | Heizungsraum (separat) | Hauptsteuerung RevPi #1, Olbrenner (uebergangsweise), Warmwasserspeicher; spater 2x Monoblock-WP, Brauchwasser-WP, Pool-Hydraulik, Brunnenkuhlung-WT, Nebengebaude-Strang | direkte I/O |
-| Hauptkeller (~12 m entfernt) | Slave-RevPi #2 (spater), 2x 3-Wege-Mischer + Umwalzpumpen, 3 Strange: FBH-EG, Klimakreis-OG, Heizkorper-Backup OG | LAN/VLAN 25, Modbus-TCP |
+| Hauptkeller (~12 m entfernt) | Slave-RevPi #2 (spater), 2x 3-Wege-Mischer + Umwalzpumpen, 3 Strange: FBH-EG, Klimakreis-OG, Heizkorper-Backup OG; optional Gewaechshaus-Lufterhitzer als zusaetzlicher Niedertemperaturkreis | LAN/VLAN 25, Modbus-TCP |
 | EG | Heizkreisverteiler FBH + Shelly-Funkventile (von HA gesteuert) | nur HA |
 | OG | Aktuell 6 Heizkorper mit Shelly-TRV -> spater 5 Klima-Innengerate (Kind, Buro, Schlaf, Bad, Flur) + Heizkorper-Backup | Modbus RTU |
 | Hoftor | 2 Antriebsausgange (ganz/halb) + 2 Endschalter + 1 Lichtschranke | Haupt-CPU |
@@ -139,10 +139,10 @@ nur an den 2 RTD-Kanaelen pro Modul bereit; die 4 AI sind Spannungs-/Stromeingae
 | Waveshare RS485-to-ETH | Modbus-Gateway WP-Bus | 1 | 50 EUR |
 | Waveshare RS485-to-ETH | Modbus-Gateway Klima-OG-Bus | 1 | 50 EUR |
 | Waveshare RS485-to-ETH | Modbus-Gateway BW-WP/Pool-/Filterperipherie | 1 | 50 EUR |
-| Dezentrale RS485-Pumpengruppen-Platine | je Mischerkreis: 3WV Auf/Zu, Pumpe, VL/RL-RTD, ESP32 OTA | 3+ | Eigenentwicklung |
+| Dezentrale RS485-Pumpengruppen-Platine | je Mischerkreis: 3WV Auf/Zu, Pumpe, VL/RL-RTD, ESP32 OTA | 4+ inkl. optional Gewaechshaus | Eigenentwicklung |
 | Koppelrelais 24V -> 230V/16A | Pumpen, WP-Freigaben, Brunnen, Tor | ~20 | je 8-12 EUR |
 | Hutschienen-Netzteil 24V/5A | I/O-Versorgung Slave-Schrank | 1 | 40 EUR |
-| PT1000 Anlegefuehler | neue Sensoren erganzend | ~6 | je 15 EUR |
+| PT1000 Anlegefuehler | neue Sensoren erganzend | ~8 inkl. optional Gewaechshaus | je 15 EUR |
 | Schaltschrank Slave | Hauptkeller | 1 | 200 EUR |
 | Endschalter Hoftor (mechanisch, NO) | Tor zu-Position | 2 | 30 EUR |
 | Lichtschranke Tor (Reflex, 24V) | Sicherheit Tor | 1 | 80 EUR |
@@ -340,8 +340,18 @@ lokal Pumpe, 3WV AUF und 3WV ZU, misst VL/RL per RTD und berechnet die
 Mischer-Laufzeit aus der per Modbus vorgegebenen Zielposition selbst. Details:
 [docs/pumpengruppe-rs485-platine.md](docs/pumpengruppe-rs485-platine.md).
 
+Optionaler Zusatzkreis: Gewaechshaus-Lufterhitzer als Niedertemperatur-Senke
+mit ca. 35 Grad Vorlauf. Dieser Kreis soll bevorzugt ebenfalls eine eigene
+RS485-Pumpengruppen-Platine bekommen, damit Pumpe, Mischer und VL/RL-Fuehler
+lokal am Abgang sitzen. Damit bleibt die Haupt-/Keller-RevPi-I/O-Belegung frei
+und der Kreis kann spaeter ohne Umbau der bestehenden drei Mischerkreise
+nachgeruestet werden.
+
 Die folgende RevPi-I/O-Planung bleibt als Rueckfall-/Reservevariante bestehen,
-falls einzelne Kreise direkt auf den Keller-RevPi gelegt werden.
+falls einzelne Kreise direkt auf den Keller-RevPi gelegt werden. Sie deckt nur
+die drei Hauptkeller-Mischerkreise ab; der Gewaechshauskreis benoetigt bei
+direkter RevPi-Verdrahtung zusaetzliche RTD-Kanaele oder bleibt bei der
+dezentralen Pumpengruppen-Platine.
 
 Geplante physische Klemmenlogik fuer den Keller-Slave:
 
@@ -429,6 +439,7 @@ Geplante physische Klemmenlogik fuer den Keller-Slave:
 - Slave 30: Pumpengruppe FBH-EG
 - Slave 31: Pumpengruppe Klimakreis-OG
 - Slave 32: Pumpengruppe Heizkoerper-Backup OG
+- Slave 33: Pumpengruppe Gewaechshaus-Lufterhitzer (optional, VL-Soll ca. 35 Grad)
 - Registerentwurf siehe `docs/pumpengruppe-rs485-platine.md`
 
 **Inter-CPU-Kommunikation:**
@@ -653,6 +664,7 @@ Verlaufskurven & History: nativ ueber HA-Recorder + InfluxDB-Add-on.
 | O7 | HK-Backup OG: Eigener Strang oder ueber Klimakreis-OG? | Vor Phase E |
 | O8 | Pool-Filterpumpen-Modell (Inverter oder klassisch)? | Vor Phase E |
 | O9 | Lichtschranke Modell + Spannung (24V DC bevorzugt) | Vor Phase A |
+| O10 | Gewaechshaus-Heizkreis: Lufterhitzer-Leistung, Frostschutzstrategie, Rohrweg und Pumpengruppenposition festlegen | Vor Umsetzung Gewaechshaus |
 
 ## 12. Verifikation pro Phase
 

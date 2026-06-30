@@ -33,6 +33,7 @@ $Fab = Join-Path $ProjectRoot "fab"
 $Gerber = Join-Path $Fab "gerber"
 $Drill = Join-Path $Fab "drill"
 $Bom = Join-Path $Fab "pumpengruppe-rs485-bom.csv"
+$BomAisler = Join-Path $Fab "pumpengruppe-rs485-aisler-mpn-bom.csv"
 $BomTemp = Join-Path $Fab "pumpengruppe-rs485-bom-tempinput.csv"
 $Pos = Join-Path $Fab "pumpengruppe-rs485-pick-place.csv"
 $PosTemp = Join-Path $Fab "pumpengruppe-rs485-pick-place-tempinput.csv"
@@ -83,6 +84,14 @@ $PosTempRows | Export-Csv -NoTypeInformation -Encoding UTF8 $PosTemp
     --output $Bom `
     $Sch
 
+& $Cli.Source sch export bom `
+    --output $BomAisler `
+    --fields "Reference,Value,Footprint,QUANTITY,DNP,Manufacturer,MPN,AISLER_MPN,Supplier,AssemblyNote" `
+    --labels "Refs,Value,Footprint,Qty,DNP,Manufacturer,MPN,AISLER_MPN,Supplier,AssemblyNote" `
+    --group-by "Value,Footprint,Manufacturer,MPN,AISLER_MPN,DNP,AssemblyNote" `
+    --exclude-dnp `
+    $Sch
+
 # Keep an explicit review BOM for RevA so the exported parts list stays stable
 # even while the KiCad symbols/footprints are still being refined.
 @"
@@ -91,7 +100,7 @@ $PosTempRows | Export-Csv -NoTypeInformation -Encoding UTF8 $PosTemp
 "X2","PUMPE_L_SW_N_PE","FW_Pumpengruppe:TB_3_762","1","","7.62 mm screw terminal, mains rated"
 "X3","MISCHER_AUF_ZU_N_PE","FW_Pumpengruppe:TB_4_762","1","","7.62 mm screw terminal, mains rated"
 "F1","5x20 slow-blow fuse 5A","FW_Pumpengruppe:FUSE_5X20","1","","Use fuse and holder rated for 250 VAC"
-"PSU1","HLK-5M05 230VAC to 5V module","Converter_ACDC:Converter_ACDC_Hi-Link_HLK-5Mxx","1","","Hi-Link HLK-5M05 or mechanically/electrically compatible approved module"
+"PSU1","IRM-05-5 230VAC to 5V module","Converter_ACDC:Converter_ACDC_MeanWell_IRM-05-xx_THT","1","","Mean Well IRM-05-5, AISLER assembly target; verify 230VAC clearance and final routing"
 "K1","RELAY_PUMPE_16A","FW_Pumpengruppe:Relay_SPST_16A","1","","5 V coil, contact rating suitable for pump load"
 "K2","MIX_ENABLE_RELAY_SPST_5V","FW_Pumpengruppe:Relay_SPST_8A","1","","5 V coil, contact rating suitable for actuator"
 "K3","MIX_DIR_RELAY_SPDT_5V_NC_ZU_NO_AUF","FW_Pumpengruppe:Relay_SPDT_8A","1","","SPDT direction relay, 5 V coil"
@@ -166,6 +175,6 @@ $PosTempRows | Export-Csv -NoTypeInformation -Encoding UTF8 $PosTemp
 if (Test-Path $Zip) {
     Remove-Item -LiteralPath $Zip
 }
-Compress-Archive -Path (Join-Path $Gerber "*"), (Join-Path $Drill "*"), $Bom, $Pos, $BomTemp, $PosTemp -DestinationPath $Zip
+Compress-Archive -Path (Join-Path $Gerber "*"), (Join-Path $Drill "*"), $Bom, $BomAisler, $Pos, $BomTemp, $PosTemp -DestinationPath $Zip
 
 Write-Host "Fertig: $Zip"

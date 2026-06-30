@@ -425,6 +425,8 @@ async def _handle_mqtt_commands(
             group, _, name = command.name.partition("/")
             if not freigaben.set(group, name, _extract_bool(command.payload)):
                 log.warning("MQTT-Freigabe fuer unbekannte Gruppe/Komponente ignoriert: %s", command.name)
+            else:
+                _publish_freigaben_state(mqtt, freigaben)
             continue
 
         if command.typ == "regler_set":
@@ -894,15 +896,10 @@ def _publish_state(
     mqtt.publish_json(f"{base}/brunnen/state", brunnen_state.as_payload(), retain=True)
     for name, active in sorted(mqtt.pv.items()):
         mqtt.publish(f"{base}/pv/{name}/state", "1" if active else "0", retain=True)
-    mqtt.publish_json(f"{base}/freigabe/state", freigaben.snapshot(), retain=True)
+    _publish_freigaben_state(mqtt, freigaben)
     mqtt.publish_json(f"{base}/regler/state", regler.snapshot(), retain=True)
     for name, value in regler.snapshot().items():
         mqtt.publish(f"{base}/regler/{name}/state", str(value), retain=True)
-
-    for name, enabled in freigaben.sources.items():
-        mqtt.publish(f"{base}/freigabe/quellen/{name}/state", "1" if enabled else "0", retain=True)
-    for name, enabled in freigaben.sinks.items():
-        mqtt.publish(f"{base}/freigabe/senken/{name}/state", "1" if enabled else "0", retain=True)
 
     for name, demand in mqtt.demands.items():
         mqtt.publish_json(
@@ -934,15 +931,40 @@ def _publish_state(
     for channel_id, channel in app_config.io_map.do.items():
         value = applied_do.get(channel_id, False)
         hand = hand_snapshot.get(channel_id)
+        hand_active = bool((hand or {}).get("hand"))
         mqtt.publish(f"{base}/do/{channel.komponente}/state", "1" if value else "0", retain=True)
-        mqtt.publish(f"{base}/{channel.komponente}/hand/mode/state", "1" if hand else "0", retain=True)
-        mqtt.publish(f"{base}/{channel.komponente}/hand/value/state", "1" if (hand or {}).get("wert") else "0", retain=True)
+        mqtt.publish(f"{base}/{channel.komponente}/hand/mode/state", "1" if hand_active else "0", retain=True)
+        mqtt.publish(
+            f"{base}/{channel.komponente}/hand/value/state",
+            "1" if hand_active and (hand or {}).get("wert") else "0",
+            retain=True,
+        )
     for channel_id, channel in app_config.io_map.ao.items():
         value = applied_ao.get(channel_id, 0.0)
         hand = hand_snapshot.get(channel_id)
+        hand_active = bool((hand or {}).get("hand"))
         mqtt.publish(f"{base}/ao/{channel.komponente}/state", f"{value:.1f}", retain=True)
-        mqtt.publish(f"{base}/{channel.komponente}/hand/mode/state", "1" if hand else "0", retain=True)
-        mqtt.publish(f"{base}/{channel.komponente}/hand/value/state", str((hand or {}).get("wert", 0.0)), retain=True)
+        mqtt.publish(f"{base}/{channel.komponente}/hand/mode/state", "1" if hand_active else "0", retain=True)
+        mqtt.publish(f"{base}/{channel.komponente}/hand/value/state", _ao_hand_value_state(channel, hand if hand_active else None), retain=True)
+
+
+def _publish_freigaben_state(mqtt: MqttBridge, freigaben: Freigaben) -> None:
+    base = mqtt.base
+    mqtt.publish_json(f"{base}/freigabe/state", freigaben.snapshot(), retain=True)
+    for name, enabled in freigaben.sources.items():
+        mqtt.publish(f"{base}/freigabe/quellen/{name}/state", "1" if enabled else "0", retain=True)
+    for name, enabled in freigaben.sinks.items():
+        mqtt.publish(f"{base}/freigabe/senken/{name}/state", "1" if enabled else "0", retain=True)
+
+
+def _ao_hand_value_state(channel: ChannelConfig, hand: dict[str, Any] | None) -> str:
+    low, high = channel.bereich or (0.0, 100.0)
+    if hand and hand.get("wert") is not None:
+        value = float(hand["wert"])
+    else:
+        value = float(low)
+    value = max(float(low), min(float(high), value))
+    return f"{value:.1f}"
 
 
 def _publish_ha_discovery(mqtt: MqttBridge, app_config: AppConfig) -> None:

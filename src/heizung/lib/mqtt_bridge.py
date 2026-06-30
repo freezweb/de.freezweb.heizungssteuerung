@@ -39,6 +39,7 @@ class MqttBridge:
         self.pv: dict[str, bool] = {"ueberschuss": False, "mangel": False}
         self._commands: queue.SimpleQueue[MqttCommand] = queue.SimpleQueue()
         self._client: Any = None
+        self._last_published: dict[str, str] = {}
 
     @property
     def enabled(self) -> bool:
@@ -78,7 +79,7 @@ class MqttBridge:
         if self._client is None:
             return
         status_topic = self.config.get("topics", {}).get("status", f"{self.base}/status")
-        self.publish(status_topic, "offline", retain=True)
+        self.publish(status_topic, "offline", retain=True, force=True)
         self._client.loop_stop()
         self._client.disconnect()
 
@@ -90,11 +91,14 @@ class MqttBridge:
             except queue.Empty:
                 return commands
 
-    def publish(self, topic: str, payload: Any, retain: bool = False) -> None:
+    def publish(self, topic: str, payload: Any, retain: bool = False, force: bool = False) -> None:
         if self._client is None:
             return
         if not isinstance(payload, str):
             payload = json.dumps(payload, separators=(",", ":"))
+        if not force and self._last_published.get(topic) == payload:
+            return
+        self._last_published[topic] = payload
         self._client.publish(topic, payload=payload, qos=0, retain=retain)
 
     def publish_json(self, topic: str, payload: dict[str, Any], retain: bool = False) -> None:
@@ -143,7 +147,7 @@ class MqttBridge:
         self.connected = True
         self.last_seen_ts = time.time()
         status_topic = self.config.get("topics", {}).get("status", f"{self.base}/status")
-        self.publish(status_topic, "online", retain=True)
+        self.publish(status_topic, "online", retain=True, force=True)
         for topic in (
             f"{self.base}/anforderung/+/set",
             f"{self.base}/anforderung/+/aktiv/set",

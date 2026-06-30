@@ -1,0 +1,7 @@
+﻿"Refs","Value","Footprint","Qty","DNP","Manufacturer","MPN","AISLER_MPN","Supplier","AssemblyNote"
+"F1","5x20 fuse holder","FW_Pumpengruppe:FUSE_5X20","1","","Littelfuse","03453LS1H","03453LS1H","AISLER source or equivalent","5x20 PCB fuse holder/fuse solution, verify footprint and fuse rating before order"
+"K1","G5LE-1A-E DC5","FW_Pumpengruppe:Relay_SPST_16A","1","","Omron","G5LE-1A-E DC5","G5LE-1A-E DC5","AISLER source or equivalent","VERIFY_FOOTPRINT before assembly, relay footprint is still project-specific"
+"K2","G5LE-1A-E DC5","FW_Pumpengruppe:Relay_SPST_8A","1","","Omron","G5LE-1A-E DC5","G5LE-1A-E DC5","AISLER source or equivalent","VERIFY_FOOTPRINT before assembly, relay footprint is still project-specific"
+"K3","G5LE-1 DC5","FW_Pumpengruppe:Relay_SPDT_8A","1","","Omron","G5LE-1 DC5","G5LE-1 DC5","AISLER source or equivalent","VERIFY_FOOTPRINT before assembly, relay footprint is still project-specific"
+"R40,R41","150k 1% 1206","Resistor_SMD:R_1206_3216Metric","2","","Yageo","RC1206FR-07150KL","RC1206FR-07150KL","AISLER source or equivalent","Mains LED dropper, verify voltage rating/series clearance"
+"U2,U3","MAX31865AAP+","Package_SO:SOIC-16_3.9x9.9mm_P1.27mm","2","","Analog Devices","MAX31865AAP+","MAX31865AAP+","AISLER source or equivalent","VERIFY_FOOTPRINT: selected IC/package must be checked against RTD footprint before production"

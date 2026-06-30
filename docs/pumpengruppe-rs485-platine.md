@@ -317,7 +317,8 @@ Vorgeschlagene Slave-IDs:
 | 30 | FBH EG Pumpengruppe |
 | 31 | Klima OG Pumpengruppe |
 | 32 | HK-Backup OG Pumpengruppe |
-| 33..39 | Reserve |
+| 33 | Gewaechshaus-Lufterhitzer, optional, VL-Soll ca. 35 Grad |
+| 34..39 | Reserve |
 
 Busparameter Startwert: 19200 8E1 oder 9600 8N1. Fuer maximale Robustheit mit
 langen YSTY-Strecken ist 9600 8N1 unkritischer; final muss die Hauptsteuerung

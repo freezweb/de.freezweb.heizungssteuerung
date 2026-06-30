@@ -1,4 +1,4 @@
-from heizung.__main__ import _publish_temperature, _sensor_value_by_component
+from heizung.__main__ import _ao_hand_value_state, _publish_temperature, _sensor_value_by_component
 from heizung.lib.config import ChannelConfig, IoMap
 from heizung.lib.iohw import HardwareSnapshot
 
@@ -45,3 +45,21 @@ def test_sensor_value_by_component_ignores_missing_850_degree_rtd():
     app_config = type("Config", (), {"io_map": io_map})()
 
     assert _sensor_value_by_component(app_config, HardwareSnapshot(rtd={"K-RTD02": 850.0}), "fbh_eg_rl") is None
+
+
+def test_ao_hand_value_state_uses_valid_minimum_without_hand_override():
+    channel = ChannelConfig("AO01", "ao", "AO_1", "wp1_vl_soll", bereich=(20.0, 55.0), einheit="C")
+
+    assert _ao_hand_value_state(channel, None) == "20.0"
+
+
+def test_ao_hand_value_state_uses_hand_override():
+    channel = ChannelConfig("AO01", "ao", "AO_1", "wp1_vl_soll", bereich=(20.0, 55.0), einheit="C")
+
+    assert _ao_hand_value_state(channel, {"wert": 37.5}) == "37.5"
+
+
+def test_ao_hand_value_state_clamps_invalid_hand_override_to_range():
+    channel = ChannelConfig("AO01", "ao", "AO_1", "wp1_vl_soll", bereich=(20.0, 55.0), einheit="C")
+
+    assert _ao_hand_value_state(channel, {"wert": 0.0}) == "20.0"

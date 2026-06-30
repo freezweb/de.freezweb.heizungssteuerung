@@ -88,6 +88,12 @@ Zielposition per Laufzeitlogik um. Der direkte RevPi-I/O-Plan unten bleibt als
 Reserve-/Rueckfallvariante. Hardwareentwurf:
 [pumpengruppe-rs485-platine.md](pumpengruppe-rs485-platine.md).
 
+Optional ist ein vierter Niedertemperaturkreis fuer das Gewaechshaus geplant:
+Lufterhitzer mit ca. 35 Grad Vorlauf. Dieser Kreis soll bevorzugt nicht mehr
+auf die direkte Keller-RevPi-RTD-Reserve, sondern als weitere RS485-
+Pumpengruppen-Platine laufen, weil die drei vorhandenen Keller-AIO-RTD-Paare
+bereits fuer FBH, Klima-OG und HK-Backup belegt sind.
+
 Belegung:
 
 | Modul | Zweck |
@@ -115,6 +121,15 @@ Vorgeschlagene lokale I/O-Zuordnung fuer den Slave:
 | AO01 | FU Brunnenpumpe Drehzahlsollwert 4-20 mA |
 | AO02-AO04 | stetige Mischerstellungen FBH/Klima/HK |
 | AO05-AO06 | Reserve |
+
+RS485-Pumpengruppen am Bus 4:
+
+| Slave | Kreis |
+|---|---|
+| 30 | FBH EG |
+| 31 | Klima OG |
+| 32 | HK-Backup OG |
+| 33 | Gewaechshaus-Lufterhitzer, optional, VL-Soll ca. 35 Grad |
 
 Brunnenregelung: Der Drucksensor und die FU-Ausgaenge sitzen am Keller-RevPi,
 aber die Konstantdruckregelung laeuft zentral auf der Hauptsteuerung. Der

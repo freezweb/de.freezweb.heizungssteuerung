@@ -1,9 +1,10 @@
 # Hydraulik-Schema (Endausbau)
 
 Grundprinzip: **WP1 und WP2 speisen beide denselben Gesamtwaermekreis**.
-Haus, Nebengebaeude, Pool und HK-Backup sind Senken an diesem gemeinsamen
-Erzeuger-/Verteilerkreis. Es gibt keine feste Zuordnung "WP1 = Haus" oder
-"WP2 = Pool"; jede aktive Waermequelle kann jede aktive Senke bedienen.
+Haus, Nebengebaeude, Pool, HK-Backup und optional das Gewaechshaus sind Senken
+an diesem gemeinsamen Erzeuger-/Verteilerkreis. Es gibt keine feste Zuordnung
+"WP1 = Haus" oder "WP2 = Pool"; jede aktive Waermequelle kann jede aktive Senke
+bedienen.
 
 ```mermaid
 flowchart LR
@@ -23,6 +24,8 @@ flowchart LR
         SVN[Nebengebaeude-Kreisventil]
         PNeb[Pumpe Nebengebaeude]
         SVH[HK-Backup-Kreisventil OG]
+        SVG[Gewaechshaus-Kreisventil]
+        PGew[Pumpe Gewaechshaus-Kreis]
         BWS[Trinkwarmwasser-<br/>Speicher 200 L]
     end
 
@@ -54,12 +57,17 @@ flowchart LR
         NHK[Heizkreis Nebengebaeude]
     end
 
+    subgraph GEW[Gewaechshaus]
+        GLH[Lufterhitzer<br/>VL ca. 35 Grad]
+    end
+
     WP1 --> SVW1 --> VL
     WP2 --> SVW2 --> VL
     VL --> SVF --> PF --> FBH --> RL
     VL --> SVK --> PK --> K1 & K2 & K3 & K4 & K5 --> RL
     VL --> SVN --> PNeb --> NHK --> RL
     VL --> SVH --> HKB --> RL
+    VL --> SVG --> PGew --> GLH --> RL
     VL --> SVP --> PPool --> PWT --> BEC --> RL
     BWWP --> BWS
     BR --> WTK --> SVK
@@ -75,7 +83,9 @@ flowchart LR
 - **Pool**: Der Pool ist eine Senke am Gesamtwaermekreis. Er wird ueber sein
   Kreisventil und die Pool-Kreis-Pumpe zugeschaltet, nicht ueber eine exklusiv
   zugeordnete Waermepumpe.
-- **Nebengebaeude / Haus / HK-Backup**: Ebenfalls Senken am gemeinsamen Kreis.
+- **Nebengebaeude / Haus / HK-Backup / Gewaechshaus**: Ebenfalls Senken am
+  gemeinsamen Kreis. Das Gewaechshaus ist als Niedertemperatur-Senke mit ca.
+  35 Grad Vorlauf geplant und passt damit gut zum WP-Betrieb.
 - **BWWP**: Die Brauchwasser-WP bleibt ein separater kleiner Steuerkreis fuer den
   Trinkwarmwasserspeicher.
 - **Brunnen-WT**: Eigener Kuehlpfad in den Klimakreis, getrennt von der
@@ -88,7 +98,8 @@ Senken sprechen:
 
 - Quellen: `wp1`, `wp2`, spaeter ggf. `oelbrenner`
 - Gemeinsamer Knoten: `gesamtwaermekreis`
-- Senken: `fbh_eg`, `klima_og`, `nebengeb`, `hk_backup`, `pool`
+- Senken: `fbh_eg`, `klima_og`, `nebengeb`, `hk_backup`, `pool`,
+  `gewaechshaus`
 
 Damit bleibt die Anlage routingfaehig: **alles kann auf alles geroutet werden**,
 solange Ventilstellung, Pumpenfreigabe und Solltemperatur dazu passen.
