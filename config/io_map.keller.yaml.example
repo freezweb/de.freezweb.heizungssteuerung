@@ -11,7 +11,6 @@ revpi:
     - { addr: 0,  side: base,  slot: 0, type: CPU, hwversion: "1.0", name: K-CPU1 }
     - { addr: 32, side: right, slot: 1, type: AIO, hwversion: "1.4", name: K-AIO1 }
     - { addr: 33, side: right, slot: 2, type: AIO, hwversion: "1.4", name: K-AIO2 }
-    - { addr: 34, side: right, slot: 3, type: AIO, hwversion: "1.4", name: K-AIO3 }
 
 do:
   K-DO01: { module: K-DIO1, channel: O_1, pictory_name: "Output_0", komponente: "pumpe_fbh_eg", beschreibung: "Pumpe FBH EG", phase: B, hand_timeout_min: 240 }
@@ -22,12 +21,10 @@ do:
 di: {}
 
 rtd:
-  K-RTD01: { module: K-AIO1, channel: RTD_1, pictory_name: "RTDValue_465_1", komponente: "fbh_eg_vl", sensor: PT1000, einheit: "C", phase: B }
-  K-RTD02: { module: K-AIO1, channel: RTD_2, pictory_name: "RTDValue_465_2", komponente: "fbh_eg_rl", sensor: PT1000, einheit: "C", phase: B }
-  K-RTD03: { module: K-AIO2, channel: RTD_1, pictory_name: "RTDValue_554_1", komponente: "klima_og_vl", sensor: PT1000, einheit: "C", phase: B }
-  K-RTD04: { module: K-AIO2, channel: RTD_2, pictory_name: "RTDValue_554_2", komponente: "klima_og_rl", sensor: PT1000, einheit: "C", phase: B }
-  K-RTD05: { module: K-AIO3, channel: RTD_1, pictory_name: "RTDValue_643_1", komponente: "hk_backup_vl", sensor: PT1000, einheit: "C", phase: B }
-  K-RTD06: { module: K-AIO3, channel: RTD_2, pictory_name: "RTDValue_643_2", komponente: "hk_backup_rl", sensor: PT1000, einheit: "C", phase: B }
+  K-RTD01: { module: K-AIO1, channel: RTD_1, pictory_name: "RTDValue_465_1", komponente: "hk_backup_vl", beschreibung: "Vorlauf Heizkoerper-Backup OG", sensor: PT1000, einheit: "C", phase: B }
+  K-RTD02: { module: K-AIO1, channel: RTD_2, pictory_name: "RTDValue_465_2", komponente: "hk_backup_rl", beschreibung: "Ruecklauf Heizkoerper-Backup OG", sensor: PT1000, einheit: "C", phase: B }
+  K-RTD03: { module: K-AIO2, channel: RTD_1, pictory_name: "RTDValue_554_1", komponente: "fbh_eg_rl", beschreibung: "Ruecklauf FBH EG", sensor: PT1000, einheit: "C", phase: B }
+  K-RTD04: { module: K-AIO2, channel: RTD_2, pictory_name: "RTDValue_554_2", komponente: "fbh_eg_vl", beschreibung: "Vorlauf FBH EG nach Mischer", sensor: PT1000, einheit: "C", phase: B }
 
 ai:
   K-AI01: { module: K-AIO1, channel: AI_1, pictory_name: "InputValue_465_1", komponente: "brunnen_druck", sensor: "4-20mA Drucksensor 0-10bar", einheit: "bar", signal: "4-20mA", phase: C }

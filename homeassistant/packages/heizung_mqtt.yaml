@@ -334,6 +334,9 @@ input_boolean:
     name: "Anforderung Pool"
   heizung_anf_bwwp:
     name: "Anforderung BWWP"
+  heizung_r421b16_modbus_alarm_gesendet:
+    name: "Heizung R421B16 Modbus Alarm Gesendet"
+    icon: mdi:bell-check
 
 input_number:
   heizung_vl_fbh_eg:
@@ -479,3 +482,70 @@ automation:
             {% endif %}
           message: >-
             {{ trigger.to_state.attributes.friendly_name | default(trigger.entity_id) }} ist {{ 'aktiv' if trigger.to_state.state == 'on' else 'wieder OK' }}.
+
+  - alias: "Heizung R421B16 Modbus Telegram"
+    id: heizung_r421b16_modbus_telegram
+    description: "Sendet die OK-Meldung nur, wenn vorher wirklich ein Stoeralarm verschickt wurde."
+    mode: queued
+    max: 5
+    trigger:
+      - platform: state
+        id: down
+        entity_id: binary_sensor.heizung_hauptsteuerung_r421b16_modbus_stoerung
+        from: "off"
+        to: "on"
+        for: "00:00:10"
+      - platform: state
+        id: up
+        entity_id: binary_sensor.heizung_hauptsteuerung_r421b16_modbus_stoerung
+        from: "on"
+        to: "off"
+        for: "00:00:10"
+    action:
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ trigger.id == 'down' }}"
+            sequence:
+              - service: telegram_bot.send_message
+                continue_on_error: true
+                data:
+                  parse_mode: plain_text
+                  chat_id:
+                    - "-4649956506"
+                  message: >-
+                    Heizung: R421B16 Keller-Relaismodul ist nicht erreichbar.
+                    Fehler: {{ states('sensor.heizung_hauptsteuerung_r421b16_modbus_fehler') }}.
+                    Zeit: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}.
+              - service: persistent_notification.create
+                data:
+                  title: "Heizung: R421B16 Modbus Stoerung"
+                  message: >-
+                    Das Keller-Relaismodul 10.1.100.169 antwortet nicht auf den zyklischen Modbus-Statuspoll.
+                    Fehler: {{ states('sensor.heizung_hauptsteuerung_r421b16_modbus_fehler') }}.
+              - service: input_boolean.turn_on
+                target:
+                  entity_id: input_boolean.heizung_r421b16_modbus_alarm_gesendet
+          - conditions:
+              - condition: template
+                value_template: "{{ trigger.id == 'up' }}"
+              - condition: state
+                entity_id: input_boolean.heizung_r421b16_modbus_alarm_gesendet
+                state: "on"
+            sequence:
+              - service: telegram_bot.send_message
+                continue_on_error: true
+                data:
+                  parse_mode: plain_text
+                  chat_id:
+                    - "-4649956506"
+                  message: >-
+                    Heizung: R421B16 Keller-Relaismodul ist wieder erreichbar.
+                    Zeit: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}.
+              - service: persistent_notification.create
+                data:
+                  title: "Heizung: R421B16 Modbus wieder OK"
+                  message: "Das Keller-Relaismodul antwortet wieder."
+              - service: input_boolean.turn_off
+                target:
+                  entity_id: input_boolean.heizung_r421b16_modbus_alarm_gesendet

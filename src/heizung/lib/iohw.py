@@ -233,8 +233,9 @@ def _raw_temp_value(raw: Any) -> float | None:
         value = float(raw)
     except (TypeError, ValueError):
         return None
-    # RevPi-AIO liefert PT100/1000 typischerweise in 1/10 Grad.
-    if abs(value) > 200:
+    # RevPi-AIO liefert PT100/1000 in 1/10 Grad. Der niedrigere Schwellwert
+    # faengt auch normale Keller-/Raumtemperaturen wie Rohwert 190 = 19.0 C ab.
+    if abs(value) > 120:
         value = value / 10
     if abs(value) >= 800:
         return None

@@ -40,8 +40,8 @@
         "other_text_upright": false,
         "pads": {
           "drill": 0.0,
-          "height": 0.95,
-          "width": 0.9
+          "height": 1.05,
+          "width": 1.05
         },
         "silk_line_width": 0.15,
         "silk_text_italic": false,
@@ -210,7 +210,11 @@
         }
       ],
       "track_widths": [
-        0.0
+        0.0,
+        0.2,
+        0.4,
+        0.8,
+        1.5
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -533,7 +537,7 @@
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
         "name": "230V",
-        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "pcb_color": "rgb(255, 157, 0)",
         "priority": 1,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 1.5,
@@ -548,10 +552,10 @@
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
         "name": "Doppelte Dicke",
-        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "pcb_color": "rgb(35, 255, 41)",
         "priority": 0,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.4,
+        "track_width": 0.8,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.3
@@ -565,15 +569,107 @@
     "netclass_patterns": [
       {
         "netclass": "230V",
-        "pattern": "N"
+        "pattern": "Net-(X1-Pin_1)"
       },
       {
         "netclass": "230V",
-        "pattern": "/L_FUSED"
+        "pattern": "/Net-(X1-Pin_1)"
       },
       {
         "netclass": "230V",
-        "pattern": "/L_IN"
+        "pattern": "Net-(K1-COM)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/Net-(K1-COM)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "Net-(K1-NO)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/Net-(K1-NO)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "Net-(K2-NO)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/Net-(K2-NO)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "Net-(K3-NO_AUF)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/Net-(K3-NO_AUF)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "Net-(K3-NC_ZU)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/Net-(K3-NC_ZU)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "Net-(D40-A)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/Net-(D40-A)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "Net-(X1-Pin_3)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/Net-(X1-Pin_3)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "Net-(D40-K)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/Net-(D40-K)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "Net-(R40-Pad2)"
+      },
+      {
+        "netclass": "230V",
+        "pattern": "/Net-(R40-Pad2)"
+      },
+      {
+        "netclass": "Doppelte Dicke",
+        "pattern": "Net-(D1-K)"
+      },
+      {
+        "netclass": "Doppelte Dicke",
+        "pattern": "/Net-(D1-K)"
+      },
+      {
+        "netclass": "Doppelte Dicke",
+        "pattern": "Net-(J1-Pin_1)"
+      },
+      {
+        "netclass": "Doppelte Dicke",
+        "pattern": "/Net-(J1-Pin_1)"
+      },
+      {
+        "netclass": "Doppelte Dicke",
+        "pattern": "Net-(D20-A)"
+      },
+      {
+        "netclass": "Doppelte Dicke",
+        "pattern": "/Net-(D20-A)"
       },
       {
         "netclass": "230V",
@@ -584,52 +680,16 @@
         "pattern": "/PE"
       },
       {
-        "netclass": "230V",
-        "pattern": "/L_CLOSE"
-      },
-      {
-        "netclass": "230V",
-        "pattern": "/L_OPEN"
-      },
-      {
-        "netclass": "230V",
-        "pattern": "L_FUSED"
-      },
-      {
-        "netclass": "230V",
-        "pattern": "L_IN"
-      },
-      {
-        "netclass": "Default",
-        "pattern": "N"
-      },
-      {
-        "netclass": "230V",
-        "pattern": "PE"
-      },
-      {
-        "netclass": "230V",
-        "pattern": "L_OPEN"
-      },
-      {
-        "netclass": "230V",
-        "pattern": "L_CLOSE"
-      },
-      {
-        "netclass": "230V",
-        "pattern": "MIX_L_EN"
-      },
-      {
-        "netclass": "230V",
-        "pattern": "L_PUMP"
+        "netclass": "Doppelte Dicke",
+        "pattern": "/+5V"
       },
       {
         "netclass": "Doppelte Dicke",
-        "pattern": "+5V"
+        "pattern": "/GND"
       },
       {
         "netclass": "Doppelte Dicke",
-        "pattern": "GND"
+        "pattern": "/RS485_GND"
       }
     ]
   },
@@ -721,12 +781,12 @@
       "sort_field": "Referenz"
     },
     "bus_aliases": {},
-    "connection_grid_size": 50.0,
+    "connection_grid_size": 50,
     "drawing": {
-      "dashed_lines_dash_length_ratio": 12.0,
-      "dashed_lines_gap_length_ratio": 3.0,
-      "default_line_thickness": 6.0,
-      "default_text_size": 50.0,
+      "dashed_lines_dash_length_ratio": 12,
+      "dashed_lines_gap_length_ratio": 3,
+      "default_line_thickness": 6,
+      "default_text_size": 50,
       "field_names": [],
       "hop_over_size_choice": 0,
       "intersheets_ref_own_page": false,
@@ -741,7 +801,7 @@
       "operating_point_overlay_v_precision": 3,
       "operating_point_overlay_v_range": "~V",
       "overbar_offset_ratio": 1.23,
-      "pin_symbol_size": 25.0,
+      "pin_symbol_size": 25,
       "text_offset_ratio": 0.15
     },
     "legacy_lib_dir": "",

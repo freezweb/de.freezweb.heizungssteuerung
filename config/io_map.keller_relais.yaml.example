@@ -1,0 +1,25 @@
+# Virtuelle Handkanaele fuer das R421B16 Relaismodul im Keller.
+#
+# Diese Kanaele haben keine lokalen PiCtory-Ausgaenge. Sie erzeugen MQTT-
+# Discovery fuer Hand/Auto-Kacheln und werden im R421B16-Treiber auf die
+# echten Modbus-Relais abgebildet. Richtung EIN = AUF/NO, Richtung AUS = ZU/NC.
+
+revpi:
+  hardware: "Waveshare RS485-TCP + R421B16"
+  hostname: "10.1.100.169"
+
+do:
+  KR-DO01: { pictory_name: "R421B16_R1", komponente: "r421_fbh_eg_pumpe", beschreibung: "R421B16 Relais 1 FBH EG Pumpe", phase: B, hand_timeout_min: 60 }
+  KR-DO02: { pictory_name: "R421B16_R2", komponente: "r421_fbh_eg_fahrt", beschreibung: "R421B16 Relais 2 FBH EG Mischer Fahrt", phase: B, hand_timeout_min: 10 }
+  KR-DO03: { pictory_name: "R421B16_R3", komponente: "r421_fbh_eg_richtung", beschreibung: "R421B16 Relais 3 FBH EG Mischer Richtung AUF", phase: B, hand_timeout_min: 10 }
+  KR-DO04: { pictory_name: "R421B16_R4", komponente: "r421_hk_backup_pumpe", beschreibung: "R421B16 Relais 4 HK Backup Pumpe", phase: B, hand_timeout_min: 60 }
+  KR-DO05: { pictory_name: "R421B16_R5", komponente: "r421_hk_backup_fahrt", beschreibung: "R421B16 Relais 5 HK Backup Mischer Fahrt", phase: B, hand_timeout_min: 10 }
+  KR-DO06: { pictory_name: "R421B16_R6", komponente: "r421_hk_backup_richtung", beschreibung: "R421B16 Relais 6 HK Backup Mischer Richtung AUF", phase: B, hand_timeout_min: 10 }
+  KR-DO07: { pictory_name: "R421B16_R7", komponente: "r421_klima_og_pumpe", beschreibung: "R421B16 Relais 7 Klima OG Pumpe", phase: B, hand_timeout_min: 60 }
+  KR-DO08: { pictory_name: "R421B16_R8", komponente: "r421_klima_og_fahrt", beschreibung: "R421B16 Relais 8 Klima OG Mischer Fahrt", phase: B, hand_timeout_min: 10 }
+  KR-DO09: { pictory_name: "R421B16_R9", komponente: "r421_klima_og_richtung", beschreibung: "R421B16 Relais 9 Klima OG Mischer Richtung AUF", phase: B, hand_timeout_min: 10 }
+
+di: {}
+ai: {}
+rtd: {}
+ao: {}

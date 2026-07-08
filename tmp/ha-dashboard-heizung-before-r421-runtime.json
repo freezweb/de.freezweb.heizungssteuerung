@@ -1,0 +1,3651 @@
+{
+  "views": [
+    {
+      "sections": [
+        {
+          "column_span": 3,
+          "type": "grid",
+          "cards": [
+            {
+              "cards": [
+                {
+                  "aspect_ratio": "16:9",
+                  "elements": [
+                    {
+                      "type": "state-label",
+                      "entity": "sensor.heizung_hauptsteuerung_mischer_fbh_eg_soll",
+                      "prefix": "FBH S ",
+                      "style": {
+                        "left": "78%",
+                        "top": "14%",
+                        "color": "#ffd26c",
+                        "font-weight": 700,
+                        "font-size": "14px",
+                        "text-shadow": "0 1px 3px #000",
+                        "background": "rgba(10, 18, 26, 0.68)",
+                        "border-radius": "4px",
+                        "padding": "2px 5px",
+                        "line-height": "16px"
+                      }
+                    },
+                    {
+                      "type": "state-label",
+                      "entity": "sensor.heizung_hauptsteuerung_mischer_fbh_eg_ist",
+                      "prefix": "I ",
+                      "style": {
+                        "left": "90%",
+                        "top": "14%",
+                        "color": "#b8f7ff",
+                        "font-weight": 700,
+                        "font-size": "14px",
+                        "text-shadow": "0 1px 3px #000",
+                        "background": "rgba(10, 18, 26, 0.68)",
+                        "border-radius": "4px",
+                        "padding": "2px 5px",
+                        "line-height": "16px"
+                      }
+                    },
+                    {
+                      "type": "state-label",
+                      "entity": "sensor.heizung_hauptsteuerung_mischer_klima_og_soll",
+                      "prefix": "Klima S ",
+                      "style": {
+                        "left": "78%",
+                        "top": "27%",
+                        "color": "#ffd26c",
+                        "font-weight": 700,
+                        "font-size": "14px",
+                        "text-shadow": "0 1px 3px #000",
+                        "background": "rgba(10, 18, 26, 0.68)",
+                        "border-radius": "4px",
+                        "padding": "2px 5px",
+                        "line-height": "16px"
+                      }
+                    },
+                    {
+                      "type": "state-label",
+                      "entity": "sensor.heizung_hauptsteuerung_mischer_klima_og_ist",
+                      "prefix": "I ",
+                      "style": {
+                        "left": "90%",
+                        "top": "27%",
+                        "color": "#b8f7ff",
+                        "font-weight": 700,
+                        "font-size": "14px",
+                        "text-shadow": "0 1px 3px #000",
+                        "background": "rgba(10, 18, 26, 0.68)",
+                        "border-radius": "4px",
+                        "padding": "2px 5px",
+                        "line-height": "16px"
+                      }
+                    },
+                    {
+                      "type": "state-label",
+                      "entity": "sensor.heizung_hauptsteuerung_mischer_hk_backup_soll",
+                      "prefix": "HK S ",
+                      "style": {
+                        "left": "78%",
+                        "top": "40%",
+                        "color": "#ffd26c",
+                        "font-weight": 700,
+                        "font-size": "14px",
+                        "text-shadow": "0 1px 3px #000",
+                        "background": "rgba(10, 18, 26, 0.68)",
+                        "border-radius": "4px",
+                        "padding": "2px 5px",
+                        "line-height": "16px"
+                      }
+                    },
+                    {
+                      "type": "state-label",
+                      "entity": "sensor.heizung_hauptsteuerung_mischer_hk_backup_ist",
+                      "prefix": "I ",
+                      "style": {
+                        "left": "90%",
+                        "top": "40%",
+                        "color": "#b8f7ff",
+                        "font-weight": 700,
+                        "font-size": "14px",
+                        "text-shadow": "0 1px 3px #000",
+                        "background": "rgba(10, 18, 26, 0.68)",
+                        "border-radius": "4px",
+                        "padding": "2px 5px",
+                        "line-height": "16px"
+                      }
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_gesamt_vl_soll"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_gesamt_vl_soll"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "50%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "23%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_gesamt_vl_soll",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Soll "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_vl_sammel"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_vl_sammel"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "50%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "28%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_vl_sammel",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "VL "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_rl_sammel"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_rl_sammel"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#dde8ff",
+                            "left": "63%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "58%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_rl_sammel",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "RL "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_aussen"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_aussen"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "8%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "11%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_aussen",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "AT "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "binary_sensor.heizung_hauptsteuerung_heizung_gesamt_aktiv"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "binary_sensor.heizung_hauptsteuerung_heizung_gesamt_aktiv"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "50%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "33%",
+                            "font-weight": 700
+                          },
+                          "entity": "binary_sensor.heizung_hauptsteuerung_heizung_gesamt_aktiv",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Kreis "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "style": {
+                        "left": "94%",
+                        "transform": "translate(-50%, -50%)",
+                        "top": "9%",
+                        "--mdc-icon-size": "22px"
+                      },
+                      "entity": "binary_sensor.heizung_hauptsteuerung_heizung_failsafe_aktiv",
+                      "icon": "mdi:alert",
+                      "type": "state-icon",
+                      "state_color": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "tap_action": {
+                        "action": "none"
+                      }
+                    },
+                    {
+                      "style": {
+                        "left": "20.6%",
+                        "transform": "translate(-50%, -50%)",
+                        "top": "17.4%",
+                        "--mdc-icon-size": "22px"
+                      },
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_brenner",
+                      "icon": "mdi:fire",
+                      "type": "state-icon",
+                      "state_color": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "tap_action": {
+                        "action": "none"
+                      }
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_vl_sammel"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_vl_sammel"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "13%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "23.2%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_vl_sammel",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Ist "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_gesamt_vl_soll"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_gesamt_vl_soll"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "13%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "26.2%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_heizung_gesamt_vl_soll",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Soll "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "style": {
+                        "left": "20.3%",
+                        "transform": "translate(-50%, -50%)",
+                        "top": "32.8%",
+                        "--mdc-icon-size": "22px"
+                      },
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_wp1_freigabe",
+                      "icon": "mdi:pump",
+                      "type": "state-icon",
+                      "state_color": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "tap_action": {
+                        "action": "none"
+                      }
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_wp1_vl_soll"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_wp1_vl_soll"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "12.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "39.2%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_wp1_vl_soll",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Soll "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_wp1_prozent"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_wp1_prozent"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "25.2%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "32.8%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_wp1_prozent",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "3WM "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "style": {
+                        "left": "20.3%",
+                        "transform": "translate(-50%, -50%)",
+                        "top": "48.6%",
+                        "--mdc-icon-size": "22px"
+                      },
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_wp2_freigabe",
+                      "icon": "mdi:pump",
+                      "type": "state-icon",
+                      "state_color": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "tap_action": {
+                        "action": "none"
+                      }
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_wp2_vl_soll"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_wp2_vl_soll"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "12.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "55.0%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_wp2_vl_soll",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Soll "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_wp2_prozent"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_wp2_prozent"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "25.2%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "48.6%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_wp2_prozent",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "3WM "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "style": {
+                        "left": "20.3%",
+                        "transform": "translate(-50%, -50%)",
+                        "top": "64.4%",
+                        "--mdc-icon-size": "22px"
+                      },
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_bwwp_freigabe",
+                      "icon": "mdi:pump",
+                      "type": "state-icon",
+                      "state_color": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "tap_action": {
+                        "action": "none"
+                      }
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_bwwp_vl_soll"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_bwwp_vl_soll"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "12.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "70.8%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_bwwp_vl_soll",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Soll "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "style": {
+                        "left": "20.6%",
+                        "transform": "translate(-50%, -50%)",
+                        "top": "82.2%",
+                        "--mdc-icon-size": "22px"
+                      },
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_bw_lade",
+                      "icon": "mdi:pump",
+                      "type": "state-icon",
+                      "state_color": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "tap_action": {
+                        "action": "none"
+                      }
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_brauchwasser_oben"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_brauchwasser_oben"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "13.1%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "87.3%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_brauchwasser_oben",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Oben "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "number.heizung_hauptsteuerung_brauchwasser_soll_c"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "number.heizung_hauptsteuerung_brauchwasser_soll_c"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "13.1%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "90.8%",
+                            "font-weight": 700
+                          },
+                          "entity": "number.heizung_hauptsteuerung_brauchwasser_soll_c",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Soll "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "style": {
+                        "left": "77.2%",
+                        "transform": "translate(-50%, -50%)",
+                        "top": "17.1%",
+                        "--mdc-icon-size": "22px"
+                      },
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_fbh_eg",
+                      "icon": "mdi:pump",
+                      "type": "state-icon",
+                      "state_color": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "tap_action": {
+                        "action": "none"
+                      }
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_fbh_eg"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_fbh_eg"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "20.7%",
+                            "font-weight": 700
+                          },
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_fbh_eg",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Soll "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_fbh_eg_vl"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_fbh_eg_vl"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "24.2%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_fbh_eg_vl",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Ist "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_fbh_eg_rl"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_fbh_eg_rl"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "27.7%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_fbh_eg_rl",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "RL "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_mischer_fbh_eg_pct"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_mischer_fbh_eg_pct"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "71.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "17.1%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_mischer_fbh_eg_pct",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "3WM "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "style": {
+                        "left": "77.2%",
+                        "transform": "translate(-50%, -50%)",
+                        "top": "30.0%",
+                        "--mdc-icon-size": "22px"
+                      },
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_klima_og",
+                      "icon": "mdi:pump",
+                      "type": "state-icon",
+                      "state_color": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "tap_action": {
+                        "action": "none"
+                      }
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_klima_og"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_klima_og"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "33.5%",
+                            "font-weight": 700
+                          },
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_klima_og",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Soll "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_klima_og_vl"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_klima_og_vl"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "37.0%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_klima_og_vl",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Ist "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_klima_og_rl"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_klima_og_rl"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "40.5%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_klima_og_rl",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "RL "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_mischer_klima_og_pct"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_mischer_klima_og_pct"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "71.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "30.0%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_mischer_klima_og_pct",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "3WM "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "style": {
+                        "left": "77.2%",
+                        "transform": "translate(-50%, -50%)",
+                        "top": "42.9%",
+                        "--mdc-icon-size": "22px"
+                      },
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_heizkoerper_backup_og",
+                      "icon": "mdi:pump",
+                      "type": "state-icon",
+                      "state_color": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "tap_action": {
+                        "action": "none"
+                      }
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_hk_backup"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_hk_backup"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "46.4%",
+                            "font-weight": 700
+                          },
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_hk_backup",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Soll "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_hk_backup_vl"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_hk_backup_vl"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "49.9%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_hk_backup_vl",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Ist "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_hk_backup_rl"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_hk_backup_rl"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "53.4%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_hk_backup_rl",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "RL "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_mischer_hk_backup_pct"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_mischer_hk_backup_pct"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "71.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "42.9%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_mischer_hk_backup_pct",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "3WM "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "style": {
+                        "left": "77.2%",
+                        "transform": "translate(-50%, -50%)",
+                        "top": "55.8%",
+                        "--mdc-icon-size": "22px"
+                      },
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_nebengeb",
+                      "icon": "mdi:pump",
+                      "type": "state-icon",
+                      "state_color": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "tap_action": {
+                        "action": "none"
+                      }
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_nebengebaeude"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_nebengebaeude"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "59.3%",
+                            "font-weight": 700
+                          },
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_nebengebaeude",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Soll "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_nebengebaeude_vl"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_nebengebaeude_vl"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "62.8%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_nebengebaeude_vl",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Ist "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_nebengeb_prozent"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_nebengeb_prozent"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "71.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "55.8%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_nebengeb_prozent",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "3WM "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "style": {
+                        "left": "77.2%",
+                        "transform": "translate(-50%, -50%)",
+                        "top": "68.7%",
+                        "--mdc-icon-size": "22px"
+                      },
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_pool",
+                      "icon": "mdi:pump",
+                      "type": "state-icon",
+                      "state_color": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "tap_action": {
+                        "action": "none"
+                      }
+                    },
+                    {
+                      "style": {
+                        "left": "80.3%",
+                        "transform": "translate(-50%, -50%)",
+                        "top": "68.7%",
+                        "--mdc-icon-size": "22px"
+                      },
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_pool_filter",
+                      "icon": "mdi:pump",
+                      "type": "state-icon",
+                      "state_color": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "tap_action": {
+                        "action": "none"
+                      }
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_pool"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_pool"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "72.2%",
+                            "font-weight": 700
+                          },
+                          "entity": "number.heizung_hauptsteuerung_vl_soll_pool",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Soll "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_pool_wasser"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_pool_wasser"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "75.7%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_pool_wasser",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Ist "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_pool_prozent"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_pool_prozent"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "71.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "68.7%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_pool_prozent",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "3WM "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_pool_filter_prozent"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_pool_filter_prozent"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "80.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "72.4%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_pool_filter_prozent",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Filter "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "style": {
+                        "left": "77.2%",
+                        "transform": "translate(-50%, -50%)",
+                        "top": "84.7%",
+                        "--mdc-icon-size": "22px"
+                      },
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_bw_lade",
+                      "icon": "mdi:pump",
+                      "type": "state-icon",
+                      "state_color": true,
+                      "hold_action": {
+                        "action": "none"
+                      },
+                      "tap_action": {
+                        "action": "none"
+                      }
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "sensor.heizung_hauptsteuerung_brauchwasser_oben"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "sensor.heizung_hauptsteuerung_brauchwasser_oben"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "88.2%",
+                            "font-weight": 700
+                          },
+                          "entity": "sensor.heizung_hauptsteuerung_brauchwasser_oben",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Ist "
+                        }
+                      ],
+                      "type": "conditional"
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "state_not": "unknown",
+                          "entity": "number.heizung_hauptsteuerung_brauchwasser_soll_c"
+                        },
+                        {
+                          "state_not": "unavailable",
+                          "entity": "number.heizung_hauptsteuerung_brauchwasser_soll_c"
+                        }
+                      ],
+                      "elements": [
+                        {
+                          "style": {
+                            "font-size": "11px",
+                            "color": "#ffffff",
+                            "left": "88.3%",
+                            "transform": "translate(-50%, -50%)",
+                            "background": "rgba(12,18,24,.68)",
+                            "text-shadow": "0 1px 2px #000",
+                            "padding": "1px 4px",
+                            "border-radius": "3px",
+                            "white-space": "nowrap",
+                            "top": "91.7%",
+                            "font-weight": 700
+                          },
+                          "entity": "number.heizung_hauptsteuerung_brauchwasser_soll_c",
+                          "type": "state-label",
+                          "tap_action": {
+                            "action": "none"
+                          },
+                          "hold_action": {
+                            "action": "none"
+                          },
+                          "prefix": "Soll "
+                        }
+                      ],
+                      "type": "conditional"
+                    }
+                  ],
+                  "type": "picture-elements",
+                  "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201600%20900%22%20role%3D%22img%22%20aria-label%3D%22Hydraulikplan%20Gesamtwaermekreis%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3Cstyle%3E%0A%20%20%20%20%20%20.bg%20%7B%20fill%3A%20%2318222b%3B%20%7D%0A%20%20%20%20%20%20.panel%20%7B%20fill%3A%20%2323313d%3B%20stroke%3A%20%235d7182%3B%20stroke-width%3A%202%3B%20%7D%0A%20%20%20%20%20%20.box%20%7B%20fill%3A%20%232d3d4a%3B%20stroke%3A%20%238ea3b5%3B%20stroke-width%3A%202%3B%20rx%3A%208%3B%20%7D%0A%20%20%20%20%20%20.source%20%7B%20fill%3A%20%23345744%3B%20stroke%3A%20%239bd38a%3B%20stroke-width%3A%203%3B%20%7D%0A%20%20%20%20%20%20.sink%20%7B%20fill%3A%20%233d4d64%3B%20stroke%3A%20%239bb7e7%3B%20stroke-width%3A%203%3B%20%7D%0A%20%20%20%20%20%20.storage%20%7B%20fill%3A%20%234a4158%3B%20stroke%3A%20%23c8a8ff%3B%20stroke-width%3A%203%3B%20%7D%0A%20%20%20%20%20%20.pipe-hot%20%7B%20fill%3A%20none%3B%20stroke%3A%20%23d94b3d%3B%20stroke-width%3A%208%3B%20stroke-linecap%3A%20round%3B%20stroke-linejoin%3A%20round%3B%20%7D%0A%20%20%20%20%20%20.pipe-cold%20%7B%20fill%3A%20none%3B%20stroke%3A%20%233d7bd9%3B%20stroke-width%3A%208%3B%20stroke-linecap%3A%20round%3B%20stroke-linejoin%3A%20round%3B%20%7D%0A%20%20%20%20%20%20.pipe-warm%20%7B%20fill%3A%20none%3B%20stroke%3A%20%23caa64b%3B%20stroke-width%3A%206%3B%20stroke-linecap%3A%20round%3B%20stroke-linejoin%3A%20round%3B%20%7D%0A%20%20%20%20%20%20.pipe-dhw%20%7B%20fill%3A%20none%3B%20stroke%3A%20%23d48bd8%3B%20stroke-width%3A%206%3B%20stroke-linecap%3A%20round%3B%20stroke-linejoin%3A%20round%3B%20%7D%0A%20%20%20%20%20%20.txt%20%7B%20font-family%3A%20Arial%2C%20Helvetica%2C%20sans-serif%3B%20fill%3A%20%23f5f7fa%3B%20font-size%3A%2022px%3B%20font-weight%3A%20700%3B%20%7D%0A%20%20%20%20%20%20.small%20%7B%20font-family%3A%20Arial%2C%20Helvetica%2C%20sans-serif%3B%20font-size%3A%2014px%3B%20font-weight%3A%20500%3B%20fill%3A%20%23d7e0e8%3B%20%7D%0A%20%20%20%20%20%20.tiny%20%7B%20font-family%3A%20Arial%2C%20Helvetica%2C%20sans-serif%3B%20font-size%3A%2012px%3B%20font-weight%3A%20500%3B%20fill%3A%20%23c7d2dd%3B%20%7D%0A%20%20%20%20%20%20.label%20%7B%20font-family%3A%20Arial%2C%20Helvetica%2C%20sans-serif%3B%20font-size%3A%2018px%3B%20font-weight%3A%20700%3B%20fill%3A%20%23ffffff%3B%20%7D%0A%20%20%20%20%20%20.valve%20%7B%20fill%3A%20%235a4d2f%3B%20stroke%3A%20%23ffd26c%3B%20stroke-width%3A%202.5%3B%20%7D%0A%20%20%20%20%20%20.pump%20%7B%20fill%3A%20%232f5561%3B%20stroke%3A%20%2378d7f0%3B%20stroke-width%3A%202.5%3B%20%7D%0A%20%20%20%20%20%20.pump-off%20%7B%20fill%3A%20%2334434c%3B%20stroke%3A%20%237890a0%3B%20stroke-width%3A%202%3B%20%7D%0A%20%20%20%20%20%20.arrow%20%7B%20fill%3A%20none%3B%20stroke%3A%20%23f5f7fa%3B%20stroke-width%3A%203%3B%20stroke-linecap%3A%20round%3B%20stroke-linejoin%3A%20round%3B%20%7D%0A%20%20%20%20%3C%2Fstyle%3E%0A%20%20%3C%2Fdefs%3E%0A%0A%20%20%3Crect%20class%3D%22bg%22%20width%3D%221600%22%20height%3D%22900%22%2F%3E%0A%20%20%3Crect%20class%3D%22panel%22%20x%3D%2232%22%20y%3D%2250%22%20width%3D%22350%22%20height%3D%22800%22%20rx%3D%228%22%2F%3E%0A%20%20%3Crect%20class%3D%22panel%22%20x%3D%22420%22%20y%3D%2250%22%20width%3D%22740%22%20height%3D%22800%22%20rx%3D%228%22%2F%3E%0A%20%20%3Crect%20class%3D%22panel%22%20x%3D%221200%22%20y%3D%2250%22%20width%3D%22368%22%20height%3D%22800%22%20rx%3D%228%22%2F%3E%0A%0A%20%20%3Ctext%20class%3D%22txt%22%20x%3D%2262%22%20y%3D%2292%22%3EQuellen%3C%2Ftext%3E%0A%20%20%3Ctext%20class%3D%22txt%22%20x%3D%22450%22%20y%3D%2292%22%3EGesamtwaermekreis%3C%2Ftext%3E%0A%20%20%3Ctext%20class%3D%22txt%22%20x%3D%221230%22%20y%3D%2292%22%3EAbgaenge%3C%2Ftext%3E%0A%0A%20%20%3Cpath%20class%3D%22pipe-hot%22%20d%3D%22M585%20142%20V780%22%2F%3E%0A%20%20%3Cpath%20class%3D%22pipe-cold%22%20d%3D%22M1020%20142%20V780%22%2F%3E%0A%20%20%3Ctext%20class%3D%22small%22%20x%3D%22535%22%20y%3D%22125%22%3EVL%3C%2Ftext%3E%0A%20%20%3Ctext%20class%3D%22small%22%20x%3D%22997%22%20y%3D%22125%22%3ERL%3C%2Ftext%3E%0A%20%20%3Crect%20class%3D%22box%22%20x%3D%22650%22%20y%3D%22210%22%20width%3D%22300%22%20height%3D%22112%22%20rx%3D%228%22%2F%3E%0A%20%20%3Ctext%20class%3D%22label%22%20x%3D%22690%22%20y%3D%22252%22%3ESammelkreis%3C%2Ftext%3E%0A%20%20%3Ctext%20class%3D%22small%22%20x%3D%22690%22%20y%3D%22282%22%3Egemeinsamer%20VL%2FRL%3C%2Ftext%3E%0A%0A%20%20%3Crect%20class%3D%22source%22%20x%3D%2272%22%20y%3D%22125%22%20width%3D%22205%22%20height%3D%2295%22%20rx%3D%228%22%2F%3E%0A%20%20%3Ctext%20class%3D%22label%22%20x%3D%22112%22%20y%3D%22164%22%3EOelbrenner%3C%2Ftext%3E%0A%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%22112%22%20y%3D%22190%22%3EKessel%20%2F%20Bestand%3C%2Ftext%3E%0A%20%20%3Cpath%20class%3D%22pipe-hot%22%20d%3D%22M277%20157%20H585%22%2F%3E%0A%20%20%3Cpath%20class%3D%22pipe-cold%22%20d%3D%22M1020%20205%20H310%20V205%20H277%22%2F%3E%0A%20%20%3Ccircle%20class%3D%22pump%22%20cx%3D%22330%22%20cy%3D%22157%22%20r%3D%2220%22%2F%3E%0A%0A%20%20%3Crect%20class%3D%22source%22%20x%3D%2272%22%20y%3D%22258%22%20width%3D%22205%22%20height%3D%22105%22%20rx%3D%228%22%2F%3E%0A%20%20%3Ctext%20class%3D%22label%22%20x%3D%22122%22%20y%3D%22298%22%3EWP1%3C%2Ftext%3E%0A%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%22112%22%20y%3D%22326%22%3EMonoblock%3C%2Ftext%3E%0A%20%20%3Cpath%20class%3D%22pipe-hot%22%20d%3D%22M277%20295%20H360%20M420%20295%20H585%22%2F%3E%0A%20%20%3Cpath%20class%3D%22pipe-cold%22%20d%3D%22M1020%20342%20H310%20V342%20H277%22%2F%3E%0A%20%20%3Ccircle%20class%3D%22pump%22%20cx%3D%22325%22%20cy%3D%22295%22%20r%3D%2220%22%2F%3E%0A%20%20%3Cpolygon%20class%3D%22valve%22%20points%3D%22370%2C270%20420%2C295%20370%2C320%22%2F%3E%0A%0A%20%20%3Crect%20class%3D%22source%22%20x%3D%2272%22%20y%3D%22400%22%20width%3D%22205%22%20height%3D%22105%22%20rx%3D%228%22%2F%3E%0A%20%20%3Ctext%20class%3D%22label%22%20x%3D%22122%22%20y%3D%22440%22%3EWP2%3C%2Ftext%3E%0A%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%22112%22%20y%3D%22468%22%3EMonoblock%3C%2Ftext%3E%0A%20%20%3Cpath%20class%3D%22pipe-hot%22%20d%3D%22M277%20437%20H360%20M420%20437%20H585%22%2F%3E%0A%20%20%3Cpath%20class%3D%22pipe-cold%22%20d%3D%22M1020%20485%20H310%20V485%20H277%22%2F%3E%0A%20%20%3Ccircle%20class%3D%22pump%22%20cx%3D%22325%22%20cy%3D%22437%22%20r%3D%2220%22%2F%3E%0A%20%20%3Cpolygon%20class%3D%22valve%22%20points%3D%22370%2C412%20420%2C437%20370%2C462%22%2F%3E%0A%0A%20%20%3Crect%20class%3D%22source%22%20x%3D%2272%22%20y%3D%22543%22%20width%3D%22205%22%20height%3D%22105%22%20rx%3D%228%22%2F%3E%0A%20%20%3Ctext%20class%3D%22label%22%20x%3D%22106%22%20y%3D%22583%22%3EBWWP%3C%2Ftext%3E%0A%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%22112%22%20y%3D%22611%22%3Espaeter%20separat%3C%2Ftext%3E%0A%20%20%3Cpath%20class%3D%22pipe-warm%22%20d%3D%22M277%20580%20H585%22%2F%3E%0A%20%20%3Ccircle%20class%3D%22pump-off%22%20cx%3D%22325%22%20cy%3D%22580%22%20r%3D%2220%22%2F%3E%0A%0A%20%20%3Crect%20class%3D%22storage%22%20x%3D%2272%22%20y%3D%22702%22%20width%3D%22205%22%20height%3D%22105%22%20rx%3D%228%22%2F%3E%0A%20%20%3Ctext%20class%3D%22label%22%20x%3D%22105%22%20y%3D%22742%22%3EBW%20Speicher%3C%2Ftext%3E%0A%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%22112%22%20y%3D%22770%22%3Eaktuell%20Abgang%3C%2Ftext%3E%0A%20%20%3Cpath%20class%3D%22pipe-dhw%22%20d%3D%22M585%20740%20H352%20M310%20740%20H277%22%2F%3E%0A%20%20%3Cpath%20class%3D%22pipe-cold%22%20d%3D%22M277%20790%20H310%20V790%20H1020%22%2F%3E%0A%20%20%3Ccircle%20class%3D%22pump%22%20cx%3D%22330%22%20cy%3D%22740%22%20r%3D%2220%22%2F%3E%0A%0A%20%20%3Cg%20id%3D%22abgang-fbh%22%3E%0A%20%20%20%20%3Crect%20class%3D%22sink%22%20x%3D%221325%22%20y%3D%22112%22%20width%3D%22195%22%20height%3D%2284%22%20rx%3D%228%22%2F%3E%0A%20%20%20%20%3Ctext%20class%3D%22label%22%20x%3D%221372%22%20y%3D%22146%22%3EFBH%20EG%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%221360%22%20y%3D%22172%22%3EKeller-Slave%3C%2Ftext%3E%0A%20%20%20%20%3Cpath%20class%3D%22pipe-hot%22%20d%3D%22M585%20154%20H1110%20M1170%20154%20H1325%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22pipe-cold%22%20d%3D%22M1325%20190%20H1020%22%2F%3E%0A%20%20%20%20%3Cpolygon%20class%3D%22valve%22%20points%3D%221120%2C130%201170%2C154%201120%2C178%22%2F%3E%0A%20%20%20%20%3Ccircle%20class%3D%22pump-off%22%20cx%3D%221235%22%20cy%3D%22154%22%20r%3D%2220%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%0A%20%20%3Cg%20id%3D%22abgang-klima%22%3E%0A%20%20%20%20%3Crect%20class%3D%22sink%22%20x%3D%221325%22%20y%3D%22228%22%20width%3D%22195%22%20height%3D%2284%22%20rx%3D%228%22%2F%3E%0A%20%20%20%20%3Ctext%20class%3D%22label%22%20x%3D%221360%22%20y%3D%22262%22%3EKlima%20OG%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%221360%22%20y%3D%22288%22%3EHeizen%2FKuehlen%3C%2Ftext%3E%0A%20%20%20%20%3Cpath%20class%3D%22pipe-hot%22%20d%3D%22M585%20270%20H1110%20M1170%20270%20H1325%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22pipe-cold%22%20d%3D%22M1325%20306%20H1020%22%2F%3E%0A%20%20%20%20%3Cpolygon%20class%3D%22valve%22%20points%3D%221120%2C246%201170%2C270%201120%2C294%22%2F%3E%0A%20%20%20%20%3Ccircle%20class%3D%22pump-off%22%20cx%3D%221235%22%20cy%3D%22270%22%20r%3D%2220%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%0A%20%20%3Cg%20id%3D%22abgang-hk%22%3E%0A%20%20%20%20%3Crect%20class%3D%22sink%22%20x%3D%221325%22%20y%3D%22344%22%20width%3D%22195%22%20height%3D%2284%22%20rx%3D%228%22%2F%3E%0A%20%20%20%20%3Ctext%20class%3D%22label%22%20x%3D%221352%22%20y%3D%22378%22%3EHK%20Backup%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%221360%22%20y%3D%22404%22%3EOG%20Heizkoerper%3C%2Ftext%3E%0A%20%20%20%20%3Cpath%20class%3D%22pipe-hot%22%20d%3D%22M585%20386%20H1110%20M1170%20386%20H1325%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22pipe-cold%22%20d%3D%22M1325%20422%20H1020%22%2F%3E%0A%20%20%20%20%3Cpolygon%20class%3D%22valve%22%20points%3D%221120%2C362%201170%2C386%201120%2C410%22%2F%3E%0A%20%20%20%20%3Ccircle%20class%3D%22pump-off%22%20cx%3D%221235%22%20cy%3D%22386%22%20r%3D%2220%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%0A%20%20%3Cg%20id%3D%22abgang-nebengeb%22%3E%0A%20%20%20%20%3Crect%20class%3D%22sink%22%20x%3D%221325%22%20y%3D%22460%22%20width%3D%22195%22%20height%3D%2284%22%20rx%3D%228%22%2F%3E%0A%20%20%20%20%3Ctext%20class%3D%22label%22%20x%3D%221348%22%20y%3D%22494%22%3ENebengeb.%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%221360%22%20y%3D%22520%22%3E3WM%20%2B%20Pumpe%3C%2Ftext%3E%0A%20%20%20%20%3Cpath%20class%3D%22pipe-hot%22%20d%3D%22M585%20502%20H1110%20M1170%20502%20H1325%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22pipe-cold%22%20d%3D%22M1325%20538%20H1020%22%2F%3E%0A%20%20%20%20%3Cpolygon%20class%3D%22valve%22%20points%3D%221120%2C478%201170%2C502%201120%2C526%22%2F%3E%0A%20%20%20%20%3Ccircle%20class%3D%22pump%22%20cx%3D%221235%22%20cy%3D%22502%22%20r%3D%2220%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%0A%20%20%3Cg%20id%3D%22abgang-pool%22%3E%0A%20%20%20%20%3Crect%20class%3D%22sink%22%20x%3D%221325%22%20y%3D%22576%22%20width%3D%22195%22%20height%3D%2284%22%20rx%3D%228%22%2F%3E%0A%20%20%20%20%3Ctext%20class%3D%22label%22%20x%3D%221382%22%20y%3D%22610%22%3EPool%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%221360%22%20y%3D%22636%22%3EWT%20%2B%20Filter%3C%2Ftext%3E%0A%20%20%20%20%3Cpath%20class%3D%22pipe-hot%22%20d%3D%22M585%20618%20H1110%20M1170%20618%20H1325%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22pipe-cold%22%20d%3D%22M1325%20654%20H1020%22%2F%3E%0A%20%20%20%20%3Cpolygon%20class%3D%22valve%22%20points%3D%221120%2C594%201170%2C618%201120%2C642%22%2F%3E%0A%20%20%20%20%3Ccircle%20class%3D%22pump%22%20cx%3D%221235%22%20cy%3D%22618%22%20r%3D%2220%22%2F%3E%0A%20%20%20%20%3Ccircle%20class%3D%22pump%22%20cx%3D%221285%22%20cy%3D%22618%22%20r%3D%2216%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%0A%20%20%3Cg%20id%3D%22abgang-brauchwasser%22%3E%0A%20%20%20%20%3Crect%20class%3D%22storage%22%20x%3D%221325%22%20y%3D%22720%22%20width%3D%22195%22%20height%3D%2284%22%20rx%3D%228%22%2F%3E%0A%20%20%20%20%3Ctext%20class%3D%22label%22%20x%3D%221360%22%20y%3D%22754%22%3EBW%20aktuell%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20class%3D%22tiny%22%20x%3D%221360%22%20y%3D%22780%22%3EPumpe%2C%20kein%203WM%3C%2Ftext%3E%0A%20%20%20%20%3Cpath%20class%3D%22pipe-dhw%22%20d%3D%22M585%20762%20H1325%22%2F%3E%0A%20%20%20%20%3Cpath%20class%3D%22pipe-cold%22%20d%3D%22M1325%20798%20H1020%22%2F%3E%0A%20%20%20%20%3Ccircle%20class%3D%22pump%22%20cx%3D%221235%22%20cy%3D%22762%22%20r%3D%2220%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A"
+                }
+              ],
+              "type": "vertical-stack",
+              "layout_options": {
+                "grid_columns": "full",
+                "grid_rows": "auto"
+              }
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "title": "Freigaben Quellen",
+              "entities": [
+                {
+                  "entity": "switch.heizung_hauptsteuerung_freigabe_oelbrenner",
+                  "name": "Freig. Oelbrenner"
+                },
+                {
+                  "entity": "switch.heizung_hauptsteuerung_freigabe_wp1",
+                  "name": "Freig. WP1"
+                },
+                {
+                  "entity": "switch.heizung_hauptsteuerung_freigabe_wp2",
+                  "name": "Freig. WP2"
+                },
+                {
+                  "entity": "switch.heizung_hauptsteuerung_freigabe_bwwp",
+                  "name": "Freig. BWWP"
+                }
+              ],
+              "type": "entities"
+            },
+            {
+              "title": "Freigaben Heizkreise und Senken",
+              "entities": [
+                {
+                  "entity": "switch.heizung_hauptsteuerung_freigabe_fbh_eg",
+                  "name": "Freig. FBH EG"
+                },
+                {
+                  "entity": "switch.heizung_hauptsteuerung_freigabe_klima_og",
+                  "name": "Freig. Klima OG"
+                },
+                {
+                  "entity": "switch.heizung_hauptsteuerung_freigabe_nebengebaeude",
+                  "name": "Freig. Nebengeb."
+                },
+                {
+                  "entity": "switch.heizung_hauptsteuerung_freigabe_hk_backup",
+                  "name": "Freig. HK Backup"
+                },
+                {
+                  "entity": "switch.heizung_hauptsteuerung_freigabe_pool",
+                  "name": "Freig. Pool"
+                },
+                {
+                  "entity": "switch.heizung_hauptsteuerung_freigabe_brauchwasser",
+                  "name": "Freig. BW"
+                }
+              ],
+              "type": "entities"
+            },
+            {
+              "title": "Anforderungen Gesamtwaermekreis",
+              "entities": [
+                {
+                  "entity": "switch.heizung_hauptsteuerung_anforderung_fbh_eg",
+                  "name": "Anf. FBH EG"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_vl_soll_fbh_eg",
+                  "name": "VL Soll FBH EG"
+                },
+                {
+                  "entity": "switch.heizung_hauptsteuerung_anforderung_klima_og",
+                  "name": "Anf. Klima OG"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_vl_soll_klima_og",
+                  "name": "VL Soll Klima OG"
+                },
+                {
+                  "entity": "switch.heizung_hauptsteuerung_anforderung_nebengebaeude",
+                  "name": "Anf. Nebengeb."
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_vl_soll_nebengebaeude",
+                  "name": "VL Soll Nebengeb."
+                },
+                {
+                  "entity": "switch.heizung_hauptsteuerung_anforderung_hk_backup",
+                  "name": "Anf. HK Backup"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_vl_soll_hk_backup",
+                  "name": "VL Soll HK Backup"
+                },
+                {
+                  "entity": "switch.heizung_hauptsteuerung_anforderung_pool",
+                  "name": "Anf. Pool"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_vl_soll_pool",
+                  "name": "VL Soll Pool"
+                },
+                {
+                  "entity": "switch.heizung_hauptsteuerung_anforderung_bwwp",
+                  "name": "Anf. BWWP"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_vl_soll_bwwp",
+                  "name": "VL Soll BWWP"
+                }
+              ],
+              "type": "entities"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "title": "PV Signale aus Home Assistant",
+              "entities": [
+                {
+                  "entity": "switch.heizung_hauptsteuerung_pv_ueberschuss",
+                  "name": "PV Ueberschuss"
+                },
+                {
+                  "entity": "switch.heizung_hauptsteuerung_pv_mangel",
+                  "name": "PV Mangel"
+                }
+              ],
+              "type": "entities"
+            },
+            {
+              "title": "Reglerwerte",
+              "entities": [
+                {
+                  "entity": "number.heizung_hauptsteuerung_mischer_reserve_k",
+                  "name": "Mischer Res. K"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_wp_parallel_ab_aktive_kreise",
+                  "name": "WP Parallel Ab Aktive Kreise"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brauchwasser_soll_c",
+                  "name": "BW Soll C"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brauchwasser_hysterese_k",
+                  "name": "BW Hysterese K"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brunnen_min_druck",
+                  "name": "Brunnen Min Druck"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brunnen_max_druck",
+                  "name": "Brunnen Max Druck"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brunnen_regeldruck",
+                  "name": "Brunnen Regeldruck"
+                }
+              ],
+              "type": "entities"
+            },
+            {
+              "type": "entities",
+              "title": "Brunnenpumpe Konstantdruck",
+              "entities": [
+                {
+                  "entity": "sensor.heizung_hauptsteuerung_brunnen_druck",
+                  "name": "Druck"
+                },
+                {
+                  "entity": "sensor.heizung_hauptsteuerung_brunnen_regelgrund",
+                  "name": "Regelgrund"
+                },
+                {
+                  "entity": "sensor.heizung_hauptsteuerung_brunnen_fu_soll",
+                  "name": "FU Soll"
+                },
+                {
+                  "entity": "sensor.heizung_hauptsteuerung_brunnen_fluss",
+                  "name": "Fluss"
+                },
+                {
+                  "entity": "sensor.heizung_hauptsteuerung_brunnen_kein_durchfluss",
+                  "name": "Kein Fluss"
+                },
+                {
+                  "entity": "sensor.heizung_hauptsteuerung_brunnen_abschaltung_in",
+                  "name": "Stop in"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_brunnenpumpe_aktiv",
+                  "name": "Aktiv"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brunnen_min_druck",
+                  "name": "Min Druck"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brunnen_regeldruck",
+                  "name": "Regeldruck"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brunnen_max_druck",
+                  "name": "Max Druck"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brunnen_fu_start",
+                  "name": "FU Start"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brunnen_fu_max",
+                  "name": "FU Max"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brunnen_kp",
+                  "name": "Kp"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brunnen_fu_rampe_hoch",
+                  "name": "Rampe hoch"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brunnen_fu_rampe_runter",
+                  "name": "Rampe runter"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brunnen_flow_min",
+                  "name": "Min Flow"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brunnen_flow_timeout",
+                  "name": "Stop nach"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brunnen_flow_stop_toleranz",
+                  "name": "Stop Toleranz"
+                }
+              ]
+            },
+            {
+              "title": "Brauchwasser",
+              "entities": [
+                {
+                  "entity": "switch.heizung_hauptsteuerung_freigabe_brauchwasser",
+                  "name": "Freig. BW"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_brauchwasser_ladung_aktiv",
+                  "name": "BW Ladung Aktiv"
+                },
+                {
+                  "entity": "sensor.heizung_hauptsteuerung_brauchwasser_ladegrund",
+                  "name": "BW Ladegrund"
+                },
+                {
+                  "entity": "sensor.heizung_hauptsteuerung_brauchwasser_oben",
+                  "name": "BW Oben"
+                },
+                {
+                  "entity": "sensor.heizung_hauptsteuerung_brauchwasser_unten",
+                  "name": "BW Unten"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brauchwasser_soll_c",
+                  "name": "BW Soll C"
+                },
+                {
+                  "entity": "number.heizung_hauptsteuerung_brauchwasser_hysterese_k",
+                  "name": "BW Hysterese K"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_brenner",
+                  "name": "Ausg. Brenner"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_oelbrenner_betriebsmeldung"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_oelbrenner_stoermeldung"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_oelbrenner_wasserdruck_stoerung"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_oelbrenner_stb_stoerung"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_bw_lade",
+                  "name": "Ausg. P. BW Lade"
+                }
+              ],
+              "type": "entities"
+            },
+            {
+              "title": "Status",
+              "entities": [
+                {
+                  "name": "Gesamt",
+                  "entity": "binary_sensor.heizung_hauptsteuerung_heizung_gesamt_aktiv"
+                },
+                {
+                  "name": "Failsafe",
+                  "entity": "binary_sensor.heizung_hauptsteuerung_heizung_failsafe_aktiv"
+                },
+                {
+                  "name": "WP1 Stoerung",
+                  "entity": "binary_sensor.heizung_hauptsteuerung_wp1_stoerung"
+                },
+                {
+                  "name": "WP2 Stoerung",
+                  "entity": "binary_sensor.heizung_hauptsteuerung_wp2_stoerung"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_oelbrenner_stoermeldung",
+                  "name": "Brenner Stoerung"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_oelbrenner_betriebsmeldung",
+                  "name": "Brenner Betrieb"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_oelbrenner_wasserdruck_stoerung",
+                  "name": "Brenner Wasserdruck"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_oelbrenner_stb_stoerung",
+                  "name": "Brenner STB"
+                },
+                {
+                  "name": "Tor links zu",
+                  "entity": "binary_sensor.heizung_hauptsteuerung_tor_fluegel_links_zu"
+                },
+                {
+                  "name": "Tor rechts zu",
+                  "entity": "binary_sensor.heizung_hauptsteuerung_tor_fluegel_rechts_zu"
+                },
+                {
+                  "name": "Lichtschranke",
+                  "entity": "binary_sensor.heizung_hauptsteuerung_tor_lichtschranke"
+                }
+              ],
+              "type": "glance"
+            },
+            {
+              "title": "Tor",
+              "entities": [
+                {
+                  "entity": "button.heizung_hauptsteuerung_tor_oeffnen_ganz",
+                  "name": "Tor Oeffnen Ganz"
+                },
+                {
+                  "entity": "button.heizung_hauptsteuerung_tor_oeffnen_halb",
+                  "name": "Tor Oeffnen Halb"
+                },
+                {
+                  "entity": "button.heizung_hauptsteuerung_tor_schliessen",
+                  "name": "Tor Schliessen"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_tor_fluegel_links_zu",
+                  "name": "Tor Fluegel Links Zu"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_tor_fluegel_rechts_zu",
+                  "name": "Tor Fluegel Rechts Zu"
+                },
+                {
+                  "entity": "binary_sensor.heizung_hauptsteuerung_tor_lichtschranke",
+                  "name": "Tor Lichtschranke"
+                }
+              ],
+              "type": "entities"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "title": "Handbetrieb Digitale Ausgaenge",
+              "cards": [
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_brenner"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_brenner"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_brenner"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_brenner"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_brenner"
+                    }
+                  ],
+                  "title": "Ausgang Brenner",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_bw_lade"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_pumpe_bw_lade"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_pumpe_bw_lade"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_pumpe_bw_lade"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_pumpe_bw_lade"
+                    }
+                  ],
+                  "title": "Ausgang Pumpe BW Lade",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_wp1_freigabe"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_wp1_freigabe"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_wp1_freigabe"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_wp1_freigabe"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_wp1_freigabe"
+                    }
+                  ],
+                  "title": "Ausgang WP1 Freigabe",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_wp2_freigabe"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_wp2_freigabe"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_wp2_freigabe"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_wp2_freigabe"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_wp2_freigabe"
+                    }
+                  ],
+                  "title": "Ausgang WP2 Freigabe",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_bwwp_freigabe"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_bwwp_freigabe"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_bwwp_freigabe"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_bwwp_freigabe"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_bwwp_freigabe"
+                    }
+                  ],
+                  "title": "Ausgang BWWP Freigabe",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "type": "glance",
+                  "title": "Ausgang FU Run/Freigabe",
+                  "columns": 4,
+                  "show_state": true,
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_brunnenpumpe_freigabe"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_brunnenpumpe_freigabe"
+                    },
+                    {
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_brunnenpumpe_freigabe",
+                      "tap_action": {
+                        "action": "toggle"
+                      }
+                    },
+                    {
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_brunnenpumpe_freigabe",
+                      "tap_action": {
+                        "action": "call-service",
+                        "service": "button.press",
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_brunnenpumpe_freigabe"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_brunnen_mv"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_brunnen_mv"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_brunnen_mv"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_brunnen_mv"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_brunnen_mv"
+                    }
+                  ],
+                  "title": "Ausgang Brunnen MV",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_pool_filter"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_pool_filter"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_pool_filter"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_pool_filter"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_pool_filter"
+                    }
+                  ],
+                  "title": "Ausgang Pool Filter",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_sv_wp1_auf"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_wp1_auf"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_sv_wp1_auf"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_sv_wp1_auf"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_sv_wp1_auf"
+                    }
+                  ],
+                  "title": "Ausgang SV WP1 Auf",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_sv_wp1_zu"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_wp1_zu"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_sv_wp1_zu"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_sv_wp1_zu"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_sv_wp1_zu"
+                    }
+                  ],
+                  "title": "Ausgang SV WP1 Zu",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_sv_wp2_auf"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_wp2_auf"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_sv_wp2_auf"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_sv_wp2_auf"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_sv_wp2_auf"
+                    }
+                  ],
+                  "title": "Ausgang SV WP2 Auf",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_sv_wp2_zu"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_wp2_zu"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_sv_wp2_zu"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_sv_wp2_zu"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_sv_wp2_zu"
+                    }
+                  ],
+                  "title": "Ausgang SV WP2 Zu",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_sv_pool_auf"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_pool_auf"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_sv_pool_auf"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_sv_pool_auf"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_sv_pool_auf"
+                    }
+                  ],
+                  "title": "Ausgang SV Pool Auf",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_sv_pool_zu"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_pool_zu"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_sv_pool_zu"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_sv_pool_zu"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_sv_pool_zu"
+                    }
+                  ],
+                  "title": "Ausgang SV Pool Zu",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_sv_nebengeb_auf"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_nebengeb_auf"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_sv_nebengeb_auf"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_sv_nebengeb_auf"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_sv_nebengeb_auf"
+                    }
+                  ],
+                  "title": "Ausgang SV Nebengeb Auf",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_sv_nebengeb_zu"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_nebengeb_zu"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_sv_nebengeb_zu"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_sv_nebengeb_zu"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_sv_nebengeb_zu"
+                    }
+                  ],
+                  "title": "Ausgang SV Nebengeb Zu",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do16"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do16"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_reserve_do16"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_reserve_do16"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_reserve_do16"
+                    }
+                  ],
+                  "title": "Ausgang Reserve DO16",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do17"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do17"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_reserve_do17"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_reserve_do17"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_reserve_do17"
+                    }
+                  ],
+                  "title": "Ausgang Reserve DO17",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_nebengeb"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_pumpe_nebengeb"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_pumpe_nebengeb"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_pumpe_nebengeb"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_pumpe_nebengeb"
+                    }
+                  ],
+                  "title": "Ausgang Pumpe Nebengeb",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_pool"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_pumpe_pool"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_pumpe_pool"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_pumpe_pool"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_pumpe_pool"
+                    }
+                  ],
+                  "title": "Ausgang Pumpe Pool",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_tor_ganz"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_tor_ganz"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_tor_ganz"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_tor_ganz"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_tor_ganz"
+                    }
+                  ],
+                  "title": "Ausgang Tor Ganz",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_tor_halb"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_tor_halb"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_tor_halb"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_tor_halb"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_tor_halb"
+                    }
+                  ],
+                  "title": "Ausgang Tor Halb",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do22"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do22"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_reserve_do22"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_reserve_do22"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_reserve_do22"
+                    }
+                  ],
+                  "title": "Ausgang Reserve DO22",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do23"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do23"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_reserve_do23"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_reserve_do23"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_reserve_do23"
+                    }
+                  ],
+                  "title": "Ausgang Reserve DO23",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do24"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do24"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_reserve_do24"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_reserve_do24"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_reserve_do24"
+                    }
+                  ],
+                  "title": "Ausgang Reserve DO24",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do25"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do25"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_reserve_do25"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_reserve_do25"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_reserve_do25"
+                    }
+                  ],
+                  "title": "Ausgang Reserve DO25",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do26"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do26"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_reserve_do26"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_reserve_do26"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_reserve_do26"
+                    }
+                  ],
+                  "title": "Ausgang Reserve DO26",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do27"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do27"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_reserve_do27"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_reserve_do27"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_reserve_do27"
+                    }
+                  ],
+                  "title": "Ausgang Reserve DO27",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                },
+                {
+                  "entities": [
+                    {
+                      "name": "Ausgang",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_ausgang_reserve_do28"
+                    },
+                    {
+                      "name": "Hand",
+                      "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_do28"
+                    },
+                    {
+                      "tap_action": {
+                        "action": "toggle"
+                      },
+                      "name": "Schalter",
+                      "entity": "switch.heizung_hauptsteuerung_handwert_reserve_do28"
+                    },
+                    {
+                      "tap_action": {
+                        "target": {
+                          "entity_id": "button.heizung_hauptsteuerung_auto_reserve_do28"
+                        },
+                        "service": "button.press",
+                        "action": "call-service"
+                      },
+                      "name": "Auto",
+                      "entity": "button.heizung_hauptsteuerung_auto_reserve_do28"
+                    }
+                  ],
+                  "title": "Ausgang Reserve DO28",
+                  "show_state": true,
+                  "columns": 4,
+                  "type": "glance"
+                }
+              ],
+              "columns": 1,
+              "type": "grid",
+              "square": false
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "title": "Handbetrieb Analoge Ausgaenge",
+              "cards": [
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "type": "markdown",
+                      "content": "**Ausgang FU Brunnenpumpe Sollwert**"
+                    },
+                    {
+                      "type": "horizontal-stack",
+                      "cards": [
+                        {
+                          "type": "entity",
+                          "name": "Ausgang",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_brunnen_fu_soll"
+                        },
+                        {
+                          "type": "entity",
+                          "name": "Hand",
+                          "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_brunnen_fu_soll"
+                        },
+                        {
+                          "type": "entities",
+                          "show_header_toggle": false,
+                          "entities": [
+                            {
+                              "name": "Wert",
+                              "entity": "number.heizung_hauptsteuerung_handwert_brunnen_fu_soll"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "button",
+                          "name": "Auto",
+                          "entity": "button.heizung_hauptsteuerung_auto_brunnen_fu_soll",
+                          "tap_action": {
+                            "action": "call-service",
+                            "service": "button.press",
+                            "target": {
+                              "entity_id": "button.heizung_hauptsteuerung_auto_brunnen_fu_soll"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "content": "**Ausgang WP1 VL Soll**",
+                      "type": "markdown"
+                    },
+                    {
+                      "type": "horizontal-stack",
+                      "cards": [
+                        {
+                          "name": "Ausgang",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_wp1_vl_soll",
+                          "type": "entity"
+                        },
+                        {
+                          "name": "Hand",
+                          "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_wp1_vl_soll",
+                          "type": "entity"
+                        },
+                        {
+                          "show_header_toggle": false,
+                          "entities": [
+                            {
+                              "name": "Wert",
+                              "entity": "number.heizung_hauptsteuerung_handwert_wp1_vl_soll"
+                            }
+                          ],
+                          "type": "entities"
+                        },
+                        {
+                          "tap_action": {
+                            "target": {
+                              "entity_id": "button.heizung_hauptsteuerung_auto_wp1_vl_soll"
+                            },
+                            "service": "button.press",
+                            "action": "call-service"
+                          },
+                          "name": "Auto",
+                          "entity": "button.heizung_hauptsteuerung_auto_wp1_vl_soll",
+                          "type": "button"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "content": "**Ausgang WP2 VL Soll**",
+                      "type": "markdown"
+                    },
+                    {
+                      "type": "horizontal-stack",
+                      "cards": [
+                        {
+                          "name": "Ausgang",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_wp2_vl_soll",
+                          "type": "entity"
+                        },
+                        {
+                          "name": "Hand",
+                          "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_wp2_vl_soll",
+                          "type": "entity"
+                        },
+                        {
+                          "show_header_toggle": false,
+                          "entities": [
+                            {
+                              "name": "Wert",
+                              "entity": "number.heizung_hauptsteuerung_handwert_wp2_vl_soll"
+                            }
+                          ],
+                          "type": "entities"
+                        },
+                        {
+                          "tap_action": {
+                            "target": {
+                              "entity_id": "button.heizung_hauptsteuerung_auto_wp2_vl_soll"
+                            },
+                            "service": "button.press",
+                            "action": "call-service"
+                          },
+                          "name": "Auto",
+                          "entity": "button.heizung_hauptsteuerung_auto_wp2_vl_soll",
+                          "type": "button"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "content": "**Ausgang BWWP VL Soll**",
+                      "type": "markdown"
+                    },
+                    {
+                      "type": "horizontal-stack",
+                      "cards": [
+                        {
+                          "name": "Ausgang",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_bwwp_vl_soll",
+                          "type": "entity"
+                        },
+                        {
+                          "name": "Hand",
+                          "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_bwwp_vl_soll",
+                          "type": "entity"
+                        },
+                        {
+                          "show_header_toggle": false,
+                          "entities": [
+                            {
+                              "name": "Wert",
+                              "entity": "number.heizung_hauptsteuerung_handwert_bwwp_vl_soll"
+                            }
+                          ],
+                          "type": "entities"
+                        },
+                        {
+                          "tap_action": {
+                            "target": {
+                              "entity_id": "button.heizung_hauptsteuerung_auto_bwwp_vl_soll"
+                            },
+                            "service": "button.press",
+                            "action": "call-service"
+                          },
+                          "name": "Auto",
+                          "entity": "button.heizung_hauptsteuerung_auto_bwwp_vl_soll",
+                          "type": "button"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "content": "**Ausgang SV Nebengeb Prozent**",
+                      "type": "markdown"
+                    },
+                    {
+                      "type": "horizontal-stack",
+                      "cards": [
+                        {
+                          "name": "Ausgang",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_nebengeb_prozent",
+                          "type": "entity"
+                        },
+                        {
+                          "name": "Hand",
+                          "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_nebengeb_prozent",
+                          "type": "entity"
+                        },
+                        {
+                          "show_header_toggle": false,
+                          "entities": [
+                            {
+                              "name": "Wert",
+                              "entity": "number.heizung_hauptsteuerung_handwert_sv_nebengeb_prozent"
+                            }
+                          ],
+                          "type": "entities"
+                        },
+                        {
+                          "tap_action": {
+                            "target": {
+                              "entity_id": "button.heizung_hauptsteuerung_auto_sv_nebengeb_prozent"
+                            },
+                            "service": "button.press",
+                            "action": "call-service"
+                          },
+                          "name": "Auto",
+                          "entity": "button.heizung_hauptsteuerung_auto_sv_nebengeb_prozent",
+                          "type": "button"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "content": "**Ausgang Reserve AO05**",
+                      "type": "markdown"
+                    },
+                    {
+                      "type": "horizontal-stack",
+                      "cards": [
+                        {
+                          "name": "Ausgang",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_reserve_ao05",
+                          "type": "entity"
+                        },
+                        {
+                          "name": "Hand",
+                          "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_ao05",
+                          "type": "entity"
+                        },
+                        {
+                          "show_header_toggle": false,
+                          "entities": [
+                            {
+                              "name": "Wert",
+                              "entity": "number.heizung_hauptsteuerung_handwert_reserve_ao05"
+                            }
+                          ],
+                          "type": "entities"
+                        },
+                        {
+                          "tap_action": {
+                            "target": {
+                              "entity_id": "button.heizung_hauptsteuerung_auto_reserve_ao05"
+                            },
+                            "service": "button.press",
+                            "action": "call-service"
+                          },
+                          "name": "Auto",
+                          "entity": "button.heizung_hauptsteuerung_auto_reserve_ao05",
+                          "type": "button"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "content": "**Ausgang SV WP1 Prozent**",
+                      "type": "markdown"
+                    },
+                    {
+                      "type": "horizontal-stack",
+                      "cards": [
+                        {
+                          "name": "Ausgang",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_wp1_prozent",
+                          "type": "entity"
+                        },
+                        {
+                          "name": "Hand",
+                          "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_wp1_prozent",
+                          "type": "entity"
+                        },
+                        {
+                          "show_header_toggle": false,
+                          "entities": [
+                            {
+                              "name": "Wert",
+                              "entity": "number.heizung_hauptsteuerung_handwert_sv_wp1_prozent"
+                            }
+                          ],
+                          "type": "entities"
+                        },
+                        {
+                          "tap_action": {
+                            "target": {
+                              "entity_id": "button.heizung_hauptsteuerung_auto_sv_wp1_prozent"
+                            },
+                            "service": "button.press",
+                            "action": "call-service"
+                          },
+                          "name": "Auto",
+                          "entity": "button.heizung_hauptsteuerung_auto_sv_wp1_prozent",
+                          "type": "button"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "content": "**Ausgang SV WP2 Prozent**",
+                      "type": "markdown"
+                    },
+                    {
+                      "type": "horizontal-stack",
+                      "cards": [
+                        {
+                          "name": "Ausgang",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_wp2_prozent",
+                          "type": "entity"
+                        },
+                        {
+                          "name": "Hand",
+                          "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_wp2_prozent",
+                          "type": "entity"
+                        },
+                        {
+                          "show_header_toggle": false,
+                          "entities": [
+                            {
+                              "name": "Wert",
+                              "entity": "number.heizung_hauptsteuerung_handwert_sv_wp2_prozent"
+                            }
+                          ],
+                          "type": "entities"
+                        },
+                        {
+                          "tap_action": {
+                            "target": {
+                              "entity_id": "button.heizung_hauptsteuerung_auto_sv_wp2_prozent"
+                            },
+                            "service": "button.press",
+                            "action": "call-service"
+                          },
+                          "name": "Auto",
+                          "entity": "button.heizung_hauptsteuerung_auto_sv_wp2_prozent",
+                          "type": "button"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "content": "**Ausgang SV Pool Prozent**",
+                      "type": "markdown"
+                    },
+                    {
+                      "type": "horizontal-stack",
+                      "cards": [
+                        {
+                          "name": "Ausgang",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_sv_pool_prozent",
+                          "type": "entity"
+                        },
+                        {
+                          "name": "Hand",
+                          "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_pool_prozent",
+                          "type": "entity"
+                        },
+                        {
+                          "show_header_toggle": false,
+                          "entities": [
+                            {
+                              "name": "Wert",
+                              "entity": "number.heizung_hauptsteuerung_handwert_sv_pool_prozent"
+                            }
+                          ],
+                          "type": "entities"
+                        },
+                        {
+                          "tap_action": {
+                            "target": {
+                              "entity_id": "button.heizung_hauptsteuerung_auto_sv_pool_prozent"
+                            },
+                            "service": "button.press",
+                            "action": "call-service"
+                          },
+                          "name": "Auto",
+                          "entity": "button.heizung_hauptsteuerung_auto_sv_pool_prozent",
+                          "type": "button"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "content": "**Ausgang Pool Filter Prozent**",
+                      "type": "markdown"
+                    },
+                    {
+                      "type": "horizontal-stack",
+                      "cards": [
+                        {
+                          "name": "Ausgang",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_pool_filter_prozent",
+                          "type": "entity"
+                        },
+                        {
+                          "name": "Hand",
+                          "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_pool_filter_prozent",
+                          "type": "entity"
+                        },
+                        {
+                          "show_header_toggle": false,
+                          "entities": [
+                            {
+                              "name": "Wert",
+                              "entity": "number.heizung_hauptsteuerung_handwert_pool_filter_prozent"
+                            }
+                          ],
+                          "type": "entities"
+                        },
+                        {
+                          "tap_action": {
+                            "target": {
+                              "entity_id": "button.heizung_hauptsteuerung_auto_pool_filter_prozent"
+                            },
+                            "service": "button.press",
+                            "action": "call-service"
+                          },
+                          "name": "Auto",
+                          "entity": "button.heizung_hauptsteuerung_auto_pool_filter_prozent",
+                          "type": "button"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "vertical-stack",
+                  "cards": [
+                    {
+                      "content": "**Ausgang Reserve AO10**",
+                      "type": "markdown"
+                    },
+                    {
+                      "type": "horizontal-stack",
+                      "cards": [
+                        {
+                          "name": "Ausgang",
+                          "entity": "sensor.heizung_hauptsteuerung_ausgang_reserve_ao10",
+                          "type": "entity"
+                        },
+                        {
+                          "name": "Hand",
+                          "entity": "binary_sensor.heizung_hauptsteuerung_hand_aktiv_reserve_ao10",
+                          "type": "entity"
+                        },
+                        {
+                          "show_header_toggle": false,
+                          "entities": [
+                            {
+                              "name": "Wert",
+                              "entity": "number.heizung_hauptsteuerung_handwert_reserve_ao10"
+                            }
+                          ],
+                          "type": "entities"
+                        },
+                        {
+                          "tap_action": {
+                            "target": {
+                              "entity_id": "button.heizung_hauptsteuerung_auto_reserve_ao10"
+                            },
+                            "service": "button.press",
+                            "action": "call-service"
+                          },
+                          "name": "Auto",
+                          "entity": "button.heizung_hauptsteuerung_auto_reserve_ao10",
+                          "type": "button"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "columns": 1,
+              "type": "grid",
+              "square": false
+            }
+          ]
+        },
+        {
+          "column_span": 2,
+          "type": "grid",
+          "cards": [
+            {
+              "hours_to_show": 24,
+              "title": "Temperaturen",
+              "entities": [
+                "sensor.heizung_hauptsteuerung_heizung_vl_sammel",
+                "sensor.heizung_hauptsteuerung_heizung_rl_sammel",
+                "sensor.heizung_hauptsteuerung_heizung_gesamt_vl_soll",
+                "sensor.heizung_hauptsteuerung_pool_wasser",
+                "sensor.heizung_hauptsteuerung_brauchwasser_oben",
+                "sensor.heizung_hauptsteuerung_brauchwasser_unten",
+                "sensor.heizung_hauptsteuerung_nebengebaeude_vl"
+              ],
+              "type": "history-graph"
+            }
+          ]
+        }
+      ],
+      "icon": "mdi:heat-pump",
+      "max_columns": 3,
+      "path": "heizung",
+      "type": "sections",
+      "title": "Hydraulik"
+    }
+  ],
+  "title": "Heizung"
+}

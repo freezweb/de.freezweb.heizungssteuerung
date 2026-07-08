@@ -155,6 +155,7 @@ class MqttBridge:
             f"{self.base}/freigabe/+/+/set",
             f"{self.base}/regler/+/set",
             f"{self.base}/pv/+/set",
+            f"{self.base}/mischer/+/runtime_s/set",
             f"{self.base}/+/hand/set",
             f"{self.base}/+/hand/auto",
             f"{self.base}/tor/+/cmd",
@@ -189,6 +190,10 @@ class MqttBridge:
             self.peer_last_seen_ts = time.time()
             if topic == self._peer_status_topic():
                 self.peer_online = _as_bool(payload)
+            return
+
+        if getattr(msg, "retain", False) and _is_unsafe_retained_command(parts):
+            log.info("Retained MQTT-Kommando ignoriert: %s", topic)
             return
 
         if len(parts) == 4 and parts[1] == "anforderung" and parts[3] == "set" and isinstance(payload, dict):
@@ -229,6 +234,10 @@ class MqttBridge:
                 self.pv[parts[2]] = _as_bool(payload)
             return
 
+        if len(parts) == 5 and parts[1] == "mischer" and parts[3] == "runtime_s" and parts[4] == "set":
+            self._commands.put(MqttCommand("mischer_runtime_set", parts[2], payload))
+            return
+
         if len(parts) == 4 and parts[2] == "hand" and parts[3] == "set":
             self._commands.put(MqttCommand("hand_set", parts[1], payload))
             return
@@ -266,6 +275,14 @@ def _as_bool(value: Any) -> bool:
     if isinstance(value, str):
         return value.strip().lower() in {"1", "true", "on", "online", "yes", "ja", "ein"}
     return bool(value)
+
+
+def _is_unsafe_retained_command(parts: list[str]) -> bool:
+    if len(parts) >= 3 and parts[1] in {"freigabe", "regler", "pv", "mischer", "tor", "failsafe"}:
+        return True
+    if len(parts) == 4 and parts[2] == "hand" and parts[3] in {"set", "auto"}:
+        return True
+    return False
 
 
 def _default_peer_topics(base: str, client_id: str) -> tuple[str, str]:

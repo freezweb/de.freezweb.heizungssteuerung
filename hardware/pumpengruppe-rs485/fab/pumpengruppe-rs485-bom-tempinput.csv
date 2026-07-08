@@ -23,6 +23,7 @@
 "D4","SS14 USB VBUS to +5V Schottky diode","FW_Pumpengruppe:D_SOD123","1","","SS14 or compatible Schottky"
 "F2","1812 resettable fuse BUS_5V to local +5V","Fuse:Fuse_1812_4532Metric","1","","Polyfuse sized for RJ45 5 V sharing"
 "R32","0R 0603 BUS_COM to local GND link for RJ45 power sharing","FW_Pumpengruppe:R_0603","1","","Populate for common SELV bus ground in network-powered temperature variant"
+"R33","10k 1% 0603 ESP32 EN pull-up","Resistor_SMD:R_0603_1608Metric","1","","Yageo RC0603FR-0710KL or equivalent"
 "X1,X2,X3,F1,PSU1,K1,K2,K3,Q1-Q3,R4-R12,D1-D3,D10-D12,R40,R41,D40,D41,RV1","Left 230V / relay section not populated","various","1","DNP","Temp-input assembly variant: do not populate left mains/relay section"
 "C64-C83,D64-D83","Valve-position RGB LED chain not populated","various","1","DNP","Temp-input assembly variant uses only D60-D63 status LEDs"
 "D50-D52","Optional RS485 TVS positions","Diode_SMD:D_SOD-123","1","DNP","Optional protection footprints, not populated in base temp-input assembly"

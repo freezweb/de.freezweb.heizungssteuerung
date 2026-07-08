@@ -9,6 +9,30 @@ views:
         aspect_ratio: "16:9"
         elements:
           - type: state-label
+            entity: sensor.heizung_hauptsteuerung_mischer_fbh_eg_soll
+            prefix: "FBH S "
+            style: { left: 78%, top: 14%, color: "#ffd26c", font-weight: 700, font-size: "14px", text-shadow: "0 1px 3px #000", background: "rgba(10, 18, 26, 0.68)", border-radius: "4px", padding: "2px 5px", line-height: "16px" }
+          - type: state-label
+            entity: sensor.heizung_hauptsteuerung_mischer_fbh_eg_ist
+            prefix: "I "
+            style: { left: 90%, top: 14%, color: "#b8f7ff", font-weight: 700, font-size: "14px", text-shadow: "0 1px 3px #000", background: "rgba(10, 18, 26, 0.68)", border-radius: "4px", padding: "2px 5px", line-height: "16px" }
+          - type: state-label
+            entity: sensor.heizung_hauptsteuerung_mischer_klima_og_soll
+            prefix: "Klima S "
+            style: { left: 78%, top: 27%, color: "#ffd26c", font-weight: 700, font-size: "14px", text-shadow: "0 1px 3px #000", background: "rgba(10, 18, 26, 0.68)", border-radius: "4px", padding: "2px 5px", line-height: "16px" }
+          - type: state-label
+            entity: sensor.heizung_hauptsteuerung_mischer_klima_og_ist
+            prefix: "I "
+            style: { left: 90%, top: 27%, color: "#b8f7ff", font-weight: 700, font-size: "14px", text-shadow: "0 1px 3px #000", background: "rgba(10, 18, 26, 0.68)", border-radius: "4px", padding: "2px 5px", line-height: "16px" }
+          - type: state-label
+            entity: sensor.heizung_hauptsteuerung_mischer_hk_backup_soll
+            prefix: "HK S "
+            style: { left: 78%, top: 40%, color: "#ffd26c", font-weight: 700, font-size: "14px", text-shadow: "0 1px 3px #000", background: "rgba(10, 18, 26, 0.68)", border-radius: "4px", padding: "2px 5px", line-height: "16px" }
+          - type: state-label
+            entity: sensor.heizung_hauptsteuerung_mischer_hk_backup_ist
+            prefix: "I "
+            style: { left: 90%, top: 40%, color: "#b8f7ff", font-weight: 700, font-size: "14px", text-shadow: "0 1px 3px #000", background: "rgba(10, 18, 26, 0.68)", border-radius: "4px", padding: "2px 5px", line-height: "16px" }
+          - type: state-label
             entity: sensor.heizung_hauptsteuerung_heizung_gesamt_vl_soll
             style: { left: 45%, top: 19%, color: "#ffffff", font-weight: 700, text-shadow: "0 1px 3px #000" }
           - type: state-label
@@ -153,9 +177,55 @@ views:
           - entity: binary_sensor.heizung_hauptsteuerung_ausgang_pumpe_bw_lade
 
       - type: entities
+        title: Mischer Laufzeiten
+        entities:
+          - entity: number.heizung_hauptsteuerung_mischer_fbh_eg_laufzeit
+            name: FBH EG 0-100 %
+          - entity: number.heizung_hauptsteuerung_mischer_hk_backup_laufzeit
+            name: HK Backup 0-100 %
+          - entity: number.heizung_hauptsteuerung_mischer_klima_og_laufzeit
+            name: Klima OG 0-100 %
+
+      - type: entities
         title: Handbetrieb Digitale Ausgaenge
         show_header_toggle: false
         entities:
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_r421b16_relais_1_fbh_eg_pumpe
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_r421b16_relais_1_fbh_eg_pumpe
+          - entity: switch.heizung_hauptsteuerung_handwert_r421b16_relais_1_fbh_eg_pumpe
+          - entity: button.heizung_hauptsteuerung_auto_r421b16_relais_1_fbh_eg_pumpe
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_r421b16_relais_2_fbh_eg_mischer_fahrt
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_r421b16_relais_2_fbh_eg_mischer_fahrt
+          - entity: switch.heizung_hauptsteuerung_handwert_r421b16_relais_2_fbh_eg_mischer_fahrt
+          - entity: button.heizung_hauptsteuerung_auto_r421b16_relais_2_fbh_eg_mischer_fahrt
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_r421b16_relais_3_fbh_eg_mischer_richtung_auf
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_r421b16_relais_3_fbh_eg_mischer_richtung_auf
+          - entity: switch.heizung_hauptsteuerung_handwert_r421b16_relais_3_fbh_eg_mischer_richtung_auf
+          - entity: button.heizung_hauptsteuerung_auto_r421b16_relais_3_fbh_eg_mischer_richtung_auf
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_r421b16_relais_4_hk_backup_pumpe
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_r421b16_relais_4_hk_backup_pumpe
+          - entity: switch.heizung_hauptsteuerung_handwert_r421b16_relais_4_hk_backup_pumpe
+          - entity: button.heizung_hauptsteuerung_auto_r421b16_relais_4_hk_backup_pumpe
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_r421b16_relais_5_hk_backup_mischer_fahrt
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_r421b16_relais_5_hk_backup_mischer_fahrt
+          - entity: switch.heizung_hauptsteuerung_handwert_r421b16_relais_5_hk_backup_mischer_fahrt
+          - entity: button.heizung_hauptsteuerung_auto_r421b16_relais_5_hk_backup_mischer_fahrt
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_r421b16_relais_6_hk_backup_mischer_richtung_auf
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_r421b16_relais_6_hk_backup_mischer_richtung_auf
+          - entity: switch.heizung_hauptsteuerung_handwert_r421b16_relais_6_hk_backup_mischer_richtung_auf
+          - entity: button.heizung_hauptsteuerung_auto_r421b16_relais_6_hk_backup_mischer_richtung_auf
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_r421b16_relais_7_klima_og_pumpe
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_r421b16_relais_7_klima_og_pumpe
+          - entity: switch.heizung_hauptsteuerung_handwert_r421b16_relais_7_klima_og_pumpe
+          - entity: button.heizung_hauptsteuerung_auto_r421b16_relais_7_klima_og_pumpe
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_r421b16_relais_8_klima_og_mischer_fahrt
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_r421b16_relais_8_klima_og_mischer_fahrt
+          - entity: switch.heizung_hauptsteuerung_handwert_r421b16_relais_8_klima_og_mischer_fahrt
+          - entity: button.heizung_hauptsteuerung_auto_r421b16_relais_8_klima_og_mischer_fahrt
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_r421b16_relais_9_klima_og_mischer_richtung_auf
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_r421b16_relais_9_klima_og_mischer_richtung_auf
+          - entity: switch.heizung_hauptsteuerung_handwert_r421b16_relais_9_klima_og_mischer_richtung_auf
+          - entity: button.heizung_hauptsteuerung_auto_r421b16_relais_9_klima_og_mischer_richtung_auf
           - entity: binary_sensor.heizung_hauptsteuerung_ausgang_brenner
           - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_brenner
           - entity: switch.heizung_hauptsteuerung_handwert_brenner
@@ -329,6 +399,8 @@ views:
             name: Gesamt
           - entity: binary_sensor.heizung_hauptsteuerung_heizung_failsafe_aktiv
             name: Failsafe
+          - entity: binary_sensor.heizung_hauptsteuerung_r421b16_modbus_stoerung
+            name: R421B16
           - entity: binary_sensor.heizung_hauptsteuerung_wp1_stoerung
             name: WP1 Stoerung
           - entity: binary_sensor.heizung_hauptsteuerung_wp2_stoerung

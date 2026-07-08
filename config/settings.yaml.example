@@ -15,11 +15,15 @@ leds:
   # A1: Heartbeat, wechselt alle heartbeat_interval_s blau/gelb
   # A2: Verbindung zur anderen CPU (gruen=ok, gelb=Start/Warten, rot=kein Heartbeat)
   # Hauptsteuerung zusaetzlich:
-  # A3: MQTT Broker, A4: HA-Heartbeat, A5: Failsafe
+  # A3: MQTT Broker; bei aktivem keller_relais: R421B16 Modbus-Verbindung
+  # A4: HA-Heartbeat, A5: Failsafe
   # Kellersteuerung: A3-A5 bleiben aus
 
 intercpu:
   keller:
+    # Aktiv lassen, solange Brunnen-Drucksensor/FU und weitere Keller-AI/AO/RTD
+    # auf dem Keller-RevPi liegen. Das R421B16 unter keller_relais ersetzt nur
+    # die drei Heizkreis-Pumpen/Mischer-Ausgaenge.
     enabled: true
     host: "10.1.25.11"
     port: 502
@@ -30,6 +34,44 @@ intercpu:
     zyklus_ms: 100
     watchdog_s: 5
 
+keller_relais:
+  # Waveshare RS485-zu-TCP im TCP-Server-Modus: hier laufen rohe Modbus-RTU-
+  # Frames ueber TCP-Port 26, kein Modbus TCP/MBAP.
+  enabled: false
+  host: "10.1.100.169"
+  port: 26
+  unit_id: 1
+  protocol: "modbus_tcp"   # Waveshare Socket A: TCP Server + ModbusTCP
+  timeout_s: 0.5
+  command_delay_s: 0.03
+  health_poll_interval_s: 5.0
+  state_persist_path: "state/keller_relais.json"
+  runtime_s: 120
+  tolerance_pct: 1.0
+  test_mode:
+    enabled: false
+    pump_on: true
+    target_pct: 100
+  groups:
+    fbh_eg:
+      pump_component: "pumpe_fbh_eg"
+      mixer_component: "mischer_fbh_eg_pct"
+      vl_component: "fbh_eg_vl"
+      target_channel_id: "K-AO02"                         # interner Prozent-Sollwert aus dem Routing, keine Hardware-AO
+      relays: { pump: 1, enable: 2, direction: 3 }   # R3: aus=NC/Zu, an=NO/Auf
+    hk_backup:
+      pump_component: "pumpe_hk_backup"
+      mixer_component: "mischer_hk_backup_pct"
+      vl_component: "hk_backup_vl"
+      target_channel_id: "K-AO04"                         # interner Prozent-Sollwert aus dem Routing, keine Hardware-AO
+      relays: { pump: 4, enable: 5, direction: 6 }   # R6: aus=NC/Zu, an=NO/Auf
+    klima_og:
+      pump_component: "pumpe_klima_og"
+      mixer_component: "mischer_klima_og_pct"
+      vl_component: "klima_og_vl"
+      target_channel_id: "K-AO03"                         # interner Prozent-Sollwert aus dem Routing, keine Hardware-AO
+      relays: { pump: 7, enable: 8, direction: 9 }   # R9: aus=NC/Zu, an=NO/Auf
+
 regler:
   # Live geaenderte Reglerparameter aus HA werden hier persistiert.
   state_persist_path: "state/regler.json"
@@ -38,6 +80,61 @@ hydraulik:
   # Alle diese Anforderungen haengen am gemeinsamen Gesamtwaermekreis.
   # Beide Haupt-WPs speisen diesen Kreis; Pool/Nebengebaeude/Haus sind Senken.
   common_heat_demands: [fbh_eg, klima_og, nebengeb, pool, hk_backup]
+
+pumpengruppen:
+  nebengeb:
+    enabled: true
+    host: "10.1.20.189"
+    port: 502
+    unit_id: 30
+    timeout_s: 0.5
+    poll_interval_s: 1.0
+    pump_component: "pumpe_nebengeb"
+    mixer_component: "sv_nebengeb_pct"
+    vl_component: "vl_nebengeb"
+    rl_component: "rl_nebengeb"
+    # Solange die Pumpengruppe aktiv ist, werden DO14/DO15/DO18/AO04 nicht
+    # physisch am RevPi geschrieben, sondern nur logisch berechnet und per
+    # Modbus TCP an das ESP-Board uebertragen.
+    disable_local_outputs: true
+
+mischer:
+  fbh_eg:
+    hysterese_k: 0.3
+    kp_pct_pro_k: 8.0
+    max_step_pct: 5.0
+    max_open_step_pct: 2.0
+    max_close_step_pct: 5.0
+    control_interval_s: 30.0
+    anticipation_s: 90.0
+    min_pct: 0
+    max_pct: 100
+  hk_backup:
+    hysterese_k: 0.3
+    kp_pct_pro_k: 8.0
+    max_step_pct: 5.0
+    max_open_step_pct: 2.0
+    max_close_step_pct: 5.0
+    control_interval_s: 30.0
+    anticipation_s: 90.0
+    min_pct: 0
+    max_pct: 100
+  klima_og:
+    hysterese_k: 0.3
+    kp_pct_pro_k: 8.0
+    max_step_pct: 5.0
+    max_open_step_pct: 2.0
+    max_close_step_pct: 5.0
+    control_interval_s: 30.0
+    anticipation_s: 90.0
+    min_pct: 0
+    max_pct: 100
+  nebengeb:
+    hysterese_k: 0.3
+    kp_pct_pro_k: 8.0
+    max_step_pct: 20.0
+    min_pct: 0
+    max_pct: 100
 
 freigaben:
   # Persistente Live-Aenderungen landen in state/freigaben.json.

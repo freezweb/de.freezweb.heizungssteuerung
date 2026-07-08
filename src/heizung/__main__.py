@@ -19,7 +19,13 @@ from .lib.freigaben import Freigaben
 from .lib.hand_auto import HandAutoManager
 from .lib.intercpu import KellerModbusClient
 from .lib.iohw import BaseIO, HardwareSnapshot, create_io_backend
+from .lib.keller_relais import KellerRelayClient, KellerRelayConfig, RelayGroupConfig, relay_component_names
 from .lib.mqtt_bridge import MqttBridge
+from .lib.pumpengruppe import (
+    PumpGroupModbusClient,
+    PumpGroupSnapshot,
+    pump_group_configs_from_settings,
+)
 from .lib.regler import ReglerParameter
 from .lib.routing import RoutingState, compute_routing
 from .lib.state import StateStore
@@ -43,10 +49,16 @@ async def run() -> int:
     hand_state_path = app_config.state_path(app_config.setting("hand.state_persist_path", "state/hand_state.json"))
     freigaben_state_path = app_config.state_path(app_config.setting("freigaben.state_persist_path", "state/freigaben.json"))
     regler_state_path = app_config.state_path(app_config.setting("regler.state_persist_path", "state/regler.json"))
+    keller_relay_config = KellerRelayConfig.from_settings(app_config.settings)
 
     keller_client: KellerModbusClient | None = None
+    keller_relay_client: KellerRelayClient | None = None
     controller_config = app_config
-    keller_io_map = _load_keller_io_map(app_config) if _controller_role(app_config) == "haupt" else None
+    keller_io_map = (
+        _load_keller_io_map(app_config)
+        if _controller_role(app_config) == "haupt"
+        else None
+    )
     if keller_io_map is not None and bool(app_config.setting("intercpu.keller.enabled", True)):
         host = str(app_config.setting("intercpu.keller.host", "10.1.25.11"))
         port = int(app_config.setting("intercpu.keller.port", 502))
@@ -54,6 +66,20 @@ async def run() -> int:
         keller_client = KellerModbusClient(host, port, keller_io_map, timeout_s=timeout_s)
         controller_config = replace(app_config, io_map=_merge_io_maps(app_config.io_map, keller_io_map))
         log.info("Keller-Slave per Modbus aktiviert: %s:%s", host, port)
+    if _controller_role(app_config) == "haupt" and keller_relay_config.enabled:
+        keller_relay_io_map = _load_optional_io_map(app_config, "io_map.keller_relais.yaml")
+        if keller_relay_io_map is not None:
+            controller_config = replace(controller_config, io_map=_merge_io_maps(controller_config.io_map, keller_relay_io_map))
+        keller_relay_client = KellerRelayClient(
+            keller_relay_config,
+            StateStore(app_config.state_path(keller_relay_config.state_persist_path)),
+        )
+        log.info(
+            "Keller-R421B16 Relais aktiviert: %s:%s Unit %s",
+            keller_relay_config.host,
+            keller_relay_config.port,
+            keller_relay_config.unit_id,
+        )
 
     io_backend = create_io_backend(app_config.io_map, os.environ.get("HEIZUNG_IO_BACKEND", "auto"))
     hand_auto = HandAutoManager(controller_config.io_map, StateStore(hand_state_path), default_hand_timeout)
@@ -62,6 +88,13 @@ async def run() -> int:
     failsafe_monitor = FailsafeMonitor.from_settings(app_config.settings)
     flowmeter_config = FlowmeterModbusConfig.from_settings(app_config.settings)
     flowmeter = FlowmeterModbusClient(flowmeter_config) if flowmeter_config.enabled else None
+    pump_group_configs = pump_group_configs_from_settings(app_config.settings)
+    pump_group_clients = {
+        name: PumpGroupModbusClient(config) for name, config in pump_group_configs.items()
+    }
+    disabled_physical_output_components = _disabled_local_pump_group_output_components(pump_group_configs)
+    if keller_relay_client is not None:
+        disabled_physical_output_components.update(_keller_relay_output_components(keller_relay_config))
     mqtt = MqttBridge(app_config.mqtt)
     mqtt.set_default_demands(app_config.setting("anforderungen", {}))
     mqtt.start()
@@ -96,12 +129,20 @@ async def run() -> int:
     flowmeter_last_error_log_ts = 0.0
     applied_do: dict[str, bool] = {}
     applied_ao: dict[str, float] = {}
+    pump_group_snapshots: dict[str, PumpGroupSnapshot] = {}
+    keller_relay_last_ok_ts: float | None = None
+    keller_relay_online: bool | None = None
+    keller_relay_next_poll_ts = 0.0
+    keller_relay_vl_next_control_ts: dict[str, float] = {}
+    keller_relay_vl_samples: dict[str, tuple[float, float]] = {}
+    keller_relay_error = ""
     oelbrenner_common_active = False
     klima_og_cooling_active = False
     try:
         while not stop.is_set():
             started = time.monotonic()
             now_ts = time.time()
+            heating_tick = cycle_count % heating_divider == 0
             if mqtt.connected and not ha_discovery_published:
                 _publish_ha_discovery(mqtt, controller_config)
                 ha_discovery_published = True
@@ -130,6 +171,29 @@ async def run() -> int:
                     mqtt.peer_online = False
                     log.warning("Keller-Slave Modbus nicht erreichbar: %s", exc)
 
+            if heating_tick and pump_group_clients:
+                pump_group_snapshots = await _read_pump_groups(
+                    controller_config,
+                    pump_group_clients,
+                    pump_group_snapshots,
+                )
+                snapshot = _merge_pump_group_snapshot(controller_config, snapshot, pump_group_snapshots)
+
+            if keller_relay_client is not None and now_ts >= keller_relay_next_poll_ts:
+                keller_relay_next_poll_ts = now_ts + keller_relay_config.health_poll_interval_s
+                try:
+                    await keller_relay_client.poll_status()
+                    keller_relay_last_ok_ts = now_ts
+                    if keller_relay_online is False:
+                        log.info("Keller-R421B16 Relais wieder erreichbar")
+                    keller_relay_online = True
+                    keller_relay_error = ""
+                except Exception as exc:
+                    if keller_relay_online is not False:
+                        log.warning("Keller-R421B16 Relais Statuspoll fehlgeschlagen: %s", exc)
+                    keller_relay_online = False
+                    keller_relay_error = str(exc)
+
             brunnen_flow_l_min, brunnen_no_flow_s, brunnen_no_flow_since_ts = _brunnen_flow_runtime(
                 controller_config,
                 regler,
@@ -146,6 +210,7 @@ async def run() -> int:
                 hand_auto,
                 freigaben,
                 regler,
+                keller_relay_client,
                 failsafe_monitor,
                 io_backend,
                 snapshot,
@@ -160,7 +225,6 @@ async def run() -> int:
                 outside_temp_c=_sensor_value_by_component(controller_config, snapshot, "aussen"),
             )
 
-            heating_tick = cycle_count % heating_divider == 0
             if heating_tick:
                 (
                     routing_state,
@@ -185,6 +249,20 @@ async def run() -> int:
                     cycle_s,
                     brunnen_flow_l_min,
                     brunnen_no_flow_s,
+                )
+                _apply_pump_group_vl_controls(
+                    controller_config,
+                    mqtt,
+                    snapshot,
+                    auto_do,
+                    auto_ao,
+                    applied_ao,
+                    pump_group_snapshots,
+                    keller_relay_config if keller_relay_client is not None else None,
+                    keller_relay_client.snapshot() if keller_relay_client is not None else None,
+                    keller_relay_vl_next_control_ts,
+                    keller_relay_vl_samples,
+                    now_ts,
                 )
                 brauchwasser_ladung_active = brauchwasser_state.active
             else:
@@ -217,9 +295,28 @@ async def run() -> int:
                 only_channel_ids=write_only,
                 keller_fallback_do=applied_do,
                 keller_fallback_ao=applied_ao,
+                disabled_physical_output_components=disabled_physical_output_components,
             )
             applied_do.update(written_do)
             applied_ao.update(written_ao)
+            if heating_tick and pump_group_clients:
+                await _write_pump_groups(controller_config, pump_group_clients, applied_do, applied_ao)
+            if heating_tick and keller_relay_client is not None:
+                try:
+                    await keller_relay_client.write_outputs(
+                        controller_config,
+                        applied_do,
+                        {**applied_ao, **auto_ao},
+                        _hand_overrides_for_components(
+                            controller_config,
+                            hand_auto,
+                            _keller_relay_manual_components(keller_relay_config),
+                        ),
+                    )
+                except Exception as exc:
+                    keller_relay_online = False
+                    keller_relay_error = str(exc)
+                    log.warning("Keller-R421B16 Relais Schreiben fehlgeschlagen: %s", exc)
             if keller_client is not None and mqtt.peer_online is not False:
                 mqtt.peer_last_seen_ts = now_ts
                 mqtt.peer_online = True
@@ -239,6 +336,11 @@ async def run() -> int:
                     applied_do,
                     applied_ao,
                     klima_og_cooling_active,
+                    keller_relay_client.snapshot() if keller_relay_client is not None else None,
+                    keller_relay_client.relay_component_states() if keller_relay_client is not None else None,
+                    keller_relay_online,
+                    keller_relay_last_ok_ts,
+                    keller_relay_error,
                 )
             uptime_s = int(now_ts - boot_ts)
             heartbeat_tick = uptime_s // 30
@@ -255,11 +357,18 @@ async def run() -> int:
                 now_ts,
                 boot_ts,
                 cycle_count // max(1, heating_divider // 2),
+                keller_relay_last_ok_ts=keller_relay_last_ok_ts,
+                keller_relay_online=keller_relay_online,
             )
 
             await _sleep_remaining(stop, cycle_s, started)
     finally:
         await io_backend.set_cpu_leds({"A1": "off", "A2": "off", "A3": "off", "A4": "off", "A5": "off"})
+        if keller_relay_client is not None:
+            try:
+                await keller_relay_client.all_off()
+            except Exception as exc:
+                log.warning("Keller-R421B16 Relais Abschalten fehlgeschlagen: %s", exc)
         if flowmeter_task is not None:
             flowmeter_task.cancel()
         mqtt.stop()
@@ -278,8 +387,12 @@ async def _sleep_remaining(stop: asyncio.Event, cycle_s: float, started: float) 
 
 
 def _load_keller_io_map(app_config: AppConfig) -> IoMap | None:
+    return _load_optional_io_map(app_config, "io_map.keller.yaml")
+
+
+def _load_optional_io_map(app_config: AppConfig, name: str) -> IoMap | None:
     try:
-        raw = load_yaml(resolve_config_file(app_config.config_dir, "io_map.keller.yaml"))
+        raw = load_yaml(resolve_config_file(app_config.config_dir, name))
     except ConfigError:
         return None
     return IoMap.from_dict(raw)
@@ -331,6 +444,125 @@ def _merge_snapshots(main: HardwareSnapshot, keller: HardwareSnapshot) -> Hardwa
     )
 
 
+async def _read_pump_groups(
+    app_config: AppConfig,
+    clients: dict[str, PumpGroupModbusClient],
+    previous: dict[str, PumpGroupSnapshot],
+) -> dict[str, PumpGroupSnapshot]:
+    snapshots: dict[str, PumpGroupSnapshot] = {}
+    for name, client in clients.items():
+        try:
+            snapshots[name] = await client.read_snapshot()
+        except Exception as exc:
+            old = previous.get(name)
+            snapshots[name] = PumpGroupSnapshot(online=False)
+            if old is None or old.online:
+                log.warning("Pumpengruppe %s Modbus TCP nicht erreichbar: %s", name, exc)
+    return snapshots
+
+
+def _merge_pump_group_snapshot(
+    app_config: AppConfig,
+    snapshot: HardwareSnapshot,
+    pump_groups: dict[str, PumpGroupSnapshot],
+) -> HardwareSnapshot:
+    rtd = dict(snapshot.rtd)
+    for name, pump_snapshot in pump_groups.items():
+        if not pump_snapshot.online:
+            continue
+        config = pump_group_configs_from_settings(app_config.settings).get(name)
+        if config is None:
+            continue
+        _set_virtual_rtd(app_config, rtd, config.vl_component, pump_snapshot.vl_temp_c)
+        _set_virtual_rtd(app_config, rtd, config.rl_component, pump_snapshot.rl_temp_c)
+    return HardwareSnapshot(
+        di=dict(snapshot.di),
+        ai=dict(snapshot.ai),
+        rtd=rtd,
+        do=dict(snapshot.do),
+        ao=dict(snapshot.ao),
+    )
+
+
+def _set_virtual_rtd(app_config: AppConfig, rtd: dict[str, float | None], component: str, value: float | None) -> None:
+    if not component or value is None:
+        return
+    for channel_id, channel in app_config.io_map.rtd.items():
+        if channel.komponente == component:
+            rtd[channel_id] = value
+            return
+
+
+async def _write_pump_groups(
+    app_config: AppConfig,
+    clients: dict[str, PumpGroupModbusClient],
+    applied_do: dict[str, bool],
+    applied_ao: dict[str, float],
+) -> None:
+    configs = pump_group_configs_from_settings(app_config.settings)
+    for name, client in clients.items():
+        config = configs.get(name)
+        if config is None:
+            continue
+        pump_on = _applied_do_by_component(app_config, applied_do, config.pump_component)
+        target_pct = _applied_ao_by_component(app_config, applied_ao, config.mixer_component)
+        try:
+            await client.write_command(pump_on=pump_on, target_pct=target_pct)
+        except Exception as exc:
+            log.warning("Pumpengruppe %s Modbus TCP Schreiben fehlgeschlagen: %s", name, exc)
+
+
+def _disabled_local_pump_group_output_components(
+    configs: dict[str, Any],
+) -> set[str]:
+    components: set[str] = set()
+    for config in configs.values():
+        if not getattr(config, "disable_local_outputs", False):
+            continue
+        if config.pump_component:
+            components.add(config.pump_component)
+        if config.mixer_component:
+            components.add(config.mixer_component)
+        # Die alten AUF/ZU-Relais gehoeren zum selben lokalen Kreis und duerfen
+        # beim ESP-Test nicht parallel anziehen.
+        if config.name == "nebengeb":
+            components.update({"sv_nebengeb_auf", "sv_nebengeb_zu"})
+    return components
+
+
+def _keller_relay_output_components(config: KellerRelayConfig) -> set[str]:
+    components: set[str] = set()
+    for group in config.groups.values():
+        components.add(group.pump_component)
+        components.add(group.mixer_component)
+        components.update(relay_component_names(group.name).values())
+    return components
+
+
+def _keller_relay_manual_components(config: KellerRelayConfig) -> set[str]:
+    components: set[str] = set()
+    for group in config.groups.values():
+        components.update(relay_component_names(group.name).values())
+    return components
+
+
+def _hand_overrides_for_components(
+    app_config: AppConfig,
+    hand_auto: HandAutoManager,
+    components: set[str],
+) -> dict[str, bool]:
+    hand_snapshot = hand_auto.snapshot()
+    overrides: dict[str, bool] = {}
+    for component in components:
+        channel = app_config.io_map.by_component(component)
+        if channel is None:
+            continue
+        hand = hand_snapshot.get(channel.id)
+        if hand and hand.get("hand"):
+            overrides[component] = bool(hand.get("wert"))
+    return overrides
+
+
 async def _update_cpu_leds(
     io_backend: BaseIO,
     app_config: AppConfig,
@@ -339,6 +571,9 @@ async def _update_cpu_leds(
     now_ts: float,
     boot_ts: float,
     cycle_count: int,
+    *,
+    keller_relay_last_ok_ts: float | None = None,
+    keller_relay_online: bool | None = None,
 ) -> None:
     settings = app_config.setting("leds", {})
     if isinstance(settings, dict) and settings.get("enabled") is False:
@@ -357,9 +592,18 @@ async def _update_cpu_leds(
         "A2": _peer_led_color(mqtt, now_ts, boot_ts, peer_timeout_s),
     }
     if role == "haupt":
+        keller_relay_enabled = bool(app_config.setting("keller_relais.enabled", False))
         colors.update(
             {
-                "A3": "green" if mqtt.connected else "red",
+                "A3": _peer_led_color_from_status(
+                    keller_relay_last_ok_ts,
+                    keller_relay_online,
+                    now_ts,
+                    boot_ts,
+                    peer_timeout_s,
+                )
+                if keller_relay_enabled
+                else ("green" if mqtt.connected else "red"),
                 "A4": _freshness_led_color(mqtt.last_ha_heartbeat_ts, now_ts, ha_timeout_s, required=ha_required),
                 "A5": "red" if failsafe_state.active else "green",
             }
@@ -392,7 +636,19 @@ def _controller_role(app_config: AppConfig) -> str:
 
 
 def _peer_led_color(mqtt: MqttBridge, now_ts: float, boot_ts: float, timeout_s: float) -> str:
-    if mqtt.peer_last_seen_ts is not None and now_ts - mqtt.peer_last_seen_ts <= timeout_s and mqtt.peer_online is not False:
+    return _peer_led_color_from_status(mqtt.peer_last_seen_ts, mqtt.peer_online, now_ts, boot_ts, timeout_s)
+
+
+def _peer_led_color_from_status(
+    last_seen_ts: float | None,
+    online: bool | None,
+    now_ts: float,
+    boot_ts: float,
+    timeout_s: float,
+) -> str:
+    if online is False:
+        return "red"
+    if last_seen_ts is not None and now_ts - last_seen_ts <= timeout_s and online is not False:
         return "green"
     if now_ts - boot_ts < timeout_s:
         return "yellow"
@@ -411,6 +667,7 @@ async def _handle_mqtt_commands(
     hand_auto: HandAutoManager,
     freigaben: Freigaben,
     regler: ReglerParameter,
+    keller_relay_client: KellerRelayClient | None,
     failsafe_monitor: FailsafeMonitor,
     io_backend: BaseIO,
     snapshot: HardwareSnapshot,
@@ -432,6 +689,11 @@ async def _handle_mqtt_commands(
         if command.typ == "regler_set":
             if not regler.set(command.name, command.payload):
                 log.warning("MQTT-Reglerparameter unbekannt, ignoriert: %s", command.name)
+            continue
+
+        if command.typ == "mischer_runtime_set":
+            if keller_relay_client is None or not keller_relay_client.set_runtime(command.name, command.payload):
+                log.warning("MQTT-Mischerlaufzeit unbekannt/ungueltig, ignoriert: %s", command.name)
             continue
 
         if command.typ == "tor_command":
@@ -569,8 +831,7 @@ def _compute_auto_outputs(
 
     auto_ao = {channel_id: 0.0 for channel_id in app_config.io_map.ao}
     for channel_id, value in routed_ao.items():
-        if channel_id in auto_ao:
-            auto_ao[channel_id] = value
+        auto_ao[channel_id] = value
     brunnen_ao = app_config.io_map.by_component("brunnen_fu_soll")
     if brunnen_ao is not None and brunnen_ao.kind == "ao" and brunnen_ao.id in auto_ao:
         auto_ao[brunnen_ao.id] = brunnen_state.speed_pct
@@ -630,6 +891,285 @@ def _apply_klima_og_cooling_outputs(
     brunnen_ao = app_config.io_map.by_component("brunnen_fu_soll")
     if brunnen_ao is not None and brunnen_ao.kind == "ao" and brunnen_ao.id in auto_ao and auto_ao[brunnen_ao.id] <= 0:
         auto_ao[brunnen_ao.id] = float(regler.brunnen_fu_start_pct)
+
+
+def _apply_pump_group_vl_controls(
+    app_config: AppConfig,
+    mqtt: MqttBridge,
+    snapshot: HardwareSnapshot,
+    auto_do: dict[str, bool],
+    auto_ao: dict[str, float],
+    applied_ao: dict[str, float],
+    pump_group_snapshots: dict[str, PumpGroupSnapshot],
+    keller_relay_config: KellerRelayConfig | None = None,
+    keller_relay_snapshot: dict[str, dict[str, float | bool | str]] | None = None,
+    relay_next_control_ts: dict[str, float] | None = None,
+    relay_vl_samples: dict[str, tuple[float, float]] | None = None,
+    now_ts: float | None = None,
+) -> None:
+    _apply_single_pump_group_vl_control(
+        app_config,
+        mqtt,
+        snapshot,
+        auto_do,
+        auto_ao,
+        applied_ao,
+        pump_group_snapshots,
+        name="nebengeb",
+    )
+    if keller_relay_config is not None:
+        for group in keller_relay_config.groups.values():
+            _apply_single_relay_group_vl_control(
+                app_config,
+                mqtt,
+                snapshot,
+                auto_do,
+                auto_ao,
+                applied_ao,
+                group,
+                keller_relay_snapshot or {},
+                relay_next_control_ts if relay_next_control_ts is not None else {},
+                relay_vl_samples if relay_vl_samples is not None else {},
+                time.time() if now_ts is None else now_ts,
+            )
+
+
+def _apply_single_pump_group_vl_control(
+    app_config: AppConfig,
+    mqtt: MqttBridge,
+    snapshot: HardwareSnapshot,
+    auto_do: dict[str, bool],
+    auto_ao: dict[str, float],
+    applied_ao: dict[str, float],
+    pump_group_snapshots: dict[str, PumpGroupSnapshot],
+    *,
+    name: str,
+) -> None:
+    configs = pump_group_configs_from_settings(app_config.settings)
+    config = configs.get(name)
+    if config is None:
+        return
+    demand = mqtt.demands.get(name)
+    if demand is None or not demand.aktiv or demand.vl_soll is None:
+        return
+    if not _auto_do_by_component(app_config, auto_do, config.pump_component):
+        return
+
+    actual_vl = _sensor_value_by_component(app_config, snapshot, config.vl_component)
+    if actual_vl is None:
+        log.warning("Pumpengruppe %s: keine gueltige Vorlauftemperatur, Mischerziel bleibt unveraendert", name)
+        return
+
+    current_position = _pump_group_current_position(
+        app_config,
+        applied_ao,
+        auto_ao,
+        pump_group_snapshots.get(name),
+        config.mixer_component,
+    )
+    target_position = _compute_incremental_mixer_position(
+        target_vl=float(demand.vl_soll),
+        actual_vl=float(actual_vl),
+        current_position=current_position,
+        hysterese_k=float(app_config.setting(f"mischer.{name}.hysterese_k", 0.3)),
+        kp_pct_per_k=float(app_config.setting(f"mischer.{name}.kp_pct_pro_k", 8.0)),
+        max_step_pct=float(app_config.setting(f"mischer.{name}.max_step_pct", 20.0)),
+        min_pct=float(app_config.setting(f"mischer.{name}.min_pct", 0.0)),
+        max_pct=float(app_config.setting(f"mischer.{name}.max_pct", 100.0)),
+    )
+    _set_ao_by_component(app_config, auto_ao, config.mixer_component, target_position)
+    if abs(target_position - current_position) >= 0.5:
+        log.info(
+            "Pumpengruppe %s VL-Regelung: soll=%.1fC ist=%.1fC pos=%.1f%% ziel=%.1f%%",
+            name,
+            float(demand.vl_soll),
+            float(actual_vl),
+            current_position,
+            target_position,
+        )
+
+
+def _apply_single_relay_group_vl_control(
+    app_config: AppConfig,
+    mqtt: MqttBridge,
+    snapshot: HardwareSnapshot,
+    auto_do: dict[str, bool],
+    auto_ao: dict[str, float],
+    applied_ao: dict[str, float],
+    group: RelayGroupConfig,
+    relay_snapshot: dict[str, dict[str, float | bool | str]],
+    next_control_ts: dict[str, float],
+    vl_samples: dict[str, tuple[float, float]],
+    now_ts: float,
+) -> None:
+    snapshot_values = relay_snapshot.get(group.name, {})
+    last_target = _relay_group_snapshot_pct(snapshot_values, "target_pct")
+    demand = mqtt.demands.get(group.name)
+    if demand is None or not demand.aktiv or demand.vl_soll is None:
+        _set_ao_by_component(app_config, auto_ao, group.mixer_component, 0.0)
+        next_control_ts[group.name] = now_ts
+        return
+    if not _auto_do_by_component(app_config, auto_do, group.pump_component):
+        _set_ao_by_component(app_config, auto_ao, group.mixer_component, 0.0)
+        next_control_ts[group.name] = now_ts
+        return
+
+    actual_vl = _sensor_value_by_component(app_config, snapshot, group.vl_component)
+    if actual_vl is None:
+        _set_ao_by_component(app_config, auto_ao, group.mixer_component, 0.0)
+        next_control_ts[group.name] = now_ts
+        log.warning(
+            "R421B16-Gruppe %s: keine gueltige Vorlauftemperatur %s, Mischerziel wird geschlossen",
+            group.name,
+            group.vl_component,
+        )
+        return
+
+    if now_ts < next_control_ts.get(group.name, 0.0):
+        if last_target is not None:
+            _set_ao_by_component(app_config, auto_ao, group.mixer_component, last_target)
+        return
+
+    effective_vl, rise_rate_k_min = _predicted_vl_for_rising_temperature(
+        group.name,
+        float(actual_vl),
+        now_ts,
+        vl_samples,
+        anticipation_s=float(app_config.setting(f"mischer.{group.name}.anticipation_s", 90.0)),
+    )
+    current_position = _relay_group_current_position(app_config, applied_ao, auto_ao, group, relay_snapshot)
+    target_position = _compute_incremental_mixer_position(
+        target_vl=float(demand.vl_soll),
+        actual_vl=effective_vl,
+        current_position=current_position,
+        hysterese_k=float(app_config.setting(f"mischer.{group.name}.hysterese_k", 0.3)),
+        kp_pct_per_k=float(app_config.setting(f"mischer.{group.name}.kp_pct_pro_k", 8.0)),
+        max_step_pct=float(app_config.setting(f"mischer.{group.name}.max_step_pct", 20.0)),
+        max_open_step_pct=float(app_config.setting(f"mischer.{group.name}.max_open_step_pct", app_config.setting(f"mischer.{group.name}.max_step_pct", 20.0))),
+        max_close_step_pct=float(app_config.setting(f"mischer.{group.name}.max_close_step_pct", app_config.setting(f"mischer.{group.name}.max_step_pct", 20.0))),
+        min_pct=float(app_config.setting(f"mischer.{group.name}.min_pct", 0.0)),
+        max_pct=float(app_config.setting(f"mischer.{group.name}.max_pct", 100.0)),
+    )
+    _set_ao_by_component(app_config, auto_ao, group.mixer_component, target_position)
+    control_interval_s = max(1.0, float(app_config.setting(f"mischer.{group.name}.control_interval_s", 20.0)))
+    next_control_ts[group.name] = now_ts + control_interval_s
+    if abs(target_position - current_position) >= 0.5:
+        log.info(
+            "R421B16-Gruppe %s VL-Regelung: soll=%.1fC ist=%.1fC prog=%.1fC steigung=%.2fK/min pos=%.1f%% ziel=%.1f%% pause=%.0fs",
+            group.name,
+            float(demand.vl_soll),
+            float(actual_vl),
+            effective_vl,
+            rise_rate_k_min,
+            current_position,
+            target_position,
+            control_interval_s,
+        )
+
+
+def _pump_group_current_position(
+    app_config: AppConfig,
+    applied_ao: dict[str, float],
+    auto_ao: dict[str, float],
+    pump_snapshot: PumpGroupSnapshot | None,
+    mixer_component: str,
+) -> float:
+    if pump_snapshot is not None and pump_snapshot.online and pump_snapshot.position_pct is not None:
+        return _clamp_pct(pump_snapshot.position_pct)
+    channel = app_config.io_map.by_component(mixer_component)
+    if channel is not None and channel.kind == "ao":
+        if channel.id in applied_ao:
+            return _clamp_pct(applied_ao[channel.id])
+        if channel.id in auto_ao:
+            return _clamp_pct(auto_ao[channel.id])
+    return 0.0
+
+
+def _relay_group_current_position(
+    app_config: AppConfig,
+    applied_ao: dict[str, float],
+    auto_ao: dict[str, float],
+    group: RelayGroupConfig,
+    relay_snapshot: dict[str, dict[str, float | bool | str]],
+) -> float:
+    raw = relay_snapshot.get(group.name, {}).get("position_pct")
+    if raw is not None:
+        try:
+            return _clamp_pct(float(raw))
+        except (TypeError, ValueError):
+            pass
+    return _pump_group_current_position(app_config, applied_ao, auto_ao, None, group.mixer_component)
+
+
+def _relay_group_snapshot_pct(snapshot_values: dict[str, float | bool | str], key: str) -> float | None:
+    raw = snapshot_values.get(key)
+    if raw is None:
+        return None
+    try:
+        return _clamp_pct(float(raw))
+    except (TypeError, ValueError):
+        return None
+
+
+def _predicted_vl_for_rising_temperature(
+    name: str,
+    actual_vl: float,
+    now_ts: float,
+    samples: dict[str, tuple[float, float]],
+    *,
+    anticipation_s: float,
+) -> tuple[float, float]:
+    previous = samples.get(name)
+    samples[name] = (actual_vl, now_ts)
+    if previous is None:
+        return actual_vl, 0.0
+
+    previous_vl, previous_ts = previous
+    dt_s = now_ts - previous_ts
+    if dt_s < 5.0 or dt_s > 300.0:
+        return actual_vl, 0.0
+
+    rate_k_s = (actual_vl - previous_vl) / dt_s
+    rise_rate_k_min = rate_k_s * 60.0
+    if rate_k_s <= 0.0:
+        return actual_vl, rise_rate_k_min
+
+    return actual_vl + rate_k_s * max(0.0, anticipation_s), rise_rate_k_min
+
+
+def _compute_incremental_mixer_position(
+    *,
+    target_vl: float,
+    actual_vl: float,
+    current_position: float,
+    hysterese_k: float,
+    kp_pct_per_k: float,
+    max_step_pct: float,
+    min_pct: float,
+    max_pct: float,
+    max_open_step_pct: float | None = None,
+    max_close_step_pct: float | None = None,
+) -> float:
+    hysterese_k = max(0.0, hysterese_k)
+    min_pct = _clamp_pct(min_pct)
+    max_pct = _clamp_pct(max_pct)
+    if min_pct > max_pct:
+        min_pct, max_pct = max_pct, min_pct
+    error_k = target_vl - actual_vl
+    if abs(error_k) <= hysterese_k:
+        return max(min_pct, min(max_pct, _clamp_pct(current_position)))
+    raw_step = error_k * max(0.0, kp_pct_per_k)
+    open_limit = abs(max_open_step_pct if max_open_step_pct is not None else max_step_pct)
+    close_limit = abs(max_close_step_pct if max_close_step_pct is not None else max_step_pct)
+    if raw_step > 0:
+        step = min(open_limit, raw_step)
+    else:
+        step = max(-close_limit, raw_step)
+    return max(min_pct, min(max_pct, _clamp_pct(current_position + step)))
+
+
+def _clamp_pct(value: float) -> float:
+    return max(0.0, min(100.0, float(value)))
 
 
 def _compute_oelbrenner_common_heat(
@@ -697,6 +1237,27 @@ def _set_ao_by_component(app_config: AppConfig, auto_ao: dict[str, float], compo
         auto_ao[channel.id] = value
 
 
+def _applied_do_by_component(app_config: AppConfig, applied_do: dict[str, bool], component: str) -> bool:
+    channel = app_config.io_map.by_component(component)
+    if channel is None or channel.kind != "do":
+        return False
+    return bool(applied_do.get(channel.id, False))
+
+
+def _auto_do_by_component(app_config: AppConfig, auto_do: dict[str, bool], component: str) -> bool:
+    channel = app_config.io_map.by_component(component)
+    if channel is None or channel.kind != "do":
+        return False
+    return bool(auto_do.get(channel.id, False))
+
+
+def _applied_ao_by_component(app_config: AppConfig, applied_ao: dict[str, float], component: str) -> float:
+    channel = app_config.io_map.by_component(component)
+    if channel is None or channel.kind != "ao":
+        return 0.0
+    return float(applied_ao.get(channel.id, 0.0))
+
+
 def _brunnen_output_ids(app_config: AppConfig) -> set[str]:
     ids: set[str] = set()
     for component in ("brunnen_pumpe_freigabe", "brunnen_fu_soll"):
@@ -723,6 +1284,7 @@ async def _write_outputs(
     only_channel_ids: set[str] | None = None,
     keller_fallback_do: dict[str, bool] | None = None,
     keller_fallback_ao: dict[str, float] | None = None,
+    disabled_physical_output_components: set[str] | None = None,
 ) -> tuple[dict[str, bool], dict[str, float]]:
     applied_do: dict[str, bool] = {}
     applied_ao: dict[str, float] = {}
@@ -737,26 +1299,34 @@ async def _write_outputs(
             applied_do[channel_id] = False
         if _is_hard_locked_heating_pump_output(channel, app_config, snapshot):
             applied_do[channel_id] = False
+        if channel.komponente in (disabled_physical_output_components or set()):
+            continue
         if channel_id in local_io_map.do:
             await io_backend.write_do(channel, applied_do[channel_id])
         else:
-            keller_do[channel_id] = applied_do[channel_id]
+            if channel_id not in local_io_map.do:
+                keller_do[channel_id] = applied_do[channel_id]
 
     for channel_id, channel in app_config.io_map.ao.items():
         if only_channel_ids is not None and channel_id not in only_channel_ids:
             continue
         value, _hand = hand_auto.apply(channel, auto_ao.get(channel_id, 0.0), now_ts)
         applied_ao[channel_id] = float(value)
+        if channel.komponente in (disabled_physical_output_components or set()):
+            continue
         if channel_id in local_io_map.ao:
             await io_backend.write_ao(channel, applied_ao[channel_id])
         else:
-            keller_ao[channel_id] = applied_ao[channel_id]
+            if channel_id not in local_io_map.ao:
+                keller_ao[channel_id] = applied_ao[channel_id]
 
     if keller_client is not None and (keller_do or keller_ao):
-        for channel_id in keller_client.io_map.do:
-            keller_do.setdefault(channel_id, (keller_fallback_do or {}).get(channel_id, auto_do.get(channel_id, False)))
-        for channel_id in keller_client.io_map.ao:
-            keller_ao.setdefault(channel_id, (keller_fallback_ao or {}).get(channel_id, auto_ao.get(channel_id, 0.0)))
+        for channel_id, channel in keller_client.io_map.do.items():
+            if channel.komponente not in (disabled_physical_output_components or set()):
+                keller_do.setdefault(channel_id, (keller_fallback_do or {}).get(channel_id, auto_do.get(channel_id, False)))
+        for channel_id, channel in keller_client.io_map.ao.items():
+            if channel.komponente not in (disabled_physical_output_components or set()):
+                keller_ao.setdefault(channel_id, (keller_fallback_ao or {}).get(channel_id, auto_ao.get(channel_id, 0.0)))
         try:
             await keller_client.write_outputs(keller_do, keller_ao, enabled=True)
         except Exception as exc:
@@ -857,6 +1427,11 @@ def _publish_state(
     applied_do: dict[str, bool],
     applied_ao: dict[str, float],
     klima_og_cooling_active: bool = False,
+    keller_relay_snapshot: dict[str, dict[str, float | bool | str]] | None = None,
+    keller_relay_states: dict[str, bool] | None = None,
+    keller_relay_online: bool | None = None,
+    keller_relay_last_ok_ts: float | None = None,
+    keller_relay_error: str = "",
 ) -> None:
     base = mqtt.base
     mqtt.publish(f"{base}/failsafe/active", "1" if failsafe_state.active else "0", retain=True)
@@ -871,6 +1446,10 @@ def _publish_state(
     mqtt.publish(f"{base}/brauchwasser/grund", brauchwasser_state.reason, retain=True)
     mqtt.publish_json(f"{base}/brauchwasser/state", brauchwasser_state.as_payload(), retain=True)
     mqtt.publish(f"{base}/klima_og/kuehlung_aktiv", "1" if klima_og_cooling_active else "0", retain=True)
+    if keller_relay_snapshot:
+        _publish_mischer_state(mqtt, keller_relay_snapshot)
+    if keller_relay_online is not None:
+        _publish_keller_relay_health(mqtt, keller_relay_online, keller_relay_last_ok_ts, keller_relay_error)
     oelbrenner_safety_reasons = _oelbrenner_safety_reasons(app_config, snapshot)
     mqtt.publish(f"{base}/oelbrenner/sicherheit/ok", "0" if oelbrenner_safety_reasons else "1", retain=True)
     mqtt.publish(f"{base}/oelbrenner/sicherheit/grund", ",".join(oelbrenner_safety_reasons), retain=True)
@@ -939,6 +1518,8 @@ def _publish_state(
             "1" if hand_active and (hand or {}).get("wert") else "0",
             retain=True,
         )
+    if keller_relay_states:
+        _publish_keller_relay_states(mqtt, keller_relay_states)
     for channel_id, channel in app_config.io_map.ao.items():
         value = applied_ao.get(channel_id, 0.0)
         hand = hand_snapshot.get(channel_id)
@@ -946,6 +1527,39 @@ def _publish_state(
         mqtt.publish(f"{base}/ao/{channel.komponente}/state", f"{value:.1f}", retain=True)
         mqtt.publish(f"{base}/{channel.komponente}/hand/mode/state", "1" if hand_active else "0", retain=True)
         mqtt.publish(f"{base}/{channel.komponente}/hand/value/state", _ao_hand_value_state(channel, hand if hand_active else None), retain=True)
+
+
+def _publish_keller_relay_states(mqtt: MqttBridge, states: dict[str, bool]) -> None:
+    base = mqtt.base
+    for component, value in sorted(states.items()):
+        mqtt.publish(f"{base}/do/{component}/state", "1" if value else "0", retain=True)
+
+
+def _publish_keller_relay_health(
+    mqtt: MqttBridge,
+    online: bool,
+    last_ok_ts: float | None,
+    error: str = "",
+) -> None:
+    base = mqtt.base
+    mqtt.publish(f"{base}/keller_relais/online", "1" if online else "0", retain=True)
+    mqtt.publish(f"{base}/keller_relais/stoerung", "0" if online else "1", retain=True)
+    mqtt.publish(f"{base}/keller_relais/last_ok_ts", "" if last_ok_ts is None else str(int(last_ok_ts)), retain=True)
+    mqtt.publish(f"{base}/keller_relais/error", "" if online else error, retain=True)
+
+
+def _publish_mischer_state(mqtt: MqttBridge, snapshot: dict[str, dict[str, float | bool | str]]) -> None:
+    base = mqtt.base
+    mqtt.publish_json(f"{base}/mischer/state", snapshot, retain=True)
+    for name in _mischer_names():
+        values = snapshot.get(name)
+        if not values:
+            continue
+        mqtt.publish(f"{base}/mischer/{name}/position_pct/state", f"{float(values.get('position_pct', 0.0)):.1f}", retain=True)
+        mqtt.publish(f"{base}/mischer/{name}/target_pct/state", f"{float(values.get('target_pct', 0.0)):.1f}", retain=True)
+        mqtt.publish(f"{base}/mischer/{name}/runtime_s/state", f"{float(values.get('runtime_s', 120.0)):.1f}", retain=True)
+        mqtt.publish(f"{base}/mischer/{name}/moving/state", "1" if values.get("moving") else "0", retain=True)
+        mqtt.publish(f"{base}/mischer/{name}/direction/state", str(values.get("direction", "stopp")), retain=True)
 
 
 def _publish_freigaben_state(mqtt: MqttBridge, freigaben: Freigaben) -> None:
@@ -1051,6 +1665,34 @@ def _publish_ha_discovery(mqtt: MqttBridge, app_config: AppConfig) -> None:
             "device": device_payload,
         },
     )
+
+    _publish_discovery_entity(
+        mqtt,
+        prefix,
+        "binary_sensor",
+        "keller_relais_modbus_stoerung",
+        {
+            "name": "R421B16 Modbus Stoerung",
+            "state_topic": f"{mqtt.base}/keller_relais/stoerung",
+            "payload_on": "1",
+            "payload_off": "0",
+            "device_class": "problem",
+            "device": device_payload,
+        },
+    )
+    _publish_discovery_entity(
+        mqtt,
+        prefix,
+        "sensor",
+        "keller_relais_modbus_fehler",
+        {
+            "name": "R421B16 Modbus Fehler",
+            "state_topic": f"{mqtt.base}/keller_relais/error",
+            "device": device_payload,
+        },
+    )
+
+    _publish_mischer_discovery(mqtt, prefix, device_payload)
 
     for demand in _demand_discovery_definitions(mqtt.base, app_config.setting("anforderungen", {})):
         _publish_discovery_entity(
@@ -1227,6 +1869,77 @@ def _publish_ha_discovery(mqtt: MqttBridge, app_config: AppConfig) -> None:
     log.info("Home-Assistant MQTT-Discovery publiziert")
 
 
+def _publish_mischer_discovery(mqtt: MqttBridge, prefix: str, device_payload: dict[str, Any]) -> None:
+    for key, label in _mischer_names().items():
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "sensor",
+            f"mischer_{key}_ist",
+            {
+                "name": f"Mischer {label} Ist",
+                "state_topic": f"{mqtt.base}/mischer/{key}/position_pct/state",
+                "unit_of_measurement": "%",
+                "state_class": "measurement",
+                "device": device_payload,
+            },
+        )
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "sensor",
+            f"mischer_{key}_soll",
+            {
+                "name": f"Mischer {label} Soll",
+                "state_topic": f"{mqtt.base}/mischer/{key}/target_pct/state",
+                "unit_of_measurement": "%",
+                "state_class": "measurement",
+                "device": device_payload,
+            },
+        )
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "binary_sensor",
+            f"mischer_{key}_faehrt",
+            {
+                "name": f"Mischer {label} faehrt",
+                "state_topic": f"{mqtt.base}/mischer/{key}/moving/state",
+                "payload_on": "1",
+                "payload_off": "0",
+                "device": device_payload,
+            },
+        )
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "sensor",
+            f"mischer_{key}_richtung",
+            {
+                "name": f"Mischer {label} Richtung",
+                "state_topic": f"{mqtt.base}/mischer/{key}/direction/state",
+                "device": device_payload,
+            },
+        )
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "number",
+            f"mischer_{key}_laufzeit_s",
+            {
+                "name": f"Mischer {label} Laufzeit",
+                "state_topic": f"{mqtt.base}/mischer/{key}/runtime_s/state",
+                "command_topic": f"{mqtt.base}/mischer/{key}/runtime_s/set",
+                "min": 10,
+                "max": 900,
+                "step": 1,
+                "mode": "box",
+                "unit_of_measurement": "s",
+                "device": device_payload,
+            },
+        )
+
+
 def _publish_discovery_entity(
     mqtt: MqttBridge,
     prefix: str,
@@ -1249,6 +1962,14 @@ def _publish_discovery_entity(
             }
         )
     mqtt.publish_json(f"{prefix}/{component}/{unique_id}/config", entity_payload, retain=True)
+
+
+def _mischer_names() -> dict[str, str]:
+    return {
+        "fbh_eg": "FBH EG",
+        "hk_backup": "HK Backup",
+        "klima_og": "Klima OG",
+    }
 
 
 def _brunnen_sensor_definitions(base: str) -> list[dict[str, str]]:

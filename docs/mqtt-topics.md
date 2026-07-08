@@ -24,6 +24,10 @@ Broker: `mqtt.esrv.center` mit User `vbnet`/`vbnet`. Basis-Pfad: `heizung/...`
 | `heizung/brunnen/abschaltung_in_s/state` | RevPi -> | Restzeit bis Flow-basierter Abschaltung in Sekunden, leer wenn Timer nicht laeuft | yes |
 | `heizung/brunnen/grund` | RevPi -> | Regelgrund, z.B. `bereit`, `minderdruck_start`, `regelt`, `maxdruck_erreicht`, `sensor_unplausibel` | yes |
 | `heizung/brunnen/state` | RevPi -> | JSON mit Aktivstatus, Druck, FU-Sollwert, Flow, Min/Max/Regeldruck und Grund | yes |
+| `heizung/keller_relais/online` | RevPi -> | `1` wenn der zyklische R421B16-Modbus-FC03-Statuspoll erfolgreich ist, sonst `0` | yes |
+| `heizung/keller_relais/stoerung` | RevPi -> | `1` bei R421B16-Modbus-Ausfall; HA-Problem-Sensor und Telegram-Trigger | yes |
+| `heizung/keller_relais/last_ok_ts` | RevPi -> | Unix-Timestamp des letzten erfolgreichen R421B16-Statuspolls | yes |
+| `heizung/keller_relais/error` | RevPi -> | Letzte Fehlermeldung des R421B16-Statuspolls, leer bei OK | yes |
 | `heizung/pv/ueberschuss/state` | RevPi -> | `0` / `1`, von HA empfangenes PV-Ueberschuss-Signal | yes |
 | `heizung/pv/mangel/state` | RevPi -> | `0` / `1`, von HA empfangenes PV-Mangel-Signal | yes |
 | `heizung/freigabe/state` | RevPi -> | JSON mit allen Quellen-/Senkenfreigaben | yes |
@@ -182,7 +186,7 @@ gesetzt:
 |---|---|---|
 | Haupt + Keller | A1 | Heartbeat: wechselt pro Zyklus blau/gelb |
 | Haupt + Keller | A2 | Verbindung zur anderen CPU: gruen ok, gelb Start/Warten, rot kein aktueller Modbus-Watchdog |
-| Haupt | A3 | MQTT-Broker verbunden: gruen/rot |
+| Haupt | A3 | MQTT-Broker verbunden: gruen/rot; bei aktivem `keller_relais`: R421B16-Modbus-Verbindung gruen/rot |
 | Haupt | A4 | Home-Assistant-Heartbeat: gruen ok, gelb optional/fehlt, rot wenn als Pflicht konfiguriert und fehlt |
 | Haupt | A5 | Failsafe: gruen normal, rot aktiv |
 | Keller | A3-A5 | aus |

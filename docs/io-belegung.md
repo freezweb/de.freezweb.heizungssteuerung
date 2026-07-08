@@ -60,6 +60,7 @@ fuer 0-10V/4-20mA-Messumformer, nicht fuer direkte PT1000.
 - **Oelbrenner Rueckmeldungen**: DI12 = Wasserdruckwachter (NC/24V), DI13 = Oelbrenner Stoermeldung, DI14 = Oelbrenner Betriebsmeldung, DI15 = Sicherheitstemperaturbegrenzer/STB (NC/24V). Bei Stoerung und bei Rueckkehr auf OK sendet Home Assistant eine Telegram-Nachricht. DI13 meldet nur den Feuerungsautomaten; DO01 bleibt bei normaler Anforderung an, damit die Entstoertaste am Brenner jederzeit wirkt.
 - **Wassermangel / DI12**: Bei geoeffnetem Wasserdruckwachter werden Brennerfreigabe und alle Heizungs-Hauptkreis-Pumpen hart abgeschaltet, auch wenn ein Handwert aktiv ist. Betroffen sind DO02, DO18, DO19 sowie K-DO01 bis K-DO03; Brunnenpumpe/FU ist davon nicht betroffen.
 - **Klima-OG Kuehlmodus**: Wenn `klima_og.kuehlung_enabled` aktiv ist und Klima OG einen niedrigen VL-Sollwert anfordert, schliesst die Steuerung den Heizmischer (`K-AO03 = 0 %`), nimmt Klima OG aus dem Heizrouting und schaltet den Brunnen-/Waermetauscherweg: DO06 `brunnen_mv`, K-DO02 `pumpe_klima_og`, K-DO04 `brunnen_pumpe_freigabe` und mindestens den Startwert auf K-AO01 `brunnen_fu_soll`. Default bleibt aus, bis Hydraulik/Ventil fertig sind.
+- **Keller-Uebergangsaufbau R421B16**: Wenn `keller_relais.enabled` aktiv ist, ersetzt das Waveshare/R421B16-Modul die physische Ausgabe fuer die drei Heizkreis-Pumpengruppen. Relais 1/2/3 = FBH EG (Pumpe/Fahrt/Richtung), Relais 4/5/6 = HK-Backup OG, Relais 7/8/9 = Klima OG. Routing und Automatik nutzen weiter die normalen Pumpen-/Mischer-Komponenten; die neun Handkanaele liegen separat auf `KR-DO01..KR-DO09`. Die Temperaturen kommen weiterhin als lokale PT1000 auf die Hauptsteuerung. Das Modul wird zyklisch per Modbus-FC03 gepollt; Ausfall setzt A3 rot und triggert die HA/Telegram-Stoermeldung.
 - **Mischer-Auf/Zu-Paare** (z.B. DO08/DO09): Software-seitig sicherstellen, dass nie beide Richtungen gleichzeitig aktiv sind.
 - **WP1/WP2**: Beide WPs speisen den gemeinsamen Sammel-/Gesamtwaermekreis. DO08-DO11/AO06-AO07 sind keine Haus/Pool-Auswahl, sondern Quellen-Freigabe in diesen Kreis.
 - **Pool**: Der Pool ist eine Senke am Gesamtwaermekreis. DO12/DO13/AO08 schalten den Pool-Kreis, DO19 die Pool-Kreis-Pumpe.
@@ -89,10 +90,13 @@ Reserve-/Rueckfallvariante. Hardwareentwurf:
 [pumpengruppe-rs485-platine.md](pumpengruppe-rs485-platine.md).
 
 Optional ist ein vierter Niedertemperaturkreis fuer das Gewaechshaus geplant:
-Lufterhitzer mit ca. 35 Grad Vorlauf. Dieser Kreis soll bevorzugt nicht mehr
-auf die direkte Keller-RevPi-RTD-Reserve, sondern als weitere RS485-
-Pumpengruppen-Platine laufen, weil die drei vorhandenen Keller-AIO-RTD-Paare
-bereits fuer FBH, Klima-OG und HK-Backup belegt sind.
+Lufterhitzer mit ca. 35 Grad Vorlauf. Dieser Kreis soll als weitere RS485-
+Pumpengruppen-Platine laufen.
+
+Ist-Stand 2026-07-08: Am Keller-RevPi sind nur zwei AIO-Karten vorhanden.
+Die vier lokalen RTD-Kanaele sind fuer HK-Backup und FBH belegt. Klima OG
+kommt spaeter ueber die eigene Pumpengruppen-Platine und liegt nicht mehr auf
+lokalen Keller-RTD-Kanaelen.
 
 Belegung:
 
@@ -100,7 +104,7 @@ Belegung:
 |---|---|
 | DIO | 14 DI + 14 DO fuer Pumpen, FU-Freigabe, lokale Kontakte |
 | CPU | RevPi #2, 10.1.25.11 |
-| AIO x3 | 6 RTD fuer Mischerkreise + AO fuer Mischer/FU + AI fuer Drucksensor/Reserve |
+| AIO x2 | 4 RTD fuer HK-Backup/FBH + AO fuer FU/interne Mischer-Sollwerte + AI fuer Drucksensor/Reserve |
 
 Vorgeschlagene lokale I/O-Zuordnung fuer den Slave:
 
@@ -113,14 +117,12 @@ Vorgeschlagene lokale I/O-Zuordnung fuer den Slave:
 | DO05-DO14 | Reserve |
 | DI01-DI03 | Stoer-/Rueckmeldekontakte FBH/Klima/HK |
 | DI04-DI14 | Reserve |
-| RTD01/RTD02 | FBH EG VL/RL |
-| RTD03/RTD04 | Klima OG VL/RL |
-| RTD05/RTD06 | HK-Backup OG VL/RL |
+| RTD01/RTD02 | HK-Backup OG VL/RL auf K-RTD2.1/K-RTD2.2 |
+| RTD03/RTD04 | FBH EG RL/VL auf K-RTD3.1/K-RTD3.2 |
 | AI01 | PT-506 Brunnen-Drucksensor 4-20 mA, 0-10 bar |
-| AI02-AI12 | Reserve 0-10V/4-20mA |
+| AI02-AI08 | Reserve 0-10V/4-20mA |
 | AO01 | FU Brunnenpumpe Drehzahlsollwert 4-20 mA |
-| AO02-AO04 | stetige Mischerstellungen FBH/Klima/HK |
-| AO05-AO06 | Reserve |
+| AO02-AO04 | interne Mischer-Sollwerte FBH/Klima/HK; aktuell ueber R421B16-Laufzeitrelais bzw. spaeter dezentrale Platine |
 
 RS485-Pumpengruppen am Bus 4:
 
@@ -129,6 +131,18 @@ RS485-Pumpengruppen am Bus 4:
 | 30 | FBH EG |
 | 31 | Klima OG |
 | 32 | HK-Backup OG |
+
+Modbus-TCP-Test Nebengebaeude:
+
+| Kreis | Ziel | Register/Transport |
+|---|---|---|
+| Nebengebaeude | ESP-Pumpengruppe `10.1.20.189:502`, Unit-ID `30` | Holding 0..3: Sequenz, Pumpe, Mischerposition x10, Mode; Input 0..5: Status, Position, VL/RL, Sequenz, Fehler |
+
+In `settings.yaml` wird dafuer `pumpengruppen.nebengeb` aktiviert. Die
+berechneten lokalen Ausgaenge `pumpe_nebengeb` und `sv_nebengeb_pct` bleiben
+als logische/HA-Werte erhalten, werden bei `disable_local_outputs: true` aber
+nicht mehr physisch auf DO18/AO04 geschrieben. DO14/DO15 werden im Testmodus
+ebenfalls nicht lokal geschaltet.
 | 33 | Gewaechshaus-Lufterhitzer, optional, VL-Soll ca. 35 Grad |
 
 Brunnenregelung: Der Drucksensor und die FU-Ausgaenge sitzen am Keller-RevPi,
@@ -139,5 +153,11 @@ Wichtig fuer AI01: RevPi-AIO-Strommessung braucht die Bruecke `*` zu `+` am
 jeweiligen Eingang. Bei K-AI01/AIO Input 1 muss bei 0 bar ca. 4 mA anliegen;
 ein Wert nahe 0 mA setzt `InputStatus` auf Unterbereich und laesst die IN-LED
 rot blinken.
+
+Wichtig fuer die Keller-RTDs: In PiCtory muessen die AIO-Parameter auf
+`RTDType = 1` und `RTD*Wiring = 2` stehen. Bei 2-Draht-PT1000-Fuehlern sind
+zusaetzlich die Drahtbruecken am RTD-Eingang erforderlich; sonst liefert die
+AIO `RTDStatus = 2` und `RTDValue = 8500` (wird in HA als nicht verfuegbar
+ausgeblendet).
 
 Siehe [LASTENHEFT.md](../LASTENHEFT.md#43-slave-revpi-hauptkeller-spater).

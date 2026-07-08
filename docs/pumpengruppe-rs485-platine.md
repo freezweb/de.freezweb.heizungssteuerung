@@ -133,10 +133,9 @@ Aktuelle UART-Zuordnung im KiCad-Schaltplan:
 - Das PCB muss nach dieser Schaltplan-Korrektur in KiCad aus dem Schaltplan
   aktualisiert und die alten `UART_RX`/`UART_TX`-Routen muessen ersetzt werden.
 
-Offener RTD-Punkt vor Fertigung: Die zwei MAX31865 benoetigen getrennte
-Chip-Select-Leitungen (`RTD_VL_CS` GPIO5, `RTD_RL_CS` GPIO22). Der aktuelle
-KiCad-Entwurf muss dafuer noch ein vollstaendiges MAX31865-Symbol inklusive
-CS-Pin und passende Leiterbahnen bekommen.
+RTD-Anbindung: Die zwei MAX31865 haben getrennte Chip-Select-Leitungen:
+`RTD_VL_CS` auf ESP GPIO5 und `RTD_RL_CS` auf ESP GPIO22. Der ESP32-EN-Pin
+ist ueber `R33` als 10-kOhm-Pullup an `+3V3` angebunden.
 | Relais | 1x Pumpenrelais, 1x Mischerfreigabe, 1x Mischer-SPDT-Richtung; 250 V AC passend zur Last/Inrush |
 | Relais-Treiber | Diskret mit AO3400A-kompatiblem NMOS, 100R Gate, 100k Pulldown, SS14 Freilauf; guenstige Standardteile |
 | Eingangsschutz RTD | Serienwiderstand, RC-Filter, ESD/Surge nach Leitungslage |

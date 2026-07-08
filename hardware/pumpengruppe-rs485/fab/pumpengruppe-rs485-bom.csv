@@ -42,3 +42,4 @@
 "D4","SS14 USB VBUS to +5V Schottky diode","FW_Pumpengruppe:D_SOD123","1","","SS14 or compatible Schottky"
 "F2","1812 resettable fuse BUS_5V to local +5V","Fuse:Fuse_1812_4532Metric","1","","Polyfuse sized for RJ45 5 V sharing"
 "R32","0R 0603 BUS_COM to local GND link for RJ45 power sharing","FW_Pumpengruppe:R_0603","1","","Populate only when common SELV bus ground is intended"
+"R33","10k 1% 0603 ESP32 EN pull-up","Resistor_SMD:R_0603_1608Metric","1","","Yageo RC0603FR-0710KL or equivalent"

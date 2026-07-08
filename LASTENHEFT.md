@@ -358,7 +358,7 @@ Geplante physische Klemmenlogik fuer den Keller-Slave:
 - Keller-Karte 1 = DIO links der CPU: `K-DO1.1-K-DO1.14`, `K-DI1.1-K-DI1.14`
 - Keller-Karte 2 = erste AIO rechts der CPU: `K-RTD2.1-K-RTD2.2`, `K-AI2.1-K-AI2.4`, `K-AO2.1-K-AO2.2`
 - Keller-Karte 3 = zweite AIO rechts der CPU: `K-RTD3.1-K-RTD3.2`, `K-AI3.1-K-AI3.4`, `K-AO3.1-K-AO3.2`
-- Keller-Karte 4 = dritte AIO rechts der CPU: `K-RTD4.1-K-RTD4.2`, `K-AI4.1-K-AI4.4`, `K-AO4.1-K-AO4.2`
+- Eine Keller-Karte 4 ist aktuell nicht verbaut. Der Klimakreis-OG kommt spaeter ueber die dezentrale Pumpengruppen-Platine.
 
 **DIO (14 DI + 14 DO):**
 
@@ -393,16 +393,14 @@ Geplante physische Klemmenlogik fuer den Keller-Slave:
 | K-DI13 | K-DI1.13 | Reserve |
 | K-DI14 | K-DI1.14 | Reserve |
 
-**AIO (3x AIO = 12 AI + 6 RTD + 6 AO):**
+**AIO (2x AIO = 8 AI + 4 RTD + 4 AO):**
 
 | # | Physisch | Beschreibung |
 |---|---|---|
-| K-RTD01 | K-RTD2.1 | Vorlauf FBH-EG nach Mischer |
-| K-RTD02 | K-RTD2.2 | Ruecklauf FBH-EG |
-| K-RTD03 | K-RTD3.1 | Vorlauf Klimakreis-OG nach Mischer |
-| K-RTD04 | K-RTD3.2 | Ruecklauf Klimakreis-OG |
-| K-RTD05 | K-RTD4.1 | Vorlauf Heizkorper-Backup OG |
-| K-RTD06 | K-RTD4.2 | Ruecklauf Heizkorper-Backup OG |
+| K-RTD01 | K-RTD2.1 | Vorlauf Heizkorper-Backup OG |
+| K-RTD02 | K-RTD2.2 | Ruecklauf Heizkorper-Backup OG |
+| K-RTD03 | K-RTD3.1 | Ruecklauf FBH-EG |
+| K-RTD04 | K-RTD3.2 | Vorlauf FBH-EG nach Mischer |
 | K-AI01 | K-AI2.1 | Brunnen-Drucksensor 4-20mA, 0-10 bar |
 | K-AI02 | K-AI2.2 | Reserve fuer 0-10V/4-20mA |
 | K-AI03 | K-AI2.3 | Reserve fuer 0-10V/4-20mA |
@@ -411,16 +409,10 @@ Geplante physische Klemmenlogik fuer den Keller-Slave:
 | K-AI06 | K-AI3.2 | Reserve fuer 0-10V/4-20mA |
 | K-AI07 | K-AI3.3 | Reserve fuer 0-10V/4-20mA |
 | K-AI08 | K-AI3.4 | Reserve fuer 0-10V/4-20mA |
-| K-AI09 | K-AI4.1 | Reserve fuer 0-10V/4-20mA |
-| K-AI10 | K-AI4.2 | Reserve fuer 0-10V/4-20mA |
-| K-AI11 | K-AI4.3 | Reserve fuer 0-10V/4-20mA |
-| K-AI12 | K-AI4.4 | Reserve fuer 0-10V/4-20mA |
 | K-AO01 | K-AO2.1 | FU Brunnenpumpe Drehzahlsollwert 4-20mA |
-| K-AO02 | K-AO2.2 | Stellsignal Mischer FBH 0-10V |
-| K-AO03 | K-AO3.1 | Stellsignal Mischer Klima-OG 0-10V |
-| K-AO04 | K-AO3.2 | Stellsignal Mischer Heizkorper-Backup OG 0-10V |
-| K-AO05 | K-AO4.1 | Reserve |
-| K-AO06 | K-AO4.2 | Reserve |
+| K-AO02 | K-AO2.2 | Interner Sollwert Mischer FBH, aktuell ueber R421B16-Laufzeitrelais |
+| K-AO03 | K-AO3.1 | Interner Sollwert Mischer Klima-OG, spaeter dezentrale Pumpengruppen-Platine |
+| K-AO04 | K-AO3.2 | Interner Sollwert Mischer Heizkorper-Backup OG, aktuell ueber R421B16-Laufzeitrelais |
 
 ### 4.4 Modbus-Geraete (separate RS485-Busse ueber Waveshare-Gateways)
 

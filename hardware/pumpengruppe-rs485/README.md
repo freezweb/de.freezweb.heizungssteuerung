@@ -44,11 +44,9 @@ Aktueller Stand:
   an `RGB_DATA`/ESP32 GPIO21. `D60-D63` bleiben allgemeine Status-LEDs,
   `D64-D83` bilden den senkrechten Ventilstand-Balken mit 5-%-Schritten;
   die 20er-Leiste ist im 4,8-mm-Raster gesetzt, damit Courtyards nicht kollidieren.
-- RTD-Hinweis: Die Firmware erwartet fuer die beiden MAX31865 getrennte
-  Chip-Select-Leitungen (`RTD_VL_CS` = GPIO5, `RTD_RL_CS` = GPIO22). Der
-  aktuelle KiCad-Schaltplan/PCB muss dafuer noch mit einem vollstaendigen
-  MAX31865-Symbol inklusive CS-Pin und passenden Netzen nachgezogen werden,
-  bevor die Temperaturmessung als produzierbar gilt.
+- RTD/ESP-Hinweis: Die beiden MAX31865 haben getrennte Chip-Select-Leitungen
+  (`RTD_VL_CS` = GPIO5, `RTD_RL_CS` = GPIO22). Der ESP32-EN-Pin ist ueber
+  `R33` als 10-kOhm-Pullup an `+3V3` angebunden.
 - Netzteil ist auf ein guenstiges KiCad-Standardfootprint fuer
   `HLK-5M05`/`HLK-5Mxx` umgestellt.
 - RS485 ist auf eine guenstige Standardtransceiver-Schaltung umgestellt:

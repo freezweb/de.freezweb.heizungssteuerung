@@ -3,6 +3,7 @@
 #include <DNSServer.h>
 #include <ESPmDNS.h>
 #include <Preferences.h>
+#include <PubSubClient.h>
 #include <Update.h>
 #include <WebServer.h>
 #include <WiFi.h>
@@ -17,12 +18,13 @@
 #define FW_VERSION "0.1.0"
 #endif
 
-static constexpr uint16_t FW_VERSION_BCD = 0x0010;
+static constexpr uint16_t FW_VERSION_BCD = 0x0020;
 static constexpr uint16_t DNS_PORT = 53;
 static constexpr uint32_t POSITION_SAVE_INTERVAL_MS = 30000;
 static constexpr uint32_t WIFI_CONNECT_TIMEOUT_MS = 15000;
 static constexpr uint32_t MODBUS_SILENCE_US = 4000;
 static constexpr uint32_t HARDWARE_POLL_INTERVAL_MS = 1000;
+static constexpr uint8_t MQTT_PUBLISH_CACHE_SIZE = 32;
 static constexpr float RTD_RREF_PT1000 = 4300.0f;
 static constexpr float RTD_RREF_PT100 = 430.0f;
 static constexpr float RTD_RNOMINAL_PT1000 = 1000.0f;
@@ -87,6 +89,13 @@ struct Config {
   uint16_t failsafePump = 0;
   bool modbusTcpEnabled = true;
   uint16_t modbusTcpPort = 502;
+  bool mqttEnabled = false;
+  char mqttHost[65] = "";
+  uint16_t mqttPort = 1883;
+  char mqttUser[33] = "";
+  char mqttPass[65] = "";
+  char mqttBase[65] = "";
+  uint16_t mqttPublishIntervalS = 5;
 };
 
 struct RuntimeState {
@@ -118,6 +127,16 @@ struct RuntimeState {
   bool rgbConfigured = false;
   bool rs485Configured = false;
   bool relaysConfigured = false;
+  bool mqttConfigured = false;
+  uint32_t mqttRxCount = 0;
+  uint32_t mqttTxCount = 0;
+  uint32_t lastMqttMs = 0;
+};
+
+struct MqttPublishCacheEntry {
+  String topic;
+  String payload;
+  bool valid = false;
 };
 
 Config cfg;
@@ -131,6 +150,8 @@ Adafruit_MAX31865 rtdVl(HwPin::RTD_VL_CS, HwPin::SPI_MOSI, HwPin::SPI_MISO, HwPi
 Adafruit_MAX31865 rtdRl(HwPin::RTD_RL_CS, HwPin::SPI_MOSI, HwPin::SPI_MISO, HwPin::SPI_SCK);
 WiFiServer *modbusTcpServer = nullptr;
 WiFiClient modbusTcpClients[4];
+WiFiClient mqttWifiClient;
+PubSubClient mqttClient(mqttWifiClient);
 
 static uint16_t holding[9] = {};
 static uint16_t inputRegs[9] = {};
@@ -138,6 +159,18 @@ static uint8_t mbBuf[256] = {};
 static size_t mbLen = 0;
 static uint32_t lastMbByteUs = 0;
 static uint32_t rebootAtMs = 0;
+static uint32_t lastMqttConnectAttemptMs = 0;
+static uint32_t lastMqttPublishMs = 0;
+static uint32_t lastMqttHintsPublishMs = 0;
+static uint32_t lastMqttSubscribeMs = 0;
+static uint32_t lastMqttHeartbeatMs = 0;
+static bool mqttStateDirty = true;
+static String lastMqttStateDigest;
+static MqttPublishCacheEntry mqttPublishCache[MQTT_PUBLISH_CACHE_SIZE];
+
+static String mqttBaseTopic();
+static void setupMqtt();
+static void setupModbusTcp();
 
 template <typename T>
 static T clampValue(T value, T minValue, T maxValue) {
@@ -215,6 +248,13 @@ static void saveConfig() {
   prefs.putUShort("failPump", cfg.failsafePump);
   prefs.putBool("mbTcpEn", cfg.modbusTcpEnabled);
   prefs.putUShort("mbTcpPort", cfg.modbusTcpPort);
+  prefs.putBool("mqttEn", cfg.mqttEnabled);
+  prefs.putString("mqttHost", cfg.mqttHost);
+  prefs.putUShort("mqttPort", cfg.mqttPort);
+  prefs.putString("mqttUser", cfg.mqttUser);
+  prefs.putString("mqttPass", cfg.mqttPass);
+  prefs.putString("mqttBase", cfg.mqttBase);
+  prefs.putUShort("mqttPubS", cfg.mqttPublishIntervalS);
   prefs.putShort("pos", st.positionPctX10);
   prefs.end();
 }
@@ -240,6 +280,13 @@ static void loadConfig() {
   cfg.failsafePump = prefs.getUShort("failPump", cfg.failsafePump);
   cfg.modbusTcpEnabled = prefs.getBool("mbTcpEn", cfg.modbusTcpEnabled);
   cfg.modbusTcpPort = prefs.getUShort("mbTcpPort", cfg.modbusTcpPort);
+  cfg.mqttEnabled = prefs.getBool("mqttEn", cfg.mqttEnabled);
+  copyString(cfg.mqttHost, sizeof(cfg.mqttHost), prefStringOrDefault("mqttHost", cfg.mqttHost));
+  cfg.mqttPort = prefs.getUShort("mqttPort", cfg.mqttPort);
+  copyString(cfg.mqttUser, sizeof(cfg.mqttUser), prefStringOrDefault("mqttUser", cfg.mqttUser));
+  copyString(cfg.mqttPass, sizeof(cfg.mqttPass), prefStringOrDefault("mqttPass", cfg.mqttPass));
+  copyString(cfg.mqttBase, sizeof(cfg.mqttBase), prefStringOrDefault("mqttBase", cfg.mqttBase));
+  cfg.mqttPublishIntervalS = prefs.getUShort("mqttPubS", cfg.mqttPublishIntervalS);
   st.positionPctX10 = prefs.getShort("pos", 0);
   prefs.end();
 }
@@ -367,8 +414,36 @@ static void applyCommandRegisters() {
 
   if (holding[0] != st.lastCommandSeq || target != st.targetPctX10 || st.mode == MODE_CAL_CLOSE || st.mode == MODE_CAL_OPEN) {
     st.lastCommandSeq = holding[0];
+    Serial.printf("Command seq=%u pump=%u target=%.1f%% mode=%u\n",
+                  st.lastCommandSeq,
+                  st.pumpRequested ? 1 : 0,
+                  target / 10.0f,
+                  static_cast<unsigned>(st.mode));
     startMoveTo(target);
+    mqttStateDirty = true;
   }
+}
+
+static void applyExternalCommand(bool hasPump, bool pumpOn, bool hasTarget, int16_t targetPctX10, Mode mode, const char *source) {
+  if (hasPump) {
+    st.pumpRequested = pumpOn;
+    holding[1] = st.pumpRequested ? 1 : 0;
+  }
+  if (hasTarget) {
+    st.commandSeq++;
+    holding[0] = st.commandSeq;
+    holding[2] = clampValue<int16_t>(targetPctX10, 0, 1000);
+    holding[3] = mode;
+  }
+  st.lastModbusMs = millis();
+  Serial.printf("%s command pump=%u target=%s%.1f%% seq=%u\n",
+                source,
+                st.pumpRequested ? 1 : 0,
+                hasTarget ? "" : "(unchanged) ",
+                hasTarget ? holding[2] / 10.0f : st.targetPctX10 / 10.0f,
+                st.commandSeq);
+  applyCommandRegisters();
+  mqttStateDirty = true;
 }
 
 static void updateMotion() {
@@ -478,6 +553,7 @@ static void handleWriteSingle(uint8_t id, const uint8_t *req) {
     return;
   }
   holding[addr] = value;
+  Serial.printf("Modbus RTU write single addr=%u value=%u\n", addr, value);
   applyCommandRegisters();
   rs485Send(req, 8);
 }
@@ -493,6 +569,8 @@ static void handleWriteMultiple(uint8_t id, const uint8_t *req, size_t len) {
   for (uint16_t i = 0; i < qty; i++) {
     holding[start + i] = (req[7 + i * 2] << 8) | req[8 + i * 2];
   }
+  Serial.printf("Modbus RTU write multiple start=%u qty=%u targetReg=%u seq=%u\n",
+                start, qty, holding[2], holding[0]);
   applyCommandRegisters();
   uint8_t resp[8] = {id, 0x10, req[2], req[3], req[4], req[5], 0, 0};
   uint16_t crc = modbusCrc(resp, 6);
@@ -535,6 +613,7 @@ static size_t buildModbusPduResponse(uint8_t unitId, const uint8_t *pdu, size_t 
     uint16_t value = (pdu[3] << 8) | pdu[4];
     if (addr >= 9) return exception(0x02);
     holding[addr] = value;
+    Serial.printf("Modbus TCP write single addr=%u value=%u\n", addr, value);
     applyCommandRegisters();
     memcpy(out, pdu, 5);
     return 5;
@@ -551,6 +630,8 @@ static size_t buildModbusPduResponse(uint8_t unitId, const uint8_t *pdu, size_t 
     for (uint16_t i = 0; i < qty; i++) {
       holding[start + i] = (pdu[6 + i * 2] << 8) | pdu[7 + i * 2];
     }
+    Serial.printf("Modbus TCP write multiple start=%u qty=%u targetReg=%u seq=%u\n",
+                  start, qty, holding[2], holding[0]);
     applyCommandRegisters();
     if (outMax < 5) return 0;
     out[0] = fn;
@@ -589,14 +670,27 @@ static void processModbusFrame(const uint8_t *frame, size_t len) {
 
 static void setupModbusTcp() {
   if (modbusTcpServer) {
+    modbusTcpServer->end();
     delete modbusTcpServer;
     modbusTcpServer = nullptr;
+  }
+  for (auto &client : modbusTcpClients) {
+    client.stop();
   }
   if (!cfg.modbusTcpEnabled) return;
   modbusTcpServer = new WiFiServer(cfg.modbusTcpPort);
   modbusTcpServer->begin();
   modbusTcpServer->setNoDelay(true);
   Serial.printf("Modbus TCP aktiv auf Port %u\n", cfg.modbusTcpPort);
+}
+
+static void setModbusTcpEnabled(bool enabled, bool persist, const char *source) {
+  if (cfg.modbusTcpEnabled == enabled && ((enabled && modbusTcpServer) || (!enabled && !modbusTcpServer))) return;
+  cfg.modbusTcpEnabled = enabled;
+  setupModbusTcp();
+  if (persist) saveConfig();
+  mqttStateDirty = true;
+  Serial.printf("%s Modbus TCP %s\n", source, enabled ? "aktiviert" : "deaktiviert");
 }
 
 static void handleModbusTcpClient(WiFiClient &client) {
@@ -663,6 +757,7 @@ static void pollModbusTcp() {
         client.stop();
         client = incoming;
         client.setNoDelay(true);
+        client.setTimeout(5);
         assigned = true;
         break;
       }
@@ -701,7 +796,13 @@ static String configJson() {
   json += "\"rtdType\":\"" + String(cfg.rtdType == RTD_PT100 ? "PT100" : "PT1000") + "\",";
   json += "\"failsafePump\":" + String(cfg.failsafePump) + ",";
   json += "\"modbusTcpEnabled\":" + String(cfg.modbusTcpEnabled ? 1 : 0) + ",";
-  json += "\"modbusTcpPort\":" + String(cfg.modbusTcpPort);
+  json += "\"modbusTcpPort\":" + String(cfg.modbusTcpPort) + ",";
+  json += "\"mqttEnabled\":" + String(cfg.mqttEnabled ? 1 : 0) + ",";
+  json += "\"mqttHost\":\"" + htmlEscape(cfg.mqttHost) + "\",";
+  json += "\"mqttPort\":" + String(cfg.mqttPort) + ",";
+  json += "\"mqttUser\":\"" + htmlEscape(cfg.mqttUser) + "\",";
+  json += "\"mqttBase\":\"" + htmlEscape(cfg.mqttBase) + "\",";
+  json += "\"mqttPublishIntervalS\":" + String(cfg.mqttPublishIntervalS);
   json += "}";
   return json;
 }
@@ -732,6 +833,13 @@ static String stateJson() {
   json += "\"crcErrorCount\":" + String(st.crcErrorCount) + ",";
   json += "\"modbusTcpEnabled\":" + String(cfg.modbusTcpEnabled ? "true" : "false") + ",";
   json += "\"modbusTcpPort\":" + String(cfg.modbusTcpPort) + ",";
+  json += "\"mqttEnabled\":" + String(cfg.mqttEnabled ? "true" : "false") + ",";
+  json += "\"mqttConfigured\":" + String(st.mqttConfigured ? "true" : "false") + ",";
+  json += "\"mqttConnected\":" + String(mqttClient.connected() ? "true" : "false") + ",";
+  json += "\"mqttBase\":\"" + htmlEscape(mqttBaseTopic()) + "\",";
+  json += "\"mqttRxCount\":" + String(st.mqttRxCount) + ",";
+  json += "\"mqttTxCount\":" + String(st.mqttTxCount) + ",";
+  json += "\"lastMqttAgeS\":" + String(st.lastMqttMs == 0 ? -1 : static_cast<int32_t>((millis() - st.lastMqttMs) / 1000)) + ",";
   json += "\"rtdVlOk\":" + String(st.rtdVlOk ? "true" : "false") + ",";
   json += "\"rtdRlOk\":" + String(st.rtdRlOk ? "true" : "false") + ",";
   json += "\"rtdVlFault\":" + String(st.rtdVlFault) + ",";
@@ -742,6 +850,348 @@ static String stateJson() {
   json += "\"lastModbusAgeS\":" + String(st.lastModbusMs == 0 ? -1 : static_cast<int32_t>((millis() - st.lastModbusMs) / 1000));
   json += "}";
   return json;
+}
+
+static String mqttBaseTopic() {
+  if (strlen(cfg.mqttBase) > 0) return String(cfg.mqttBase);
+  return String("pumpengruppe/") + cfg.hostname;
+}
+
+static String mqttClientId() {
+  return String(FW_NAME) + "-" + chipSuffix();
+}
+
+static bool parseBoolPayload(const String &payload, bool &value) {
+  String p = payload;
+  p.trim();
+  p.toLowerCase();
+  if (p == "1" || p == "true" || p == "on" || p == "ein" || p == "ja") {
+    value = true;
+    return true;
+  }
+  if (p == "0" || p == "false" || p == "off" || p == "aus" || p == "nein") {
+    value = false;
+    return true;
+  }
+  return false;
+}
+
+static bool jsonFieldValue(const String &payload, const char *field, String &value) {
+  String key = "\"" + String(field) + "\"";
+  int keyPos = payload.indexOf(key);
+  if (keyPos < 0) return false;
+  int colon = payload.indexOf(':', keyPos + key.length());
+  if (colon < 0) return false;
+  int start = colon + 1;
+  while (start < static_cast<int>(payload.length()) && isspace(static_cast<unsigned char>(payload[start]))) start++;
+  if (start >= static_cast<int>(payload.length())) return false;
+  if (payload[start] == '"') {
+    int end = payload.indexOf('"', start + 1);
+    if (end < 0) return false;
+    value = payload.substring(start + 1, end);
+    value.trim();
+    return true;
+  }
+  int end = start;
+  while (end < static_cast<int>(payload.length()) && payload[end] != ',' && payload[end] != '}') end++;
+  value = payload.substring(start, end);
+  value.trim();
+  return value.length() > 0;
+}
+
+static bool jsonBoolField(const String &payload, const char *field, bool &value) {
+  String raw;
+  if (!jsonFieldValue(payload, field, raw)) return false;
+  return parseBoolPayload(raw, value);
+}
+
+static bool jsonFloatField(const String &payload, const char *field, float &value) {
+  String raw;
+  if (!jsonFieldValue(payload, field, raw)) return false;
+  raw.replace(',', '.');
+  value = raw.toFloat();
+  return true;
+}
+
+static bool jsonModeField(const String &payload, Mode &mode) {
+  String raw;
+  if (!jsonFieldValue(payload, "mode", raw)) return false;
+  raw.toLowerCase();
+  if (raw == "auto" || raw == "0") mode = MODE_AUTO;
+  else if (raw == "hand" || raw == "1") mode = MODE_HAND;
+  else if (raw == "cal_close" || raw == "close" || raw == "zu" || raw == "2") mode = MODE_CAL_CLOSE;
+  else if (raw == "cal_open" || raw == "open" || raw == "auf" || raw == "3") mode = MODE_CAL_OPEN;
+  else return false;
+  return true;
+}
+
+static void clearMqttPublishCache() {
+  for (auto &entry : mqttPublishCache) {
+    entry.topic = "";
+    entry.payload = "";
+    entry.valid = false;
+  }
+  lastMqttStateDigest = "";
+}
+
+static bool mqttPayloadChanged(const String &topic, const String &payload) {
+  int freeIndex = -1;
+  for (uint8_t i = 0; i < MQTT_PUBLISH_CACHE_SIZE; i++) {
+    if (!mqttPublishCache[i].valid) {
+      if (freeIndex < 0) freeIndex = i;
+      continue;
+    }
+    if (mqttPublishCache[i].topic == topic) {
+      if (mqttPublishCache[i].payload == payload) return false;
+      mqttPublishCache[i].payload = payload;
+      return true;
+    }
+  }
+  uint8_t index = freeIndex >= 0 ? static_cast<uint8_t>(freeIndex) : 0;
+  mqttPublishCache[index].topic = topic;
+  mqttPublishCache[index].payload = payload;
+  mqttPublishCache[index].valid = true;
+  return true;
+}
+
+static void publishMqttTopic(const String &topic, const String &payload, bool retain = true, bool force = false) {
+  if (!mqttClient.connected()) return;
+  if (!force && !mqttPayloadChanged(topic, payload)) return;
+  if (mqttClient.publish(topic.c_str(), payload.c_str(), retain)) st.mqttTxCount++;
+}
+
+static String mqttStateDigest() {
+  String digest;
+  digest.reserve(220);
+  digest += FW_VERSION;
+  digest += '|';
+  digest += WiFi.status() == WL_CONNECTED ? '1' : '0';
+  digest += '|';
+  digest += st.wifiApMode ? WiFi.softAPIP().toString() : WiFi.localIP().toString();
+  digest += '|';
+  digest += st.pumpRequested ? '1' : '0';
+  digest += st.pumpOn ? '1' : '0';
+  digest += st.moving ? '1' : '0';
+  digest += '|';
+  digest += String(st.moveDirection);
+  digest += '|';
+  digest += String(st.targetPctX10);
+  digest += '|';
+  digest += String(st.positionPctX10);
+  digest += '|';
+  digest += String(st.vlTempX10);
+  digest += '|';
+  digest += String(st.rlTempX10);
+  digest += '|';
+  digest += String(static_cast<uint16_t>(st.mode));
+  digest += '|';
+  digest += String(static_cast<uint16_t>(st.faultCode));
+  digest += '|';
+  digest += String(st.lastCommandSeq);
+  digest += '|';
+  digest += String(st.rxCount);
+  digest += '|';
+  digest += String(st.txCount);
+  digest += '|';
+  digest += String(st.crcErrorCount);
+  digest += '|';
+  digest += cfg.modbusTcpEnabled ? '1' : '0';
+  digest += '|';
+  digest += String(st.mqttRxCount);
+  digest += '|';
+  digest += st.rtdVlOk ? '1' : '0';
+  digest += st.rtdRlOk ? '1' : '0';
+  digest += '|';
+  digest += String(st.rtdVlFault);
+  digest += '|';
+  digest += String(st.rtdRlFault);
+  digest += '|';
+  digest += st.rs485Configured ? '1' : '0';
+  digest += st.rgbConfigured ? '1' : '0';
+  digest += st.relaysConfigured ? '1' : '0';
+  return digest;
+}
+
+static void publishMqttSetupHints() {
+  if (!cfg.mqttEnabled || !mqttClient.connected()) return;
+  String base = mqttBaseTopic();
+  String escapedBase = base;
+  escapedBase.replace("\\", "\\\\");
+  escapedBase.replace("\"", "\\\"");
+  publishMqttTopic(
+      base + "/help/commands",
+      "{\"cmd\":\"" + escapedBase + "/cmd\",\"set\":\"" + escapedBase + "/set\","
+      "\"pump_set\":\"" + escapedBase + "/pump/set\","
+      "\"target_set\":\"" + escapedBase + "/target/set\","
+      "\"mode_set\":\"" + escapedBase + "/mode/set\","
+      "\"modbus_tcp_set\":\"" + escapedBase + "/modbus_tcp/set\"}",
+      true);
+  publishMqttTopic(base + "/help/pump/set", "Payload: 0/1, on/off, true/false", true);
+  publishMqttTopic(base + "/help/target/set", "Payload: Zielposition in Prozent, z.B. 56", true);
+  publishMqttTopic(base + "/help/mode/set", "Payload: auto, hand, cal_close, cal_open", true);
+  publishMqttTopic(base + "/help/modbus_tcp/set", "Payload: 0/1, on/off, true/false. Schaltet Modbus TCP sofort am ESP.", true);
+  publishMqttTopic(base + "/help/cmd", "Payload: JSON, z.B. {\"pump\":true,\"target\":56,\"mode\":\"auto\",\"modbusTcp\":false}", true);
+  publishMqttTopic(base + "/example/cmd", "{\"pump\":true,\"target\":56,\"mode\":\"auto\",\"modbusTcp\":false}", true);
+  publishMqttTopic(base + "/example/pump/set", "1", true);
+  publishMqttTopic(base + "/example/target/set", "56", true);
+  publishMqttTopic(base + "/example/mode/set", "auto", true);
+  publishMqttTopic(base + "/example/modbus_tcp/set", "0", true);
+  lastMqttHintsPublishMs = millis();
+}
+
+static void publishMqttHeartbeat(bool force = false) {
+  if (!cfg.mqttEnabled || !mqttClient.connected()) return;
+  uint32_t intervalMs = static_cast<uint32_t>(max<uint16_t>(1, cfg.mqttPublishIntervalS)) * 1000UL;
+  if (!force && millis() - lastMqttHeartbeatMs < intervalMs) return;
+  lastMqttHeartbeatMs = millis();
+  String payload = "{";
+  payload += "\"fw\":\"" FW_VERSION "\",";
+  payload += "\"uptimeS\":" + String(millis() / 1000) + ",";
+  payload += "\"uptimeMs\":" + String(millis()) + ",";
+  payload += "\"mqttTxCount\":" + String(st.mqttTxCount) + ",";
+  payload += "\"mqttRxCount\":" + String(st.mqttRxCount);
+  payload += "}";
+  publishMqttTopic(mqttBaseTopic() + "/heartbeat", payload, false, true);
+}
+
+static void publishMqttState(bool force = false) {
+  if (!cfg.mqttEnabled || !mqttClient.connected()) return;
+  String digest = mqttStateDigest();
+  if (!force && !mqttStateDirty && digest == lastMqttStateDigest) return;
+  lastMqttStateDigest = digest;
+  lastMqttPublishMs = millis();
+  mqttStateDirty = false;
+  String base = mqttBaseTopic();
+  publishMqttTopic(base + "/state", stateJson(), true, force);
+  publishMqttTopic(base + "/position/state", String(st.positionPctX10 / 10.0f, 1), true, force);
+  publishMqttTopic(base + "/target/state", String(st.targetPctX10 / 10.0f, 1), true, force);
+  publishMqttTopic(base + "/pump/state", st.pumpOn ? "1" : "0", true, force);
+  publishMqttTopic(base + "/pump_requested/state", st.pumpRequested ? "1" : "0", true, force);
+  publishMqttTopic(base + "/vl_temp/state", String(st.vlTempX10 / 10.0f, 1), true, force);
+  publishMqttTopic(base + "/rl_temp/state", String(st.rlTempX10 / 10.0f, 1), true, force);
+  publishMqttTopic(base + "/fault/state", String(static_cast<uint16_t>(st.faultCode)), true, force);
+  publishMqttTopic(base + "/moving/state", st.moving ? "1" : "0", true, force);
+  publishMqttTopic(base + "/modbus_tcp/state", cfg.modbusTcpEnabled ? "1" : "0", true, force);
+}
+
+static void handleMqttCommand(const String &topic, const String &payload) {
+  String base = mqttBaseTopic();
+  bool pumpValue = false;
+  bool hasPump = false;
+  bool hasTarget = false;
+  bool hasModbusTcp = false;
+  bool modbusTcpValue = cfg.modbusTcpEnabled;
+  float targetPct = st.targetPctX10 / 10.0f;
+  Mode mode = MODE_AUTO;
+
+  if (topic == base + "/pump/set") {
+    hasPump = parseBoolPayload(payload, pumpValue);
+  } else if (topic == base + "/target/set") {
+    String p = payload;
+    p.replace(',', '.');
+    targetPct = p.toFloat();
+    hasTarget = true;
+  } else if (topic == base + "/mode/set") {
+    String wrapped = "{\"mode\":\"" + payload + "\"}";
+    hasTarget = jsonModeField(wrapped, mode);
+    targetPct = st.targetPctX10 / 10.0f;
+  } else if (topic == base + "/modbus_tcp/set" || topic == base + "/modbus/set") {
+    hasModbusTcp = parseBoolPayload(payload, modbusTcpValue);
+  } else if (topic == base + "/cmd" || topic == base + "/set") {
+    if (payload.startsWith("{")) {
+      hasPump = jsonBoolField(payload, "pump", pumpValue) || jsonBoolField(payload, "pumpOn", pumpValue);
+      hasTarget = jsonFloatField(payload, "target", targetPct) || jsonFloatField(payload, "targetPct", targetPct);
+      hasModbusTcp = jsonBoolField(payload, "modbusTcp", modbusTcpValue) || jsonBoolField(payload, "modbusTcpEnabled", modbusTcpValue);
+      jsonModeField(payload, mode);
+    } else {
+      String p = payload;
+      p.replace(',', '.');
+      targetPct = p.toFloat();
+      hasTarget = true;
+    }
+  }
+
+  if (!hasPump && !hasTarget && !hasModbusTcp) return;
+  st.mqttRxCount++;
+  st.lastMqttMs = millis();
+  if (hasModbusTcp) setModbusTcpEnabled(modbusTcpValue, false, "MQTT");
+  if (hasPump || hasTarget) {
+    applyExternalCommand(hasPump, pumpValue, hasTarget, static_cast<int16_t>(roundf(targetPct * 10.0f)), mode, "MQTT");
+  } else {
+    mqttStateDirty = true;
+  }
+}
+
+static void mqttCallback(char *topic, byte *payload, unsigned int length) {
+  String body;
+  body.reserve(length);
+  for (unsigned int i = 0; i < length; i++) body += static_cast<char>(payload[i]);
+  handleMqttCommand(String(topic), body);
+}
+
+static void subscribeMqttTopics() {
+  String base = mqttBaseTopic();
+  bool ok = true;
+  ok = mqttClient.subscribe((base + "/cmd").c_str()) && ok;
+  ok = mqttClient.subscribe((base + "/set").c_str()) && ok;
+  ok = mqttClient.subscribe((base + "/pump/set").c_str()) && ok;
+  ok = mqttClient.subscribe((base + "/target/set").c_str()) && ok;
+  ok = mqttClient.subscribe((base + "/mode/set").c_str()) && ok;
+  ok = mqttClient.subscribe((base + "/modbus_tcp/set").c_str()) && ok;
+  ok = mqttClient.subscribe((base + "/modbus/set").c_str()) && ok;
+  lastMqttSubscribeMs = millis();
+  Serial.printf("MQTT Subscribe %s: %s\n", base.c_str(), ok ? "OK" : "FEHLER");
+}
+
+static void setupMqtt() {
+  mqttClient.disconnect();
+  st.mqttConfigured = false;
+  if (!cfg.mqttEnabled || strlen(cfg.mqttHost) == 0) return;
+  mqttClient.setServer(cfg.mqttHost, cfg.mqttPort);
+  mqttClient.setCallback(mqttCallback);
+  mqttClient.setBufferSize(1024);
+  st.mqttConfigured = true;
+}
+
+static void pollMqtt() {
+  if (!cfg.mqttEnabled || strlen(cfg.mqttHost) == 0 || WiFi.status() != WL_CONNECTED) return;
+  String base = mqttBaseTopic();
+  if (!mqttClient.connected()) {
+    if (millis() - lastMqttConnectAttemptMs < 5000) return;
+    lastMqttConnectAttemptMs = millis();
+    String clientId = mqttClientId();
+    String availabilityTopic = base + "/availability";
+    bool ok;
+    if (strlen(cfg.mqttUser) > 0) {
+      ok = mqttClient.connect(clientId.c_str(), cfg.mqttUser, cfg.mqttPass, availabilityTopic.c_str(), 0, true, "offline");
+    } else {
+      ok = mqttClient.connect(clientId.c_str(), availabilityTopic.c_str(), 0, true, "offline");
+    }
+    if (ok) {
+      clearMqttPublishCache();
+      publishMqttTopic(availabilityTopic, "online", true, true);
+      mqttClient.loop();
+      subscribeMqttTopics();
+      mqttClient.loop();
+      publishMqttSetupHints();
+      publishMqttState(true);
+      publishMqttHeartbeat(true);
+      Serial.printf("MQTT verbunden: %s:%u base=%s\n", cfg.mqttHost, cfg.mqttPort, base.c_str());
+    }
+    return;
+  }
+  st.lastMqttMs = millis();
+  st.lastModbusMs = millis();
+  mqttClient.loop();
+  if (lastMqttSubscribeMs == 0 || millis() - lastMqttSubscribeMs > 30000UL) {
+    subscribeMqttTopics();
+    mqttClient.loop();
+  }
+  if (lastMqttHintsPublishMs == 0 || millis() - lastMqttHintsPublishMs > 3600000UL) {
+    publishMqttSetupHints();
+  }
+  publishMqttState();
+  publishMqttHeartbeat();
 }
 
 static String wifiScanJson() {
@@ -851,6 +1301,18 @@ static void handleRoot() {
           <button>Speichern & Neustart</button>
         </form>
       </section>
+      <section><h2>MQTT</h2>
+        <form id="mqtt">
+          <label>MQTT aktiv</label><select name="mqttEnabled"><option value="0">Aus</option><option value="1">Ein</option></select>
+          <div class="row"><div><label>Broker</label><input name="mqttHost" placeholder="mqtt.local"></div>
+          <div><label>Port</label><input name="mqttPort" type="number" min="1" max="65535"></div></div>
+          <label>Basis-Topic</label><input name="mqttBase" placeholder="pumpengruppe/nebengeb">
+          <div class="row"><div><label>Benutzer</label><input name="mqttUser"></div>
+          <div><label>Passwort</label><input name="mqttPass" type="password" placeholder="leer lassen = unveraendert"></div></div>
+          <label>Statusintervall (s)</label><input name="mqttPublishIntervalS" type="number" min="1" max="3600">
+          <button>Speichern</button>
+        </form>
+      </section>
       <section><h2>Mischer / Sensoren</h2>
         <form id="mixer">
           <div class="row"><div><label>Laufzeit 0-100 % (s)</label><input name="mixerRuntimeS" type="number"></div>
@@ -897,6 +1359,8 @@ async function tick(){ const s=await getJson('/api/state'); $('#fw').textContent
  ['RSSI', `${s.rssi} dBm`], ['Uptime', `${s.uptimeS}s`], ['Heap', s.heap],
  ['Modbus RX/TX', `${s.rxCount}/${s.txCount}`], ['CRC Fehler', s.crcErrorCount],
  ['Modbus TCP', s.modbusTcpEnabled?`Port ${s.modbusTcpPort}`:'Aus'],
+ ['MQTT', s.mqttEnabled?(s.mqttConnected?`verbunden ${s.mqttBase}`:`getrennt ${s.mqttBase}`):'Aus', s.mqttConnected?'ok':(s.mqttEnabled?'bad':'')],
+ ['MQTT RX/TX', `${s.mqttRxCount}/${s.mqttTxCount}`],
  ['Letzter Bus', s.lastModbusAgeS<0?'nie':`${s.lastModbusAgeS}s`],
  ['Fehlercode', s.faultCode, s.faultCode===0?'ok':'bad']
  ]); kv($('#values'),[
@@ -907,12 +1371,13 @@ async function tick(){ const s=await getJson('/api/state'); $('#fw').textContent
  ]); kv($('#hardware'),[
  ['RS485-Transceiver', s.rs485Configured ? (s.lastModbusAgeS<0?'bereit, keine Telegramme':'Telegramme empfangen') : 'nicht initialisiert', s.rs485Configured?'ok':'bad'],
  ['Modbus TCP', s.modbusTcpEnabled ? `bereit auf Port ${s.modbusTcpPort}` : 'deaktiviert', s.modbusTcpEnabled?'ok':''],
+ ['MQTT', s.mqttEnabled ? (s.mqttConnected ? `verbunden, ${s.lastMqttAgeS}s` : 'aktiv, nicht verbunden') : 'deaktiviert', s.mqttConnected?'ok':(s.mqttEnabled?'bad':'')],
  ['MAX31865 Vorlauf', s.rtdVlOk ? `OK, ${s.vlTempC.toFixed(1)} °C` : `nicht erreichbar / Fehler ${s.rtdVlFault}`, s.rtdVlOk?'ok':'bad'],
  ['MAX31865 Ruecklauf', s.rtdRlOk ? `OK, ${s.rlTempC.toFixed(1)} °C` : `nicht erreichbar / Fehler ${s.rtdRlFault}`, s.rtdRlOk?'ok':'bad'],
  ['RGB-LED-Kette', s.rgbConfigured ? 'angesteuert, nicht ruecklesbar' : 'nicht initialisiert', s.rgbConfigured?'ok':'bad'],
  ['Relaisausgaenge', s.relaysConfigured ? 'GPIO initialisiert, keine Rueckmeldung' : 'nicht initialisiert', s.relaysConfigured?'ok':'bad']
  ]); }
-for (const id of ['wifi','rs485','tcp','mixer']) $(('#'+id)).addEventListener('submit',e=>{e.preventDefault();postForm('/api/config',e.target)});
+for (const id of ['wifi','rs485','tcp','mqtt','mixer']) $(('#'+id)).addEventListener('submit',e=>{e.preventDefault();postForm('/api/config',e.target)});
 $('#ssidList').addEventListener('change',e=>{ if(e.target.value) document.querySelector('input[name=wifiSsid]').value=e.target.value; });
 $('#control').addEventListener('submit',e=>{e.preventDefault();postForm('/api/control',e.target)});
 async function reboot(){ await fetch('/api/reboot',{method:'POST'}); $('#msg').textContent='Neustart angefordert'; }
@@ -943,6 +1408,7 @@ static void handleConfigPost() {
   bool rs485NeedsRestart = false;
   bool wifiNeedsRestart = false;
   bool tcpNeedsRestart = false;
+  bool mqttNeedsReconnect = false;
   if (server.hasArg("wifiSsid")) {
     String old = cfg.wifiSsid;
     copyString(cfg.wifiSsid, sizeof(cfg.wifiSsid), server.arg("wifiSsid"));
@@ -980,6 +1446,38 @@ static void handleConfigPost() {
     cfg.modbusTcpPort = argU16("modbusTcpPort", cfg.modbusTcpPort, 1, 65535);
     if (old != cfg.modbusTcpPort) tcpNeedsRestart = true;
   }
+  if (server.hasArg("mqttEnabled")) {
+    bool old = cfg.mqttEnabled;
+    cfg.mqttEnabled = server.arg("mqttEnabled").toInt() != 0;
+    if (old != cfg.mqttEnabled) mqttNeedsReconnect = true;
+  }
+  if (server.hasArg("mqttHost")) {
+    String old = cfg.mqttHost;
+    copyString(cfg.mqttHost, sizeof(cfg.mqttHost), server.arg("mqttHost"));
+    if (old != cfg.mqttHost) mqttNeedsReconnect = true;
+  }
+  if (server.hasArg("mqttPort")) {
+    uint16_t old = cfg.mqttPort;
+    cfg.mqttPort = argU16("mqttPort", cfg.mqttPort, 1, 65535);
+    if (old != cfg.mqttPort) mqttNeedsReconnect = true;
+  }
+  if (server.hasArg("mqttUser")) {
+    String old = cfg.mqttUser;
+    copyString(cfg.mqttUser, sizeof(cfg.mqttUser), server.arg("mqttUser"));
+    if (old != cfg.mqttUser) mqttNeedsReconnect = true;
+  }
+  if (server.hasArg("mqttPass") && server.arg("mqttPass").length() > 0) {
+    copyString(cfg.mqttPass, sizeof(cfg.mqttPass), server.arg("mqttPass"));
+    mqttNeedsReconnect = true;
+  }
+  if (server.hasArg("mqttBase")) {
+    String old = cfg.mqttBase;
+    copyString(cfg.mqttBase, sizeof(cfg.mqttBase), server.arg("mqttBase"));
+    if (old != cfg.mqttBase) mqttNeedsReconnect = true;
+  }
+  if (server.hasArg("mqttPublishIntervalS")) {
+    cfg.mqttPublishIntervalS = argU16("mqttPublishIntervalS", cfg.mqttPublishIntervalS, 1, 3600);
+  }
 
   holding[4] = cfg.watchdogTimeoutS;
   holding[5] = cfg.mixerRuntimeS;
@@ -987,6 +1485,11 @@ static void handleConfigPost() {
   holding[7] = cfg.rtdType;
   holding[8] = cfg.failsafePump;
   saveConfig();
+  if (mqttNeedsReconnect) {
+    setupMqtt();
+    lastMqttConnectAttemptMs = 0;
+    mqttStateDirty = true;
+  }
   if (wifiNeedsRestart || rs485NeedsRestart || tcpNeedsRestart) {
     rebootAtMs = millis() + 1200;
     server.send(200, "text/plain; charset=utf-8", "Gespeichert. Neustart wird ausgefuehrt...");
@@ -1148,6 +1651,7 @@ void setup() {
   setupWeb();
   setupRs485();
   setupModbusTcp();
+  setupMqtt();
   Serial.println("Weboberflaeche bereit.");
 }
 
@@ -1155,10 +1659,11 @@ void loop() {
   server.handleClient();
   if (st.wifiApMode) dnsServer.processNextRequest();
   ArduinoOTA.handle();
+  pollMqtt();
   pollModbus();
   pollModbusTcp();
+  pollMqtt();
   updateTemperatures();
-  applyCommandRegisters();
   updateMotion();
   updateWatchdog();
   updateInputRegisters();
