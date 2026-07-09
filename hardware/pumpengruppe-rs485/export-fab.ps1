@@ -82,6 +82,10 @@ $PosTempRows | Export-Csv -NoTypeInformation -Encoding UTF8 $PosTemp
 
 & $Cli.Source sch export bom `
     --output $Bom `
+    --fields "Reference,Value,Footprint,QUANTITY,DNP,Manufacturer,MPN,AISLER_MPN,Supplier,AssemblyNote" `
+    --labels "Refs,Value,Footprint,Qty,DNP,Manufacturer,MPN,AISLER_MPN,Supplier,AssemblyNote" `
+    --group-by "Value,Footprint,Manufacturer,MPN,AISLER_MPN,DNP,AssemblyNote" `
+    --exclude-dnp `
     $Sch
 
 & $Cli.Source sch export bom `
@@ -92,85 +96,16 @@ $PosTempRows | Export-Csv -NoTypeInformation -Encoding UTF8 $PosTemp
     --exclude-dnp `
     $Sch
 
-# Keep an explicit review BOM for RevA so the exported parts list stays stable
-# even while the KiCad symbols/footprints are still being refined.
-@"
-"Refs","Value","Footprint","Qty","DNP","Notes"
-"X1","230V_IN_L_N_PE","FW_Pumpengruppe:TB_3_762","1","","7.62 mm screw terminal, mains rated"
-"X2","PUMPE_L_SW_N_PE","FW_Pumpengruppe:TB_3_762","1","","7.62 mm screw terminal, mains rated"
-"X3","MISCHER_AUF_ZU_N_PE","FW_Pumpengruppe:TB_4_762","1","","7.62 mm screw terminal, mains rated"
-"F1","5x20 slow-blow fuse 5A","FW_Pumpengruppe:FUSE_5X20","1","","Use fuse and holder rated for 250 VAC"
-"PSU1","IRM-05-5 230VAC to 5V module","Converter_ACDC:Converter_ACDC_MeanWell_IRM-05-xx_THT","1","","Mean Well IRM-05-5, AISLER assembly target; verify 230VAC clearance and final routing"
-"K1","RELAY_PUMPE_16A","FW_Pumpengruppe:Relay_SPST_16A","1","","5 V coil, contact rating suitable for pump load"
-"K2","MIX_ENABLE_RELAY_SPST_5V","FW_Pumpengruppe:Relay_SPST_8A","1","","5 V coil, contact rating suitable for actuator"
-"K3","MIX_DIR_RELAY_SPDT_5V_NC_ZU_NO_AUF","FW_Pumpengruppe:Relay_SPDT_8A","1","","SPDT direction relay, 5 V coil"
-"U1","ESP32-WROOM-32D PCB antenna","RF_Module:ESP32-WROOM-32D","1","","Espressif ESP32-WROOM-32D"
-"U2,U3","MAX31865 RTD frontend","FW_Pumpengruppe:SOIC16_RTD","2","","MAX31865 or pin-compatible RTD frontend"
-"U4","MAX3485/SP3485 3.3V RS485 transceiver SOIC-8","Package_SO:SOIC-8_3.9x4.9mm_P1.27mm","1","","3.3 V half-duplex RS485 transceiver"
-"U5","AMS1117-3.3 compatible 3V3 regulator","FW_Pumpengruppe:LDO_SOT223","1","","SOT-223 LDO, check dissipation from 5 V"
-"U6","CP2102N USB-UART","FW_Pumpengruppe:USB_UART_QFN24","1","","Silicon Labs CP2102N QFN24"
-"J1,J2","RJ45 RS485 daisychain edge connector","Connector_RJ:RJ45_Amphenol_54602-x08_Horizontal","2","","Horizontal RJ45, edge accessible"
-"J3,J4","YSTY RS485 screw terminal","FW_Pumpengruppe:TB_3_350","2","","3.5 mm screw terminal"
-"X4,X5","RTD screw terminal VL/RL","FW_Pumpengruppe:TB_2_350","2","","3.5 mm screw terminal"
-"X6","USB-C service / flash edge connector","Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12","1","","HRO TYPE-C-31-M-12 or compatible"
-"R1,R2","5k1 USB-C CC pulldown","FW_Pumpengruppe:R_0603","2","","Generic 0603 1 percent"
-"R3","120R RS485 termination","FW_Pumpengruppe:R_0603","1","","Generic 0603 1 percent"
-"JP1","RS485 termination 1x3 jumper, 1-2 on / 2-3 park","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical","1","","2.54 mm 1x3 header plus shunt"
-"Q1,Q2,Q3","AO3400A compatible logic-level NMOS SOT-23","FW_Pumpengruppe:SOT23_NMOS","3","","AO3400A or similar logic-level NMOS"
-"R4,R5,R6","100R 0603 gate series resistor","FW_Pumpengruppe:R_0603","3","","Generic 0603"
-"R7,R8,R9","100k 0603 gate pulldown","FW_Pumpengruppe:R_0603","3","","Generic 0603"
-"D1,D2,D3","SS14 SOD123 flyback diode","FW_Pumpengruppe:D_SOD123","3","","SS14 or compatible Schottky"
-"R10,R11,R12","2k2 0603 relay status LED resistor","FW_Pumpengruppe:R_0603","3","","Generic 0603"
-"D10,D11,D12","0603 relay status LED","FW_Pumpengruppe:LED_0603","3","","Generic low-current LED"
-"R40,R41","150k 1206 mains LED dropper resistor","Resistor_SMD:R_1206_3216Metric","2","","Use voltage-rated resistors; mains-side only"
-"D40","0805 230VAC indicator LED on mains side","LED_SMD:LED_0805_2012Metric","1","","Mains-side indicator LED"
-"D41","1N4148/SOD-123 antiparallel LED protection diode","Diode_SMD:D_SOD-123","1","","1N4148W or compatible"
-"RV1","MOV 275VAC disc varistor across L/N","Varistor:RV_Disc_D12mm_W3.9mm_P7.5mm","1","","MOV 275 VAC, lead pitch 7.5 mm"
-"R20","2k2 0603 5V indicator resistor","FW_Pumpengruppe:R_0603","1","","Generic 0603"
-"D20","0603 5V indicator LED","FW_Pumpengruppe:LED_0603","1","","Generic low-current LED"
-"R21","1k5 0603 3V3 indicator resistor","FW_Pumpengruppe:R_0603","1","","Generic 0603"
-"D21","0603 3V3 indicator LED","FW_Pumpengruppe:LED_0603","1","","Generic low-current LED"
-"R30,R31","4k7 0603 RS485 TX/RX activity LED resistor","FW_Pumpengruppe:R_0603","2","","Generic 0603"
-"D30,D31","0603 RS485 TX/RX activity LED","FW_Pumpengruppe:LED_0603","2","","Generic low-current LED"
-"R60","330R 0603 RGB data series resistor","Resistor_SMD:R_0603_1608Metric","1","","ESP32 GPIO21 to first SK6812 DIN"
-"C60-C83","100nF 16V 0603 RGB LED local decoupling capacitor","Capacitor_SMD:C_0603_1608Metric","24","","One capacitor per RGB LED"
-"D60-D83","SK6812MINI 3535 5V addressable RGB LED PLCC4","LED_SMD:LED_SK6812MINI_PLCC4_3.5x3.5mm_P1.75mm","24","","4 status LEDs plus 20 vertical valve-position LEDs, 5 percent per LED"
-"D50,D51,D52","Optional RS485 TVS positions A-COM/B-COM/A-B","Diode_SMD:D_SOD-123","3","DNP","Optional protection footprints, do not populate for base assembly"
-"D4","SS14 USB VBUS to +5V Schottky diode","FW_Pumpengruppe:D_SOD123","1","","SS14 or compatible Schottky"
-"F2","1812 resettable fuse BUS_5V to local +5V","Fuse:Fuse_1812_4532Metric","1","","Polyfuse sized for RJ45 5 V sharing"
-"R32","0R 0603 BUS_COM to local GND link for RJ45 power sharing","FW_Pumpengruppe:R_0603","1","","Populate only when common SELV bus ground is intended"
-"@ | Set-Content -NoNewline -Encoding UTF8 $Bom
-
-@"
-"Refs","Value","Footprint","Qty","DNP","Notes"
-"U1","ESP32-WROOM-32D PCB antenna","RF_Module:ESP32-WROOM-32D","1","","Espressif ESP32-WROOM-32D"
-"U2,U3","MAX31865 RTD frontend","FW_Pumpengruppe:SOIC16_RTD","2","","MAX31865 or pin-compatible RTD frontend"
-"U4","MAX3485/SP3485 3.3V RS485 transceiver SOIC-8","Package_SO:SOIC-8_3.9x4.9mm_P1.27mm","1","","3.3 V half-duplex RS485 transceiver"
-"U5","AMS1117-3.3 compatible 3V3 regulator","FW_Pumpengruppe:LDO_SOT223","1","","SOT-223 LDO, check dissipation from 5 V"
-"U6","CP2102N USB-UART","FW_Pumpengruppe:USB_UART_QFN24","1","","Silicon Labs CP2102N QFN24"
-"J1,J2","RJ45 RS485 daisychain edge connector","Connector_RJ:RJ45_Amphenol_54602-x08_Horizontal","2","","Horizontal RJ45, edge accessible; board powered from BUS_5V"
-"J3,J4","YSTY RS485 screw terminal","FW_Pumpengruppe:TB_3_350","2","","Optional 3.5 mm RS485 screw terminal"
-"X4,X5","RTD screw terminal VL/RL","FW_Pumpengruppe:TB_2_350","2","","3.5 mm screw terminal"
-"X6","USB-C service / flash edge connector","Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12","1","","HRO TYPE-C-31-M-12 or compatible"
-"R1,R2","5k1 USB-C CC pulldown","FW_Pumpengruppe:R_0603","2","","Generic 0603 1 percent"
-"R3","120R RS485 termination","FW_Pumpengruppe:R_0603","1","","Generic 0603 1 percent"
-"JP1","RS485 termination 1x3 jumper, 1-2 on / 2-3 park","Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical","1","","2.54 mm 1x3 header plus shunt"
-"R20","2k2 0603 5V indicator resistor","FW_Pumpengruppe:R_0603","1","","Generic 0603"
-"D20","0603 5V indicator LED","FW_Pumpengruppe:LED_0603","1","","Generic low-current LED"
-"R21","1k5 0603 3V3 indicator resistor","FW_Pumpengruppe:R_0603","1","","Generic 0603"
-"D21","0603 3V3 indicator LED","FW_Pumpengruppe:LED_0603","1","","Generic low-current LED"
-"R30,R31","4k7 0603 RS485 TX/RX activity LED resistor","FW_Pumpengruppe:R_0603","2","","Generic 0603"
-"D30,D31","0603 RS485 TX/RX activity LED","FW_Pumpengruppe:LED_0603","2","","Generic low-current LED"
-"R60","330R 0603 RGB data series resistor","Resistor_SMD:R_0603_1608Metric","1","","ESP32 GPIO21 to first SK6812 DIN"
-"C60-C63","100nF 16V 0603 RGB LED local decoupling capacitor","Capacitor_SMD:C_0603_1608Metric","4","","One capacitor per populated status RGB LED"
-"D60-D63","SK6812MINI 3535 5V addressable RGB LED PLCC4","LED_SMD:LED_SK6812MINI_PLCC4_3.5x3.5mm_P1.75mm","4","","Status LEDs for temperature-input variant"
-"D4","SS14 USB VBUS to +5V Schottky diode","FW_Pumpengruppe:D_SOD123","1","","SS14 or compatible Schottky"
-"F2","1812 resettable fuse BUS_5V to local +5V","Fuse:Fuse_1812_4532Metric","1","","Polyfuse sized for RJ45 5 V sharing"
-"R32","0R 0603 BUS_COM to local GND link for RJ45 power sharing","FW_Pumpengruppe:R_0603","1","","Populate for common SELV bus ground in network-powered temperature variant"
-"X1,X2,X3,F1,PSU1,K1,K2,K3,Q1-Q3,R4-R12,D1-D3,D10-D12,R40,R41,D40,D41,RV1","Left 230V / relay section not populated","various","1","DNP","Temp-input assembly variant: do not populate left mains/relay section"
-"C64-C83,D64-D83","Valve-position RGB LED chain not populated","various","1","DNP","Temp-input assembly variant uses only D60-D63 status LEDs"
-"D50-D52","Optional RS485 TVS positions","Diode_SMD:D_SOD-123","1","DNP","Optional protection footprints, not populated in base temp-input assembly"
-"@ | Set-Content -NoNewline -Encoding UTF8 $BomTemp
+$RawBom = Join-Path $Fab "pumpengruppe-rs485-bom-ungrouped.csv"
+& $Cli.Source sch export bom `
+    --output $RawBom `
+    --fields "Reference,Value,Footprint,QUANTITY,DNP,Manufacturer,MPN,AISLER_MPN,Supplier,AssemblyNote" `
+    --labels "Refs,Value,Footprint,Qty,DNP,Manufacturer,MPN,AISLER_MPN,Supplier,AssemblyNote" `
+    --exclude-dnp `
+    $Sch
+$TempBomRows = Import-Csv $RawBom | Where-Object { $TempDnpRefs -notcontains $_.Refs }
+$TempBomRows | Export-Csv -NoTypeInformation -Encoding UTF8 $BomTemp
+Remove-Item -LiteralPath $RawBom -Force
 
 if (Test-Path $Zip) {
     Remove-Item -LiteralPath $Zip

@@ -40,23 +40,44 @@ Im offenen Einrichtungs-WLAN ist kein Login noetig. Sobald der ESP im normalen
 WLAN erreichbar ist, schuetzt HTTP Basic Auth die Weboberflaeche. Bitte nach
 dem ersten Test aendern.
 
+## Konfiguration zuruecksetzen
+
+Der Taster `BOOT/CFG RESET` liegt auf `GPIO0` gegen GND.
+
+- kurzer Druck waehrend Reset/Power-Up: normaler ESP32-Bootloader/Flash-Modus
+- langer Druck im laufenden Betrieb fuer mindestens 10 Sekunden:
+  gespeicherte WLAN-, Web-, Modbus- und MQTT-Konfiguration wird geloescht,
+  alle Ausgaenge werden abgeschaltet und der ESP startet neu
+
+Danach startet wieder das offene Einrichtungs-WLAN.
+
 ## Vorlaeufige Pinbelegung
 
 | Signal | GPIO |
 |---|---:|
-| Pumpe Relais | 25 |
-| Mischer Freigabe | 26 |
-| Mischer Richtung | 27 |
+| Pumpe Relais | 35 |
+| Mischer Freigabe | 36 |
+| Mischer Richtung | 37 |
 | RS485 TX | 17 |
 | RS485 RX | 16 |
 | RS485 DE/RE | 4 |
 | RGB/SK6812 | 21 |
-| SPI MOSI | 23 |
-| SPI MISO | 19 |
-| SPI SCK | 18 |
+| SPI MOSI | 11 |
+| SPI MISO | 13 |
+| SPI SCK | 12 |
+| RTD Vorlauf CS | 10 |
+| RTD Ruecklauf CS | 9 |
+| BOOT/CFG RESET | 0 |
+| USB D- | native USB / GPIO19 |
+| USB D+ | native USB / GPIO20 |
 
-TX/RX/DE sind ueber die Weboberflaeche konfigurierbar, falls sich die finale
-KiCad-Zuordnung noch aendert.
+Die Platinenrevision nutzt `ESP32-S3-WROOM-1-N4`; der USB-UART-Baustein
+entfaellt, Firmware/Monitor laufen direkt ueber natives USB-CDC.
+
+J5 ist als Erweiterungsheader vorgesehen: `+5V`, `+3V3`, mehrfach `GND` sowie
+freie S3-GPIOs `1`, `2`, `3`, `5`, `6`, `7`, `8`, `14`, `15`, `18`, `38`,
+`39`, `40`, `41`, `42`. Diese Pins sind nicht fuer Relais, RS485, SPI, RGB,
+USB oder Boot reserviert.
 
 ## Modbus
 

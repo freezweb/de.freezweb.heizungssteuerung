@@ -1,0 +1,3 @@
+removed_wires=33
+removed_no_connect=20
+added_labels=49

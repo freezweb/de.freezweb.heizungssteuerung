@@ -24,6 +24,7 @@ static constexpr uint32_t POSITION_SAVE_INTERVAL_MS = 30000;
 static constexpr uint32_t WIFI_CONNECT_TIMEOUT_MS = 15000;
 static constexpr uint32_t MODBUS_SILENCE_US = 4000;
 static constexpr uint32_t HARDWARE_POLL_INTERVAL_MS = 1000;
+static constexpr uint32_t CONFIG_RESET_HOLD_MS = 10000;
 static constexpr uint8_t MQTT_PUBLISH_CACHE_SIZE = 32;
 static constexpr float RTD_RREF_PT1000 = 4300.0f;
 static constexpr float RTD_RREF_PT100 = 430.0f;
@@ -34,16 +35,17 @@ namespace HwPin {
 static constexpr uint8_t RS485_RX = 16;
 static constexpr uint8_t RS485_TX = 17;
 static constexpr uint8_t RS485_DE = 4;
-static constexpr uint8_t PUMP_DRV = 25;
-static constexpr uint8_t MIX_ENABLE_DRV = 26;
-static constexpr uint8_t MIX_DIR_DRV = 27;
+static constexpr uint8_t PUMP_DRV = 35;
+static constexpr uint8_t MIX_ENABLE_DRV = 36;
+static constexpr uint8_t MIX_DIR_DRV = 37;
 static constexpr uint8_t RGB_DATA = 21;
 static constexpr uint8_t RGB_COUNT = 24;
-static constexpr uint8_t SPI_MOSI = 23;
-static constexpr uint8_t SPI_MISO = 19;
-static constexpr uint8_t SPI_SCK = 18;
-static constexpr uint8_t RTD_VL_CS = 5;
-static constexpr uint8_t RTD_RL_CS = 22;
+static constexpr uint8_t SPI_MOSI = 11;
+static constexpr uint8_t SPI_MISO = 13;
+static constexpr uint8_t SPI_SCK = 12;
+static constexpr uint8_t RTD_VL_CS = 10;
+static constexpr uint8_t RTD_RL_CS = 9;
+static constexpr uint8_t CONFIG_RESET_BTN = 0;
 }
 
 enum Mode : uint16_t {
@@ -165,6 +167,8 @@ static uint32_t lastMqttHintsPublishMs = 0;
 static uint32_t lastMqttSubscribeMs = 0;
 static uint32_t lastMqttHeartbeatMs = 0;
 static bool mqttStateDirty = true;
+static uint32_t configResetPressedSinceMs = 0;
+static bool configResetTriggered = false;
 static String lastMqttStateDigest;
 static MqttPublishCacheEntry mqttPublishCache[MQTT_PUBLISH_CACHE_SIZE];
 
@@ -314,6 +318,34 @@ static void allOutputsOff() {
   st.moving = false;
   st.moveDirection = 0;
   applyOutputs();
+}
+
+static void clearStoredConfigAndRestart() {
+  allOutputsOff();
+  prefs.begin("pumpgrp", false);
+  prefs.clear();
+  prefs.end();
+  Serial.println("BOOT/CFG RESET: Konfiguration geloescht, Neustart folgt.");
+  rebootAtMs = millis() + 500;
+}
+
+static void pollConfigResetButton() {
+  const bool pressed = digitalRead(HwPin::CONFIG_RESET_BTN) == LOW;
+  if (!pressed) {
+    configResetPressedSinceMs = 0;
+    configResetTriggered = false;
+    return;
+  }
+
+  if (configResetPressedSinceMs == 0) {
+    configResetPressedSinceMs = millis();
+    return;
+  }
+
+  if (!configResetTriggered && millis() - configResetPressedSinceMs >= CONFIG_RESET_HOLD_MS) {
+    configResetTriggered = true;
+    clearStoredConfigAndRestart();
+  }
 }
 
 static void updateInputRegisters() {
@@ -1624,6 +1656,7 @@ static void setupOta() {
 }
 
 static void setupPins() {
+  pinMode(HwPin::CONFIG_RESET_BTN, INPUT_PULLUP);
   pinMode(HwPin::PUMP_DRV, OUTPUT);
   pinMode(HwPin::MIX_ENABLE_DRV, OUTPUT);
   pinMode(HwPin::MIX_DIR_DRV, OUTPUT);
@@ -1656,6 +1689,7 @@ void setup() {
 }
 
 void loop() {
+  pollConfigResetButton();
   server.handleClient();
   if (st.wifiApMode) dnsServer.processNextRequest();
   ArduinoOTA.handle();

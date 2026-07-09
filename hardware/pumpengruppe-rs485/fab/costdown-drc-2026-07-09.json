@@ -1,0 +1,2723 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-07-09T09:00:04",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning"
+    ],
+    "kicad_version": "10.0.4",
+    "schematic_parity": [
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint C22",
+                    "pos": {
+                        "x": 180.6,
+                        "y": 35.3
+                    },
+                    "uuid": "ac0a1e5c-e5c6-4e73-bac2-87933b1ac442"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint C23",
+                    "pos": {
+                        "x": 180.3,
+                        "y": 58.8
+                    },
+                    "uuid": "50671eeb-33bb-4f8c-b781-9ab61f13ab9a"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint D10",
+                    "pos": {
+                        "x": 105.95,
+                        "y": 89.45
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000034"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint D11",
+                    "pos": {
+                        "x": 106.7,
+                        "y": 111.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000040"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint D12",
+                    "pos": {
+                        "x": 106.9,
+                        "y": 133.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000046"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint D20",
+                    "pos": {
+                        "x": 174.8,
+                        "y": 75.4
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000048"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint D21",
+                    "pos": {
+                        "x": 174.9,
+                        "y": 80.2
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000050"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint D30",
+                    "pos": {
+                        "x": 164.7,
+                        "y": 99.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000052"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint D31",
+                    "pos": {
+                        "x": 164.7,
+                        "y": 103.5
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000054"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"AssemblyNote\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint D40",
+                    "pos": {
+                        "x": 62.5,
+                        "y": 42.5
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000057"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fuse:Fuseholder_Clip-5x20mm_Bel_FC-203-22_Lateral_P17.80x5.00mm_D1.17mm_Horizontal stimmt nicht mit dem Footprint des Symbols (FW_Pumpengruppe:FUSE_5X20) überein.",
+            "items": [
+                {
+                    "description": "Footprint F1",
+                    "pos": {
+                        "x": 63.0,
+                        "y": 77.6
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000002"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_mismatch"
+        },
+        {
+            "description": "Pad fehlt Netz gemäß Schaltplan (/L_IN)",
+            "items": [
+                {
+                    "description": "Durchsteckpad 1 [<no net>] von F1",
+                    "pos": {
+                        "x": 63.0,
+                        "y": 77.6
+                    },
+                    "uuid": "0fdfd0ff-f7e2-4e8f-96c4-c38561185f0a"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Pad fehlt Netz gemäß Schaltplan (/L_FUSED)",
+            "items": [
+                {
+                    "description": "Durchsteckpad 2 [<no net>] von F1",
+                    "pos": {
+                        "x": 63.0,
+                        "y": 95.4
+                    },
+                    "uuid": "6b08df5a-067b-476f-a1af-959f250405c6"
+                }
+            ],
+            "severity": "warning",
+            "type": "net_conflict"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Supplier\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint F2",
+                    "pos": {
+                        "x": 171.0,
+                        "y": 88.5
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000027"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"AssemblyNote\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint JP1",
+                    "pos": {
+                        "x": 176.1,
+                        "y": 98.9
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000025"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint Q1",
+                    "pos": {
+                        "x": 100.95,
+                        "y": 85.45
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000031"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint Q2",
+                    "pos": {
+                        "x": 101.7,
+                        "y": 107.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000037"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint Q3",
+                    "pos": {
+                        "x": 102.05,
+                        "y": 126.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000043"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Supplier\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R1",
+                    "pos": {
+                        "x": 176.5,
+                        "y": 132.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000022"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Supplier\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R2",
+                    "pos": {
+                        "x": 183.7,
+                        "y": 132.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000023"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Supplier\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R3",
+                    "pos": {
+                        "x": 171.5,
+                        "y": 102.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000024"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R4",
+                    "pos": {
+                        "x": 99.15,
+                        "y": 81.45
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000029"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R5",
+                    "pos": {
+                        "x": 99.7,
+                        "y": 103.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000035"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R6",
+                    "pos": {
+                        "x": 99.05,
+                        "y": 122.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000041"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R7",
+                    "pos": {
+                        "x": 103.95,
+                        "y": 81.45
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000030"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R8",
+                    "pos": {
+                        "x": 104.7,
+                        "y": 103.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000036"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R9",
+                    "pos": {
+                        "x": 105.05,
+                        "y": 122.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000042"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R10",
+                    "pos": {
+                        "x": 99.95,
+                        "y": 89.45
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000033"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R11",
+                    "pos": {
+                        "x": 100.7,
+                        "y": 111.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000039"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R12",
+                    "pos": {
+                        "x": 101.05,
+                        "y": 133.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000045"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R20",
+                    "pos": {
+                        "x": 169.8,
+                        "y": 75.5
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000047"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R21",
+                    "pos": {
+                        "x": 169.7,
+                        "y": 80.1
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000049"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R22",
+                    "pos": {
+                        "x": 187.9,
+                        "y": 41.8
+                    },
+                    "uuid": "14e35fe5-daf5-4abf-b25d-a7cce59d4450"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R23",
+                    "pos": {
+                        "x": 188.4,
+                        "y": 51.2
+                    },
+                    "uuid": "d07425e3-c1d2-4d7b-a157-60740031617e"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R30",
+                    "pos": {
+                        "x": 158.3,
+                        "y": 99.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000051"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R31",
+                    "pos": {
+                        "x": 158.2,
+                        "y": 103.5
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000053"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"Manufacturer\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R32",
+                    "pos": {
+                        "x": 168.7,
+                        "y": 132.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000055"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"AssemblyNote\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R40",
+                    "pos": {
+                        "x": 73.5,
+                        "y": 41.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000026"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Fehlendes Symbolfeld \"AssemblyNote\" in Footprint",
+            "items": [
+                {
+                    "description": "Footprint R41",
+                    "pos": {
+                        "x": 68.5,
+                        "y": 41.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000056"
+                }
+            ],
+            "severity": "warning",
+            "type": "footprint_symbol_field_mismatch"
+        },
+        {
+            "description": "Extra footprint",
+            "items": [
+                {
+                    "description": "Footprint MB1",
+                    "pos": {
+                        "x": 84.0,
+                        "y": 0.0
+                    },
+                    "uuid": "1f1d8137-9de0-4f27-a03a-37f5f68201c5"
+                }
+            ],
+            "severity": "warning",
+            "type": "extra_footprint"
+        }
+    ],
+    "source": "pumpengruppe-rs485.kicad_pcb",
+    "unconnected_items": [
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Pad 2 [/RS485_DE] von U4 auf F.Cu",
+                    "pos": {
+                        "x": 143.025,
+                        "y": 103.865
+                    },
+                    "uuid": "b0340cb9-7f8e-45c4-860d-dad1b180e530"
+                },
+                {
+                    "description": "Pad 3 [/RS485_DE] von U4 auf F.Cu",
+                    "pos": {
+                        "x": 143.025,
+                        "y": 105.135
+                    },
+                    "uuid": "f7bc9897-a44b-4bee-a114-15cec680e610"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Pad 26 [/RS485_DE] von U1 auf F.Cu",
+                    "pos": {
+                        "x": 167.75,
+                        "y": 49.49
+                    },
+                    "uuid": "e185b1c4-c20b-4865-9e32-42f3265575f1"
+                },
+                {
+                    "description": "Pad 2 [/RS485_DE] von U4 auf F.Cu",
+                    "pos": {
+                        "x": 143.025,
+                        "y": 103.865
+                    },
+                    "uuid": "b0340cb9-7f8e-45c4-860d-dad1b180e530"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Leiterbahn [/+3V3] auf F.Cu, Länge 3,7547 mm",
+                    "pos": {
+                        "x": 143.475,
+                        "y": 38.175
+                    },
+                    "uuid": "39080beb-a9cc-4b9c-b164-0c3a738aa868"
+                },
+                {
+                    "description": "Pad 2 [/+3V3] von R33 auf F.Cu",
+                    "pos": {
+                        "x": 147.675,
+                        "y": 36.8
+                    },
+                    "uuid": "4822ce17-2afd-48f5-882d-9eb70191a3da"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 1 [/L_IN] von X1",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 47.42
+                    },
+                    "uuid": "d0bf909b-50b4-45e9-a02a-152dfeccaed6"
+                },
+                {
+                    "description": "Durchsteckpad 1 [/L_IN] von F1",
+                    "pos": {
+                        "x": 58.0,
+                        "y": 77.6
+                    },
+                    "uuid": "1e1cdfd2-ee59-445d-b312-21222149832d"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 2 [/N] von X2",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 87.5
+                    },
+                    "uuid": "c044e53e-a61d-4626-b795-25eebd14d8cd"
+                },
+                {
+                    "description": "Durchsteckpad 2 [/N] von PSU1",
+                    "pos": {
+                        "x": 64.0,
+                        "y": 68.75
+                    },
+                    "uuid": "f8b8d011-8904-4ffd-9ad1-412142725edd"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 2 [/N] von X2",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 87.5
+                    },
+                    "uuid": "c044e53e-a61d-4626-b795-25eebd14d8cd"
+                },
+                {
+                    "description": "Durchsteckpad 2 [/N] von RV1",
+                    "pos": {
+                        "x": 59.6,
+                        "y": 120.75
+                    },
+                    "uuid": "c683a58c-61eb-487a-ad54-79e926def251"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 4 [/N] von X3",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 130.12
+                    },
+                    "uuid": "66f2bf4c-aa63-4d47-995e-24af60c82e96"
+                },
+                {
+                    "description": "Durchsteckpad 2 [/N] von RV1",
+                    "pos": {
+                        "x": 59.6,
+                        "y": 120.75
+                    },
+                    "uuid": "c683a58c-61eb-487a-ad54-79e926def251"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Pad 1 [/N] von D41 auf F.Cu",
+                    "pos": {
+                        "x": 57.0,
+                        "y": 40.85
+                    },
+                    "uuid": "2fb766ed-a8ac-4550-b20c-11c3ecaccaf6"
+                },
+                {
+                    "description": "Durchsteckpad 2 [/N] von X1",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 52.5
+                    },
+                    "uuid": "638f36df-c557-4679-9855-873dd1c75247"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Pad 2 [/N] von D40 auf F.Cu",
+                    "pos": {
+                        "x": 62.5,
+                        "y": 41.5625
+                    },
+                    "uuid": "693f6186-17fc-4732-bbf1-7df0bd8476d6"
+                },
+                {
+                    "description": "Pad 1 [/N] von D41 auf F.Cu",
+                    "pos": {
+                        "x": 57.0,
+                        "y": 40.85
+                    },
+                    "uuid": "2fb766ed-a8ac-4550-b20c-11c3ecaccaf6"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 2 [/N] von PSU1",
+                    "pos": {
+                        "x": 64.0,
+                        "y": 68.75
+                    },
+                    "uuid": "f8b8d011-8904-4ffd-9ad1-412142725edd"
+                },
+                {
+                    "description": "Durchsteckpad 2 [/N] von X1",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 52.5
+                    },
+                    "uuid": "638f36df-c557-4679-9855-873dd1c75247"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 3 [/PE] von X1",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 57.58
+                    },
+                    "uuid": "f4f7ba81-ca83-44e2-9360-6d88e9747cd8"
+                },
+                {
+                    "description": "Durchsteckpad 3 [/PE] von X2",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 92.58
+                    },
+                    "uuid": "054f8046-387a-4986-a0f3-3a9273610cb1"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 3 [/PE] von X2",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 92.58
+                    },
+                    "uuid": "054f8046-387a-4986-a0f3-3a9273610cb1"
+                },
+                {
+                    "description": "Durchsteckpad 3 [/PE] von X3",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 125.04
+                    },
+                    "uuid": "9cebeca0-c6f7-4c85-ae38-c58715f0a0a6"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 2 [/L_FUSED] von F1",
+                    "pos": {
+                        "x": 58.0,
+                        "y": 95.4
+                    },
+                    "uuid": "15986461-b493-4165-8415-75364a05e0ea"
+                },
+                {
+                    "description": "Durchsteckpad 1 [/L_FUSED] von K2",
+                    "pos": {
+                        "x": 71.0,
+                        "y": 101.5
+                    },
+                    "uuid": "7bf4af50-bd0b-476f-823e-ddcad6d972f4"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 1 [/L_FUSED] von RV1",
+                    "pos": {
+                        "x": 61.0,
+                        "y": 113.25
+                    },
+                    "uuid": "caf83fc8-2694-45e6-9ae2-f8ed7a5833e3"
+                },
+                {
+                    "description": "Durchsteckpad 1 [/L_FUSED] von K2",
+                    "pos": {
+                        "x": 71.0,
+                        "y": 101.5
+                    },
+                    "uuid": "7bf4af50-bd0b-476f-823e-ddcad6d972f4"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 1 [/L_FUSED] von K1",
+                    "pos": {
+                        "x": 71.0,
+                        "y": 79.5
+                    },
+                    "uuid": "e2704382-0edd-4782-aefa-8fd9be157e6e"
+                },
+                {
+                    "description": "Durchsteckpad 2 [/L_FUSED] von F1",
+                    "pos": {
+                        "x": 58.0,
+                        "y": 95.4
+                    },
+                    "uuid": "15986461-b493-4165-8415-75364a05e0ea"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 1 [/L_FUSED] von K1",
+                    "pos": {
+                        "x": 71.0,
+                        "y": 79.5
+                    },
+                    "uuid": "e2704382-0edd-4782-aefa-8fd9be157e6e"
+                },
+                {
+                    "description": "Durchsteckpad 1 [/L_FUSED] von PSU1",
+                    "pos": {
+                        "x": 64.0,
+                        "y": 58.0
+                    },
+                    "uuid": "adf9a84e-18d8-4571-98b7-4a29bc6c8796"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Pad 1 [/L_FUSED] von R40 auf F.Cu",
+                    "pos": {
+                        "x": 74.9625,
+                        "y": 41.0
+                    },
+                    "uuid": "54713e34-3c1a-4d48-8a30-6d57cdda146b"
+                },
+                {
+                    "description": "Durchsteckpad 1 [/L_FUSED] von PSU1",
+                    "pos": {
+                        "x": 64.0,
+                        "y": 58.0
+                    },
+                    "uuid": "adf9a84e-18d8-4571-98b7-4a29bc6c8796"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 1 [/L_PUMP] von X2",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 82.42
+                    },
+                    "uuid": "7d8677f0-d683-43c8-b156-8f945b0c6650"
+                },
+                {
+                    "description": "Durchsteckpad 2 [/L_PUMP] von K1",
+                    "pos": {
+                        "x": 71.0,
+                        "y": 86.5
+                    },
+                    "uuid": "f4b6c4c4-2241-437f-ad4b-2745170fa9bf"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 1 [/L_MIX_OPEN] von X3",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 114.88
+                    },
+                    "uuid": "74c89eee-5f76-45c5-b94f-14ec01afcc0c"
+                },
+                {
+                    "description": "Durchsteckpad NO [/L_MIX_OPEN] von K3",
+                    "pos": {
+                        "x": 71.0,
+                        "y": 129.5
+                    },
+                    "uuid": "7db9afcb-f9e9-40ad-a623-7044be616071"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 2 [/L_MIX_CLOSE] von X3",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 119.96
+                    },
+                    "uuid": "63e4d862-5530-4125-ad9d-87da3c8b56a0"
+                },
+                {
+                    "description": "Durchsteckpad NC [/L_MIX_CLOSE] von K3",
+                    "pos": {
+                        "x": 71.0,
+                        "y": 125.0
+                    },
+                    "uuid": "fc84b7aa-d118-4157-8d1b-6cf9dc53d3cf"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Durchsteckpad 2 [/L_MIX_ENABLE] von K2",
+                    "pos": {
+                        "x": 71.0,
+                        "y": 108.5
+                    },
+                    "uuid": "dc9e154f-7ea6-4d2c-9b3b-5d6fede26185"
+                },
+                {
+                    "description": "Durchsteckpad C [/L_MIX_ENABLE] von K3",
+                    "pos": {
+                        "x": 71.0,
+                        "y": 120.5
+                    },
+                    "uuid": "8aaefc35-c1dc-43cd-9395-c364e6b7230d"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Pad 3 [/MIX_DIR_COIL_DRV] von Q3 auf F.Cu",
+                    "pos": {
+                        "x": 102.9875,
+                        "y": 126.0
+                    },
+                    "uuid": "286f5fae-167c-488a-985a-e04017a53330"
+                },
+                {
+                    "description": "Leiterbahn [/MIX_DIR_COIL_DRV] auf F.Cu, Länge 1,6500 mm",
+                    "pos": {
+                        "x": 103.0,
+                        "y": 128.15
+                    },
+                    "uuid": "11f45d33-b4a7-4a13-9988-d5ed8842d364"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "Pad 29 [/RTD_VL_CS] von U1 auf F.Cu",
+                    "pos": {
+                        "x": 167.75,
+                        "y": 45.68
+                    },
+                    "uuid": "d9d847e7-dded-42a9-a110-034f5105ac2e"
+                },
+                {
+                    "description": "Pad 16 [/RTD_VL_CS] von U2 auf F.Cu",
+                    "pos": {
+                        "x": 177.5,
+                        "y": 43.325
+                    },
+                    "uuid": "e31b1d11-c6cd-4bfb-8413-1db98d203fa2"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        }
+    ],
+    "violations": [
+        {
+            "description": "Courtyards overlap",
+            "items": [
+                {
+                    "description": "Footprint U1",
+                    "pos": {
+                        "x": 159.0,
+                        "y": 42.5
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000009"
+                },
+                {
+                    "description": "Footprint R33",
+                    "pos": {
+                        "x": 148.5,
+                        "y": 36.8
+                    },
+                    "uuid": "50000000-0000-4000-8000-000000000033"
+                }
+            ],
+            "severity": "error",
+            "type": "courtyards_overlap"
+        },
+        {
+            "description": "Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)",
+            "items": [
+                {
+                    "description": "Durchsteckpad 39 [/GND] von U1",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 41.27
+                    },
+                    "uuid": "335d155f-9ffb-4f5e-a2f8-570d70ce3e74"
+                }
+            ],
+            "severity": "error",
+            "type": "drill_out_of_range"
+        },
+        {
+            "description": "Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)",
+            "items": [
+                {
+                    "description": "Durchsteckpad 39 [/GND] von U1",
+                    "pos": {
+                        "x": 156.1,
+                        "y": 42.67
+                    },
+                    "uuid": "91c73463-764b-44f0-9d03-3672c12423e8"
+                }
+            ],
+            "severity": "error",
+            "type": "drill_out_of_range"
+        },
+        {
+            "description": "Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)",
+            "items": [
+                {
+                    "description": "Durchsteckpad 39 [/GND] von U1",
+                    "pos": {
+                        "x": 156.8,
+                        "y": 40.57
+                    },
+                    "uuid": "b535dd07-9a6e-4d41-98ed-cc9d16cf8ef7"
+                }
+            ],
+            "severity": "error",
+            "type": "drill_out_of_range"
+        },
+        {
+            "description": "Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)",
+            "items": [
+                {
+                    "description": "Durchsteckpad 39 [/GND] von U1",
+                    "pos": {
+                        "x": 156.8,
+                        "y": 41.97
+                    },
+                    "uuid": "9832be99-2849-438e-ad3c-0268adc1a428"
+                }
+            ],
+            "severity": "error",
+            "type": "drill_out_of_range"
+        },
+        {
+            "description": "Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)",
+            "items": [
+                {
+                    "description": "Durchsteckpad 39 [/GND] von U1",
+                    "pos": {
+                        "x": 156.8,
+                        "y": 43.37
+                    },
+                    "uuid": "9186e3ed-b45a-445f-8f79-8353329a0473"
+                }
+            ],
+            "severity": "error",
+            "type": "drill_out_of_range"
+        },
+        {
+            "description": "Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)",
+            "items": [
+                {
+                    "description": "Durchsteckpad 39 [/GND] von U1",
+                    "pos": {
+                        "x": 157.475,
+                        "y": 41.27
+                    },
+                    "uuid": "b6b44c31-aa72-4514-ab21-833a7485b747"
+                }
+            ],
+            "severity": "error",
+            "type": "drill_out_of_range"
+        },
+        {
+            "description": "Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)",
+            "items": [
+                {
+                    "description": "Durchsteckpad 39 [/GND] von U1",
+                    "pos": {
+                        "x": 157.475,
+                        "y": 42.67
+                    },
+                    "uuid": "f7f495fe-14bd-41eb-add6-0d6139439d40"
+                }
+            ],
+            "severity": "error",
+            "type": "drill_out_of_range"
+        },
+        {
+            "description": "Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)",
+            "items": [
+                {
+                    "description": "Durchsteckpad 39 [/GND] von U1",
+                    "pos": {
+                        "x": 158.2,
+                        "y": 40.57
+                    },
+                    "uuid": "bc8ff4d6-ac51-4915-ba8d-8f941572331d"
+                }
+            ],
+            "severity": "error",
+            "type": "drill_out_of_range"
+        },
+        {
+            "description": "Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)",
+            "items": [
+                {
+                    "description": "Durchsteckpad 39 [/GND] von U1",
+                    "pos": {
+                        "x": 158.2,
+                        "y": 41.97
+                    },
+                    "uuid": "41663e6c-546f-4b28-b443-27ee413e7780"
+                }
+            ],
+            "severity": "error",
+            "type": "drill_out_of_range"
+        },
+        {
+            "description": "Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)",
+            "items": [
+                {
+                    "description": "Durchsteckpad 39 [/GND] von U1",
+                    "pos": {
+                        "x": 158.2,
+                        "y": 43.37
+                    },
+                    "uuid": "c3a5c3fb-c8e1-43cb-8a88-efa6b65cac56"
+                }
+            ],
+            "severity": "error",
+            "type": "drill_out_of_range"
+        },
+        {
+            "description": "Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)",
+            "items": [
+                {
+                    "description": "Durchsteckpad 39 [/GND] von U1",
+                    "pos": {
+                        "x": 158.9,
+                        "y": 41.27
+                    },
+                    "uuid": "9b53fa27-321c-4eb4-888d-d256dc9b7ee3"
+                }
+            ],
+            "severity": "error",
+            "type": "drill_out_of_range"
+        },
+        {
+            "description": "Lochgröße außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration min Loch 0,3000 mm; tatsächlich 0,2000 mm)",
+            "items": [
+                {
+                    "description": "Durchsteckpad 39 [/GND] von U1",
+                    "pos": {
+                        "x": 158.9,
+                        "y": 42.67
+                    },
+                    "uuid": "775ee768-f837-4e72-b4b8-2ae6893bc7cf"
+                }
+            ],
+            "severity": "error",
+            "type": "drill_out_of_range"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Rechteck auf Edge.Cuts",
+                    "pos": {
+                        "x": 81.0,
+                        "y": 38.0
+                    },
+                    "uuid": "22222222-2222-4222-8222-222222222222"
+                },
+                {
+                    "description": "Abschnitt von PSU1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 60.3,
+                        "y": 46.7
+                    },
+                    "uuid": "3cf23993-eae2-4923-8bf5-0c59a8245b55"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Rechteck auf Edge.Cuts",
+                    "pos": {
+                        "x": 81.0,
+                        "y": 38.0
+                    },
+                    "uuid": "22222222-2222-4222-8222-222222222222"
+                },
+                {
+                    "description": "Abschnitt von PSU1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 60.3,
+                        "y": 72.3
+                    },
+                    "uuid": "26a83a63-6016-4e38-a95e-1565cc9c4616"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Rechteck auf Edge.Cuts",
+                    "pos": {
+                        "x": 81.0,
+                        "y": 38.0
+                    },
+                    "uuid": "22222222-2222-4222-8222-222222222222"
+                },
+                {
+                    "description": "Rechteck von K1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 76.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000603"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Rechteck auf Edge.Cuts",
+                    "pos": {
+                        "x": 81.0,
+                        "y": 38.0
+                    },
+                    "uuid": "22222222-2222-4222-8222-222222222222"
+                },
+                {
+                    "description": "Rechteck von K2 auf F.Silkscreen",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 99.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000703"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Rechteck auf Edge.Cuts",
+                    "pos": {
+                        "x": 81.0,
+                        "y": 38.0
+                    },
+                    "uuid": "22222222-2222-4222-8222-222222222222"
+                },
+                {
+                    "description": "Rechteck von K3 auf F.Silkscreen",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 118.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000803"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Rechteck auf Edge.Cuts",
+                    "pos": {
+                        "x": 39.8,
+                        "y": 32.5
+                    },
+                    "uuid": "11111111-1111-4111-8111-111111111111"
+                },
+                {
+                    "description": "Abschnitt von U1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 149.88,
+                        "y": 26.64
+                    },
+                    "uuid": "245b6f59-030f-4a95-b2db-9d20824f7753"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Rechteck auf Edge.Cuts",
+                    "pos": {
+                        "x": 39.8,
+                        "y": 32.5
+                    },
+                    "uuid": "11111111-1111-4111-8111-111111111111"
+                },
+                {
+                    "description": "Abschnitt von U1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 168.12,
+                        "y": 26.64
+                    },
+                    "uuid": "746a8915-b328-4245-bfb5-7dae79585cdf"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Rechteck auf Edge.Cuts",
+                    "pos": {
+                        "x": 39.8,
+                        "y": 32.5
+                    },
+                    "uuid": "11111111-1111-4111-8111-111111111111"
+                },
+                {
+                    "description": "Abschnitt von X6 auf F.Silkscreen",
+                    "pos": {
+                        "x": 198.3,
+                        "y": 124.3
+                    },
+                    "uuid": "5f51ea72-8501-4bab-a240-98784be0b8fc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Rechteck auf Edge.Cuts",
+                    "pos": {
+                        "x": 39.8,
+                        "y": 32.5
+                    },
+                    "uuid": "11111111-1111-4111-8111-111111111111"
+                },
+                {
+                    "description": "Abschnitt von X6 auf F.Silkscreen",
+                    "pos": {
+                        "x": 198.3,
+                        "y": 133.7
+                    },
+                    "uuid": "53f57841-612c-4b3a-8994-2ad1f54ed1c7"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Rechteck auf Edge.Cuts",
+                    "pos": {
+                        "x": 39.8,
+                        "y": 32.5
+                    },
+                    "uuid": "11111111-1111-4111-8111-111111111111"
+                },
+                {
+                    "description": "Abschnitt von J1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 184.77,
+                        "y": 72.025
+                    },
+                    "uuid": "df60effc-17a8-4f5a-94de-ff17d6b5a872"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Rechteck auf Edge.Cuts",
+                    "pos": {
+                        "x": 39.8,
+                        "y": 32.5
+                    },
+                    "uuid": "11111111-1111-4111-8111-111111111111"
+                },
+                {
+                    "description": "Abschnitt von J1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 184.77,
+                        "y": 87.545
+                    },
+                    "uuid": "abdbd1b3-c9d6-4bc4-9783-7e4fbcd47a0f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Rechteck auf Edge.Cuts",
+                    "pos": {
+                        "x": 39.8,
+                        "y": 32.5
+                    },
+                    "uuid": "11111111-1111-4111-8111-111111111111"
+                },
+                {
+                    "description": "Abschnitt von J2 auf F.Silkscreen",
+                    "pos": {
+                        "x": 184.77,
+                        "y": 89.025
+                    },
+                    "uuid": "c83a0142-106d-43b9-9e2d-0312598aa8e9"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Rechteck auf Edge.Cuts",
+                    "pos": {
+                        "x": 39.8,
+                        "y": 32.5
+                    },
+                    "uuid": "11111111-1111-4111-8111-111111111111"
+                },
+                {
+                    "description": "Abschnitt von J2 auf F.Silkscreen",
+                    "pos": {
+                        "x": 184.77,
+                        "y": 104.545
+                    },
+                    "uuid": "75b7661a-00d6-4d7f-be7b-7c4b80c85b8e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Footprint \"TB_KF128_508_3P\" stimmt nicht mit Kopie in Bibliothek \"FW_Pumpengruppe\" überein.",
+            "items": [
+                {
+                    "description": "Footprint X1",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 52.5
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000001"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint \"TB_KF128_508_3P\" stimmt nicht mit Kopie in Bibliothek \"FW_Pumpengruppe\" überein.",
+            "items": [
+                {
+                    "description": "Footprint X2",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 87.5
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000004"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint \"TB_DB128L_508_4P\" stimmt nicht mit Kopie in Bibliothek \"FW_Pumpengruppe\" überein.",
+            "items": [
+                {
+                    "description": "Footprint X3",
+                    "pos": {
+                        "x": 49.8,
+                        "y": 122.5
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000005"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint \"TB_KF128L_350_2P\" stimmt nicht mit Kopie in Bibliothek \"FW_Pumpengruppe\" überein.",
+            "items": [
+                {
+                    "description": "Footprint X4",
+                    "pos": {
+                        "x": 194.8,
+                        "y": 45.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000013"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint \"TB_KF128L_350_2P\" stimmt nicht mit Kopie in Bibliothek \"FW_Pumpengruppe\" überein.",
+            "items": [
+                {
+                    "description": "Footprint X5",
+                    "pos": {
+                        "x": 194.8,
+                        "y": 53.5
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000014"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint \"TB_KF128L_350_3P\" stimmt nicht mit Kopie in Bibliothek \"FW_Pumpengruppe\" überein.",
+            "items": [
+                {
+                    "description": "Footprint J3",
+                    "pos": {
+                        "x": 194.8,
+                        "y": 64.5
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000018"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint \"TB_KF128L_350_3P\" stimmt nicht mit Kopie in Bibliothek \"FW_Pumpengruppe\" überein.",
+            "items": [
+                {
+                    "description": "Footprint J4",
+                    "pos": {
+                        "x": 194.8,
+                        "y": 112.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000019"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Footprint \"R_0603_1608Metric\" stimmt nicht mit Kopie in Bibliothek \"Resistor_SMD\" überein.",
+            "items": [
+                {
+                    "description": "Footprint R33",
+                    "pos": {
+                        "x": 148.5,
+                        "y": 36.8
+                    },
+                    "uuid": "50000000-0000-4000-8000-000000000033"
+                }
+            ],
+            "severity": "warning",
+            "type": "lib_footprint_mismatch"
+        },
+        {
+            "description": "Schrifthöhe außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration zur Bestückungsdruckhöhe min. Breite 0,8000 mm; tatsächlich 0,6500 mm)",
+            "items": [
+                {
+                    "description": "Platinen-Text \"RJ45: 1/2=5V 3/6=NC 4=A 5=B 7/8=GND\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 165.0,
+                        "y": 140.0
+                    },
+                    "uuid": "73000000-0000-4000-8000-000000000009"
+                }
+            ],
+            "severity": "warning",
+            "type": "text_height"
+        },
+        {
+            "description": "Schrifthöhe außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration zur Bestückungsdruckhöhe min. Breite 0,8000 mm; tatsächlich 0,6500 mm)",
+            "items": [
+                {
+                    "description": "Platinen-Text \"GND\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 188.5,
+                        "y": 61.0
+                    },
+                    "uuid": "73000000-0000-4000-8000-000000000004"
+                }
+            ],
+            "severity": "warning",
+            "type": "text_height"
+        },
+        {
+            "description": "Schrifthöhe außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration zur Bestückungsdruckhöhe min. Breite 0,8000 mm; tatsächlich 0,6500 mm)",
+            "items": [
+                {
+                    "description": "Platinen-Text \"GND\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 189.0,
+                        "y": 108.5
+                    },
+                    "uuid": "73000000-0000-4000-8000-000000000008"
+                }
+            ],
+            "severity": "warning",
+            "type": "text_height"
+        },
+        {
+            "description": "Schrifthöhe außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration zur Bestückungsdruckhöhe min. Breite 0,8000 mm; tatsächlich 0,7500 mm)",
+            "items": [
+                {
+                    "description": "Platinen-Text \"B\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 188.5,
+                        "y": 64.5
+                    },
+                    "uuid": "73000000-0000-4000-8000-000000000003"
+                }
+            ],
+            "severity": "warning",
+            "type": "text_height"
+        },
+        {
+            "description": "Schrifthöhe außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration zur Bestückungsdruckhöhe min. Breite 0,8000 mm; tatsächlich 0,7500 mm)",
+            "items": [
+                {
+                    "description": "Platinen-Text \"A\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 188.5,
+                        "y": 68.0
+                    },
+                    "uuid": "73000000-0000-4000-8000-000000000002"
+                }
+            ],
+            "severity": "warning",
+            "type": "text_height"
+        },
+        {
+            "description": "Schrifthöhe außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration zur Bestückungsdruckhöhe min. Breite 0,8000 mm; tatsächlich 0,7500 mm)",
+            "items": [
+                {
+                    "description": "Platinen-Text \"B\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 189.0,
+                        "y": 112.0
+                    },
+                    "uuid": "73000000-0000-4000-8000-000000000007"
+                }
+            ],
+            "severity": "warning",
+            "type": "text_height"
+        },
+        {
+            "description": "Schrifthöhe außerhalb des zulässigen Bereichs (Einschränkungen aus Platinenkonfiguration zur Bestückungsdruckhöhe min. Breite 0,8000 mm; tatsächlich 0,7500 mm)",
+            "items": [
+                {
+                    "description": "Platinen-Text \"A\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 189.0,
+                        "y": 115.5
+                    },
+                    "uuid": "73000000-0000-4000-8000-000000000006"
+                }
+            ],
+            "severity": "warning",
+            "type": "text_height"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Abschnitt von PSU1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 60.3,
+                        "y": 72.3
+                    },
+                    "uuid": "26a83a63-6016-4e38-a95e-1565cc9c4616"
+                },
+                {
+                    "description": "Platinen-Text \"8mm+ ISOLATION SLOT / KEEP OUT\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 84.0,
+                        "y": 88.0
+                    },
+                    "uuid": "77777777-7777-4777-8777-777777777777"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von X1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 45.0,
+                        "y": 43.9
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000103"
+                },
+                {
+                    "description": "Footprint-Text von X1 (L)",
+                    "pos": {
+                        "x": 54.8,
+                        "y": 47.42
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000104"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von X1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 45.0,
+                        "y": 43.9
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000103"
+                },
+                {
+                    "description": "Footprint-Text von X1 (N)",
+                    "pos": {
+                        "x": 54.8,
+                        "y": 52.5
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000105"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von X2 auf F.Silkscreen",
+                    "pos": {
+                        "x": 45.0,
+                        "y": 78.9
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000403"
+                },
+                {
+                    "description": "Footprint-Text von X2 (N)",
+                    "pos": {
+                        "x": 54.8,
+                        "y": 87.5
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000405"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von X2 auf F.Silkscreen",
+                    "pos": {
+                        "x": 45.0,
+                        "y": 78.9
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000403"
+                },
+                {
+                    "description": "Footprint-Text von X2 (PE)",
+                    "pos": {
+                        "x": 54.8,
+                        "y": 92.58
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000406"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von X2 auf F.Silkscreen",
+                    "pos": {
+                        "x": 45.0,
+                        "y": 78.9
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000403"
+                },
+                {
+                    "description": "Footprint-Text von X2 (Lsw)",
+                    "pos": {
+                        "x": 55.8,
+                        "y": 82.42
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000404"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von X3 auf F.Silkscreen",
+                    "pos": {
+                        "x": 45.0,
+                        "y": 111.3
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000503"
+                },
+                {
+                    "description": "Footprint-Text von X3 (AUF)",
+                    "pos": {
+                        "x": 55.8,
+                        "y": 114.88
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000504"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von X3 auf F.Silkscreen",
+                    "pos": {
+                        "x": 45.0,
+                        "y": 111.3
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000503"
+                },
+                {
+                    "description": "Footprint-Text von X3 (N)",
+                    "pos": {
+                        "x": 54.7,
+                        "y": 134.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000506"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von X3 auf F.Silkscreen",
+                    "pos": {
+                        "x": 45.0,
+                        "y": 111.3
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000503"
+                },
+                {
+                    "description": "Footprint-Text von X3 (PE)",
+                    "pos": {
+                        "x": 55.1,
+                        "y": 126.4
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000507"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von X3 auf F.Silkscreen",
+                    "pos": {
+                        "x": 45.0,
+                        "y": 111.3
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000503"
+                },
+                {
+                    "description": "Footprint-Text von X3 (ZU)",
+                    "pos": {
+                        "x": 54.8,
+                        "y": 119.96
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000505"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von X1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 45.0,
+                        "y": 43.9
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000103"
+                },
+                {
+                    "description": "Footprint-Text von X1 (PE)",
+                    "pos": {
+                        "x": 54.8,
+                        "y": 57.58
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000106"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von K2 auf F.Silkscreen",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 99.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000703"
+                },
+                {
+                    "description": "Platinen-Text \"TEMP INPUT: LEFT 230V/RELAY SIDE DNP\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 92.5,
+                        "y": 134.0
+                    },
+                    "uuid": "e6b3cb76-1164-4390-a4cc-c22c3c5988f6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von K2 auf F.Silkscreen",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 99.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000703"
+                },
+                {
+                    "description": "Platinen-Text \"8mm+ ISOLATION SLOT / KEEP OUT\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 84.0,
+                        "y": 88.0
+                    },
+                    "uuid": "77777777-7777-4777-8777-777777777777"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von K1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 76.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000603"
+                },
+                {
+                    "description": "Platinen-Text \"8mm+ ISOLATION SLOT / KEEP OUT\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 84.0,
+                        "y": 88.0
+                    },
+                    "uuid": "77777777-7777-4777-8777-777777777777"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von K3 auf F.Silkscreen",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 118.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000803"
+                },
+                {
+                    "description": "Platinen-Text \"TEMP INPUT: LEFT 230V/RELAY SIDE DNP\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 92.5,
+                        "y": 134.0
+                    },
+                    "uuid": "e6b3cb76-1164-4390-a4cc-c22c3c5988f6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 77.0,
+                        "y": 38.0
+                    },
+                    "uuid": "33333333-3333-4333-8333-333333333333"
+                },
+                {
+                    "description": "Abschnitt von PSU1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 60.3,
+                        "y": 46.7
+                    },
+                    "uuid": "3cf23993-eae2-4923-8bf5-0c59a8245b55"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Abschnitt von PSU1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 60.3,
+                        "y": 46.7
+                    },
+                    "uuid": "3cf23993-eae2-4923-8bf5-0c59a8245b55"
+                },
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 38.0
+                    },
+                    "uuid": "44444444-4444-4444-8444-444444444444"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Abschnitt von PSU1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 60.3,
+                        "y": 72.3
+                    },
+                    "uuid": "26a83a63-6016-4e38-a95e-1565cc9c4616"
+                },
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 77.0,
+                        "y": 38.0
+                    },
+                    "uuid": "33333333-3333-4333-8333-333333333333"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Abschnitt von PSU1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 60.3,
+                        "y": 72.3
+                    },
+                    "uuid": "26a83a63-6016-4e38-a95e-1565cc9c4616"
+                },
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 38.0
+                    },
+                    "uuid": "44444444-4444-4444-8444-444444444444"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von K1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 76.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000603"
+                },
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 77.0,
+                        "y": 38.0
+                    },
+                    "uuid": "33333333-3333-4333-8333-333333333333"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von K1 auf F.Silkscreen",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 76.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000603"
+                },
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 38.0
+                    },
+                    "uuid": "44444444-4444-4444-8444-444444444444"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von K2 auf F.Silkscreen",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 99.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000703"
+                },
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 77.0,
+                        "y": 38.0
+                    },
+                    "uuid": "33333333-3333-4333-8333-333333333333"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von K3 auf F.Silkscreen",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 118.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000803"
+                },
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 77.0,
+                        "y": 38.0
+                    },
+                    "uuid": "33333333-3333-4333-8333-333333333333"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von K2 auf F.Silkscreen",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 99.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000703"
+                },
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 38.0
+                    },
+                    "uuid": "44444444-4444-4444-8444-444444444444"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Rechteck von K3 auf F.Silkscreen",
+                    "pos": {
+                        "x": 66.0,
+                        "y": 118.0
+                    },
+                    "uuid": "10000000-0000-4000-8000-000000000803"
+                },
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 38.0
+                    },
+                    "uuid": "44444444-4444-4444-8444-444444444444"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Platinen-Text \"TEMP INPUT: LEFT 230V/RELAY SIDE DNP\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 92.5,
+                        "y": 134.0
+                    },
+                    "uuid": "e6b3cb76-1164-4390-a4cc-c22c3c5988f6"
+                },
+                {
+                    "description": "Durchsteckpad A2 [/MIX_ENABLE_COIL_DRV] von K2",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 108.5
+                    },
+                    "uuid": "0da62bfa-f16e-46ab-b4f4-55694ab64c1f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Platinen-Text \"TEMP INPUT: LEFT 230V/RELAY SIDE DNP\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 92.5,
+                        "y": 134.0
+                    },
+                    "uuid": "e6b3cb76-1164-4390-a4cc-c22c3c5988f6"
+                },
+                {
+                    "description": "Durchsteckpad A1 [/+5V] von K2",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 101.5
+                    },
+                    "uuid": "27db3f7f-1edc-4471-850f-cb5235429a5b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Referenzfeld von R33",
+                    "pos": {
+                        "x": 148.5,
+                        "y": 38.3
+                    },
+                    "uuid": "bb48d6c0-b47a-4192-88ac-8d5cd7f91c6a"
+                },
+                {
+                    "description": "Pad 4 [unconnected-(U1-SENSOR_VP-Pad4)] von U1 auf F.Cu",
+                    "pos": {
+                        "x": 150.25,
+                        "y": 38.06
+                    },
+                    "uuid": "672cfe1e-3ddb-4aea-a8f4-e64935e92f3f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Platinen-Text \"TEMP INPUT: LEFT 230V/RELAY SIDE DNP\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 92.5,
+                        "y": 134.0
+                    },
+                    "uuid": "e6b3cb76-1164-4390-a4cc-c22c3c5988f6"
+                },
+                {
+                    "description": "Durchsteckpad A2 [/MIX_DIR_COIL_DRV] von K3",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 128.5
+                    },
+                    "uuid": "a257cbd1-7806-4920-93df-2b807984e5b2"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Platinen-Text \"TEMP INPUT: LEFT 230V/RELAY SIDE DNP\" auf F.Silkscreen",
+                    "pos": {
+                        "x": 92.5,
+                        "y": 134.0
+                    },
+                    "uuid": "e6b3cb76-1164-4390-a4cc-c22c3c5988f6"
+                },
+                {
+                    "description": "Durchsteckpad A1 [/+5V] von K3",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 121.5
+                    },
+                    "uuid": "383a58fd-c3c5-4f21-8a7e-6de3bf38382c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 38.0
+                    },
+                    "uuid": "44444444-4444-4444-8444-444444444444"
+                },
+                {
+                    "description": "Durchsteckpad A1 [/+5V] von K1",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 79.5
+                    },
+                    "uuid": "3d22cf18-a177-4c4d-a28e-dcf6c571be94"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 38.0
+                    },
+                    "uuid": "44444444-4444-4444-8444-444444444444"
+                },
+                {
+                    "description": "Durchsteckpad A2 [/PUMP_COIL_DRV] von K1",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 86.5
+                    },
+                    "uuid": "b06f0e78-cc24-4064-a8b8-5ccd1d48887c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 38.0
+                    },
+                    "uuid": "44444444-4444-4444-8444-444444444444"
+                },
+                {
+                    "description": "Durchsteckpad A1 [/+5V] von K2",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 101.5
+                    },
+                    "uuid": "27db3f7f-1edc-4471-850f-cb5235429a5b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 38.0
+                    },
+                    "uuid": "44444444-4444-4444-8444-444444444444"
+                },
+                {
+                    "description": "Durchsteckpad A2 [/MIX_ENABLE_COIL_DRV] von K2",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 108.5
+                    },
+                    "uuid": "0da62bfa-f16e-46ab-b4f4-55694ab64c1f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 38.0
+                    },
+                    "uuid": "44444444-4444-4444-8444-444444444444"
+                },
+                {
+                    "description": "Durchsteckpad A1 [/+5V] von K3",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 121.5
+                    },
+                    "uuid": "383a58fd-c3c5-4f21-8a7e-6de3bf38382c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Abschnitt auf F.Silkscreen",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 38.0
+                    },
+                    "uuid": "44444444-4444-4444-8444-444444444444"
+                },
+                {
+                    "description": "Durchsteckpad A2 [/MIX_DIR_COIL_DRV] von K3",
+                    "pos": {
+                        "x": 91.0,
+                        "y": 128.5
+                    },
+                    "uuid": "a257cbd1-7806-4920-93df-2b807984e5b2"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        }
+    ]
+}
