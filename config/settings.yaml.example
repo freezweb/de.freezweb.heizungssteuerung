@@ -16,7 +16,8 @@ leds:
   # A2: Verbindung zur anderen CPU (gruen=ok, gelb=Start/Warten, rot=kein Heartbeat)
   # Hauptsteuerung zusaetzlich:
   # A3: MQTT Broker; bei aktivem keller_relais: R421B16 Modbus-Verbindung
-  # A4: HA-Heartbeat, A5: Failsafe
+  # A4: HA-Heartbeat
+  # A5: bei aktivem pool_prodino dessen Modbus-Verbindung, sonst Failsafe
   # Kellersteuerung: A3-A5 bleiben aus
 
 intercpu:
@@ -97,6 +98,42 @@ pumpengruppen:
     # physisch am RevPi geschrieben, sondern nur logisch berechnet und per
     # Modbus TCP an das ESP-Board uebertragen.
     disable_local_outputs: true
+
+pool_prodino:
+  enabled: false
+  protocol: "modbus_tcp"
+  host: "10.1.1.146"
+  port: 502
+  unit_id: 1
+  timeout_s: 0.5
+  poll_interval_s: 1.0
+  # Nur fuer Alt-/Testfirmware mit MQTT. Im Livebetrieb nutzt der Prodino Modbus TCP.
+  topic_base: "heizung/prodino_pool"
+  input_index: 1
+  # Prodino OptoIn ist hier aktiv-low: 0 bedeutet Pool zu leer.
+  float_empty_high: false
+  valve_component: "pool_nachfuellventil"
+  pump_component: "pool_flockung_pumpe"
+  float_component: "pool_schwimmer_zu_leer"
+  state_persist_path: "state/pool_nachspeisung.json"
+  health_timeout_s: 90
+
+pool_nachspeisung:
+  # Testmodus: leerer Schwimmer startet nach delay_s unabhaengig von 02:00.
+  # Im Livebetrieb auf 0 setzen, dann wird nur zur start_hour nachgespeist.
+  testmodus: 1
+  start_hour: 2
+  delay_s: 30
+  max_fill_s: 3600
+
+pool_flockung:
+  # Kontinuierliche Zugabe: 20 ml / 10 m3 bei 18 m3 Pool = 36 ml/Tag.
+  tagesdosis_ml: 36
+  start_hour: 2
+  # Stark eisenhaltiges Nachfuellwasser: 1 ml / 10 l = 0,1 ml/l.
+  ml_pro_l_frischwasser: 0.1
+  # Kalibriert: 1 l in 7 min 30 s = 133,33 ml/min.
+  pumpe_ml_min: 133.33
 
 mischer:
   fbh_eg:

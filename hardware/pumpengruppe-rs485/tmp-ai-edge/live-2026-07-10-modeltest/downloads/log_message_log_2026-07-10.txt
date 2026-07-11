@@ -1,0 +1,1330 @@
+[0d00h00m09s] 2026-07-10T10:46:10	<INF>	[SNTP] =================================================
+[0d00h00m09s] 2026-07-10T10:46:10	<INF>	[SNTP] ==================== Start ======================
+[0d00h00m09s] 2026-07-10T10:46:10	<INF>	[SNTP] == Logs before time sync -> log_1970-01-01.txt ==
+[0d00h00m09s] 2026-07-10T10:46:10	<INF>	[SNTP] Time is synced with NTP Server de.pool.ntp.org: 2026-07-10 10:46:10
+[0d00h00m10s] 2026-07-10T10:46:11	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m10s] 2026-07-10T10:46:11	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m12s] 2026-07-10T10:46:13	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m14s] 2026-07-10T10:46:15	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m14s] 2026-07-10T10:46:15	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m14s] 2026-07-10T10:46:15	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m25s] 2026-07-10T10:46:26	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m25s] 2026-07-10T10:46:26	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m08s] 2026-07-10T10:46:48	<INF>	[SNTP] =================================================
+[0d00h00m08s] 2026-07-10T10:46:48	<INF>	[SNTP] ==================== Start ======================
+[0d00h00m08s] 2026-07-10T10:46:48	<INF>	[SNTP] == Logs before time sync -> log_1970-01-01.txt ==
+[0d00h00m08s] 2026-07-10T10:46:48	<INF>	[SNTP] Time is synced with NTP Server de.pool.ntp.org: 2026-07-10 10:46:48
+[0d00h00m09s] 2026-07-10T10:46:50	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m09s] 2026-07-10T10:46:50	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m11s] 2026-07-10T10:46:52	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m14s] 2026-07-10T10:46:54	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m14s] 2026-07-10T10:46:54	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m14s] 2026-07-10T10:46:54	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m24s] 2026-07-10T10:47:05	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m24s] 2026-07-10T10:47:05	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m08s] 2026-07-10T10:52:03	<INF>	[SNTP] =================================================
+[0d00h00m08s] 2026-07-10T10:52:03	<INF>	[SNTP] ==================== Start ======================
+[0d00h00m08s] 2026-07-10T10:52:03	<INF>	[SNTP] == Logs before time sync -> log_1970-01-01.txt ==
+[0d00h00m08s] 2026-07-10T10:52:04	<INF>	[SNTP] Time is synced with NTP Server de.pool.ntp.org: 2026-07-10 10:52:04
+[0d00h00m09s] 2026-07-10T10:52:05	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m10s] 2026-07-10T10:52:05	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m12s] 2026-07-10T10:52:07	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m14s] 2026-07-10T10:52:09	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m14s] 2026-07-10T10:52:10	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m14s] 2026-07-10T10:52:10	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m10s] 2026-07-10T11:27:00	<INF>	[SNTP] =================================================
+[0d00h00m10s] 2026-07-10T11:27:00	<INF>	[SNTP] ==================== Start ======================
+[0d00h00m10s] 2026-07-10T11:27:00	<INF>	[SNTP] == Logs before time sync -> log_1970-01-01.txt ==
+[0d00h00m10s] 2026-07-10T11:27:00	<INF>	[SNTP] Time is synced with NTP Server de.pool.ntp.org: 2026-07-10 11:27:00
+[0d00h00m12s] 2026-07-10T11:27:01	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m12s] 2026-07-10T11:27:01	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m14s] 2026-07-10T11:27:03	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m16s] 2026-07-10T11:27:05	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m16s] 2026-07-10T11:27:05	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m16s] 2026-07-10T11:27:05	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h04m47s] 2026-07-10T11:31:36	<ERR>	[OTA FILE] File sending failed!
+[0d00h00m00s] 2026-07-10T09:34:36	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T09:34:36	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T09:34:36	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T09:34:36	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T09:34:36	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T09:34:37	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T09:34:37	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T09:34:39	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T09:34:39	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T09:34:39	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T11:34:39	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T11:34:39	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T11:34:39	<INF>	[SNTP] Time is already set: 2026-07-10 11:34:39
+[0d00h00m03s] 2026-07-10T11:34:39	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T11:34:39	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T11:34:39	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T11:34:39	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T11:34:39	<INF>	[MAIN] Reset reason: Via esp_restart
+[0d00h00m03s] 2026-07-10T11:34:39	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T11:34:39	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T11:34:39	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T11:34:39	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T11:34:40	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T11:34:40	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T11:34:40	<INF>	[WIFI] Init successful
+[0d00h00m17s] 2026-07-10T11:34:53	<WRN>	[WIFI] Disconnected (204, Auth fail)
+[0d00h00m19s] 2026-07-10T11:34:56	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m22s] 2026-07-10T11:34:58	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m23s] 2026-07-10T11:35:00	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m23s] 2026-07-10T11:35:00	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m25s] 2026-07-10T11:35:02	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m27s] 2026-07-10T11:35:04	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -61
+[0d00h00m28s] 2026-07-10T11:35:04	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T11:35:04	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T11:35:04	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m31s] 2026-07-10T11:35:08	<ERR>	[OTA FILE] Failed to stat file: /sdcard/config/marker0.jpg!
+[0d00h00m32s] 2026-07-10T11:35:08	<ERR>	[OTA FILE] Failed to stat file: /sdcard/config/marker1.jpg!
+[0d00h00m41s] 2026-07-10T11:35:17	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m41s] 2026-07-10T11:35:17	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h01m50s] 2026-07-10T11:36:26	<ERR>	[OTA FILE] File already exists: /sdcard/config/align.txt
+[0d00h01m53s] 2026-07-10T11:36:29	<ERR>	[OTA FILE] File already exists: /sdcard/config/reference.jpg
+[0d00h01m56s] 2026-07-10T11:36:32	<ERR>	[OTA FILE] File already exists: /sdcard/config/ref0.jpg
+[0d00h02m25s] 2026-07-10T11:37:01	<ERR>	[OTA FILE] File already exists: /sdcard/config/ref1.jpg
+[0d00h02m33s] 2026-07-10T11:37:10	<ERR>	[OTA FILE] File already exists: /sdcard/config/ref1_org.jpg
+[0d00h02m37s] 2026-07-10T11:37:13	<ERR>	[OTA FILE] File already exists: /sdcard/img_tmp/ref0.jpg
+[0d00h02m43s] 2026-07-10T11:37:19	<ERR>	[OTA FILE] File already exists: /sdcard/img_tmp/ref0_org.jpg
+[0d00h02m47s] 2026-07-10T11:37:23	<ERR>	[OTA FILE] File already exists: /sdcard/img_tmp/ref1.jpg
+[0d00h02m50s] 2026-07-10T11:37:26	<ERR>	[OTA FILE] File already exists: /sdcard/img_tmp/ref1_org.jpg
+[0d00h01m54s] 2026-07-10T12:43:24	<ERR>	[OTA FILE] Failed to stat file: /sdcard/config/marker0.jpg!
+[0d00h01m54s] 2026-07-10T12:43:24	<ERR>	[OTA FILE] Failed to stat file: /sdcard/config/marker1.jpg!
+[0d00h03m09s] 2026-07-10T12:44:39	<ERR>	[OTA FILE] Failed to stat file: /sdcard/config/marker0.jpg!
+[0d00h03m09s] 2026-07-10T12:44:39	<ERR>	[OTA FILE] Failed to stat file: /sdcard/config/marker1.jpg!
+[0d00h00m10s] 2026-07-10T12:45:26	<INF>	[SNTP] =================================================
+[0d00h00m10s] 2026-07-10T12:45:26	<INF>	[SNTP] ==================== Start ======================
+[0d00h00m10s] 2026-07-10T12:45:26	<INF>	[SNTP] == Logs before time sync -> log_1970-01-01.txt ==
+[0d00h00m10s] 2026-07-10T12:45:27	<INF>	[SNTP] Time is synced with NTP Server de.pool.ntp.org: 2026-07-10 12:45:27
+[0d00h00m11s] 2026-07-10T12:45:28	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m11s] 2026-07-10T12:45:28	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m13s] 2026-07-10T12:45:30	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m16s] 2026-07-10T12:45:32	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m16s] 2026-07-10T12:45:33	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m16s] 2026-07-10T12:45:33	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h02m55s] 2026-07-10T12:48:12	<ERR>	[OTA FILE] File sending failed!
+[0d00h00m58s] 2026-07-10T12:51:02	<ERR>	[OTA FILE] File sending failed!
+[0d00h00m00s] 2026-07-10T10:56:33	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T10:56:33	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T10:56:33	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T10:56:33	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T10:56:33	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T10:56:34	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T10:56:34	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T10:56:36	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T10:56:36	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T10:56:36	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T12:56:36	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T12:56:36	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T12:56:36	<INF>	[SNTP] Time is already set: 2026-07-10 12:56:36
+[0d00h00m03s] 2026-07-10T12:56:37	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T12:56:37	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T12:56:37	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T12:56:37	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T12:56:37	<INF>	[MAIN] Reset reason: Via esp_restart
+[0d00h00m03s] 2026-07-10T12:56:37	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T12:56:37	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T12:56:37	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T12:56:37	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T12:56:37	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T12:56:37	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T12:56:37	<INF>	[WIFI] Init successful
+[0d00h00m16s] 2026-07-10T12:56:50	<WRN>	[WIFI] Disconnected (204, Auth fail)
+[0d00h00m18s] 2026-07-10T12:56:52	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m22s] 2026-07-10T12:56:55	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -57
+[0d00h00m23s] 2026-07-10T12:56:56	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m23s] 2026-07-10T12:56:57	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m23s] 2026-07-10T12:56:57	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m25s] 2026-07-10T12:56:59	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m28s] 2026-07-10T12:57:02	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T12:57:02	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T12:57:02	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m00s] 2026-07-10T10:57:11	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T10:57:11	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T10:57:11	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T10:57:12	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T10:57:12	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T10:57:12	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T10:57:12	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T10:57:15	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T10:57:15	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T10:57:15	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[SNTP] Time is already set: 2026-07-10 12:57:15
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[MAIN] Reset reason: Via esp_restart
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T12:57:15	<INF>	[WIFI] Init successful
+[0d00h00m16s] 2026-07-10T12:57:28	<WRN>	[WIFI] Disconnected (204, Auth fail)
+[0d00h00m18s] 2026-07-10T12:57:30	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -87
+[0d00h00m23s] 2026-07-10T12:57:35	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m23s] 2026-07-10T12:57:35	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m25s] 2026-07-10T12:57:37	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m28s] 2026-07-10T12:57:40	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T12:57:40	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T12:57:40	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m40s] 2026-07-10T12:57:52	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m40s] 2026-07-10T12:57:52	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h03m43s] 2026-07-10T13:00:55	<ERR>	[MQTT IF] Other event id:
+[0d00h04m13s] 2026-07-10T13:01:24	<ERR>	[MQTT IF] Other event id:
+[0d00h04m42s] 2026-07-10T13:01:54	<ERR>	[MQTT IF] Other event id:
+[0d00h05m12s] 2026-07-10T13:02:23	<ERR>	[MQTT IF] Other event id:
+[0d00h00m00s] 2026-07-10T11:05:17	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T11:05:17	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T11:05:17	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T11:05:17	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T11:05:17	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T11:05:17	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T11:05:17	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T11:05:20	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T11:05:20	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T11:05:20	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[SNTP] Time is already set: 2026-07-10 13:05:20
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T13:05:20	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T13:05:20	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T13:05:20	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T13:05:20	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T13:05:22	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m07s] 2026-07-10T13:05:24	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m07s] 2026-07-10T13:05:24	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -57
+[0d00h00m09s] 2026-07-10T13:05:26	<DBG>	[SNTP] Waiting for system time to be set... 3/10
+[0d00h00m10s] 2026-07-10T13:05:27	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m11s] 2026-07-10T13:05:28	<DBG>	[SNTP] Waiting for system time to be set... 4/10
+[0d00h00m12s] 2026-07-10T13:05:35	<INF>	[SNTP] Time is synced with NTP Server de.pool.ntp.org: 2026-07-10 13:05:35
+[0d00h00m13s] 2026-07-10T13:05:36	<DBG>	[SNTP] Waiting for system time successfull with 4/10
+[0d00h00m13s] 2026-07-10T13:05:36	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m13s] 2026-07-10T13:05:36	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m16s] 2026-07-10T13:05:38	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m16s] 2026-07-10T13:05:39	<DBG>	[OTA FILE] download_get_handler
+[0d00h00m16s] 2026-07-10T13:05:39	<ERR>	[OTA FILE] Failed to stat file: /sdcard/wlan.ini!
+[0d00h00m00s] 2026-07-10T11:05:41	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T11:05:41	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T11:05:41	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T11:05:41	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T11:05:41	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T11:05:41	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T11:05:41	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T11:05:44	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T11:05:44	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T11:05:44	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[SNTP] Time is already set: 2026-07-10 13:05:44
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T13:05:44	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T13:05:44	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T13:05:44	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T13:05:44	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T13:05:46	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m07s] 2026-07-10T13:05:49	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m09s] 2026-07-10T13:05:51	<DBG>	[SNTP] Waiting for system time to be set... 3/10
+[0d00h00m11s] 2026-07-10T13:05:53	<DBG>	[SNTP] Waiting for system time to be set... 4/10
+[0d00h00m13s] 2026-07-10T13:05:55	<DBG>	[SNTP] Waiting for system time to be set... 5/10
+[0d00h00m15s] 2026-07-10T13:05:57	<DBG>	[SNTP] Waiting for system time to be set... 6/10
+[0d00h00m16s] 2026-07-10T13:05:57	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m17s] 2026-07-10T13:05:59	<DBG>	[SNTP] Waiting for system time to be set... 7/10
+[0d00h00m18s] 2026-07-10T13:05:59	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m19s] 2026-07-10T13:06:01	<DBG>	[SNTP] Waiting for system time to be set... 8/10
+[0d00h00m21s] 2026-07-10T13:06:03	<DBG>	[SNTP] Waiting for system time to be set... 9/10
+[0d00h00m23s] 2026-07-10T13:06:05	<DBG>	[MAIN] Manual Time Sync failed during startup
+[0d00h00m24s] 2026-07-10T13:06:05	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 2026-07-10T13:06:05	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m26s] 2026-07-10T13:06:07	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m32s] 2026-07-10T13:06:13	<WRN>	[WIFI] Disconnected (2, Auth fail)
+[0d00h00m35s] 2026-07-10T13:06:16	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m38s] 2026-07-10T13:06:19	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -61
+[0d00h00m39s] 2026-07-10T13:06:20	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h01m23s] 2026-07-10T13:07:04	<INF>	[SNTP] Time is synced with NTP Server de.pool.ntp.org: 2026-07-10 13:07:04
+[0d00h02m38s] 2026-07-10T13:08:19	<DBG>	[OTA FILE] download_get_handler
+[0d00h02m38s] 2026-07-10T13:08:20	<DBG>	[OTA FILE] delete_post_handler
+[0d00h02m38s] 2026-07-10T13:08:20	<DBG>	[OTA FILE] File deleted: /config/config.ini
+[0d00h02m39s] 2026-07-10T13:08:20	<DBG>	[OTA FILE] upload_post_handler
+[0d00h02m39s] 2026-07-10T13:08:20	<DBG>	[OTA FILE] File saved: /config/config.ini
+[0d00h02m39s] 2026-07-10T13:08:20	<DBG>	[OTA FILE] download_get_handler
+[0d00h02m46s] 2026-07-10T13:08:27	<DBG>	[OTA] handler_reboot
+[0d00h02m46s] 2026-07-10T13:08:27	<INF>	[OTA] !!! System will restart within 5 sec!!!
+[0d00h02m46s] 2026-07-10T13:08:27	<INF>	[OTA] Reboot triggered by Software (5s)
+[0d00h02m46s] 2026-07-10T13:08:27	<WRN>	[OTA] Reboot in 5sec
+[0d00h00m00s] 2026-07-10T11:08:35	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T11:08:35	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T11:08:35	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T11:08:35	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T11:08:35	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T11:08:36	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T11:08:36	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T11:08:38	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T11:08:38	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T11:08:38	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T13:08:38	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T13:08:38	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T13:08:38	<INF>	[SNTP] Time is already set: 2026-07-10 13:08:38
+[0d00h00m03s] 2026-07-10T13:08:38	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T13:08:38	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T13:08:38	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T13:08:38	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T13:08:38	<INF>	[MAIN] Reset reason: Via esp_restart
+[0d00h00m03s] 2026-07-10T13:08:38	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T13:08:39	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T13:08:39	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T13:08:39	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T13:08:39	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T13:08:39	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T13:08:39	<INF>	[WIFI] Init successful
+[0d00h00m16s] 2026-07-10T13:08:52	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m19s] 2026-07-10T13:08:54	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m21s] 2026-07-10T13:08:57	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m23s] 2026-07-10T13:08:59	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m23s] 2026-07-10T13:08:59	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m24s] 2026-07-10T13:09:00	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -61
+[0d00h00m25s] 2026-07-10T13:09:01	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m25s] 2026-07-10T13:09:01	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m28s] 2026-07-10T13:09:03	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T13:09:03	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T13:09:03	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m41s] 2026-07-10T13:09:16	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m41s] 2026-07-10T13:09:16	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h05m40s] 2026-07-10T13:14:16	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h05m40s] 2026-07-10T13:14:16	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m00s] 2026-07-10T11:49:23	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T11:49:23	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T11:49:23	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T11:49:23	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T11:49:23	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T11:49:24	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T11:49:24	<INF>	[MAIN] Total heap: 4377151 byte
+[0d00h00m03s] 2026-07-10T11:49:26	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T11:49:26	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T11:49:26	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T13:49:26	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T13:49:26	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T13:49:26	<INF>	[SNTP] Time is already set: 2026-07-10 13:49:26
+[0d00h00m03s] 2026-07-10T13:49:26	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T13:49:26	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T13:49:26	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T13:49:26	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T13:49:26	<INF>	[MAIN] Reset reason: Via esp_restart
+[0d00h00m03s] 2026-07-10T13:49:26	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T13:49:27	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T13:49:27	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T13:49:27	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T13:49:27	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m04s] 2026-07-10T13:49:27	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m04s] 2026-07-10T13:49:27	<INF>	[WIFI] Init successful
+[0d00h00m17s] 2026-07-10T13:49:40	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m19s] 2026-07-10T13:49:42	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m24s] 2026-07-10T13:49:47	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 2026-07-10T13:49:47	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m26s] 2026-07-10T13:49:49	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m26s] 2026-07-10T13:49:49	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -58
+[0d00h00m27s] 2026-07-10T13:49:50	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m28s] 2026-07-10T13:49:51	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T13:49:52	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T13:49:52	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m46s] 2026-07-10T13:50:10	<ERR>	[OTA FILE] File sending failed!
+[0d00h03m59s] 2026-07-10T13:53:22	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/raw.jpg!
+[0d00h03m59s] 2026-07-10T13:53:22	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/alg.jpg!
+[0d00h03m59s] 2026-07-10T13:53:22	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/alg_roi.jpg!
+[0d00h03m59s] 2026-07-10T13:53:23	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/roi.jpg!
+[0d00h03m59s] 2026-07-10T13:53:23	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/ref_zw.jpg!
+[0d00h04m00s] 2026-07-10T13:53:23	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/ref_zw_org.jpg!
+[0d00h00m00s] 2026-07-10T11:57:41	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T11:57:41	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T11:57:41	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T11:57:41	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T11:57:41	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T11:57:42	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T11:57:42	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T11:57:44	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T11:57:44	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T11:57:44	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T13:57:44	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T13:57:44	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T13:57:45	<INF>	[SNTP] Time is already set: 2026-07-10 13:57:45
+[0d00h00m03s] 2026-07-10T13:57:45	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T13:57:45	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T13:57:45	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T13:57:45	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T13:57:45	<INF>	[MAIN] Reset reason: Via esp_restart
+[0d00h00m03s] 2026-07-10T13:57:45	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T13:57:45	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T13:57:45	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T13:57:45	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T13:57:45	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T13:57:45	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T13:57:45	<INF>	[WIFI] Init successful
+[0d00h00m16s] 2026-07-10T13:57:58	<WRN>	[WIFI] Disconnected (204, Auth fail)
+[0d00h00m18s] 2026-07-10T13:58:00	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m21s] 2026-07-10T13:58:02	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m23s] 2026-07-10T13:58:05	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m23s] 2026-07-10T13:58:05	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m23s] 2026-07-10T13:58:05	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m25s] 2026-07-10T13:58:07	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m28s] 2026-07-10T13:58:09	<WRN>	[WIFI] Disconnected (2, Auth fail)
+[0d00h00m28s] 2026-07-10T13:58:09	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T13:58:10	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T13:58:10	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m00s] 2026-07-10T12:00:49	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:00:49	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:00:49	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:00:49	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:00:49	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:00:49	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:00:49	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:00:52	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:00:52	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:00:52	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:00:52	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:00:52	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:00:52	<INF>	[SNTP] Time is already set: 2026-07-10 14:00:52
+[0d00h00m03s] 2026-07-10T14:00:52	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:00:52	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:00:52	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:00:52	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:00:52	<INF>	[MAIN] Reset reason: Via esp_restart
+[0d00h00m03s] 2026-07-10T14:00:52	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:00:52	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:00:52	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:00:52	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:00:52	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:00:52	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m04s] 2026-07-10T14:00:52	<INF>	[WIFI] Init successful
+[0d00h00m17s] 2026-07-10T14:01:06	<WRN>	[WIFI] Disconnected (2, Auth fail)
+[0d00h00m20s] 2026-07-10T14:01:09	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m22s] 2026-07-10T14:01:11	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -62
+[0d00h00m23s] 2026-07-10T14:01:12	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m24s] 2026-07-10T14:01:12	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 2026-07-10T14:01:12	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m26s] 2026-07-10T14:01:15	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m28s] 2026-07-10T14:01:17	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T14:01:17	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T14:01:17	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h05m56s] 2026-07-10T14:06:45	<ERR>	[MQTT IF] Failed to publish topic 'homeassistant/sensor/watermeter/wifiRSSI/config', skipping all MQTT publishings in this round!
+[0d00h06m25s] 2026-07-10T14:07:14	<ERR>	[MQTT IF] Other event id:
+[0d00h06m55s] 2026-07-10T14:07:44	<ERR>	[MQTT IF] Other event id:
+[0d00h00m00s] 2026-07-10T12:11:43	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:11:43	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:11:43	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:11:43	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:11:43	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:11:44	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:11:44	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:11:46	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:11:46	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:11:46	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:11:46	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:11:46	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:11:46	<INF>	[SNTP] Time is already set: 2026-07-10 14:11:46
+[0d00h00m03s] 2026-07-10T14:11:46	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:11:46	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:11:47	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:11:47	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:11:47	<INF>	[MAIN] Reset reason: Via esp_restart
+[0d00h00m03s] 2026-07-10T14:11:47	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:11:47	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:11:47	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:11:47	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:11:47	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:11:47	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:11:47	<INF>	[WIFI] Init successful
+[0d00h00m18s] 2026-07-10T14:12:01	<WRN>	[WIFI] Disconnected (2, Auth fail)
+[0d00h00m20s] 2026-07-10T14:12:04	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m23s] 2026-07-10T14:12:07	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m23s] 2026-07-10T14:12:07	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m24s] 2026-07-10T14:12:08	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -60
+[0d00h00m25s] 2026-07-10T14:12:09	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m26s] 2026-07-10T14:12:09	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m28s] 2026-07-10T14:12:11	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T14:12:12	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T14:12:12	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m00s] 2026-07-10T12:17:02	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:17:02	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:17:02	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:17:02	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:17:02	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:17:02	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:17:02	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:17:05	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:17:05	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:17:05	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:17:05	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:17:05	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:17:05	<INF>	[SNTP] Time is already set: 2026-07-10 14:17:05
+[0d00h00m03s] 2026-07-10T14:17:05	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:17:05	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:17:05	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:17:05	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:17:05	<INF>	[MAIN] Reset reason: Via esp_restart
+[0d00h00m03s] 2026-07-10T14:17:05	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:17:05	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:17:05	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:17:05	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:17:05	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m04s] 2026-07-10T14:17:06	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m04s] 2026-07-10T14:17:06	<INF>	[WIFI] Init successful
+[0d00h00m07s] 2026-07-10T14:17:09	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m09s] 2026-07-10T14:17:11	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m24s] 2026-07-10T14:17:26	<WRN>	[WIFI] Disconnected (2, Auth fail)
+[0d00h00m24s] 2026-07-10T14:17:26	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 2026-07-10T14:17:26	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m26s] 2026-07-10T14:17:28	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m26s] 2026-07-10T14:17:28	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m28s] 2026-07-10T14:17:30	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T14:17:30	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T14:17:30	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m41s] 2026-07-10T14:17:43	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m41s] 2026-07-10T14:17:43	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h01m02s] 2026-07-10T14:18:04	<ERR>	[POSTPROC] zaehlerstand: Raw: 33332.6666, Value: , Status: Rate too high - Read: 33332.6666 - Pre: 58.0197 - Rate: 33274.6469
+[0d00h05m16s] 2026-07-10T14:22:18	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/raw.jpg!
+[0d00h05m16s] 2026-07-10T14:22:18	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/alg.jpg!
+[0d00h05m16s] 2026-07-10T14:22:18	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/alg_roi.jpg!
+[0d00h05m17s] 2026-07-10T14:22:19	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/roi.jpg!
+[0d00h05m17s] 2026-07-10T14:22:19	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/dig_roi.jpg!
+[0d00h05m18s] 2026-07-10T14:22:20	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/ana_roi.jpg!
+[0d00h05m18s] 2026-07-10T14:22:20	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/zaehlerstand.dig.jpg!
+[0d00h05m18s] 2026-07-10T14:22:20	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/zaehlerstand.dig2.jpg!
+[0d00h05m18s] 2026-07-10T14:22:21	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/zaehlerstand.dig3.jpg!
+[0d00h05m19s] 2026-07-10T14:22:21	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/zaehlerstand.dig4.jpg!
+[0d00h05m19s] 2026-07-10T14:22:21	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/zaehlerstand.dig5.jpg!
+[0d00h05m19s] 2026-07-10T14:22:21	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/zaehlerstand.ana1.jpg!
+[0d00h05m19s] 2026-07-10T14:22:21	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/zaehlerstand.ana2.jpg!
+[0d00h05m20s] 2026-07-10T14:22:22	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/zaehlerstand.ana3.jpg!
+[0d00h05m20s] 2026-07-10T14:22:22	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/zaehlerstand.ana4.jpg!
+[0d00h06m03s] 2026-07-10T14:23:05	<ERR>	[OTA FILE] Failed to stat file: /sdcard/config/dig-class100-0182_s2_q.tflite!
+[0d00h00m00s] 2026-07-10T12:23:45	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:23:45	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:23:45	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:23:45	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:23:45	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:23:46	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:23:46	<INF>	[MAIN] Total heap: 4377151 byte
+[0d00h00m03s] 2026-07-10T12:23:48	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:23:48	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:23:48	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:23:48	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:23:48	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:23:48	<INF>	[SNTP] Time is already set: 2026-07-10 14:23:48
+[0d00h00m03s] 2026-07-10T14:23:48	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:23:48	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:23:48	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:23:49	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:23:49	<INF>	[MAIN] Reset reason: Via esp_restart
+[0d00h00m03s] 2026-07-10T14:23:49	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:23:49	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:23:49	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:23:49	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:23:49	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:23:49	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:23:49	<INF>	[WIFI] Init successful
+[0d00h00m07s] 2026-07-10T14:23:52	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -55
+[0d00h00m08s] 2026-07-10T14:23:54	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m09s] 2026-07-10T14:23:54	<INF>	[SNTP] Time is synced with NTP Server de.pool.ntp.org: 2026-07-10 14:23:54
+[0d00h00m09s] 2026-07-10T14:23:55	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m09s] 2026-07-10T14:23:55	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m12s] 2026-07-10T14:23:57	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m00s] 2026-07-10T12:23:59	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:23:59	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:23:59	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:23:59	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:23:59	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:24:00	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:24:00	<INF>	[MAIN] Total heap: 4377151 byte
+[0d00h00m03s] 2026-07-10T12:24:02	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:24:02	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:24:02	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:24:02	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:24:02	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:24:02	<INF>	[SNTP] Time is already set: 2026-07-10 14:24:02
+[0d00h00m03s] 2026-07-10T14:24:02	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:24:02	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:24:02	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:24:02	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:24:02	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T14:24:02	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T14:24:02	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T14:24:02	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T14:24:02	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:24:02	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:24:02	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:24:02	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:24:02	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:24:03	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:24:03	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T14:24:05	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m07s] 2026-07-10T14:24:06	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m07s] 2026-07-10T14:24:07	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m09s] 2026-07-10T14:24:09	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m09s] 2026-07-10T14:24:09	<DBG>	[SNTP] Waiting for system time to be set... 3/10
+[0d00h00m12s] 2026-07-10T14:24:11	<DBG>	[SNTP] Waiting for system time to be set... 4/10
+[0d00h00m12s] 2026-07-10T14:24:11	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m14s] 2026-07-10T14:24:13	<DBG>	[SNTP] Waiting for system time to be set... 5/10
+[0d00h00m16s] 2026-07-10T14:24:15	<DBG>	[SNTP] Waiting for system time to be set... 6/10
+[0d00h00m18s] 2026-07-10T14:24:17	<DBG>	[SNTP] Waiting for system time to be set... 7/10
+[0d00h00m18s] 2026-07-10T14:24:17	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -58
+[0d00h00m19s] 2026-07-10T14:24:19	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m20s] 2026-07-10T14:24:19	<DBG>	[SNTP] Waiting for system time to be set... 8/10
+[0d00h00m22s] 2026-07-10T14:24:21	<DBG>	[SNTP] Waiting for system time to be set... 9/10
+[0d00h00m24s] 2026-07-10T14:24:23	<DBG>	[MAIN] Manual Time Sync failed during startup
+[0d00h00m24s] 2026-07-10T14:24:23	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 2026-07-10T14:24:23	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m26s] 2026-07-10T14:24:25	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m00s] 2026-07-10T12:24:27	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:24:27	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:24:27	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:24:27	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:24:27	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:24:28	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:24:28	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:24:30	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:24:31	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:24:31	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[SNTP] Time is already set: 2026-07-10 14:24:31
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:24:31	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T14:24:31	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T14:24:31	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:24:31	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T14:24:33	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m07s] 2026-07-10T14:24:35	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m08s] 2026-07-10T14:24:36	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m09s] 2026-07-10T14:24:37	<INF>	[SNTP] Time is synced with NTP Server de.pool.ntp.org: 2026-07-10 14:24:37
+[0d00h00m10s] 2026-07-10T14:24:37	<DBG>	[SNTP] Waiting for system time successfull with 2/10
+[0d00h00m10s] 2026-07-10T14:24:37	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m10s] 2026-07-10T14:24:37	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m12s] 2026-07-10T14:24:39	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m12s] 2026-07-10T14:24:40	<DBG>	[OTA FILE] log_get_last_part_handler
+[0d00h00m00s] 2026-07-10T12:24:43	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:24:43	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:24:43	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:24:43	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:24:43	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:24:43	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:24:43	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:24:46	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:24:46	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:24:46	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:24:46	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:24:46	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:24:46	<INF>	[SNTP] Time is already set: 2026-07-10 14:24:46
+[0d00h00m03s] 2026-07-10T14:24:46	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:24:46	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:24:46	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:24:46	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:24:46	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T14:24:46	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T14:24:46	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T14:24:46	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T14:24:46	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:24:46	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:24:46	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:24:46	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:24:46	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:24:46	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m04s] 2026-07-10T14:24:47	<INF>	[WIFI] Init successful
+[0d00h00m06s] 2026-07-10T14:24:49	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m07s] 2026-07-10T14:24:50	<WRN>	[WIFI] Disconnected (2, Auth fail)
+[0d00h00m08s] 2026-07-10T14:24:51	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m09s] 2026-07-10T14:24:52	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m10s] 2026-07-10T14:24:53	<DBG>	[SNTP] Waiting for system time to be set... 3/10
+[0d00h00m12s] 2026-07-10T14:24:55	<DBG>	[SNTP] Waiting for system time to be set... 4/10
+[0d00h00m12s] 2026-07-10T14:24:55	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m14s] 2026-07-10T14:24:57	<DBG>	[SNTP] Waiting for system time to be set... 5/10
+[0d00h00m16s] 2026-07-10T14:24:59	<DBG>	[SNTP] Waiting for system time to be set... 6/10
+[0d00h00m18s] 2026-07-10T14:25:01	<DBG>	[SNTP] Waiting for system time to be set... 7/10
+[0d00h00m20s] 2026-07-10T14:25:03	<DBG>	[SNTP] Waiting for system time to be set... 8/10
+[0d00h00m22s] 2026-07-10T14:25:05	<DBG>	[SNTP] Waiting for system time to be set... 9/10
+[0d00h00m24s] 2026-07-10T14:25:07	<DBG>	[MAIN] Manual Time Sync failed during startup
+[0d00h00m24s] 2026-07-10T14:25:07	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 2026-07-10T14:25:07	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m24s] 2026-07-10T14:25:07	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m26s] 2026-07-10T14:25:09	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m27s] 2026-07-10T14:25:10	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m35s] 2026-07-10T14:25:18	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m37s] 2026-07-10T14:25:20	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m51s] 2026-07-10T14:25:34	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m53s] 2026-07-10T14:25:36	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m56s] 2026-07-10T14:25:39	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -65
+[0d00h00m57s] 2026-07-10T14:25:40	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m00s] 2026-07-10T12:25:49	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:25:49	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:25:49	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:25:49	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:25:49	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:25:50	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:25:50	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:25:52	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:25:52	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:25:52	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:25:52	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:25:52	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:25:52	<INF>	[SNTP] Time is already set: 2026-07-10 14:25:52
+[0d00h00m03s] 2026-07-10T14:25:52	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:25:52	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:25:52	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:25:52	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:25:52	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T14:25:52	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T14:25:52	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T14:25:52	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T14:25:52	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:25:52	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:25:52	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:25:52	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:25:52	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:25:53	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:25:53	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T14:25:55	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m07s] 2026-07-10T14:25:57	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m09s] 2026-07-10T14:25:59	<DBG>	[SNTP] Waiting for system time to be set... 3/10
+[0d00h00m10s] 2026-07-10T14:25:59	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m11s] 2026-07-10T14:26:01	<DBG>	[SNTP] Waiting for system time to be set... 4/10
+[0d00h00m13s] 2026-07-10T14:26:03	<DBG>	[SNTP] Waiting for system time to be set... 5/10
+[0d00h00m16s] 2026-07-10T14:26:05	<DBG>	[SNTP] Waiting for system time to be set... 6/10
+[0d00h00m18s] 2026-07-10T14:26:07	<DBG>	[SNTP] Waiting for system time to be set... 7/10
+[0d00h00m20s] 2026-07-10T14:26:09	<DBG>	[SNTP] Waiting for system time to be set... 8/10
+[0d00h00m22s] 2026-07-10T14:26:11	<DBG>	[SNTP] Waiting for system time to be set... 9/10
+[0d00h00m24s] 2026-07-10T14:26:13	<DBG>	[MAIN] Manual Time Sync failed during startup
+[0d00h00m24s] 2026-07-10T14:26:13	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 2026-07-10T14:26:13	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m26s] 2026-07-10T14:26:15	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m00s] 2026-07-10T12:26:24	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:26:24	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:26:24	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:26:24	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:26:25	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:26:25	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:26:25	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:26:28	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:26:28	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:26:28	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[SNTP] Time is already set: 2026-07-10 14:26:28
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:26:28	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T14:26:28	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T14:26:28	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:26:28	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T14:26:30	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m08s] 2026-07-10T14:26:32	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m10s] 2026-07-10T14:26:34	<DBG>	[SNTP] Waiting for system time to be set... 3/10
+[0d00h00m12s] 2026-07-10T14:26:36	<DBG>	[SNTP] Waiting for system time to be set... 4/10
+[0d00h00m14s] 2026-07-10T14:26:38	<DBG>	[SNTP] Waiting for system time to be set... 5/10
+[0d00h00m16s] 2026-07-10T14:26:40	<DBG>	[SNTP] Waiting for system time to be set... 6/10
+[0d00h00m16s] 2026-07-10T14:26:41	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m18s] 2026-07-10T14:26:42	<DBG>	[SNTP] Waiting for system time to be set... 7/10
+[0d00h00m20s] 2026-07-10T14:26:44	<DBG>	[SNTP] Waiting for system time to be set... 8/10
+[0d00h00m20s] 2026-07-10T14:26:45	<WRN>	[WIFI] Disconnected (2, Auth fail)
+[0d00h00m22s] 2026-07-10T14:26:46	<DBG>	[SNTP] Waiting for system time to be set... 9/10
+[0d00h00m22s] 2026-07-10T14:26:47	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m24s] 2026-07-10T14:26:48	<DBG>	[MAIN] Manual Time Sync failed during startup
+[0d00h00m24s] 2026-07-10T14:26:48	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 2026-07-10T14:26:48	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m26s] 2026-07-10T14:26:50	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m36s] 2026-07-10T14:27:01	<WRN>	[WIFI] Disconnected (2, Auth fail)
+[0d00h00m38s] 2026-07-10T14:27:03	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m42s] 2026-07-10T14:27:07	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -62
+[0d00h00m43s] 2026-07-10T14:27:08	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m00s] 2026-07-10T12:27:13	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:27:13	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:27:13	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:27:13	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:27:13	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:27:13	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:27:13	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:27:16	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:27:16	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:27:16	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:27:16	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:27:16	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:27:16	<INF>	[SNTP] Time is already set: 2026-07-10 14:27:16
+[0d00h00m03s] 2026-07-10T14:27:16	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:27:16	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:27:16	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:27:16	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:27:16	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T14:27:16	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T14:27:16	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T14:27:16	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T14:27:16	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:27:16	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:27:16	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:27:16	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:27:16	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:27:16	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:27:17	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T14:27:19	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m07s] 2026-07-10T14:27:21	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m08s] 2026-07-10T14:27:21	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -56
+[0d00h00m09s] 2026-07-10T14:27:23	<DBG>	[SNTP] Waiting for system time to be set... 3/10
+[0d00h00m11s] 2026-07-10T14:27:24	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m11s] 2026-07-10T14:27:25	<DBG>	[SNTP] Waiting for system time to be set... 4/10
+[0d00h00m13s] 2026-07-10T14:27:27	<DBG>	[SNTP] Waiting for system time to be set... 5/10
+[0d00h00m15s] 2026-07-10T14:27:29	<DBG>	[SNTP] Waiting for system time to be set... 6/10
+[0d00h00m17s] 2026-07-10T14:27:31	<DBG>	[SNTP] Waiting for system time to be set... 7/10
+[0d00h00m19s] 2026-07-10T14:27:33	<DBG>	[SNTP] Waiting for system time to be set... 8/10
+[0d00h00m21s] 2026-07-10T14:27:35	<DBG>	[SNTP] Waiting for system time to be set... 9/10
+[0d00h00m23s] 2026-07-10T14:27:37	<DBG>	[MAIN] Manual Time Sync failed during startup
+[0d00h00m23s] 2026-07-10T14:27:37	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m23s] 2026-07-10T14:27:37	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m25s] 2026-07-10T14:27:39	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m00s] 2026-07-10T12:27:41	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:27:41	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:27:41	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:27:41	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:27:41	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:27:42	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:27:42	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:27:44	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:27:44	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:27:44	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:27:44	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:27:44	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:27:44	<INF>	[SNTP] Time is already set: 2026-07-10 14:27:44
+[0d00h00m03s] 2026-07-10T14:27:44	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:27:44	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:27:45	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:27:45	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:27:45	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T14:27:45	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T14:27:45	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T14:27:45	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T14:27:45	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:27:45	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:27:45	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:27:45	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:27:45	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:27:45	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:27:45	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T14:27:47	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m07s] 2026-07-10T14:27:49	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m08s] 2026-07-10T14:27:49	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -56
+[0d00h00m09s] 2026-07-10T14:27:51	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m10s] 2026-07-10T14:27:51	<DBG>	[SNTP] Waiting for system time to be set... 3/10
+[0d00h00m10s] 2026-07-10T14:27:52	<INF>	[SNTP] Time is synced with NTP Server de.pool.ntp.org: 2026-07-10 14:27:52
+[0d00h00m12s] 2026-07-10T14:27:54	<DBG>	[SNTP] Waiting for system time successfull with 3/10
+[0d00h00m12s] 2026-07-10T14:27:54	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m12s] 2026-07-10T14:27:54	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m14s] 2026-07-10T14:27:56	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m00s] 2026-07-10T12:27:58	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:27:58	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:27:58	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:27:58	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:27:58	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:27:59	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:27:59	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:28:01	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:28:01	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:28:01	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:28:01	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:28:01	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:28:01	<INF>	[SNTP] Time is already set: 2026-07-10 14:28:01
+[0d00h00m03s] 2026-07-10T14:28:01	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:28:01	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:28:01	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:28:01	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:28:01	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T14:28:02	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T14:28:02	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T14:28:02	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T14:28:02	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:28:02	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:28:02	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:28:02	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:28:02	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:28:02	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:28:02	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T14:28:04	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m07s] 2026-07-10T14:28:06	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m09s] 2026-07-10T14:28:08	<DBG>	[SNTP] Waiting for system time to be set... 3/10
+[0d00h00m11s] 2026-07-10T14:28:10	<DBG>	[SNTP] Waiting for system time to be set... 4/10
+[0d00h00m13s] 2026-07-10T14:28:12	<DBG>	[SNTP] Waiting for system time to be set... 5/10
+[0d00h00m15s] 2026-07-10T14:28:14	<DBG>	[SNTP] Waiting for system time to be set... 6/10
+[0d00h00m16s] 2026-07-10T14:28:14	<WRN>	[WIFI] Disconnected (204, Auth fail)
+[0d00h00m17s] 2026-07-10T14:28:16	<DBG>	[SNTP] Waiting for system time to be set... 7/10
+[0d00h00m18s] 2026-07-10T14:28:17	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m19s] 2026-07-10T14:28:18	<DBG>	[SNTP] Waiting for system time to be set... 8/10
+[0d00h00m21s] 2026-07-10T14:28:19	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m21s] 2026-07-10T14:28:20	<DBG>	[SNTP] Waiting for system time to be set... 9/10
+[0d00h00m23s] 2026-07-10T14:28:22	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m23s] 2026-07-10T14:28:22	<DBG>	[MAIN] Manual Time Sync failed during startup
+[0d00h00m23s] 2026-07-10T14:28:22	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 2026-07-10T14:28:22	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m26s] 2026-07-10T14:28:24	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m26s] 2026-07-10T14:28:24	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -61
+[0d00h00m27s] 2026-07-10T14:28:25	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m00s] 2026-07-10T12:28:28	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:28:28	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:28:28	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:28:28	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:28:28	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:28:28	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:28:28	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:28:31	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:28:31	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:28:31	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[SNTP] Time is already set: 2026-07-10 14:28:31
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:28:31	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T14:28:31	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T14:28:31	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:28:31	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T14:28:33	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m07s] 2026-07-10T14:28:35	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m09s] 2026-07-10T14:28:37	<DBG>	[SNTP] Waiting for system time to be set... 3/10
+[0d00h00m11s] 2026-07-10T14:28:39	<DBG>	[SNTP] Waiting for system time to be set... 4/10
+[0d00h00m13s] 2026-07-10T14:28:41	<DBG>	[SNTP] Waiting for system time to be set... 5/10
+[0d00h00m15s] 2026-07-10T14:28:43	<DBG>	[SNTP] Waiting for system time to be set... 6/10
+[0d00h00m16s] 2026-07-10T14:28:44	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m17s] 2026-07-10T14:28:45	<DBG>	[SNTP] Waiting for system time to be set... 7/10
+[0d00h00m19s] 2026-07-10T14:28:47	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m19s] 2026-07-10T14:28:47	<DBG>	[SNTP] Waiting for system time to be set... 8/10
+[0d00h00m21s] 2026-07-10T14:28:49	<DBG>	[SNTP] Waiting for system time to be set... 9/10
+[0d00h00m24s] 2026-07-10T14:28:51	<DBG>	[MAIN] Manual Time Sync failed during startup
+[0d00h00m24s] 2026-07-10T14:28:51	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 2026-07-10T14:28:51	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m26s] 2026-07-10T14:28:53	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m32s] 2026-07-10T14:28:59	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m34s] 2026-07-10T14:29:02	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m39s] 2026-07-10T14:29:07	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -58
+[0d00h00m41s] 2026-07-10T14:29:09	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m00s] 2026-07-10T12:29:16	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:29:16	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:29:16	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:29:16	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:29:16	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:29:16	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:29:16	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:29:19	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:29:19	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:29:19	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:29:19	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:29:19	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:29:19	<INF>	[SNTP] Time is already set: 2026-07-10 14:29:19
+[0d00h00m03s] 2026-07-10T14:29:19	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:29:19	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:29:19	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:29:19	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:29:19	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T14:29:19	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T14:29:19	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T14:29:19	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T14:29:19	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:29:19	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:29:19	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:29:19	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:29:19	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:29:20	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:29:20	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T14:29:22	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m07s] 2026-07-10T14:29:24	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m09s] 2026-07-10T14:29:26	<DBG>	[SNTP] Waiting for system time to be set... 3/10
+[0d00h00m11s] 2026-07-10T14:29:28	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m11s] 2026-07-10T14:29:28	<DBG>	[SNTP] Waiting for system time to be set... 4/10
+[0d00h00m13s] 2026-07-10T14:29:30	<DBG>	[SNTP] Waiting for system time to be set... 5/10
+[0d00h00m16s] 2026-07-10T14:29:32	<DBG>	[SNTP] Waiting for system time to be set... 6/10
+[0d00h00m18s] 2026-07-10T14:29:34	<DBG>	[SNTP] Waiting for system time to be set... 7/10
+[0d00h00m20s] 2026-07-10T14:29:36	<DBG>	[SNTP] Waiting for system time to be set... 8/10
+[0d00h00m22s] 2026-07-10T14:29:38	<DBG>	[SNTP] Waiting for system time to be set... 9/10
+[0d00h00m24s] 2026-07-10T14:29:40	<DBG>	[MAIN] Manual Time Sync failed during startup
+[0d00h00m24s] 2026-07-10T14:29:40	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 2026-07-10T14:29:40	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m26s] 2026-07-10T14:29:42	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m00s] 2026-07-10T12:29:47	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:29:47	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:29:47	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:29:47	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:29:47	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:29:47	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:29:47	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:29:50	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:29:50	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:29:50	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[SNTP] Time is already set: 2026-07-10 14:29:50
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:29:50	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T14:29:50	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T14:29:50	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:29:50	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T14:29:52	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m06s] 2026-07-10T14:29:53	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m07s] 2026-07-10T14:29:54	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m09s] 2026-07-10T14:29:56	<DBG>	[SNTP] Waiting for system time to be set... 3/10
+[0d00h00m09s] 2026-07-10T14:29:57	<WRN>	[WIFI] Disconnected (2, Auth fail)
+[0d00h00m11s] 2026-07-10T14:29:58	<DBG>	[SNTP] Waiting for system time to be set... 4/10
+[0d00h00m12s] 2026-07-10T14:29:59	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m13s] 2026-07-10T14:30:00	<DBG>	[SNTP] Waiting for system time to be set... 5/10
+[0d00h00m14s] 2026-07-10T14:30:02	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -61
+[0d00h00m15s] 2026-07-10T14:30:03	<DBG>	[SNTP] Waiting for system time to be set... 6/10
+[0d00h00m15s] 2026-07-10T14:30:03	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m17s] 2026-07-10T14:30:05	<DBG>	[SNTP] Waiting for system time to be set... 7/10
+[0d00h00m19s] 2026-07-10T14:30:07	<DBG>	[SNTP] Waiting for system time to be set... 8/10
+[0d00h00m21s] 2026-07-10T14:30:09	<DBG>	[SNTP] Waiting for system time to be set... 9/10
+[0d00h00m23s] 2026-07-10T14:30:11	<DBG>	[MAIN] Manual Time Sync failed during startup
+[0d00h00m23s] 2026-07-10T14:30:11	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m23s] 2026-07-10T14:30:11	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m26s] 2026-07-10T14:30:13	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m37s] 2026-07-10T14:30:25	<INF>	[SNTP] Time is synced with NTP Server de.pool.ntp.org: 2026-07-10 14:30:25
+[0d00h00m50s] 2026-07-10T14:30:37	<DBG>	[OTA FILE] download_get_handler
+[0d00h00m50s] 2026-07-10T14:30:37	<DBG>	[OTA FILE] delete_post_handler
+[0d00h00m50s] 2026-07-10T14:30:37	<DBG>	[OTA FILE] File deleted: /config/config.ini
+[0d00h00m50s] 2026-07-10T14:30:38	<DBG>	[OTA FILE] upload_post_handler
+[0d00h00m50s] 2026-07-10T14:30:38	<DBG>	[OTA FILE] File saved: /config/config.ini
+[0d00h00m50s] 2026-07-10T14:30:38	<DBG>	[OTA] handler_reboot
+[0d00h00m50s] 2026-07-10T14:30:38	<INF>	[OTA] !!! System will restart within 5 sec!!!
+[0d00h00m50s] 2026-07-10T14:30:38	<INF>	[OTA] Reboot triggered by Software (5s)
+[0d00h00m50s] 2026-07-10T14:30:38	<WRN>	[OTA] Reboot in 5sec
+[0d00h00m00s] 2026-07-10T12:30:46	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:30:46	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:30:46	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:30:46	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:30:46	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:30:46	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:30:46	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:30:49	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:30:49	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:30:49	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:30:49	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:30:49	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:30:49	<INF>	[SNTP] Time is already set: 2026-07-10 14:30:49
+[0d00h00m03s] 2026-07-10T14:30:49	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:30:49	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:30:49	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:30:49	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:30:49	<INF>	[MAIN] Reset reason: Via esp_restart
+[0d00h00m03s] 2026-07-10T14:30:49	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:30:49	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:30:49	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:30:49	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:30:49	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:30:50	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:30:50	<INF>	[WIFI] Init successful
+[0d00h00m17s] 2026-07-10T14:31:03	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m19s] 2026-07-10T14:31:05	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m21s] 2026-07-10T14:31:08	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m23s] 2026-07-10T14:31:10	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m23s] 2026-07-10T14:31:10	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m25s] 2026-07-10T14:31:11	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -59
+[0d00h00m25s] 2026-07-10T14:31:12	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m28s] 2026-07-10T14:31:14	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T14:31:14	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T14:31:14	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m39s] 2026-07-10T14:31:25	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m39s] 2026-07-10T14:31:25	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m00s] 2026-07-10T12:38:31	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:38:31	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:38:31	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:38:31	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:38:31	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:38:31	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:38:31	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:38:34	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:38:34	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:38:34	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:38:34	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:38:34	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:38:34	<INF>	[SNTP] Time is already set: 2026-07-10 14:38:34
+[0d00h00m03s] 2026-07-10T14:38:34	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:38:34	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:38:34	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:38:34	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:38:34	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T14:38:34	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T14:38:34	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T14:38:34	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T14:38:34	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:38:34	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:38:34	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:38:34	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:38:34	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:38:35	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:38:35	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T14:38:37	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m07s] 2026-07-10T14:38:39	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m09s] 2026-07-10T14:38:41	<DBG>	[SNTP] Waiting for system time to be set... 3/10
+[0d00h00m11s] 2026-07-10T14:38:43	<DBG>	[SNTP] Waiting for system time to be set... 4/10
+[0d00h00m13s] 2026-07-10T14:38:45	<DBG>	[SNTP] Waiting for system time to be set... 5/10
+[0d00h00m15s] 2026-07-10T14:38:47	<DBG>	[SNTP] Waiting for system time to be set... 6/10
+[0d00h00m16s] 2026-07-10T14:38:47	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m17s] 2026-07-10T14:38:49	<DBG>	[SNTP] Waiting for system time to be set... 7/10
+[0d00h00m18s] 2026-07-10T14:38:50	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m19s] 2026-07-10T14:38:51	<DBG>	[SNTP] Waiting for system time to be set... 8/10
+[0d00h00m21s] 2026-07-10T14:38:53	<DBG>	[SNTP] Waiting for system time to be set... 9/10
+[0d00h00m23s] 2026-07-10T14:38:55	<DBG>	[MAIN] Manual Time Sync failed during startup
+[0d00h00m24s] 2026-07-10T14:38:55	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 2026-07-10T14:38:55	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m26s] 2026-07-10T14:38:57	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m32s] 2026-07-10T14:39:03	<WRN>	[WIFI] Disconnected (2, Auth fail)
+[0d00h00m34s] 2026-07-10T14:39:06	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m37s] 2026-07-10T14:39:08	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -64
+[0d00h00m38s] 2026-07-10T14:39:09	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m39s] 2026-07-10T14:39:12	<INF>	[SNTP] Time is synced with NTP Server de.pool.ntp.org: 2026-07-10 14:39:12
+[0d00h00m42s] 2026-07-10T14:39:15	<DBG>	[OTA FILE] download_get_handler
+[0d00h00m43s] 2026-07-10T14:39:16	<DBG>	[OTA FILE] delete_post_handler
+[0d00h00m43s] 2026-07-10T14:39:16	<DBG>	[OTA FILE] File deleted: /config/config.ini
+[0d00h00m43s] 2026-07-10T14:39:17	<DBG>	[OTA FILE] upload_post_handler
+[0d00h00m44s] 2026-07-10T14:39:17	<DBG>	[OTA FILE] File saved: /config/config.ini
+[0d00h00m44s] 2026-07-10T14:39:17	<DBG>	[OTA] handler_reboot
+[0d00h00m44s] 2026-07-10T14:39:17	<INF>	[OTA] !!! System will restart within 5 sec!!!
+[0d00h00m44s] 2026-07-10T14:39:17	<INF>	[OTA] Reboot triggered by Software (5s)
+[0d00h00m44s] 2026-07-10T14:39:17	<WRN>	[OTA] Reboot in 5sec
+[0d00h00m00s] 2026-07-10T12:39:25	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:39:25	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:39:25	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:39:25	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:39:25	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:39:26	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:39:26	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:39:28	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:39:28	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:39:28	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:39:28	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:39:28	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:39:28	<INF>	[SNTP] Time is already set: 2026-07-10 14:39:28
+[0d00h00m03s] 2026-07-10T14:39:28	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:39:28	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:39:28	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:39:29	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:39:29	<INF>	[MAIN] Reset reason: Via esp_restart
+[0d00h00m03s] 2026-07-10T14:39:29	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:39:29	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:39:29	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:39:29	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:39:29	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:39:29	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:39:29	<INF>	[WIFI] Init successful
+[0d00h00m16s] 2026-07-10T14:39:42	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m19s] 2026-07-10T14:39:44	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m21s] 2026-07-10T14:39:47	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m23s] 2026-07-10T14:39:49	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m23s] 2026-07-10T14:39:49	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m25s] 2026-07-10T14:39:51	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m27s] 2026-07-10T14:39:53	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -58
+[0d00h00m28s] 2026-07-10T14:39:53	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T14:39:53	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T14:39:53	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m41s] 2026-07-10T14:40:06	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m41s] 2026-07-10T14:40:06	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h02m29s] 2026-07-10T14:41:54	<ERR>	[POSTPROC] zaehlerstand: Raw: 33332.6666, Value: , Status: Rate too high - Read: 33332.6666 - Pre: 58.0197 - Rate: 33274.6469
+[0d00h00m00s] 2026-07-10T12:44:42	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:44:42	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T12:44:42	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T12:44:42	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T12:44:42	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T12:44:43	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T12:44:43	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T12:44:45	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T12:44:45	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T12:44:45	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T14:44:45	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T14:44:45	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T14:44:45	<INF>	[SNTP] Time is already set: 2026-07-10 14:44:45
+[0d00h00m03s] 2026-07-10T14:44:45	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T14:44:45	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T14:44:45	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T14:44:45	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T14:44:46	<INF>	[MAIN] Reset reason: Via esp_restart
+[0d00h00m03s] 2026-07-10T14:44:46	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T14:44:46	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T14:44:46	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T14:44:46	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T14:44:46	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T14:44:46	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T14:44:46	<INF>	[WIFI] Init successful
+[0d00h00m08s] 2026-07-10T14:44:51	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -57
+[0d00h00m10s] 2026-07-10T14:44:53	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m23s] 2026-07-10T14:45:06	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m23s] 2026-07-10T14:45:06	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m25s] 2026-07-10T14:45:08	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m28s] 2026-07-10T14:45:10	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T14:45:10	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 2026-07-10T14:45:10	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m41s] 2026-07-10T14:45:23	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m41s] 2026-07-10T14:45:23	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h02m29s] 2026-07-10T14:47:11	<ERR>	[POSTPROC] zaehlerstand: Raw: 33332.6666, Value: , Status: Rate too high - Read: 33332.6666 - Pre: 58.0197 - Rate: 33274.6469
+[0d00h05m14s] 2026-07-10T14:49:57	<ERR>	[OTA FILE] Failed to stat file: /sdcard/log/message/message.log!
+[0d00h07m14s] 2026-07-10T14:51:57	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h07m14s] 2026-07-10T14:51:57	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m00s] 2026-07-10T13:07:05	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T13:07:05	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T13:07:05	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T13:07:05	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T13:07:05	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T13:07:05	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T13:07:05	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T13:07:08	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T13:07:08	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T13:07:08	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[SNTP] Time is already set: 2026-07-10 15:07:08
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T15:07:08	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T15:07:08	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T15:07:08	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T15:07:08	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T15:07:10	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m07s] 2026-07-10T15:07:12	<DBG>	[SNTP] Waiting for system time to be set... 2/10
+[0d00h00m08s] 2026-07-10T15:07:13	<WRN>	[WIFI] Disconnected (2, Auth fail)
+[0d00h00m09s] 2026-07-10T15:07:14	<DBG>	[SNTP] Waiting for system time to be set... 3/10
+[0d00h00m10s] 2026-07-10T15:07:15	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m12s] 2026-07-10T15:07:17	<DBG>	[SNTP] Waiting for system time to be set... 4/10
+[0d00h00m14s] 2026-07-10T15:07:19	<DBG>	[SNTP] Waiting for system time to be set... 5/10
+[0d00h00m16s] 2026-07-10T15:07:21	<DBG>	[SNTP] Waiting for system time to be set... 6/10
+[0d00h00m18s] 2026-07-10T15:07:23	<DBG>	[SNTP] Waiting for system time to be set... 7/10
+[0d00h00m18s] 2026-07-10T15:07:23	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m20s] 2026-07-10T15:07:25	<DBG>	[SNTP] Waiting for system time to be set... 8/10
+[0d00h00m22s] 2026-07-10T15:07:27	<DBG>	[SNTP] Waiting for system time to be set... 9/10
+[0d00h00m24s] 2026-07-10T15:07:29	<DBG>	[MAIN] Manual Time Sync failed during startup
+[0d00h00m24s] 2026-07-10T15:07:29	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 2026-07-10T15:07:29	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3819MB
+[0d00h00m26s] 2026-07-10T15:07:31	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m38s] 2026-07-10T15:07:51	<INF>	[SNTP] Time is synced with NTP Server de.pool.ntp.org: 2026-07-10 15:07:51
+[0d00h00m41s] 2026-07-10T15:07:54	<DBG>	[MAIN SERVER] info_get_handler
+[0d00h01m05s] 2026-07-10T15:08:18	<DBG>	[OTA FILE] download_get_handler
+[0d00h00m00s] 2026-07-10T13:08:23	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T13:08:23	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 2026-07-10T13:08:23	<INF>	[MAIN] =================================================
+[0d00h00m00s] 2026-07-10T13:08:23	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 2026-07-10T13:08:23	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 2026-07-10T13:08:23	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 2026-07-10T13:08:23	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 2026-07-10T13:08:26	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 2026-07-10T13:08:26	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 2026-07-10T13:08:26	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 2026-07-10T15:08:26	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 2026-07-10T15:08:26	<INF>	[SNTP] time zone: +0200 Delta to UTC: 7200 seconds
+[0d00h00m03s] 2026-07-10T15:08:26	<INF>	[SNTP] Time is already set: 2026-07-10 15:08:26
+[0d00h00m03s] 2026-07-10T15:08:26	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 2026-07-10T15:08:26	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 2026-07-10T15:08:26	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 2026-07-10T15:08:26	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 2026-07-10T15:08:26	<WRN>	[MAIN] Reset reason: Exception/panic
+[0d00h00m03s] 2026-07-10T15:08:26	<WRN>	[MAIN] Device was rebooted due to a software exception! Log level is set to DEBUG until the next reboot. Flow init is delayed by 5 minutes to check the logs or do an OTA update
+[0d00h00m03s] 2026-07-10T15:08:26	<WRN>	[MAIN] Keep device running until crash occurs again and check logs after device is up again
+[0d00h00m03s] 2026-07-10T15:08:26	<INF>	[LOGFILE] Set log level to DEBUG
+[0d00h00m03s] 2026-07-10T15:08:26	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 2026-07-10T15:08:26	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 2026-07-10T15:08:26	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 2026-07-10T15:08:26	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 2026-07-10T15:08:26	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 2026-07-10T15:08:26	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 2026-07-10T15:08:27	<INF>	[WIFI] Init successful
+[0d00h00m05s] 2026-07-10T15:08:29	<DBG>	[SNTP] Waiting for system time to be set... 1/10
+[0d00h00m41s] 2026-07-10T15:09:15	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m41s] 2026-07-10T15:09:15	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m41s] 2026-07-10T15:41:49	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m41s] 2026-07-10T15:41:49	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h02m29s] 2026-07-10T15:43:37	<ERR>	[POSTPROC] zaehlerstand: Raw: 23344.4658, Value: , Status: Rate too high - Read: 23344.4658 - Pre: 58.0197 - Rate: 23286.4461
+[0d00h04m25s] 2026-07-10T15:45:33	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/raw.jpg!
+[0d00h04m25s] 2026-07-10T15:45:34	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/alg_roi.jpg!
+[0d00h04m26s] 2026-07-10T15:45:35	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/alg.jpg!
+[0d00h04m27s] 2026-07-10T15:45:35	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/alg_debug.jpg!
+[0d00h04m27s] 2026-07-10T15:45:36	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/roi_zaehlerstand_dig.jpg!
+[0d00h04m28s] 2026-07-10T15:45:36	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/roi_zaehlerstand_dig2.jpg!
+[0d00h04m28s] 2026-07-10T15:45:37	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/roi_zaehlerstand_dig3.jpg!
+[0d00h04m29s] 2026-07-10T15:45:37	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/roi_zaehlerstand_dig4.jpg!
+[0d00h04m29s] 2026-07-10T15:45:37	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/roi_zaehlerstand_dig5.jpg!
+[0d00h04m30s] 2026-07-10T15:45:38	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/roi_ana1.jpg!
+[0d00h04m30s] 2026-07-10T15:45:38	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/roi_ana2.jpg!
+[0d00h04m30s] 2026-07-10T15:45:38	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/roi_ana3.jpg!
+[0d00h04m31s] 2026-07-10T15:45:39	<ERR>	[OTA FILE] Failed to stat file: /sdcard/img_tmp/roi_ana4.jpg!
+[0d00h04m43s] 2026-07-10T15:45:52	<ERR>	[OTA FILE] Failed to stat file: /sdcard/html/main.js!
+[0d00h04m44s] 2026-07-10T15:45:52	<ERR>	[OTA FILE] Failed to stat file: /sdcard/main.js!
+[0d00h04m49s] 2026-07-10T15:45:57	<ERR>	[OTA FILE] Failed to stat file: /sdcard/html/edit_reference.html!
+[0d00h04m49s] 2026-07-10T15:45:58	<ERR>	[OTA FILE] Failed to stat file: /sdcard/edit_reference.html!
+[0d00h04m50s] 2026-07-10T15:45:58	<ERR>	[OTA FILE] Failed to stat file: /sdcard/edit_digit.html!
+[0d00h04m50s] 2026-07-10T15:45:58	<ERR>	[OTA FILE] Failed to stat file: /sdcard/html/recognition_details.html!
+[0d00h04m50s] 2026-07-10T15:45:59	<ERR>	[OTA FILE] Failed to stat file: /sdcard/recognition_details.html!
+[0d00h04m51s] 2026-07-10T15:45:59	<ERR>	[OTA FILE] Failed to stat file: /sdcard/status.html!
+[0d00h07m31s] 2026-07-10T15:48:39	<ERR>	[OTA FILE] File already exists: /sdcard/config/config.ini

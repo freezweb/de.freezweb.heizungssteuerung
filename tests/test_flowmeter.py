@@ -10,6 +10,8 @@ def test_flowmeter_modbus_config_defaults_to_disabled():
     assert config.host == "wasserverbrauch-pumpe.local"
     assert config.function == 4
     assert config.scale == 100.0
+    assert config.total_register == 1
+    assert config.total_scale == 1000.0
 
 
 def test_flowmeter_modbus_config_accepts_holding_registers():

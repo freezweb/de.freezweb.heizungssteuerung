@@ -27,6 +27,14 @@ class ReglerParameter:
     brunnen_flow_min_l_min: float = 0.2
     brunnen_flow_timeout_s: float = 120.0
     brunnen_flow_stop_tolerance_bar: float = 0.2
+    pool_nachspeisung_testmodus: int = 1
+    pool_nachspeisung_start_hour: int = 2
+    pool_nachspeisung_delay_s: float = 30.0
+    pool_nachspeisung_max_fill_s: float = 3600.0
+    pool_flockung_tagesdosis_ml: float = 36.0
+    pool_flockung_start_hour: int = 2
+    pool_flockung_ml_pro_l_frischwasser: float = 0.1
+    pool_flockung_pumpe_ml_min: float = 133.33
 
     @classmethod
     def from_settings(cls, settings: dict[str, Any], store: StateStore | None = None) -> "ReglerParameter":
@@ -47,6 +55,14 @@ class ReglerParameter:
             brunnen_flow_min_l_min=float(_setting(settings, "brunnen.flow_min_l_min", 0.2)),
             brunnen_flow_timeout_s=float(_setting(settings, "brunnen.flow_timeout_s", 120.0)),
             brunnen_flow_stop_tolerance_bar=float(_setting(settings, "brunnen.flow_stop_regeldruck_tolerance_bar", 0.2)),
+            pool_nachspeisung_testmodus=int(_setting(settings, "pool_nachspeisung.testmodus", 1)),
+            pool_nachspeisung_start_hour=int(_setting(settings, "pool_nachspeisung.start_hour", 2)),
+            pool_nachspeisung_delay_s=float(_setting(settings, "pool_nachspeisung.delay_s", 30.0)),
+            pool_nachspeisung_max_fill_s=float(_setting(settings, "pool_nachspeisung.max_fill_s", 3600.0)),
+            pool_flockung_tagesdosis_ml=float(_setting(settings, "pool_flockung.tagesdosis_ml", 36.0)),
+            pool_flockung_start_hour=int(_setting(settings, "pool_flockung.start_hour", 2)),
+            pool_flockung_ml_pro_l_frischwasser=float(_setting(settings, "pool_flockung.ml_pro_l_frischwasser", 0.1)),
+            pool_flockung_pumpe_ml_min=float(_setting(settings, "pool_flockung.pumpe_ml_min", 133.33)),
         )
         if store is not None:
             regler._apply_saved(store.load())
@@ -96,6 +112,22 @@ class ReglerParameter:
             self.brunnen_flow_timeout_s = max(10.0, min(1800.0, float(str(value).replace(",", "."))))
         elif name == "brunnen_flow_stop_tolerance_bar":
             self.brunnen_flow_stop_tolerance_bar = max(0.0, min(2.0, float(str(value).replace(",", "."))))
+        elif name == "pool_nachspeisung_testmodus":
+            self.pool_nachspeisung_testmodus = 1 if _as_bool(value) else 0
+        elif name == "pool_nachspeisung_start_hour":
+            self.pool_nachspeisung_start_hour = max(0, min(23, int(float(str(value).replace(",", ".")))))
+        elif name == "pool_nachspeisung_delay_s":
+            self.pool_nachspeisung_delay_s = max(0.0, min(86400.0, float(str(value).replace(",", "."))))
+        elif name == "pool_nachspeisung_max_fill_s":
+            self.pool_nachspeisung_max_fill_s = max(30.0, min(21600.0, float(str(value).replace(",", "."))))
+        elif name == "pool_flockung_tagesdosis_ml":
+            self.pool_flockung_tagesdosis_ml = max(0.0, min(5000.0, float(str(value).replace(",", "."))))
+        elif name == "pool_flockung_start_hour":
+            self.pool_flockung_start_hour = max(0, min(23, int(float(str(value).replace(",", ".")))))
+        elif name == "pool_flockung_ml_pro_l_frischwasser":
+            self.pool_flockung_ml_pro_l_frischwasser = max(0.0, min(100.0, float(str(value).replace(",", "."))))
+        elif name == "pool_flockung_pumpe_ml_min":
+            self.pool_flockung_pumpe_ml_min = max(0.1, min(1000.0, float(str(value).replace(",", "."))))
         else:
             return False
         self.save()
@@ -120,6 +152,14 @@ class ReglerParameter:
         settings.setdefault("brunnen", {})[
             "flow_stop_regeldruck_tolerance_bar"
         ] = self.brunnen_flow_stop_tolerance_bar
+        settings.setdefault("pool_nachspeisung", {})["testmodus"] = self.pool_nachspeisung_testmodus
+        settings.setdefault("pool_nachspeisung", {})["start_hour"] = self.pool_nachspeisung_start_hour
+        settings.setdefault("pool_nachspeisung", {})["delay_s"] = self.pool_nachspeisung_delay_s
+        settings.setdefault("pool_nachspeisung", {})["max_fill_s"] = self.pool_nachspeisung_max_fill_s
+        settings.setdefault("pool_flockung", {})["tagesdosis_ml"] = self.pool_flockung_tagesdosis_ml
+        settings.setdefault("pool_flockung", {})["start_hour"] = self.pool_flockung_start_hour
+        settings.setdefault("pool_flockung", {})["ml_pro_l_frischwasser"] = self.pool_flockung_ml_pro_l_frischwasser
+        settings.setdefault("pool_flockung", {})["pumpe_ml_min"] = self.pool_flockung_pumpe_ml_min
         return settings
 
     def snapshot(self) -> dict[str, float | int]:
@@ -139,6 +179,14 @@ class ReglerParameter:
             "brunnen_flow_min_l_min": self.brunnen_flow_min_l_min,
             "brunnen_flow_timeout_s": self.brunnen_flow_timeout_s,
             "brunnen_flow_stop_tolerance_bar": self.brunnen_flow_stop_tolerance_bar,
+            "pool_nachspeisung_testmodus": self.pool_nachspeisung_testmodus,
+            "pool_nachspeisung_start_hour": self.pool_nachspeisung_start_hour,
+            "pool_nachspeisung_delay_s": self.pool_nachspeisung_delay_s,
+            "pool_nachspeisung_max_fill_s": self.pool_nachspeisung_max_fill_s,
+            "pool_flockung_tagesdosis_ml": self.pool_flockung_tagesdosis_ml,
+            "pool_flockung_start_hour": self.pool_flockung_start_hour,
+            "pool_flockung_ml_pro_l_frischwasser": self.pool_flockung_ml_pro_l_frischwasser,
+            "pool_flockung_pumpe_ml_min": self.pool_flockung_pumpe_ml_min,
         }
 
     def save(self) -> None:
@@ -173,6 +221,14 @@ class ReglerParameter:
                     "brunnen_flow_min_l_min",
                     "brunnen_flow_timeout_s",
                     "brunnen_flow_stop_tolerance_bar",
+                    "pool_nachspeisung_testmodus",
+                    "pool_nachspeisung_start_hour",
+                    "pool_nachspeisung_delay_s",
+                    "pool_nachspeisung_max_fill_s",
+                    "pool_flockung_tagesdosis_ml",
+                    "pool_flockung_start_hour",
+                    "pool_flockung_ml_pro_l_frischwasser",
+                    "pool_flockung_pumpe_ml_min",
                 }:
                     self.set(name, value)
             except (TypeError, ValueError):
@@ -186,3 +242,9 @@ def _setting(settings: dict[str, Any], path: str, default: Any) -> Any:
             return default
         node = node[part]
     return node
+
+
+def _as_bool(value: Any) -> bool:
+    if isinstance(value, str):
+        return value.strip().lower() in {"1", "true", "on", "yes", "ja", "ein"}
+    return bool(value)

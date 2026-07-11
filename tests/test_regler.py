@@ -25,6 +25,14 @@ def test_regler_parameters_overlay_settings(tmp_path: Path):
     assert regler.set("brunnen_flow_min_l_min", "0,3") is True
     assert regler.set("brunnen_flow_timeout_s", "180") is True
     assert regler.set("brunnen_flow_stop_tolerance_bar", "0,4") is True
+    assert regler.set("pool_nachspeisung_testmodus", 1) is True
+    assert regler.set("pool_nachspeisung_start_hour", 2) is True
+    assert regler.set("pool_nachspeisung_delay_s", 30) is True
+    assert regler.set("pool_nachspeisung_max_fill_s", 1800) is True
+    assert regler.set("pool_flockung_tagesdosis_ml", 80) is True
+    assert regler.set("pool_flockung_start_hour", 3) is True
+    assert regler.set("pool_flockung_ml_pro_l_frischwasser", "0,2") is True
+    assert regler.set("pool_flockung_pumpe_ml_min", 45) is True
 
     settings = regler.as_settings({"regelung": {}, "wp": {}})
 
@@ -43,6 +51,14 @@ def test_regler_parameters_overlay_settings(tmp_path: Path):
     assert settings["brunnen"]["flow_min_l_min"] == 0.3
     assert settings["brunnen"]["flow_timeout_s"] == 180.0
     assert settings["brunnen"]["flow_stop_regeldruck_tolerance_bar"] == 0.4
+    assert settings["pool_nachspeisung"]["testmodus"] == 1
+    assert settings["pool_nachspeisung"]["start_hour"] == 2
+    assert settings["pool_nachspeisung"]["delay_s"] == 30.0
+    assert settings["pool_nachspeisung"]["max_fill_s"] == 1800.0
+    assert settings["pool_flockung"]["tagesdosis_ml"] == 80.0
+    assert settings["pool_flockung"]["start_hour"] == 3
+    assert settings["pool_flockung"]["ml_pro_l_frischwasser"] == 0.2
+    assert settings["pool_flockung"]["pumpe_ml_min"] == 45.0
 
 
 def test_regler_parameters_persist(tmp_path: Path):

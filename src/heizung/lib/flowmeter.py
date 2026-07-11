@@ -9,6 +9,12 @@ from typing import Any
 
 
 @dataclass(frozen=True)
+class FlowmeterSnapshot:
+    flow_l_min: float
+    total_l: float | None = None
+
+
+@dataclass(frozen=True)
 class FlowmeterModbusConfig:
     enabled: bool = False
     host: str = "wasserverbrauch-pumpe.local"
@@ -17,6 +23,8 @@ class FlowmeterModbusConfig:
     register: int = 0
     function: int = 4
     scale: float = 100.0
+    total_register: int = 1
+    total_scale: float = 1000.0
     timeout_s: float = 0.3
     poll_interval_s: float = 1.0
 
@@ -35,6 +43,8 @@ class FlowmeterModbusConfig:
             register=int(raw.get("register", 0)),
             function=function,
             scale=float(raw.get("scale", 100.0)),
+            total_register=int(raw.get("total_register", 1)),
+            total_scale=float(raw.get("total_scale", 1000.0)),
             timeout_s=float(raw.get("timeout_s", 0.3)),
             poll_interval_s=float(raw.get("poll_interval_s", 1.0)),
         )
@@ -49,16 +59,35 @@ class FlowmeterModbusClient:
         scale = self.config.scale if self.config.scale else 1.0
         return max(0.0, value / scale)
 
+    async def read_snapshot(self) -> FlowmeterSnapshot:
+        flow = await self.read_flow_l_min()
+        total_l: float | None = None
+        try:
+            total_l = await self.read_total_l()
+        except Exception:
+            total_l = None
+        return FlowmeterSnapshot(flow_l_min=flow, total_l=total_l)
+
+    async def read_total_l(self) -> float:
+        hi, lo = await self._read_registers(self.config.function, self.config.total_register, 2)
+        raw = (hi << 16) | lo
+        scale = self.config.total_scale if self.config.total_scale else 1.0
+        return max(0.0, raw / scale)
+
     async def _read_register(self, function: int, address: int) -> int:
+        return (await self._read_registers(function, address, 1))[0]
+
+    async def _read_registers(self, function: int, address: int, count: int) -> tuple[int, ...]:
         if function not in (3, 4):
             raise ValueError(f"Modbus-Funktion {function} wird fuer Flowmeter nicht unterstuetzt")
-        pdu = bytes([function]) + struct.pack(">HH", address, 1)
+        pdu = bytes([function]) + struct.pack(">HH", address, count)
         response = await self._request(pdu)
         if response[0] & 0x80:
             raise RuntimeError(f"Modbus Exception {response[1]}")
-        if response[1] != 2:
+        expected_bytes = count * 2
+        if response[1] != expected_bytes:
             raise RuntimeError(f"Ungueltige Modbus-Antwortlaenge: {response[1]}")
-        return struct.unpack(">H", response[2:4])[0]
+        return struct.unpack(">" + "H" * count, response[2 : 2 + expected_bytes])
 
     async def _request(self, pdu: bytes) -> bytes:
         reader: asyncio.StreamReader

@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "type": "result",
+  "success": false,
+  "error": {
+    "code": "config_not_found",
+    "message": "No config found."
+  }
+}

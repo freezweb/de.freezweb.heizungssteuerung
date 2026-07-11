@@ -8,6 +8,7 @@ import signal
 import sys
 import time
 from dataclasses import replace
+from datetime import datetime
 from typing import Any
 
 from .lib.brauchwasser import BrauchwasserState, compute_brauchwasser
@@ -21,6 +22,8 @@ from .lib.intercpu import KellerModbusClient
 from .lib.iohw import BaseIO, HardwareSnapshot, create_io_backend
 from .lib.keller_relais import KellerRelayClient, KellerRelayConfig, RelayGroupConfig, relay_component_names
 from .lib.mqtt_bridge import MqttBridge
+from .lib.pool import PoolController, PoolControlState, PoolProdinoConfig
+from .lib.prodino_modbus import ProdinoPoolModbusClient, ProdinoPoolSnapshot
 from .lib.pumpengruppe import (
     PumpGroupModbusClient,
     PumpGroupSnapshot,
@@ -50,9 +53,11 @@ async def run() -> int:
     freigaben_state_path = app_config.state_path(app_config.setting("freigaben.state_persist_path", "state/freigaben.json"))
     regler_state_path = app_config.state_path(app_config.setting("regler.state_persist_path", "state/regler.json"))
     keller_relay_config = KellerRelayConfig.from_settings(app_config.settings)
+    pool_prodino_config = PoolProdinoConfig.from_settings(app_config.settings, app_config.mqtt.get("topics", {}).get("base", "heizung"))
 
     keller_client: KellerModbusClient | None = None
     keller_relay_client: KellerRelayClient | None = None
+    pool_prodino_client: ProdinoPoolModbusClient | None = None
     controller_config = app_config
     keller_io_map = (
         _load_keller_io_map(app_config)
@@ -80,11 +85,33 @@ async def run() -> int:
             keller_relay_config.port,
             keller_relay_config.unit_id,
         )
+    if _controller_role(app_config) == "haupt" and pool_prodino_config.enabled:
+        pool_io_map = _load_optional_io_map(app_config, "io_map.pool_prodino.yaml")
+        if pool_io_map is not None:
+            controller_config = replace(controller_config, io_map=_merge_io_maps(controller_config.io_map, pool_io_map))
+        if pool_prodino_config.protocol in {"modbus_tcp", "modbus"}:
+            pool_prodino_client = ProdinoPoolModbusClient(pool_prodino_config)
+            log.info(
+                "Pool-Prodino Modbus TCP aktiviert: %s:%s Unit %s",
+                pool_prodino_config.host,
+                pool_prodino_config.port,
+                pool_prodino_config.unit_id,
+            )
+        else:
+            log.info("Pool-Prodino MQTT aktiviert: %s", pool_prodino_config.topic_base)
 
     io_backend = create_io_backend(app_config.io_map, os.environ.get("HEIZUNG_IO_BACKEND", "auto"))
     hand_auto = HandAutoManager(controller_config.io_map, StateStore(hand_state_path), default_hand_timeout)
     freigaben = Freigaben.from_settings(app_config.settings, StateStore(freigaben_state_path))
     regler = ReglerParameter.from_settings(app_config.settings, StateStore(regler_state_path))
+    pool_controller = (
+        PoolController(
+            pool_prodino_config,
+            StateStore(app_config.state_path(pool_prodino_config.state_persist_path)),
+        )
+        if pool_prodino_config.enabled
+        else None
+    )
     failsafe_monitor = FailsafeMonitor.from_settings(app_config.settings)
     flowmeter_config = FlowmeterModbusConfig.from_settings(app_config.settings)
     flowmeter = FlowmeterModbusClient(flowmeter_config) if flowmeter_config.enabled else None
@@ -95,6 +122,8 @@ async def run() -> int:
     disabled_physical_output_components = _disabled_local_pump_group_output_components(pump_group_configs)
     if keller_relay_client is not None:
         disabled_physical_output_components.update(_keller_relay_output_components(keller_relay_config))
+    if pool_prodino_config.enabled:
+        disabled_physical_output_components.update({pool_prodino_config.valve_component, pool_prodino_config.pump_component})
     mqtt = MqttBridge(app_config.mqtt)
     mqtt.set_default_demands(app_config.setting("anforderungen", {}))
     mqtt.start()
@@ -122,10 +151,11 @@ async def run() -> int:
     brunnen_active = False
     brunnen_speed_pct = 0.0
     brunnen_flow_l_min: float | None = None
+    brunnen_water_total_l: float | None = None
     brunnen_flow_last_seen_ts: float | None = None
     brunnen_no_flow_since_ts: float | None = None
     flowmeter_next_poll_ts = 0.0
-    flowmeter_task: asyncio.Task[float] | None = None
+    flowmeter_task: asyncio.Task | None = None
     flowmeter_last_error_log_ts = 0.0
     applied_do: dict[str, bool] = {}
     applied_ao: dict[str, float] = {}
@@ -136,8 +166,14 @@ async def run() -> int:
     keller_relay_vl_next_control_ts: dict[str, float] = {}
     keller_relay_vl_samples: dict[str, tuple[float, float]] = {}
     keller_relay_error = ""
+    pool_prodino_snapshot: ProdinoPoolSnapshot | None = None
+    pool_prodino_online: bool | None = None
+    pool_prodino_last_ok_ts: float | None = None
+    pool_prodino_next_poll_ts = 0.0
+    pool_prodino_error = ""
     oelbrenner_common_active = False
     klima_og_cooling_active = False
+    pool_state = PoolControlState(False, None, None, False, False, False, False, "deaktiviert", 0.0, 0.0, 0.0, None, 0.0, 0.0, "")
     try:
         while not stop.is_set():
             started = time.monotonic()
@@ -149,7 +185,9 @@ async def run() -> int:
             if flowmeter is not None:
                 if flowmeter_task is not None and flowmeter_task.done():
                     try:
-                        brunnen_flow_l_min = flowmeter_task.result()
+                        flowmeter_snapshot = flowmeter_task.result()
+                        brunnen_flow_l_min = flowmeter_snapshot.flow_l_min
+                        brunnen_water_total_l = flowmeter_snapshot.total_l
                         brunnen_flow_last_seen_ts = now_ts
                     except Exception as exc:
                         if now_ts - flowmeter_last_error_log_ts >= 60:
@@ -158,9 +196,32 @@ async def run() -> int:
                     flowmeter_task = None
                     flowmeter_next_poll_ts = now_ts + max(0.2, flowmeter_config.poll_interval_s)
                 if flowmeter_task is None and now_ts >= flowmeter_next_poll_ts:
-                    flowmeter_task = asyncio.create_task(flowmeter.read_flow_l_min())
+                    flowmeter_task = asyncio.create_task(flowmeter.read_snapshot())
 
             snapshot = await io_backend.read_all()
+            if pool_controller is not None:
+                if pool_prodino_client is not None and now_ts >= pool_prodino_next_poll_ts:
+                    pool_prodino_next_poll_ts = now_ts + pool_prodino_config.poll_interval_s
+                    try:
+                        pool_prodino_snapshot = await pool_prodino_client.read_snapshot()
+                        pool_prodino_online = True
+                        pool_prodino_last_ok_ts = now_ts
+                        pool_prodino_error = ""
+                    except Exception as exc:
+                        if pool_prodino_online is not False:
+                            log.warning("Pool-Prodino Modbus nicht erreichbar: %s", exc)
+                        pool_prodino_online = False
+                        pool_prodino_error = str(exc)
+                        pool_prodino_client.reset_cache()
+                if pool_prodino_client is not None:
+                    snapshot = _merge_prodino_pool_modbus_snapshot(
+                        controller_config,
+                        snapshot,
+                        pool_prodino_snapshot if pool_prodino_online else None,
+                        pool_prodino_config,
+                    )
+                else:
+                    snapshot = _merge_prodino_pool_snapshot(controller_config, snapshot, mqtt, pool_prodino_config)
             if keller_client is not None:
                 try:
                     keller_snapshot = await keller_client.read_snapshot()
@@ -264,6 +325,22 @@ async def run() -> int:
                     keller_relay_vl_samples,
                     now_ts,
                 )
+                if pool_controller is not None:
+                    pool_state = pool_controller.compute(
+                        now_ts=now_ts,
+                        float_empty=_di_value_by_component(controller_config, snapshot, pool_prodino_config.float_component),
+                        test_mode=bool(regler.pool_nachspeisung_testmodus),
+                        fill_delay_s=regler.pool_nachspeisung_delay_s,
+                        start_hour=regler.pool_nachspeisung_start_hour,
+                        max_fill_s=regler.pool_nachspeisung_max_fill_s,
+                        daily_dose_ml=regler.pool_flockung_tagesdosis_ml,
+                        daily_dose_hour=regler.pool_flockung_start_hour,
+                        fresh_ml_per_l=regler.pool_flockung_ml_pro_l_frischwasser,
+                        pump_ml_min=regler.pool_flockung_pumpe_ml_min,
+                        water_meter_total_l=brunnen_water_total_l,
+                    )
+                    _set_do_by_component(controller_config, auto_do, pool_prodino_config.valve_component, pool_state.valve_open)
+                    _set_do_by_component(controller_config, auto_do, pool_prodino_config.pump_component, pool_state.dosing_pump_on)
                 brauchwasser_ladung_active = brauchwasser_state.active
             else:
                 brunnen_state = _compute_fast_brunnen_outputs(
@@ -299,6 +376,22 @@ async def run() -> int:
             )
             applied_do.update(written_do)
             applied_ao.update(written_ao)
+            if heating_tick and pool_controller is not None:
+                if pool_prodino_client is not None:
+                    try:
+                        await _write_prodino_pool_modbus_outputs(
+                            pool_prodino_client,
+                            controller_config,
+                            applied_do,
+                            pool_prodino_config,
+                        )
+                    except Exception as exc:
+                        pool_prodino_online = False
+                        pool_prodino_error = str(exc)
+                        pool_prodino_client.reset_cache()
+                        log.warning("Pool-Prodino Modbus Schreiben fehlgeschlagen: %s", exc)
+                else:
+                    _write_prodino_pool_outputs(mqtt, controller_config, applied_do, pool_prodino_config)
             if heating_tick and pump_group_clients:
                 await _write_pump_groups(controller_config, pump_group_clients, applied_do, applied_ao)
             if heating_tick and keller_relay_client is not None:
@@ -341,6 +434,23 @@ async def run() -> int:
                     keller_relay_online,
                     keller_relay_last_ok_ts,
                     keller_relay_error,
+                    pool_state if pool_controller is not None else None,
+                    (
+                        _prodino_modbus_online(pool_prodino_last_ok_ts, pool_prodino_online, pool_prodino_config, now_ts)
+                        if pool_prodino_client is not None
+                        else _prodino_pool_online(mqtt, pool_prodino_config, now_ts)
+                    )
+                    if pool_controller is not None
+                    else None,
+                    (
+                    pool_prodino_last_ok_ts
+                        if pool_prodino_client is not None
+                        else mqtt.prodino_pool_last_seen_ts
+                    )
+                    if pool_controller is not None
+                    else None,
+                    pool_prodino_snapshot if pool_prodino_client is not None else None,
+                    brunnen_water_total_l,
                 )
             uptime_s = int(now_ts - boot_ts)
             heartbeat_tick = uptime_s // 30
@@ -359,6 +469,8 @@ async def run() -> int:
                 cycle_count // max(1, heating_divider // 2),
                 keller_relay_last_ok_ts=keller_relay_last_ok_ts,
                 keller_relay_online=keller_relay_online,
+                pool_prodino_last_ok_ts=pool_prodino_last_ok_ts,
+                pool_prodino_online=pool_prodino_online,
             )
 
             await _sleep_remaining(stop, cycle_s, started)
@@ -369,6 +481,11 @@ async def run() -> int:
                 await keller_relay_client.all_off()
             except Exception as exc:
                 log.warning("Keller-R421B16 Relais Abschalten fehlgeschlagen: %s", exc)
+        if pool_prodino_client is not None:
+            try:
+                await pool_prodino_client.all_off()
+            except Exception as exc:
+                log.warning("Pool-Prodino Abschalten fehlgeschlagen: %s", exc)
         if flowmeter_task is not None:
             flowmeter_task.cancel()
         mqtt.stop()
@@ -442,6 +559,73 @@ def _merge_snapshots(main: HardwareSnapshot, keller: HardwareSnapshot) -> Hardwa
         do={**main.do, **keller.do},
         ao={**main.ao, **keller.ao},
     )
+
+
+def _merge_prodino_pool_snapshot(
+    app_config: AppConfig,
+    snapshot: HardwareSnapshot,
+    mqtt: MqttBridge,
+    config: PoolProdinoConfig,
+) -> HardwareSnapshot:
+    channel = app_config.io_map.by_component(config.float_component)
+    if channel is None or channel.kind != "di":
+        return snapshot
+    raw_value = mqtt.prodino_pool_inputs.get(config.input_index)
+    if raw_value is None:
+        return snapshot
+    empty_value = bool(raw_value) if config.float_empty_high else not bool(raw_value)
+    return HardwareSnapshot(
+        di={**snapshot.di, channel.id: empty_value},
+        ai=snapshot.ai,
+        rtd=snapshot.rtd,
+        do=snapshot.do,
+        ao=snapshot.ao,
+    )
+
+
+def _merge_prodino_pool_modbus_snapshot(
+    app_config: AppConfig,
+    snapshot: HardwareSnapshot,
+    prodino: ProdinoPoolSnapshot | None,
+    config: PoolProdinoConfig,
+) -> HardwareSnapshot:
+    if prodino is None:
+        return snapshot
+    channel = app_config.io_map.by_component(config.float_component)
+    if channel is None or channel.kind != "di":
+        return snapshot
+    raw_value = prodino.inputs.get(config.input_index)
+    if raw_value is None:
+        return snapshot
+    empty_value = bool(raw_value) if config.float_empty_high else not bool(raw_value)
+    return HardwareSnapshot(
+        di={**snapshot.di, channel.id: empty_value},
+        ai=snapshot.ai,
+        rtd=snapshot.rtd,
+        do=snapshot.do,
+        ao=snapshot.ao,
+    )
+
+
+def _prodino_pool_online(mqtt: MqttBridge, config: PoolProdinoConfig, now_ts: float) -> bool:
+    if mqtt.prodino_pool_online is False:
+        return False
+    if mqtt.prodino_pool_last_seen_ts is None:
+        return False
+    if now_ts - mqtt.prodino_pool_last_seen_ts > config.health_timeout_s:
+        return False
+    return bool(mqtt.prodino_pool_online)
+
+
+def _prodino_modbus_online(
+    last_ok_ts: float | None,
+    online: bool | None,
+    config: PoolProdinoConfig,
+    now_ts: float,
+) -> bool:
+    if online is False or last_ok_ts is None:
+        return False
+    return now_ts - last_ok_ts <= config.health_timeout_s
 
 
 async def _read_pump_groups(
@@ -574,6 +758,8 @@ async def _update_cpu_leds(
     *,
     keller_relay_last_ok_ts: float | None = None,
     keller_relay_online: bool | None = None,
+    pool_prodino_last_ok_ts: float | None = None,
+    pool_prodino_online: bool | None = None,
 ) -> None:
     settings = app_config.setting("leds", {})
     if isinstance(settings, dict) and settings.get("enabled") is False:
@@ -593,6 +779,7 @@ async def _update_cpu_leds(
     }
     if role == "haupt":
         keller_relay_enabled = bool(app_config.setting("keller_relais.enabled", False))
+        pool_prodino_enabled = bool(app_config.setting("pool_prodino.enabled", False))
         colors.update(
             {
                 "A3": _peer_led_color_from_status(
@@ -605,7 +792,15 @@ async def _update_cpu_leds(
                 if keller_relay_enabled
                 else ("green" if mqtt.connected else "red"),
                 "A4": _freshness_led_color(mqtt.last_ha_heartbeat_ts, now_ts, ha_timeout_s, required=ha_required),
-                "A5": "red" if failsafe_state.active else "green",
+                "A5": _peer_led_color_from_status(
+                    pool_prodino_last_ok_ts,
+                    pool_prodino_online,
+                    now_ts,
+                    boot_ts,
+                    peer_timeout_s,
+                )
+                if pool_prodino_enabled
+                else ("red" if failsafe_state.active else "green"),
             }
         )
     else:
@@ -1432,6 +1627,11 @@ def _publish_state(
     keller_relay_online: bool | None = None,
     keller_relay_last_ok_ts: float | None = None,
     keller_relay_error: str = "",
+    pool_state: PoolControlState | None = None,
+    pool_prodino_online: bool | None = None,
+    pool_prodino_last_seen_ts: float | None = None,
+    pool_prodino_snapshot: ProdinoPoolSnapshot | None = None,
+    brunnen_water_total_l: float | None = None,
 ) -> None:
     base = mqtt.base
     mqtt.publish(f"{base}/failsafe/active", "1" if failsafe_state.active else "0", retain=True)
@@ -1450,6 +1650,8 @@ def _publish_state(
         _publish_mischer_state(mqtt, keller_relay_snapshot)
     if keller_relay_online is not None:
         _publish_keller_relay_health(mqtt, keller_relay_online, keller_relay_last_ok_ts, keller_relay_error)
+    if pool_state is not None:
+        _publish_pool_state(mqtt, pool_state, pool_prodino_online, pool_prodino_last_seen_ts, pool_prodino_snapshot)
     oelbrenner_safety_reasons = _oelbrenner_safety_reasons(app_config, snapshot)
     mqtt.publish(f"{base}/oelbrenner/sicherheit/ok", "0" if oelbrenner_safety_reasons else "1", retain=True)
     mqtt.publish(f"{base}/oelbrenner/sicherheit/grund", ",".join(oelbrenner_safety_reasons), retain=True)
@@ -1460,6 +1662,11 @@ def _publish_state(
     mqtt.publish(
         f"{base}/brunnen/fluss_l_min/state",
         "" if brunnen_state.flow_l_min is None else f"{brunnen_state.flow_l_min:.2f}",
+        retain=True,
+    )
+    mqtt.publish(
+        f"{base}/brunnen/wasserzaehler_l/state",
+        "" if brunnen_water_total_l is None else f"{brunnen_water_total_l:.3f}",
         retain=True,
     )
     mqtt.publish(
@@ -1533,6 +1740,103 @@ def _publish_keller_relay_states(mqtt: MqttBridge, states: dict[str, bool]) -> N
     base = mqtt.base
     for component, value in sorted(states.items()):
         mqtt.publish(f"{base}/do/{component}/state", "1" if value else "0", retain=True)
+
+
+def _publish_pool_state(
+    mqtt: MqttBridge,
+    state: PoolControlState,
+    prodino_online: bool | None,
+    prodino_last_seen_ts: float | None,
+    prodino_snapshot: ProdinoPoolSnapshot | None = None,
+) -> None:
+    base = mqtt.base
+    mqtt.publish_json(f"{base}/pool/nachspeisung/state", state.as_payload(), retain=True)
+    mqtt.publish(f"{base}/pool/nachspeisung/grund", state.reason, retain=True)
+    mqtt.publish(f"{base}/pool/nachspeisung/ventil", "1" if state.valve_open else "0", retain=True)
+    mqtt.publish(
+        f"{base}/pool/nachspeisung/schwimmer_zu_leer",
+        "" if state.float_empty is None else ("1" if state.float_empty else "0"),
+        retain=True,
+    )
+    mqtt.publish(f"{base}/pool/nachspeisung/fuellzeit_s/state", f"{state.fill_elapsed_s:.1f}", retain=True)
+    mqtt.publish(f"{base}/pool/nachspeisung/letzte_liter/state", f"{state.last_fill_liters:.2f}", retain=True)
+    mqtt.publish(f"{base}/pool/flockung/pumpe", "1" if state.dosing_pump_on else "0", retain=True)
+    mqtt.publish(f"{base}/pool/flockung/restzeit_s/state", f"{state.dosing_remaining_s:.1f}", retain=True)
+    mqtt.publish(
+        f"{base}/pool/flockung/letzte_zugabe/state",
+        "unknown" if state.last_dose_ts is None else _iso_timestamp(state.last_dose_ts),
+        retain=True,
+    )
+    mqtt.publish(f"{base}/pool/flockung/letzte_zugabe_ml/state", f"{state.last_dose_ml:.2f}", retain=True)
+    mqtt.publish(f"{base}/pool/flockung/letzte_zugabe_s/state", f"{state.last_dose_seconds:.1f}", retain=True)
+    mqtt.publish(f"{base}/pool/flockung/letzte_zugabe_grund", state.last_dose_reason or "unbekannt", retain=True)
+    if prodino_online is not None:
+        mqtt.publish(f"{base}/prodino_pool/online", "1" if prodino_online else "0", retain=True)
+    if prodino_snapshot is not None:
+        for relay, value in sorted(prodino_snapshot.relays.items()):
+            mqtt.publish(f"{base}/prodino_pool/relay/{relay}/state", "1" if value else "0", retain=True)
+        valve_actual = prodino_snapshot.relays.get(1)
+        dosing_actual = prodino_snapshot.relays.get(2)
+        mqtt.publish(
+            f"{base}/pool/nachspeisung/ventil_ist",
+            "" if valve_actual is None else ("1" if valve_actual else "0"),
+            retain=True,
+        )
+        mqtt.publish(
+            f"{base}/pool/flockung/pumpe_ist",
+            "" if dosing_actual is None else ("1" if dosing_actual else "0"),
+            retain=True,
+        )
+        mismatch = (valve_actual is not None and valve_actual != state.valve_open) or (
+            dosing_actual is not None and dosing_actual != state.dosing_pump_on
+        )
+        mqtt.publish(f"{base}/prodino_pool/relay_mismatch", "1" if mismatch else "0", retain=True)
+    mqtt.publish(
+        f"{base}/prodino_pool/last_seen_ts",
+        "" if prodino_last_seen_ts is None else str(int(prodino_last_seen_ts)),
+        retain=True,
+    )
+
+
+def _iso_timestamp(ts: float) -> str:
+    return datetime.fromtimestamp(ts).astimezone().isoformat()
+
+
+def _write_prodino_pool_outputs(
+    mqtt: MqttBridge,
+    app_config: AppConfig,
+    applied_do: dict[str, bool],
+    config: PoolProdinoConfig,
+) -> None:
+    relay_map = {
+        1: config.valve_component,
+        2: config.pump_component,
+    }
+    for relay, component in relay_map.items():
+        channel = app_config.io_map.by_component(component)
+        if channel is None or channel.kind != "do":
+            continue
+        value = bool(applied_do.get(channel.id, False))
+        reported = mqtt.prodino_pool_relays.get(relay)
+        mqtt.publish(
+            f"{config.topic_base}/relay/{relay}/set",
+            "1" if value else "0",
+            retain=False,
+            force=reported is None or reported != value,
+        )
+
+
+async def _write_prodino_pool_modbus_outputs(
+    client: ProdinoPoolModbusClient,
+    app_config: AppConfig,
+    applied_do: dict[str, bool],
+    config: PoolProdinoConfig,
+) -> None:
+    valve_channel = app_config.io_map.by_component(config.valve_component)
+    pump_channel = app_config.io_map.by_component(config.pump_component)
+    valve_open = bool(applied_do.get(valve_channel.id, False)) if valve_channel is not None else False
+    dosing_pump_on = bool(applied_do.get(pump_channel.id, False)) if pump_channel is not None else False
+    await client.write_outputs(valve_open=valve_open, dosing_pump_on=dosing_pump_on)
 
 
 def _publish_keller_relay_health(
@@ -1693,6 +1997,7 @@ def _publish_ha_discovery(mqtt: MqttBridge, app_config: AppConfig) -> None:
     )
 
     _publish_mischer_discovery(mqtt, prefix, device_payload)
+    _publish_pool_discovery(mqtt, prefix, device_payload)
 
     for demand in _demand_discovery_definitions(mqtt.base, app_config.setting("anforderungen", {})):
         _publish_discovery_entity(
@@ -1940,6 +2245,124 @@ def _publish_mischer_discovery(mqtt: MqttBridge, prefix: str, device_payload: di
         )
 
 
+def _publish_pool_discovery(mqtt: MqttBridge, prefix: str, device_payload: dict[str, Any]) -> None:
+    for sensor in (
+        {
+            "component": "sensor",
+            "object_name": "pool_nachspeisung_grund",
+            "name": "Pool Nachspeisung Grund",
+            "state_topic": f"{mqtt.base}/pool/nachspeisung/grund",
+        },
+        {
+            "component": "sensor",
+            "object_name": "pool_nachspeisung_fuellzeit",
+            "name": "Pool Nachspeisung Fuellzeit",
+            "state_topic": f"{mqtt.base}/pool/nachspeisung/fuellzeit_s/state",
+            "unit_of_measurement": "s",
+            "state_class": "measurement",
+        },
+        {
+            "component": "sensor",
+            "object_name": "pool_nachspeisung_letzte_liter",
+            "name": "Pool Nachspeisung letzte Liter",
+            "state_topic": f"{mqtt.base}/pool/nachspeisung/letzte_liter/state",
+            "unit_of_measurement": "L",
+            "state_class": "measurement",
+        },
+        {
+            "component": "sensor",
+            "object_name": "pool_flockung_restzeit",
+            "name": "Pool Flockung Restzeit",
+            "state_topic": f"{mqtt.base}/pool/flockung/restzeit_s/state",
+            "unit_of_measurement": "s",
+            "state_class": "measurement",
+        },
+        {
+            "component": "sensor",
+            "object_name": "pool_flockung_letzte_zugabe",
+            "name": "Pool Flockung letzte Zugabe",
+            "state_topic": f"{mqtt.base}/pool/flockung/letzte_zugabe/state",
+            "device_class": "timestamp",
+        },
+        {
+            "component": "sensor",
+            "object_name": "pool_flockung_letzte_zugabe_ml",
+            "name": "Pool Flockung letzte Zugabe ml",
+            "state_topic": f"{mqtt.base}/pool/flockung/letzte_zugabe_ml/state",
+            "unit_of_measurement": "ml",
+            "state_class": "measurement",
+        },
+        {
+            "component": "sensor",
+            "object_name": "pool_flockung_letzte_zugabe_s",
+            "name": "Pool Flockung letzte Zugabe Laufzeit",
+            "state_topic": f"{mqtt.base}/pool/flockung/letzte_zugabe_s/state",
+            "unit_of_measurement": "s",
+            "state_class": "measurement",
+        },
+        {
+            "component": "sensor",
+            "object_name": "pool_flockung_letzte_zugabe_grund",
+            "name": "Pool Flockung letzte Zugabe Grund",
+            "state_topic": f"{mqtt.base}/pool/flockung/letzte_zugabe_grund",
+        },
+    ):
+        component = str(sensor.pop("component"))
+        object_name = str(sensor.pop("object_name"))
+        _publish_discovery_entity(mqtt, prefix, component, object_name, {**sensor, "device": device_payload})
+
+    for binary in (
+        {
+            "object_name": "pool_nachspeisung_ventil",
+            "name": "Pool Nachspeisung Ventil",
+            "state_topic": f"{mqtt.base}/pool/nachspeisung/ventil",
+        },
+        {
+            "object_name": "pool_nachspeisung_ventil_ist",
+            "name": "Pool Nachspeisung Ventil Ist",
+            "state_topic": f"{mqtt.base}/pool/nachspeisung/ventil_ist",
+        },
+        {
+            "object_name": "pool_nachspeisung_schwimmer_zu_leer",
+            "name": "Pool Schwimmer zu leer",
+            "state_topic": f"{mqtt.base}/pool/nachspeisung/schwimmer_zu_leer",
+        },
+        {
+            "object_name": "pool_flockung_pumpe",
+            "name": "Pool Flockung Pumpe",
+            "state_topic": f"{mqtt.base}/pool/flockung/pumpe",
+        },
+        {
+            "object_name": "pool_flockung_pumpe_ist",
+            "name": "Pool Flockung Pumpe Ist",
+            "state_topic": f"{mqtt.base}/pool/flockung/pumpe_ist",
+        },
+        {
+            "object_name": "prodino_pool_online",
+            "name": "Prodino Pool online",
+            "state_topic": f"{mqtt.base}/prodino_pool/online",
+        },
+        {
+            "object_name": "prodino_pool_relay_mismatch",
+            "name": "Prodino Pool Relais Abweichung",
+            "state_topic": f"{mqtt.base}/prodino_pool/relay_mismatch",
+        },
+    ):
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "binary_sensor",
+            binary["object_name"],
+            {
+                "name": binary["name"],
+                "state_topic": binary["state_topic"],
+                "payload_on": "1",
+                "payload_off": "0",
+                "device": device_payload,
+            },
+        )
+
+
 def _publish_discovery_entity(
     mqtt: MqttBridge,
     prefix: str,
@@ -1979,6 +2402,12 @@ def _brunnen_sensor_definitions(base: str) -> list[dict[str, str]]:
             "name": "Brunnen Fluss",
             "state_topic": f"{base}/brunnen/fluss_l_min/state",
             "unit": "L/min",
+        },
+        {
+            "object_name": "brunnen_wasserzaehler",
+            "name": "Brunnen Wasserzaehler",
+            "state_topic": f"{base}/brunnen/wasserzaehler_l/state",
+            "unit": "L",
         },
         {
             "object_name": "brunnen_kein_durchfluss",
@@ -2175,6 +2604,78 @@ def _regler_number_definitions() -> list[dict[str, Any]]:
             "max": 2,
             "step": 0.1,
             "unit": "bar",
+        },
+        {
+            "key": "pool_nachspeisung_testmodus",
+            "object_name": "pool_nachspeisung_testmodus",
+            "name": "Pool Nachspeisung Testmodus",
+            "min": 0,
+            "max": 1,
+            "step": 1,
+            "unit": "",
+        },
+        {
+            "key": "pool_nachspeisung_start_hour",
+            "object_name": "pool_nachspeisung_startzeit",
+            "name": "Pool Nachspeisung Startzeit",
+            "min": 0,
+            "max": 23,
+            "step": 1,
+            "unit": "h",
+        },
+        {
+            "key": "pool_nachspeisung_delay_s",
+            "object_name": "pool_nachspeisung_verzoegerung",
+            "name": "Pool Nachspeisung Verzoegerung",
+            "min": 0,
+            "max": 86400,
+            "step": 10,
+            "unit": "s",
+        },
+        {
+            "key": "pool_nachspeisung_max_fill_s",
+            "object_name": "pool_nachspeisung_max_fuellzeit",
+            "name": "Pool Nachspeisung Max Fuellzeit",
+            "min": 30,
+            "max": 21600,
+            "step": 30,
+            "unit": "s",
+        },
+        {
+            "key": "pool_flockung_tagesdosis_ml",
+            "object_name": "pool_flockung_tagesdosis",
+            "name": "Pool Flockung Tagesdosis",
+            "min": 0,
+            "max": 5000,
+            "step": 1,
+            "unit": "ml",
+        },
+        {
+            "key": "pool_flockung_start_hour",
+            "object_name": "pool_flockung_startzeit",
+            "name": "Pool Flockung Startzeit",
+            "min": 0,
+            "max": 23,
+            "step": 1,
+            "unit": "h",
+        },
+        {
+            "key": "pool_flockung_ml_pro_l_frischwasser",
+            "object_name": "pool_flockung_je_l_frischwasser",
+            "name": "Pool Flockung je L Frischwasser",
+            "min": 0,
+            "max": 100,
+            "step": 0.01,
+            "unit": "ml/L",
+        },
+        {
+            "key": "pool_flockung_pumpe_ml_min",
+            "object_name": "pool_flockung_pumpe_leistung",
+            "name": "Pool Flockung Pumpe Leistung",
+            "min": 0.1,
+            "max": 1000,
+            "step": 0.1,
+            "unit": "ml/min",
         },
     ]
 

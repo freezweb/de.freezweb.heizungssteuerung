@@ -1,0 +1,35 @@
+revpi:
+  geraet: Prodino Pool Modbus TCP
+  beschreibung: Virtuelle Modbus-TCP-Kanaele fuer KMP Prodino MKR Zero Ethernet am Pool
+
+do:
+  P-DO01:
+    pictory_name: "PRODINO_Relay_1"
+    komponente: pool_nachfuellventil
+    beschreibung: "Pool Nachfuellventil"
+    phase: "Pool"
+    hand_timeout_min: 30
+    module: "Prodino"
+    channel: "Relay1"
+  P-DO02:
+    pictory_name: "PRODINO_Relay_2"
+    komponente: pool_flockung_pumpe
+    beschreibung: "Pool Flockung Dosierpumpe"
+    phase: "Pool"
+    hand_timeout_min: 15
+    module: "Prodino"
+    channel: "Relay2"
+
+di:
+  P-DI01:
+    pictory_name: "PRODINO_Input_1"
+    komponente: pool_schwimmer_zu_leer
+    beschreibung: "Pool Schwimmer zu leer"
+    phase: "Pool"
+    module: "Prodino"
+    channel: "OptoIn1"
+    polaritaet: "NC_EMPTY_LOW"
+
+ai: {}
+ao: {}
+rtd: {}

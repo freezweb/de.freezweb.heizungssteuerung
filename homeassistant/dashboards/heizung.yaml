@@ -187,6 +187,33 @@ views:
             name: Klima OG 0-100 %
 
       - type: entities
+        title: Pool Nachspeisung und Flockung
+        entities:
+          - entity: binary_sensor.heizung_hauptsteuerung_prodino_pool_online
+          - entity: binary_sensor.heizung_hauptsteuerung_prodino_pool_relais_abweichung
+          - entity: binary_sensor.heizung_hauptsteuerung_pool_schwimmer_zu_leer
+          - entity: binary_sensor.heizung_hauptsteuerung_pool_nachspeisung_ventil
+          - entity: binary_sensor.heizung_hauptsteuerung_pool_nachspeisung_ventil_ist
+          - entity: sensor.heizung_hauptsteuerung_pool_nachspeisung_grund
+          - entity: sensor.heizung_hauptsteuerung_pool_nachspeisung_fuellzeit
+          - entity: sensor.heizung_hauptsteuerung_pool_nachspeisung_letzte_liter
+          - entity: binary_sensor.heizung_hauptsteuerung_pool_flockung_pumpe
+          - entity: binary_sensor.heizung_hauptsteuerung_pool_flockung_pumpe_ist
+          - entity: sensor.heizung_hauptsteuerung_pool_flockung_restzeit
+          - entity: sensor.heizung_hauptsteuerung_pool_flockung_letzte_zugabe
+          - entity: sensor.heizung_hauptsteuerung_pool_flockung_letzte_zugabe_ml
+          - entity: sensor.heizung_hauptsteuerung_pool_flockung_letzte_zugabe_laufzeit
+          - entity: sensor.heizung_hauptsteuerung_pool_flockung_letzte_zugabe_grund
+          - entity: number.heizung_hauptsteuerung_pool_nachspeisung_testmodus
+          - entity: number.heizung_hauptsteuerung_pool_nachspeisung_startzeit
+          - entity: number.heizung_hauptsteuerung_pool_nachspeisung_verzoegerung
+          - entity: number.heizung_hauptsteuerung_pool_nachspeisung_max_fuellzeit
+          - entity: number.heizung_hauptsteuerung_pool_flockung_tagesdosis
+          - entity: number.heizung_hauptsteuerung_pool_flockung_startzeit
+          - entity: number.heizung_hauptsteuerung_pool_flockung_je_l_frischwasser
+          - entity: number.heizung_hauptsteuerung_pool_flockung_pumpe_leistung
+
+      - type: entities
         title: Handbetrieb Digitale Ausgaenge
         show_header_toggle: false
         entities:
@@ -258,6 +285,14 @@ views:
           - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_pool_filter
           - entity: switch.heizung_hauptsteuerung_handwert_pool_filter
           - entity: button.heizung_hauptsteuerung_auto_pool_filter
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_pool_nachfuellventil
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_pool_nachfuellventil
+          - entity: switch.heizung_hauptsteuerung_handwert_pool_nachfuellventil
+          - entity: button.heizung_hauptsteuerung_auto_pool_nachfuellventil
+          - entity: binary_sensor.heizung_hauptsteuerung_ausgang_pool_flockung_dosierpumpe
+          - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_pool_flockung_dosierpumpe
+          - entity: switch.heizung_hauptsteuerung_handwert_pool_flockung_dosierpumpe
+          - entity: button.heizung_hauptsteuerung_auto_pool_flockung_dosierpumpe
           - entity: binary_sensor.heizung_hauptsteuerung_ausgang_sv_wp1_auf
           - entity: binary_sensor.heizung_hauptsteuerung_hand_aktiv_sv_wp1_auf
           - entity: switch.heizung_hauptsteuerung_handwert_sv_wp1_auf

@@ -1,0 +1,12 @@
+{
+"zaehlerstand":
+  {
+    "value": "",
+    "raw": "33332.6666",
+    "pre": "58.01970",
+    "error": "Rate too high - Read: 33332.6666 - Pre: 58.0197 - Rate: 33274.6469",
+    "rate": "",
+    "timestamp": ""
+  }
+
+}

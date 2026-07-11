@@ -15,7 +15,7 @@ rsync -a --delete --exclude='.git' --exclude='__pycache__' --exclude='.venv' \
   "$SRC_DIR/" "$APP_DIR/"
 
 # Falls neue Beispiel-Configs hinzukamen, .yaml-Stubs anlegen
-for f in io_map.yaml settings.yaml mqtt.yaml modbus_map.yaml io_map.keller_relais.yaml; do
+for f in io_map.yaml settings.yaml mqtt.yaml modbus_map.yaml io_map.keller_relais.yaml io_map.pool_prodino.yaml; do
   if [[ ! -f "$APP_DIR/config/$f" ]]; then
     cp "$APP_DIR/config/${f}.example" "$APP_DIR/config/$f"
   fi

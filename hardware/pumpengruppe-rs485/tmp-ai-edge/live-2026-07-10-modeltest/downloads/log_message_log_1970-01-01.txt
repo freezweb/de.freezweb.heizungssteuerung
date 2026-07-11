@@ -1,0 +1,186 @@
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m01s] 1970-01-01T00:00:01	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m01s] 1970-01-01T00:00:01	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] time zone: +0100 Delta to UTC: 3600 seconds
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] The local time is unknown, starting with 1970-01-01 01:00:03
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] Once the NTP server provides a time, we will switch to that one
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] Reset reason: Power-on event (or reset button)
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m04s] 1970-01-01T01:00:04	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m04s] 1970-01-01T01:00:04	<INF>	[WIFI] Init successful
+[0d00h00m17s] 1970-01-01T01:00:17	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m19s] 1970-01-01T01:00:19	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m23s] 1970-01-01T01:00:23	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m24s] 1970-01-01T01:00:24	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 1970-01-01T01:00:24	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m25s] 1970-01-01T01:00:25	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m26s] 1970-01-01T01:00:26	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] time zone: +0100 Delta to UTC: 3600 seconds
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] The local time is unknown, starting with 1970-01-01 01:00:03
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] Once the NTP server provides a time, we will switch to that one
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] Reset reason: Power-on event (or reset button)
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m04s] 1970-01-01T01:00:04	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m04s] 1970-01-01T01:00:04	<INF>	[WIFI] Init successful
+[0d00h00m17s] 1970-01-01T01:00:17	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m19s] 1970-01-01T01:00:19	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m24s] 1970-01-01T01:00:24	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 1970-01-01T01:00:24	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m24s] 1970-01-01T01:00:24	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -57
+[0d00h00m26s] 1970-01-01T01:00:26	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m26s] 1970-01-01T01:00:26	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m41s] 1970-01-01T01:00:41	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m41s] 1970-01-01T01:00:41	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] time zone: +0100 Delta to UTC: 3600 seconds
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] The local time is unknown, starting with 1970-01-01 01:00:03
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] Once the NTP server provides a time, we will switch to that one
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] Reset reason: Power-on event (or reset button)
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 1970-01-01T01:00:04	<INF>	[WIFI] Init successful
+[0d00h00m07s] 1970-01-01T01:00:07	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m09s] 1970-01-01T01:00:10	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m23s] 1970-01-01T01:00:23	<WRN>	[WIFI] Disconnected (2, Auth fail)
+[0d00h00m23s] 1970-01-01T01:00:24	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m23s] 1970-01-01T01:00:24	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m25s] 1970-01-01T01:00:26	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m26s] 1970-01-01T01:00:26	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 1970-01-01T00:00:01	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] time zone: +0100 Delta to UTC: 3600 seconds
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] The local time is unknown, starting with 1970-01-01 01:00:03
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] Once the NTP server provides a time, we will switch to that one
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] Reset reason: Power-on event (or reset button)
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m04s] 1970-01-01T01:00:04	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m04s] 1970-01-01T01:00:04	<INF>	[WIFI] Init successful
+[0d00h00m18s] 1970-01-01T01:00:18	<WRN>	[WIFI] Disconnected (2, Auth fail)
+[0d00h00m20s] 1970-01-01T01:00:20	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m24s] 1970-01-01T01:00:24	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 1970-01-01T01:00:24	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -58
+[0d00h00m24s] 1970-01-01T01:00:24	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m26s] 1970-01-01T01:00:26	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m39s] 1970-01-01T01:00:39	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m39s] 1970-01-01T01:00:39	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h02m24s] 1970-01-01T01:02:24	<ERR>	[POSTPROC] zaehlerstand: Raw: 33332.6666, Value: , Status: Rate too high - Read: 33332.6666 - Pre: 58.0197 - Rate: 33274.6469
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] Total heap: 4377151 byte
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SNTP] TimeServer: de.pool.ntp.org
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] time zone: +0100 Delta to UTC: 3600 seconds
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] The local time is unknown, starting with 1970-01-01 01:00:03
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] Once the NTP server provides a time, we will switch to that one
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] Reset reason: Power-on event (or reset button)
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 1970-01-01T01:00:04	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 1970-01-01T01:00:04	<INF>	[WIFI] Init successful
+[0d00h00m07s] 1970-01-01T01:00:07	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -55
+[0d00h00m12s] 1970-01-01T01:00:12	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m23s] 1970-01-01T01:00:24	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m23s] 1970-01-01T01:00:24	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m26s] 1970-01-01T01:00:26	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[LOGFILE] Set log level to ERROR
+[0d00h00m43s] 1970-01-01T01:00:43	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m43s] 1970-01-01T01:00:43	<ERR>	[C FIND TEMPL]  is empty!
+[0d00h00m54s] 1970-01-01T01:00:55	<ERR>	[POSTPROC] zaehlerstand: Raw: 11111.6666, Value: , Status: Rate too high - Read: 11111.6666 - Pre: 58.0197 - Rate: 11053.6469

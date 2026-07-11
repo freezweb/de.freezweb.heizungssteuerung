@@ -35,6 +35,10 @@ class MqttBridge:
         self.last_ha_heartbeat_ts: float | None = None
         self.peer_last_seen_ts: float | None = None
         self.peer_online: bool | None = None
+        self.prodino_pool_last_seen_ts: float | None = None
+        self.prodino_pool_online: bool | None = None
+        self.prodino_pool_inputs: dict[int, bool] = {}
+        self.prodino_pool_relays: dict[int, bool] = {}
         self.demands: dict[str, Demand] = {}
         self.pv: dict[str, bool] = {"ueberschuss": False, "mangel": False}
         self._commands: queue.SimpleQueue[MqttCommand] = queue.SimpleQueue()
@@ -161,6 +165,11 @@ class MqttBridge:
             f"{self.base}/tor/+/cmd",
             f"{self.base}/failsafe/force",
             f"{self.base}/ha/heartbeat",
+            f"{self.base}/prodino_pool/status",
+            f"{self.base}/prodino_pool/input/+/state",
+            f"{self.base}/prodino_pool/relay/+/state",
+            f"{self.base}/prodino_pool/pool_schwimmer_zu_leer/state",
+            f"{self.base}/prodino_pool/pool_schwimmer_voll/state",
             *self._peer_topics(),
         ):
             client.subscribe(topic)
@@ -190,6 +199,10 @@ class MqttBridge:
             self.peer_last_seen_ts = time.time()
             if topic == self._peer_status_topic():
                 self.peer_online = _as_bool(payload)
+            return
+
+        if len(parts) >= 3 and parts[1] == "prodino_pool":
+            self._handle_prodino_pool_message(parts, payload)
             return
 
         if getattr(msg, "retain", False) and _is_unsafe_retained_command(parts):
@@ -258,6 +271,27 @@ class MqttBridge:
 
         if topic == f"{self.base}/failsafe/force":
             self._commands.put(MqttCommand("failsafe_force", "failsafe", payload))
+
+    def _handle_prodino_pool_message(self, parts: list[str], payload: Any) -> None:
+        self.prodino_pool_last_seen_ts = time.time()
+        if len(parts) == 3 and parts[2] == "status":
+            self.prodino_pool_online = _as_bool(payload)
+            return
+        self.prodino_pool_online = True
+        if len(parts) == 5 and parts[2] == "input" and parts[4] == "state":
+            try:
+                self.prodino_pool_inputs[int(parts[3])] = _as_bool(payload)
+            except ValueError:
+                return
+            return
+        if len(parts) == 5 and parts[2] == "relay" and parts[4] == "state":
+            try:
+                self.prodino_pool_relays[int(parts[3])] = _as_bool(payload)
+            except ValueError:
+                return
+            return
+        if len(parts) == 4 and parts[2] in {"pool_schwimmer_zu_leer", "pool_schwimmer_voll"} and parts[3] == "state":
+            self.prodino_pool_inputs[1] = _as_bool(payload)
 
 
 def _reason_code_value(reason_code: Any) -> int:
