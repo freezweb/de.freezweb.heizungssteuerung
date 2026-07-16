@@ -1,0 +1,9 @@
+{
+  "domain": "hoftor_vision",
+  "name": "Hoftor Vision",
+  "codeowners": [],
+  "dependencies": ["camera"],
+  "documentation": "https://www.home-assistant.io/integrations/camera/",
+  "iot_class": "local_polling",
+  "version": "1.0.0"
+}

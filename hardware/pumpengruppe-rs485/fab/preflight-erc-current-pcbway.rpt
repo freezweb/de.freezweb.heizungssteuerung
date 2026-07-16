@@ -1,0 +1,1043 @@
+ERC report (2026-07-11T13:28:41, Encoding UTF8)
+Report includes: Errors, Warnings
+
+***** Sheet /
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(-31.75 mm, 59.69 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2.54 mm, 35.56 mm): Vertical Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 25400, 305600
+    ; warning
+    @(2.54 mm, 30.56 mm): Label 'L_IN'
+    @(-35.56 mm, 125.73 mm): Wire, length 642.022 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2.54 mm, 43.18 mm): Vertical Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 25400, 481800
+    ; warning
+    @(2.54 mm, 48.18 mm): Label 'L_FUSED'
+    @(-31.75 mm, 54.61 mm): Wire, length 39.226 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(80.01 mm, 203.20 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(106.68 mm, 214.63 mm): Vertical Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(139.70 mm, 217.17 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(154.94 mm, 217.17 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(181.61 mm, 218.44 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 1866100, 2184400
+    ; warning
+    @(186.61 mm, 218.44 mm): Label 'RGB_D61_DOUT'
+    @(209.55 mm, 210.82 mm): Wire, length 28.96 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(207.01 mm, 247.65 mm): Vertical Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 2070100, 2426500
+    ; warning
+    @(207.01 mm, 242.65 mm): Label '+5V'
+    @(207.01 mm, 247.65 mm): Wire, length 45.596 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(207.01 mm, 255.27 mm): Vertical Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(224.79 mm, 210.82 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 2297900, 2108200
+    ; warning
+    @(229.79 mm, 210.82 mm): Label 'RGB_D62_DOUT'
+    @(217.17 mm, 218.44 mm): Wire, length 32.453 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(252.73 mm, 194.31 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 2577300, 1943100
+    ; warning
+    @(257.73 mm, 194.31 mm): Label 'RGB_D63_DOUT'
+    @(311.19 mm, 175.00 mm): Wire, length 233.215 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 2749200, 990000
+    ; warning
+    @(274.92 mm, 99.00 mm): Label 'MIX_DIR_DRV'
+    @(-35.56 mm, 125.73 mm): Wire, length 642.022 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 2761900, 1750000
+    ; warning
+    @(276.19 mm, 175.00 mm): Label 'RS485_A'
+    @(311.19 mm, 175.00 mm): Wire, length 233.215 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(279.92 mm, 99.00 mm): Symbol Q3 Pin 1 [G, Input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(279.92 mm, 99.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(281.19 mm, 133.00 mm): Symbol D11 Pin 1 [K, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(281.19 mm, 133.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(281.19 mm, 175.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(285.00 mm, 41.19 mm): Wire, length 176.301 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(285.00 mm, 41.19 mm): Symbol R40 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(2.54 mm, 43.18 mm): Wire, length 282.467 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(285.00 mm, 48.81 mm): Wire, length 16.825 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(285.00 mm, 48.81 mm): Vertical Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 2850000, 538100
+    ; warning
+    @(285.00 mm, 53.81 mm): Label 'MAINS_LED_SERIES'
+    @(-31.75 mm, 57.15 mm): Wire, length 395.747 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 2850000, 561900
+    ; warning
+    @(285.00 mm, 56.19 mm): Label 'PUMP_DRV_GPIO'
+    @(-31.75 mm, 57.15 mm): Wire, length 395.747 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(285.00 mm, 61.19 mm): Vertical Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(285.00 mm, 61.19 mm): Symbol R4 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(285.00 mm, 68.81 mm): Wire, length 56.482 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(285.00 mm, 85.81 mm): Wire, length 8.498 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(292.10 mm, 83.82 mm): Wire, length 7.374 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(285.00 mm, 85.81 mm): Symbol R8 Pin 2 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(292.10 mm, 113.03 mm): Wire, length 7.15 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(285.00 mm, 119.81 mm): Symbol R10 Pin 2 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(285.00 mm, 119.81 mm): Wire, length 86.274 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(285.00 mm, 153.81 mm): Symbol R30 Pin 2 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(285.00 mm, 153.81 mm): Wire, length 57.717 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(287.54 mm, 93.92 mm): Wire, length 8.932 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(288.81 mm, 133.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(288.81 mm, 175.00 mm): Symbol D50 Pin 2 [A2, Passive, Line]
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 2938100, 1330000
+    ; warning
+    @(293.81 mm, 133.00 mm): Label 'MIX_ENABLE_COIL_DRV'
+    @(315.00 mm, 119.81 mm): Wire, length 36.292 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(300.00 mm, 48.81 mm): Symbol R41 Pin 2 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(300.00 mm, 48.81 mm): Wire, length 56.319 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(299.72 mm, 76.20 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3047200, 762000
+    ; warning
+    @(304.72 mm, 76.20 mm): Label 'RGB_D64_DOUT'
+    @(-35.56 mm, 125.73 mm): Wire, length 642.022 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(299.72 mm, 93.98 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3047200, 939800
+    ; warning
+    @(304.72 mm, 93.98 mm): Label 'RGB_D65_DOUT'
+    @(-35.56 mm, 125.73 mm): Wire, length 642.022 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(299.72 mm, 111.76 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3047200, 1117600
+    ; warning
+    @(304.72 mm, 111.76 mm): Label 'RGB_D66_DOUT'
+    @(-35.56 mm, 125.73 mm): Wire, length 642.022 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(299.72 mm, 129.54 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3047200, 1295400
+    ; warning
+    @(304.72 mm, 129.54 mm): Label 'RGB_D67_DOUT'
+    @(315.00 mm, 119.81 mm): Wire, length 36.292 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(299.72 mm, 147.32 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(299.72 mm, 165.10 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3047200, 1651000
+    ; warning
+    @(304.72 mm, 165.10 mm): Label 'RGB_D69_DOUT'
+    @(285.00 mm, 153.81 mm): Wire, length 57.717 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(299.72 mm, 182.88 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3047200, 1828800
+    ; warning
+    @(304.72 mm, 182.88 mm): Label 'RGB_D70_DOUT'
+    @(311.19 mm, 175.00 mm): Wire, length 233.215 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(299.72 mm, 200.66 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3047200, 2006600
+    ; warning
+    @(304.72 mm, 200.66 mm): Label 'RGB_D71_DOUT'
+    @(311.19 mm, 175.00 mm): Wire, length 233.215 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(299.72 mm, 218.44 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(299.72 mm, 236.22 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3061900, 1330000
+    ; warning
+    @(306.19 mm, 133.00 mm): Label 'LED_MIX_DIR_K'
+    @(315.00 mm, 119.81 mm): Wire, length 36.292 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(322.58 mm, 95.25 mm): Wire, length 11.991 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(311.19 mm, 99.00 mm): Wire, length 19.455 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(311.19 mm, 133.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(311.19 mm, 175.00 mm): Wire, length 233.215 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3150000, 361900
+    ; warning
+    @(315.00 mm, 36.19 mm): Label 'BUS_5V'
+    @(285.00 mm, 41.19 mm): Wire, length 176.301 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 41.19 mm): Wire, length 256.846 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 41.19 mm): Vertical Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 41.19 mm): Symbol F2 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(322.58 mm, 68.58 mm): Wire, length 21.173 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 48.81 mm): Wire, length 26.466 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3150000, 561900
+    ; warning
+    @(315.00 mm, 56.19 mm): Label 'MIX_ENABLE_DRV_GPIO'
+    @(-31.75 mm, 57.15 mm): Wire, length 395.747 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 61.19 mm): Vertical Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 68.81 mm): Symbol R5 Pin 2 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 68.81 mm): Wire, length 31.432 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 68.81 mm): Wire, length 56.482 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 78.19 mm): Symbol R9 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 78.19 mm): Wire, length 40.788 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 85.81 mm): Wire, length 7.837 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(322.58 mm, 101.60 mm): Wire, length 17.515 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 85.81 mm): Wire, length 22.986 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(322.58 mm, 113.03 mm): Wire, length 7.626 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 112.19 mm): Symbol R11 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 119.81 mm): Wire, length 36.292 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 146.19 mm): Horizontal Wire, length 30.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 153.81 mm): Symbol R31 Pin 2 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(315.00 mm, 153.81 mm): Wire, length 57.717 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(318.81 mm, 99.00 mm): Symbol D1 Pin 2 [A, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(318.81 mm, 99.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(318.81 mm, 133.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(318.81 mm, 133.00 mm): Symbol D12 Pin 2 [A, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(318.81 mm, 133.00 mm): Wire, length 42.593 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(318.81 mm, 175.00 mm): Symbol D51 Pin 2 [A2, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(318.81 mm, 175.00 mm): Horizontal Wire, length 30.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3238100, 990000
+    ; warning
+    @(323.81 mm, 99.00 mm): Label 'PUMP_COIL_DRV'
+    @(-35.56 mm, 125.73 mm): Wire, length 642.022 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3238100, 1330000
+    ; warning
+    @(323.81 mm, 133.00 mm): Label 'MIX_DIR_COIL_DRV'
+    @(330.20 mm, 129.54 mm): Wire, length 23.418 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3349200, 820000
+    ; warning
+    @(334.92 mm, 82.00 mm): Label 'PUMP_DRV'
+    @(-35.56 mm, 125.73 mm): Wire, length 642.022 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(330.20 mm, 76.20 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3352000, 762000
+    ; warning
+    @(335.20 mm, 76.20 mm): Label 'RGB_D74_DOUT'
+    @(-35.56 mm, 125.73 mm): Wire, length 642.022 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(330.20 mm, 93.98 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3352000, 939800
+    ; warning
+    @(335.20 mm, 93.98 mm): Label 'RGB_D75_DOUT'
+    @(-35.56 mm, 125.73 mm): Wire, length 642.022 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(330.20 mm, 111.76 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3352000, 1117600
+    ; warning
+    @(335.20 mm, 111.76 mm): Label 'RGB_D76_DOUT'
+    @(-35.56 mm, 125.73 mm): Wire, length 642.022 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(330.20 mm, 129.54 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3352000, 1295400
+    ; warning
+    @(335.20 mm, 129.54 mm): Label 'RGB_D77_DOUT'
+    @(375.00 mm, 129.19 mm): Wire, length 62.362 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(330.20 mm, 147.32 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(330.20 mm, 165.10 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3352000, 1651000
+    ; warning
+    @(335.20 mm, 165.10 mm): Label 'RGB_D79_DOUT'
+    @(285.00 mm, 153.81 mm): Wire, length 57.717 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(330.20 mm, 182.88 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3352000, 1828800
+    ; warning
+    @(335.20 mm, 182.88 mm): Label 'RGB_D80_DOUT'
+    @(549.92 mm, 182.54 mm): Wire, length 470.364 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(330.20 mm, 200.66 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3352000, 2006600
+    ; warning
+    @(335.20 mm, 200.66 mm): Label 'RGB_D81_DOUT'
+    @(549.92 mm, 182.54 mm): Wire, length 470.364 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(330.20 mm, 218.44 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3361900, 1500000
+    ; warning
+    @(336.19 mm, 150.00 mm): Label 'LED_5V_K'
+    @(315.00 mm, 41.19 mm): Wire, length 256.846 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3361900, 1670000
+    ; warning
+    @(336.19 mm, 167.00 mm): Label 'LED_USB_TX_K'
+    @(285.00 mm, 153.81 mm): Wire, length 57.717 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(339.92 mm, 82.00 mm): Wire, length 40.788 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(339.92 mm, 82.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(341.19 mm, 45.00 mm): Wire, length 115.528 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(341.19 mm, 99.00 mm): Wire, length 13.729 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(322.58 mm, 95.25 mm): Wire, length 18.984 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(341.19 mm, 99.00 mm): Symbol D2 Pin 1 [K, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(341.19 mm, 150.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(341.19 mm, 150.00 mm): Symbol D20 Pin 1 [K, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(341.19 mm, 167.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(341.19 mm, 175.00 mm): Horizontal Wire, length 60.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(341.19 mm, 175.00 mm): Symbol D52 Pin 1 [A1, Passive, Line]
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3450000, 561900
+    ; warning
+    @(345.00 mm, 56.19 mm): Label 'MIX_DIR_DRV_GPIO'
+    @(-31.75 mm, 57.15 mm): Wire, length 395.747 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(345.00 mm, 61.19 mm): Vertical Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(345.00 mm, 61.19 mm): Symbol R6 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(345.00 mm, 68.81 mm): Wire, length 31.432 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(345.00 mm, 112.19 mm): Symbol R12 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(345.00 mm, 112.19 mm): Wire, length 29.324 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(345.00 mm, 112.19 mm): Vertical Wire, length 17.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(345.00 mm, 119.81 mm): Wire, length 36.292 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(345.00 mm, 136.81 mm): Symbol R20 Pin 2 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(345.00 mm, 136.81 mm): Wire, length 13.729 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(322.58 mm, 83.82 mm): Wire, length 25.896 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(347.54 mm, 76.92 mm): Symbol Q1 Pin 2 [D, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(347.54 mm, 76.92 mm): Wire, length 28.633 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(347.54 mm, 87.08 mm): Wire, length 31.105 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(347.54 mm, 87.08 mm): Wire, length 42.593 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(396.24 mm, -144.78 mm): Wire, length 236.919 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(348.81 mm, 45.00 mm): Symbol D4 Pin 2 [A, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(348.81 mm, 45.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(348.81 mm, 45.00 mm): Wire, length 337.775 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(348.81 mm, 99.00 mm): Wire, length 68.964 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(322.58 mm, 154.94 mm): Wire, length 26.691 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(348.81 mm, 150.00 mm): Horizontal Wire, length 30.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(348.81 mm, 167.00 mm): Symbol D30 Pin 2 [A, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(348.81 mm, 167.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(671.83 mm, 279.40 mm): Wire, length 342.017 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(348.81 mm, 175.00 mm): Horizontal Wire, length 37.62 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(348.81 mm, 175.00 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3538100, 450000
+    ; warning
+    @(353.81 mm, 45.00 mm): Label 'USB_VBUS'
+    @(396.24 mm, -144.78 mm): Wire, length 236.919 mm
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(353.81 mm, 167.00 mm): Label 'ESP_U0TX'
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3538100, 1670000
+    ; warning
+    @(353.81 mm, 167.00 mm): Label 'ESP_U0TX'
+    @(315.00 mm, 41.19 mm): Wire, length 256.846 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3538100, 1750000
+    ; warning
+    @(353.81 mm, 175.00 mm): Label 'RS485_B'
+    @(315.00 mm, 41.19 mm): Wire, length 256.846 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(356.19 mm, 45.00 mm): Symbol D40 Pin 1 [K, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(356.19 mm, 45.00 mm): Wire, length 126.589 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(363.81 mm, 45.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(-31.75 mm, 57.15 mm): Wire, length 395.747 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(363.81 mm, 45.00 mm): Wire, length 97.912 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3649200, 820000
+    ; warning
+    @(364.92 mm, 82.00 mm): Label 'MIX_ENABLE_DRV'
+    @(396.24 mm, -144.78 mm): Wire, length 236.919 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3661900, 1160000
+    ; warning
+    @(366.19 mm, 116.00 mm): Label 'LED_PUMP_K'
+    @(-35.56 mm, 125.73 mm): Wire, length 642.022 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3661900, 1670000
+    ; warning
+    @(366.19 mm, 167.00 mm): Label 'LED_USB_RX_K'
+    @(315.00 mm, 41.19 mm): Wire, length 256.846 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3688100, 450000
+    ; warning
+    @(368.81 mm, 45.00 mm): Label 'N'
+    @(396.24 mm, -144.78 mm): Wire, length 236.919 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(369.92 mm, 82.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(369.92 mm, 82.00 mm): Symbol Q2 Pin 1 [G, Input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(375.92 mm, -144.78 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3709200, -1447800
+    ; warning
+    @(370.92 mm, -144.78 mm): Label 'L_PUMP'
+    @(396.24 mm, -144.78 mm): Wire, length 236.919 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(371.19 mm, 99.00 mm): Symbol D3 Pin 1 [K, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(371.19 mm, 116.00 mm): Symbol D10 Pin 1 [K, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(371.19 mm, 116.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(371.19 mm, 167.00 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(371.19 mm, 167.00 mm): Symbol D31 Pin 1 [K, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(375.00 mm, 61.19 mm): Symbol R7 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(375.00 mm, 68.81 mm): Wire, length 107.048 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(375.00 mm, 68.81 mm): Wire, length 8.498 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3750000, 1241900
+    ; warning
+    @(375.00 mm, 124.19 mm): Label '+3V3'
+    @(-35.56 mm, 125.73 mm): Wire, length 642.022 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(447.04 mm, -26.67 mm): Wire, length 171.704 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(375.00 mm, 129.19 mm): Wire, length 62.362 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(375.00 mm, 129.19 mm): Symbol R21 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(375.00 mm, 129.19 mm): Vertical Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(375.00 mm, 136.81 mm): Vertical Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(375.00 mm, 136.81 mm): Wire, length 13.729 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3750000, 1418100
+    ; warning
+    @(375.00 mm, 141.81 mm): Label 'LED_3V3_K'
+    @(375.00 mm, 129.19 mm): Wire, length 62.362 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(469.90 mm, -158.75 mm): Wire, length 262.608 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(377.54 mm, 87.08 mm): Wire, length 31.105 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(551.18 mm, -173.99 mm): Wire, length 322.854 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(378.81 mm, 99.00 mm): Wire, length 68.964 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(378.81 mm, 150.00 mm): Symbol D21 Pin 2 [A, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(378.81 mm, 167.00 mm): Wire, length 312.938 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(378.81 mm, 167.00 mm): Horizontal Wire, length 5.00 mm
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(383.81 mm, 167.00 mm): Label 'ESP_U0RX'
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 3838100, 1670000
+    ; warning
+    @(383.81 mm, 167.00 mm): Label 'ESP_U0RX'
+    @(315.00 mm, 41.19 mm): Wire, length 256.846 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(449.58 mm, -158.75 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 4445800, -1587500
+    ; warning
+    @(444.58 mm, -158.75 mm): Label 'L_MIX_ENABLE'
+    @(396.24 mm, -149.86 mm): Wire, length 74.973 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(477.52 mm, 8.89 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 4825200, 88900
+    ; warning
+    @(482.52 mm, 8.89 mm): Label 'MAINS_LED_K'
+    @(551.18 mm, -173.99 mm): Wire, length 322.854 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(514.92 mm, 222.46 mm): Vertical Wire, length 25.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(525.78 mm, 195.58 mm): Wire, length 28.991 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(514.92 mm, 222.46 mm): Symbol J3 Pin 1 [Pin_1, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(514.92 mm, 222.46 mm): Wire, length 180.096 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(514.92 mm, 225.00 mm): Vertical Wire, length 25.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(525.78 mm, 198.12 mm): Wire, length 28.991 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(514.92 mm, 225.00 mm): Wire, length 173.472 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(514.92 mm, 227.54 mm): Vertical Wire, length 25.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(514.92 mm, 227.54 mm): Wire, length 24.355 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(514.92 mm, 227.54 mm): Wire, length 203.026 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(514.92 mm, 247.46 mm): Symbol J4 Pin 1 [Pin_1, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(530.86 mm, -176.53 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5258600, -1765300
+    ; warning
+    @(525.86 mm, -176.53 mm): Label 'L_MIX_CLOSE'
+    @(469.90 mm, -163.83 mm): Wire, length 82.696 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(530.86 mm, -171.45 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5258600, -1714500
+    ; warning
+    @(525.86 mm, -171.45 mm): Label 'L_MIX_OPEN'
+    @(469.90 mm, -163.83 mm): Wire, length 82.696 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(579.12 mm, 171.45 mm): Wire, length 30.426 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(549.92 mm, 180.00 mm): Wire, length 28.731 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(549.92 mm, 182.54 mm): Symbol R3 Pin 2 [Pin_2, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(549.92 mm, 182.54 mm): Wire, length 470.364 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5500000, 311900
+    ; warning
+    @(550.00 mm, 31.19 mm): Label 'RTD_VL_BIAS'
+    @(551.18 mm, -173.99 mm): Wire, length 322.854 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 36.19 mm): Symbol R22 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 36.19 mm): Vertical Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 36.19 mm): Wire, length 70.407 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 43.81 mm): Wire, length 70.407 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 43.81 mm): Vertical Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5500000, 481900
+    ; warning
+    @(550.00 mm, 48.19 mm): Label 'RTD_VL_FORCE_PLUS'
+    @(551.18 mm, -173.99 mm): Wire, length 322.854 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5500000, 488100
+    ; warning
+    @(550.00 mm, 48.81 mm): Label 'RTD_VL_ISENSOR'
+    @(551.18 mm, -173.99 mm): Wire, length 322.854 mm
+[multiple_net_names]: RTD_VL_FORCE_PLUS und RTD_VL_ISENSOR sind jeweils mit dem gleichen Teil verbunden. RTD_VL_FORCE_PLUS wird in der Netzliste benutzt
+    ; warning
+    @(550.00 mm, 48.19 mm): Label 'RTD_VL_FORCE_PLUS'
+    @(550.00 mm, 48.81 mm): Label 'RTD_VL_ISENSOR'
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 53.19 mm): Vertical Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 53.19 mm): Symbol C22 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 60.81 mm): Vertical Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5500000, 658100
+    ; warning
+    @(550.00 mm, 65.81 mm): Label 'RTD_VL_FORCE_MINUS'
+    @(551.18 mm, -173.99 mm): Wire, length 322.854 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 106.19 mm): Symbol R23 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 106.19 mm): Vertical Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 106.19 mm): Wire, length 111.359 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 113.81 mm): Vertical Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 113.81 mm): Wire, length 111.359 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5500000, 1181900
+    ; warning
+    @(550.00 mm, 118.19 mm): Label 'RTD_RL_FORCE_PLUS'
+    @(348.81 mm, 45.00 mm): Wire, length 337.775 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5500000, 1188100
+    ; warning
+    @(550.00 mm, 118.81 mm): Label 'RTD_RL_ISENSOR'
+    @(348.81 mm, 45.00 mm): Wire, length 337.775 mm
+[multiple_net_names]: RTD_RL_FORCE_PLUS und RTD_RL_ISENSOR sind jeweils mit dem gleichen Teil verbunden. RTD_RL_FORCE_PLUS wird in der Netzliste benutzt
+    ; warning
+    @(550.00 mm, 118.19 mm): Label 'RTD_RL_FORCE_PLUS'
+    @(550.00 mm, 118.81 mm): Label 'RTD_RL_ISENSOR'
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 123.19 mm): Vertical Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 123.19 mm): Symbol C23 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(550.00 mm, 130.81 mm): Vertical Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5500000, 1358100
+    ; warning
+    @(550.00 mm, 135.81 mm): Label 'RTD_RL_FORCE_MINUS'
+    @(348.81 mm, 45.00 mm): Wire, length 337.775 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(564.92 mm, 50.00 mm): Wire, length 55.12 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(564.92 mm, 50.00 mm): Wire, length 15.257 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(564.92 mm, 50.00 mm): Symbol X4 Pin 1 [Pin_1, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(564.92 mm, 52.54 mm): Wire, length 54.842 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(564.92 mm, 52.54 mm): Wire, length 17.059 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(564.92 mm, 120.00 mm): Wire, length 15.257 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(564.92 mm, 120.00 mm): Wire, length 97.658 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(564.92 mm, 120.00 mm): Symbol X5 Pin 1 [Pin_1, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(564.92 mm, 122.54 mm): Wire, length 17.059 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(564.92 mm, 122.54 mm): Wire, length 100.54 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(579.12 mm, 179.07 mm): Vertical Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5791200, 1840700
+    ; warning
+    @(579.12 mm, 184.07 mm): Label 'RS485_GND'
+    @(348.81 mm, 45.00 mm): Wire, length 337.775 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(585.00 mm, -53.34 mm): Symbol R33 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(585.00 mm, -45.72 mm): Vertical Wire, length 2.54 mm
+[unconnected_wire_endpoint]: Unverbundenes Verbindungsende
+    ; warning
+    @(585.00 mm, -45.72 mm): Vertical Wire, length 2.54 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5892800, 342900
+    ; warning
+    @(589.28 mm, 34.29 mm): Label 'SPI_MISO'
+    @(550.00 mm, 36.19 mm): Wire, length 70.407 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5930900, -101600
+    ; warning
+    @(593.09 mm, -10.16 mm): Label 'SPI_SCK'
+    @(477.52 mm, -11.43 mm): Wire, length 133.017 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5930900, -76200
+    ; warning
+    @(593.09 mm, -7.62 mm): Label 'SPI_MISO'
+    @(477.52 mm, -11.43 mm): Wire, length 133.017 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5930900, -50800
+    ; warning
+    @(593.09 mm, -5.08 mm): Label 'ESP_IO14_EXT'
+    @(477.52 mm, -11.43 mm): Wire, length 133.017 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5930900, -25400
+    ; warning
+    @(593.09 mm, -2.54 mm): Label 'ESP_IO15_EXT'
+    @(477.52 mm, -11.43 mm): Wire, length 133.017 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5930900, 0
+    ; warning
+    @(593.09 mm, 0.00 mm): Label 'RS485_UART_RX'
+    @(477.52 mm, -11.43 mm): Wire, length 133.017 mm
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(595.63 mm, 5.08 mm): No Connect
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5969000, 2349500
+    ; warning
+    @(596.90 mm, 234.95 mm): Label 'RS485_UART_RX'
+    @(348.81 mm, 45.00 mm): Wire, length 337.775 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5969000, 2374900
+    ; warning
+    @(596.90 mm, 237.49 mm): Label 'RS485_DE'
+    @(348.81 mm, 45.00 mm): Wire, length 337.775 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5969000, 2400300
+    ; warning
+    @(596.90 mm, 240.03 mm): Label 'RS485_DE'
+    @(348.81 mm, 45.00 mm): Wire, length 337.775 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 5969000, 2451100
+    ; warning
+    @(596.90 mm, 245.11 mm): Label 'RS485_UART_TX'
+    @(348.81 mm, 45.00 mm): Wire, length 337.775 mm
+[lib_symbol_mismatch]: Symbol "MAX3485" stimmt nicht mit Kopie in Bibliothek "Interface_UART" überein
+    ; warning
+    @(607.06 mm, 240.03 mm): Symbol U4 [MAX3485]
+[unconnected_wire_endpoint]: Unverbundenes Verbindungsende
+    ; warning
+    @(607.06 mm, 19.05 mm): Wire, length 77.48 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 6083300, 50800
+    ; warning
+    @(608.33 mm, 5.08 mm): Label 'GND'
+    @(477.52 mm, -11.43 mm): Wire, length 133.017 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 6184900, 3606800
+    ; warning
+    @(618.49 mm, 360.68 mm): Label 'USB_D-'
+    @(697.23 mm, 363.22 mm): Wire, length 79.108 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 6184900, 3632200
+    ; warning
+    @(618.49 mm, 363.22 mm): Label 'USB_D-'
+    @(697.23 mm, 363.22 mm): Wire, length 79.108 mm
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(623.57 mm, -45.72 mm): Label 'ESP_TXD0_EXT'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(623.57 mm, -43.18 mm): Label 'ESP_RXD0_EXT'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(623.57 mm, -7.62 mm): Label 'ESP_IO45_EXT'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(623.57 mm, -5.08 mm): Label 'ESP_IO46_EXT'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(623.57 mm, -2.54 mm): Label 'ESP_IO47_EXT'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(623.57 mm, 0.00 mm): Label 'ESP_IO48_EXT'
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 6261100, 1409700
+    ; warning
+    @(626.11 mm, 140.97 mm): Label 'SPI_MOSI'
+    @(607.06 mm, 224.79 mm): Wire, length 96.795 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 6261100, 1435100
+    ; warning
+    @(626.11 mm, 143.51 mm): Label 'SPI_SCK'
+    @(607.06 mm, 224.79 mm): Wire, length 96.795 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 6261100, 1460500
+    ; warning
+    @(626.11 mm, 146.05 mm): Label 'RTD_RL_CS'
+    @(607.06 mm, 224.79 mm): Wire, length 96.795 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 6261100, 1485900
+    ; warning
+    @(626.11 mm, 148.59 mm): Label 'SPI_MISO'
+    @(607.06 mm, 224.79 mm): Wire, length 96.795 mm
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(646.43 mm, 276.86 mm): No Connect
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(648.97 mm, 322.58 mm): No Connect
+[unconnected_wire_endpoint]: Unverbundenes Verbindungsende
+    ; warning
+    @(659.13 mm, 271.78 mm): Horizontal Wire, length 2.54 mm
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(669.29 mm, 322.58 mm): No Connect
+[unconnected_wire_endpoint]: Unverbundenes Verbindungsende
+    ; warning
+    @(378.81 mm, 167.00 mm): Wire, length 312.938 mm
+[unconnected_wire_endpoint]: Unverbundenes Verbindungsende
+    ; warning
+    @(671.83 mm, 279.40 mm): Wire, length 342.017 mm
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(671.83 mm, 281.94 mm): No Connect
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(671.83 mm, 284.48 mm): No Connect
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(671.83 mm, 287.02 mm): No Connect
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(671.83 mm, 289.56 mm): No Connect
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(671.83 mm, 292.10 mm): No Connect
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(671.83 mm, 294.64 mm): No Connect
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(671.83 mm, 299.72 mm): No Connect
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(671.83 mm, 302.26 mm): No Connect
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(671.83 mm, 307.34 mm): No Connect
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(671.83 mm, 309.88 mm): No Connect
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(671.83 mm, 312.42 mm): No Connect
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(671.83 mm, 314.96 mm): No Connect
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(684.92 mm, 69.84 mm): Symbol J5 Pin 1 [Pin_1, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(697.23 mm, 351.79 mm): Horizontal Wire, length 5.00 mm
+[label_multiple_wires]: Bezeichner verbindet mehr als eine Verbindung an Position 6922300, 3517900
+    ; warning
+    @(692.23 mm, 351.79 mm): Label 'USB_CC1'
+    @(659.13 mm, 327.66 mm): Wire, length 46.507 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(697.23 mm, 363.22 mm): Horizontal Wire, length 5.00 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(694.92 mm, 10.00 mm): Symbol SW1 Pin 1 [1, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(694.92 mm, 10.00 mm): Horizontal Wire, length 6.92 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(700.00 mm, -3.81 mm): Vertical Wire, length 2.19 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(700.00 mm, -3.81 mm): Symbol R90 Pin 1 [Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(700.00 mm, 3.81 mm): Vertical Wire, length 2.19 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(705.08 mm, 10.00 mm): Horizontal Wire, length 6.92 mm
+
+ ** ERC messages: 318  Errors 0  Warnings 318
+
+ ** Ignored checks:
+    - Global label only appears once in the schematic
+    - Four connection points are joined together
+    - SPICE model issue
+    - Assigned footprint doesn't match footprint filters

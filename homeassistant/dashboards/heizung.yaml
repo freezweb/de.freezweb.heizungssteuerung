@@ -51,6 +51,32 @@ views:
             entity: sensor.heizung_hauptsteuerung_heizung_aussen
             prefix: "Aussen "
             style: { left: 8%, top: 13%, color: "#ffffff", font-weight: 700, text-shadow: "0 1px 3px #000" }
+          - type: conditional
+            conditions:
+              - entity: binary_sensor.heizung_hauptsteuerung_oelbrenner_betriebsmeldung
+                state: "on"
+            elements:
+              - type: icon
+                icon: mdi:fire
+                title: Oelbrenner Betriebsmeldung
+                style:
+                  left: 17.6%
+                  top: 17.4%
+                  color: "#ff8a2a"
+                  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.8))
+          - type: conditional
+            conditions:
+              - entity: binary_sensor.heizung_hauptsteuerung_oelbrenner_stoermeldung
+                state: "on"
+            elements:
+              - type: icon
+                icon: mdi:alert
+                title: Oelbrenner Stoermeldung
+                style:
+                  left: 23.0%
+                  top: 17.4%
+                  color: "#ff3030"
+                  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.8))
           - type: state-label
             entity: sensor.heizung_hauptsteuerung_pool_wasser
             prefix: "Pool "
@@ -470,8 +496,9 @@ views:
       - type: entities
         title: Tor
         entities:
+          - entity: sensor.heizung_hauptsteuerung_tor_status
+            name: Virtueller Status
           - entity: button.heizung_hauptsteuerung_tor_oeffnen_ganz
-          - entity: button.heizung_hauptsteuerung_tor_oeffnen_halb
           - entity: button.heizung_hauptsteuerung_tor_schliessen
           - entity: binary_sensor.heizung_hauptsteuerung_tor_fluegel_links_zu
           - entity: binary_sensor.heizung_hauptsteuerung_tor_fluegel_rechts_zu

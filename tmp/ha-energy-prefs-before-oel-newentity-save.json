@@ -1,0 +1,246 @@
+﻿{
+    "energy_sources":  [
+                           {
+                               "type":  "solar",
+                               "stat_energy_from":  "sensor.shellyplugsg3_e4b063e4e6ac_energie",
+                               "config_entry_solar_forecast":  [
+                                                                   "01KPTRC8ZF6XXNZE11S02W10PM"
+                                                               ],
+                               "stat_rate":  "sensor.shellyplugsg3_e4b063e4e6ac_leistung"
+                           },
+                           {
+                               "type":  "water",
+                               "stat_energy_from":  "sensor.wasserverbrauch_pumpe_wasserverbrauch_gesamt",
+                               "stat_cost":  null,
+                               "entity_energy_price":  null,
+                               "number_energy_price":  0.01,
+                               "stat_rate":  "sensor.wasserverbrauch_pumpe_wasserdurchfluss"
+                           },
+                           {
+                               "type":  "water",
+                               "stat_energy_from":  "sensor.watermeter_value",
+                               "stat_cost":  null,
+                               "entity_energy_price":  null,
+                               "number_energy_price":  14.5,
+                               "stat_rate":  "sensor.watermeter_rate_per_time_unit",
+                               "name":  "Stadtwasser"
+                           },
+                           {
+                               "type":  "gas",
+                               "stat_energy_from":  "sensor.heizung_hauptsteuerung_oelverbrauch_m3",
+                               "stat_cost":  null,
+                               "entity_energy_price":  "sensor.heizung_hauptsteuerung_oelpreis_diesel_wez_pro_m3",
+                               "number_energy_price":  null,
+                               "stat_rate":  "sensor.heizung_hauptsteuerung_oelverbrauch_aktuell"
+                           },
+                           {
+                               "type":  "grid",
+                               "stat_energy_from":  "sensor.netz_bezug_energie",
+                               "stat_energy_to":  "sensor.netz_einspeisung_energie",
+                               "stat_cost":  null,
+                               "stat_compensation":  null,
+                               "entity_energy_price":  null,
+                               "number_energy_price":  0.35,
+                               "entity_energy_price_export":  null,
+                               "number_energy_price_export":  null,
+                               "cost_adjustment_day":  0.0,
+                               "power_config":  {
+                                                    "stat_rate":  "sensor.netz_saldiert_leistung"
+                                                },
+                               "stat_rate":  "sensor.netz_saldiert_leistung"
+                           }
+                       ],
+    "device_consumption":  [
+                               {
+                                   "stat_consumption":  "sensor.eg_flurlicht_energy",
+                                   "stat_rate":  "sensor.eg_flurlicht_power",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.weihnachten_buro_energy",
+                                   "included_in_stat":  "sensor.stromverbrauch_og_energie",
+                                   "stat_rate":  "sensor.weihnachten_buro_power"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.weihnachten_kinderzimmer_energy",
+                                   "stat_rate":  "sensor.weihnachten_kinderzimmer_power",
+                                   "included_in_stat":  "sensor.stromverbrauch_og_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.shellyplugsg3_28372f36e920_energy",
+                                   "included_in_stat":  "sensor.strom_eg_energie",
+                                   "stat_rate":  "sensor.shellyplugsg3_28372f36e920_power"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.weihnachten_zaun_energie",
+                                   "stat_rate":  "sensor.weihnachten_zaun_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.goe_237010_eto",
+                                   "stat_rate":  "sensor.goe_237010_nrg_11",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.trockner_energie",
+                                   "stat_rate":  "sensor.trockner_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.umwalzpumpe_warmwasser_energie",
+                                   "stat_rate":  "sensor.umwalzpumpe_warmwasser_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.waschmaschine_strom_energie",
+                                   "stat_rate":  "sensor.waschmaschine_strom_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.burolicht_energie",
+                                   "stat_rate":  "sensor.burolicht_leistung",
+                                   "included_in_stat":  "sensor.stromverbrauch_og_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.eismaschine_energie",
+                                   "stat_rate":  "sensor.eismaschine_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.flur_og_licht_energie",
+                                   "stat_rate":  "sensor.flur_og_licht_leistung",
+                                   "included_in_stat":  "sensor.stromverbrauch_og_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.shellyplugsg3_e4b063e4f0f0_energie",
+                                   "stat_rate":  "sensor.shellyplugsg3_e4b063e4f0f0_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.treppe_licht_energie",
+                                   "stat_rate":  "sensor.treppe_licht_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.wasserhahn_energie",
+                                   "stat_rate":  "sensor.wasserhahn_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.shelly1pmminig4_7c2c677afaf4_energie",
+                                   "stat_rate":  "sensor.shelly1pmminig4_7c2c677afaf4_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.wohnzimmer_fenster_energie",
+                                   "stat_rate":  "sensor.wohnzimmer_fenster_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.wohnzimmer_esstisch_energie",
+                                   "stat_rate":  "sensor.wohnzimmer_esstisch_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.starlink_energie",
+                                   "stat_rate":  "sensor.starlink_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.strom_eg_energie",
+                                   "stat_rate":  "sensor.strom_eg_leistung"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.stromverbrauch_og_energie",
+                                   "stat_rate":  "sensor.stromverbrauch_og_leistung"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.hauswasserwerk_ug_energie",
+                                   "stat_rate":  "sensor.hauswasserwerk_ug_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.stromverbrauch_scheunenit_energie",
+                                   "stat_rate":  "sensor.stromverbrauch_scheunenit_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.streamlicht_energie",
+                                   "stat_rate":  "sensor.streamlicht_leistung",
+                                   "included_in_stat":  "sensor.stromverbrauch_og_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.badlicht_eg_energie",
+                                   "stat_rate":  "sensor.badlicht_eg_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.kuchenlicht_energie",
+                                   "stat_rate":  "sensor.kuchenlicht_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.terassenlicht_decke_energie",
+                                   "stat_rate":  "sensor.terassenlicht_decke_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.scheinwerfer_ost_energie",
+                                   "stat_rate":  "sensor.scheinwerfer_ost_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.kuhlschrank_summe_verbraucht",
+                                   "stat_rate":  "sensor.kuhlschrank_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.medien_wohnzimmer_summe_verbraucht",
+                                   "stat_rate":  "sensor.medien_wohnzimmer_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.streamingsetup_energie",
+                                   "stat_rate":  "sensor.streamingsetup_leistung",
+                                   "included_in_stat":  "sensor.stromverbrauch_og_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.badlicht_eg_summe_verbraucht",
+                                   "stat_rate":  "sensor.badlicht_eg_leistung_2",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.eg_flurlicht_summe_verbraucht",
+                                   "stat_rate":  "sensor.eg_flurlicht_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.repeatersteckdose_heizungsraum_summe_verbraucht",
+                                   "stat_rate":  "sensor.repeatersteckdose_heizungsraum_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.scheinwerfer_ost_summe_verbraucht",
+                                   "stat_rate":  "sensor.scheinwerfer_ost_leistung_2",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.shelly_mini1pm_summe_verbraucht_2",
+                                   "stat_rate":  "sensor.shelly_mini1pm_leistung_2",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.treppenhaus_summe_verbraucht",
+                                   "stat_rate":  "sensor.treppenhaus_leistung",
+                                   "included_in_stat":  "sensor.stromverbrauch_og_energie"
+                               },
+                               {
+                                   "stat_consumption":  "sensor.shelly_mini1pm_summe_verbraucht",
+                                   "stat_rate":  "sensor.shelly_mini1pm_leistung",
+                                   "included_in_stat":  "sensor.strom_eg_energie"
+                               }
+                           ],
+    "device_consumption_water":  [
+
+                                 ]
+}

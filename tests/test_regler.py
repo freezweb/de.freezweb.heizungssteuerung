@@ -14,6 +14,7 @@ def test_regler_parameters_overlay_settings(tmp_path: Path):
     assert regler.set("wp_parallel_ab_aktive_kreise", 3) is True
     assert regler.set("brauchwasser_soll_c", "52,5") is True
     assert regler.set("brauchwasser_hysterese_k", 6) is True
+    assert regler.set("brauchwasser_kessel_reserve_k", 12) is True
     assert regler.set("brunnen_min_druck_bar", "2,1") is True
     assert regler.set("brunnen_max_druck_bar", "4,5") is True
     assert regler.set("brunnen_regeldruck_bar", "3,3") is True
@@ -27,7 +28,10 @@ def test_regler_parameters_overlay_settings(tmp_path: Path):
     assert regler.set("brunnen_flow_stop_tolerance_bar", "0,4") is True
     assert regler.set("pool_nachspeisung_testmodus", 1) is True
     assert regler.set("pool_nachspeisung_start_hour", 2) is True
+    assert regler.set("pool_nachspeisung_end_hour", 8) is True
     assert regler.set("pool_nachspeisung_delay_s", 30) is True
+    assert regler.set("pool_nachspeisung_close_delay_s", 10) is True
+    assert regler.set("pool_nachspeisung_meter_settle_s", 120) is True
     assert regler.set("pool_nachspeisung_max_fill_s", 1800) is True
     assert regler.set("pool_flockung_tagesdosis_ml", 80) is True
     assert regler.set("pool_flockung_start_hour", 3) is True
@@ -40,6 +44,7 @@ def test_regler_parameters_overlay_settings(tmp_path: Path):
     assert settings["wp"]["parallel_ab_aktive_kreise"] == 3
     assert settings["brauchwasser"]["soll_c"] == 52.5
     assert settings["brauchwasser"]["hysterese_k"] == 6.0
+    assert settings["brauchwasser"]["kessel_reserve_k"] == 12.0
     assert settings["brunnen"]["min_druck_bar"] == 2.1
     assert settings["brunnen"]["max_druck_bar"] == 4.5
     assert settings["brunnen"]["regeldruck_bar"] == 3.3
@@ -53,7 +58,10 @@ def test_regler_parameters_overlay_settings(tmp_path: Path):
     assert settings["brunnen"]["flow_stop_regeldruck_tolerance_bar"] == 0.4
     assert settings["pool_nachspeisung"]["testmodus"] == 1
     assert settings["pool_nachspeisung"]["start_hour"] == 2
+    assert settings["pool_nachspeisung"]["end_hour"] == 8
     assert settings["pool_nachspeisung"]["delay_s"] == 30.0
+    assert settings["pool_nachspeisung"]["close_delay_s"] == 10.0
+    assert settings["pool_nachspeisung"]["meter_settle_s"] == 120.0
     assert settings["pool_nachspeisung"]["max_fill_s"] == 1800.0
     assert settings["pool_flockung"]["tagesdosis_ml"] == 80.0
     assert settings["pool_flockung"]["start_hour"] == 3

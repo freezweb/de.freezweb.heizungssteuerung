@@ -19,6 +19,7 @@ class BrauchwasserState:
     temp_unten_c: float | None
     soll_c: float
     hysterese_k: float
+    kessel_reserve_k: float
     einschalt_c: float
     reason: str
     quelle: str
@@ -31,6 +32,7 @@ class BrauchwasserState:
             "temp_unten_c": self.temp_unten_c,
             "soll_c": self.soll_c,
             "hysterese_k": self.hysterese_k,
+            "kessel_reserve_k": self.kessel_reserve_k,
             "einschalt_c": self.einschalt_c,
             "reason": self.reason,
             "quelle": self.quelle,
@@ -50,6 +52,7 @@ def compute_brauchwasser(
     source_enabled = freigaben.source_enabled("oelbrenner")
     soll_c = float(regler.brauchwasser_soll_c)
     hysterese_k = float(regler.brauchwasser_hysterese_k)
+    kessel_reserve_k = float(regler.brauchwasser_kessel_reserve_k)
     einschalt_c = soll_c - hysterese_k
     temp_oben = _sensor_value_by_component(app_config, snapshot, "bw_oben")
     temp_unten = _sensor_value_by_component(app_config, snapshot, "bw_unten")
@@ -80,6 +83,7 @@ def compute_brauchwasser(
         temp_unten_c=temp_unten,
         soll_c=soll_c,
         hysterese_k=hysterese_k,
+        kessel_reserve_k=kessel_reserve_k,
         einschalt_c=einschalt_c,
         reason=reason,
         quelle="oelbrenner",

@@ -1,0 +1,290 @@
+﻿[
+    {
+        "entity_id":  "number.heizung_eg_bad_ventilstellung",
+        "state":  "98",
+        "attributes":  {
+                           "min":  0,
+                           "max":  100,
+                           "step":  1,
+                           "mode":  "slider",
+                           "unit_of_measurement":  "%",
+                           "friendly_name":  "Heizung EG Bad Ventilstellung"
+                       },
+        "last_changed":  "2026-07-12T10:08:58.793522+00:00",
+        "last_reported":  "2026-07-12T10:08:58.793522+00:00",
+        "last_updated":  "2026-07-12T10:08:58.793522+00:00",
+        "context":  {
+                        "id":  "01KXAWTCD9B2G61DMHHC8JMKR6",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "number.heizung_flur_eg_ventilstellung",
+        "state":  "0",
+        "attributes":  {
+                           "min":  0,
+                           "max":  100,
+                           "step":  1,
+                           "mode":  "slider",
+                           "unit_of_measurement":  "%",
+                           "friendly_name":  "Heizung Flur EG Ventilstellung"
+                       },
+        "last_changed":  "2026-07-12T09:47:25.012070+00:00",
+        "last_reported":  "2026-07-12T09:48:49.213045+00:00",
+        "last_updated":  "2026-07-12T09:47:25.012070+00:00",
+        "context":  {
+                        "id":  "01KXAVJWYMYTKVBDY4QWDFSQP0",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "number.heizung_kuche_ventilstellung",
+        "state":  "0",
+        "attributes":  {
+                           "min":  0,
+                           "max":  100,
+                           "step":  1,
+                           "mode":  "slider",
+                           "unit_of_measurement":  "%",
+                           "friendly_name":  "Heizung KÃ¼che Ventilstellung"
+                       },
+        "last_changed":  "2026-07-12T10:10:14.836666+00:00",
+        "last_reported":  "2026-07-12T10:10:25.457411+00:00",
+        "last_updated":  "2026-07-12T10:10:14.836666+00:00",
+        "context":  {
+                        "id":  "01KXAWWPNMHQ3JA4MZH8CT214A",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "number.wohnzimmer_1_ventilstellung",
+        "state":  "100",
+        "attributes":  {
+                           "min":  0,
+                           "max":  100,
+                           "step":  1,
+                           "mode":  "slider",
+                           "unit_of_measurement":  "%",
+                           "friendly_name":  "Wohnzimmer 1 Ventilstellung"
+                       },
+        "last_changed":  "2026-07-12T09:47:25.012868+00:00",
+        "last_reported":  "2026-07-12T09:48:49.213110+00:00",
+        "last_updated":  "2026-07-12T09:47:25.012868+00:00",
+        "context":  {
+                        "id":  "01KXAVJWYMF5QRV979M3VD0NQ0",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "number.wohnzimmer_2_ventilstellung",
+        "state":  "100",
+        "attributes":  {
+                           "min":  0,
+                           "max":  100,
+                           "step":  1,
+                           "mode":  "slider",
+                           "unit_of_measurement":  "%",
+                           "friendly_name":  "Wohnzimmer 2 Ventilstellung"
+                       },
+        "last_changed":  "2026-07-12T09:47:25.012579+00:00",
+        "last_reported":  "2026-07-12T09:48:49.213090+00:00",
+        "last_updated":  "2026-07-12T09:47:25.012579+00:00",
+        "context":  {
+                        "id":  "01KXAVJWYMYCD6D8TM6NY1CQP7",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "number.wohnzimmer_3_ventilstellung",
+        "state":  "100",
+        "attributes":  {
+                           "min":  0,
+                           "max":  100,
+                           "step":  1,
+                           "mode":  "slider",
+                           "unit_of_measurement":  "%",
+                           "friendly_name":  "Wohnzimmer 3 Ventilstellung"
+                       },
+        "last_changed":  "2026-07-12T09:47:25.011806+00:00",
+        "last_reported":  "2026-07-12T09:48:49.213021+00:00",
+        "last_updated":  "2026-07-12T09:47:25.011806+00:00",
+        "context":  {
+                        "id":  "01KXAVJWYKJ0Y6N03R6QYT92RN",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "switch.bad_eg_auto_mode",
+        "state":  "on",
+        "attributes":  {
+                           "friendly_name":  "Bad EG Auto Mode"
+                       },
+        "last_changed":  "2026-07-12T09:48:49.783138+00:00",
+        "last_reported":  "2026-07-12T09:48:49.783138+00:00",
+        "last_updated":  "2026-07-12T09:48:49.783138+00:00",
+        "context":  {
+                        "id":  "01KXAVNFQQ3XDRN6Y2YTXSZTH9",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "switch.flur_eg_auto_mode",
+        "state":  "on",
+        "attributes":  {
+                           "friendly_name":  "Flur EG Auto Mode"
+                       },
+        "last_changed":  "2026-07-12T09:48:50.023929+00:00",
+        "last_reported":  "2026-07-12T09:48:50.023929+00:00",
+        "last_updated":  "2026-07-12T09:48:50.023929+00:00",
+        "context":  {
+                        "id":  "01KXAVNFZ7P401YS5NC6Z8FH2N",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "switch.wohnzimmer_auto_mode",
+        "state":  "on",
+        "attributes":  {
+                           "friendly_name":  "Wohnzimmer Auto Mode"
+                       },
+        "last_changed":  "2026-07-12T09:48:49.635190+00:00",
+        "last_reported":  "2026-07-12T09:48:49.635190+00:00",
+        "last_updated":  "2026-07-12T09:48:49.635190+00:00",
+        "context":  {
+                        "id":  "01KXAVNFK35BT5Y19P7ET35EN1",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "automation.bad_heizung_pid_ventilstellung",
+        "state":  "on",
+        "attributes":  {
+                           "id":  "1765873135232",
+                           "last_triggered":  "2026-07-12T10:14:00.500667+00:00",
+                           "mode":  "restart",
+                           "current":  0,
+                           "friendly_name":  "Bad Heizung PID â Ventilstellung"
+                       },
+        "last_changed":  "2026-07-12T09:47:38.990324+00:00",
+        "last_reported":  "2026-07-12T10:14:00.981894+00:00",
+        "last_updated":  "2026-07-12T10:14:00.981894+00:00",
+        "context":  {
+                        "id":  "01KXAX3K1MS8VK6CTGYW2P2DS6",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "automation.wohnzimmer_heizung_pid_ventilstellung",
+        "state":  "on",
+        "attributes":  {
+                           "id":  "1765450339857",
+                           "last_triggered":  "2026-07-12T10:14:00.130881+00:00",
+                           "mode":  "restart",
+                           "current":  1,
+                           "friendly_name":  "Wohnzimmer Heizung PID â Ventilstellung"
+                       },
+        "last_changed":  "2026-07-12T09:47:38.989492+00:00",
+        "last_reported":  "2026-07-12T10:14:00.130944+00:00",
+        "last_updated":  "2026-07-12T10:14:00.130944+00:00",
+        "context":  {
+                        "id":  "01KXAX3JP23GQ4SYCNYTFD9S1G",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "sensor.heizung_hauptsteuerung_fbh_eg_vl",
+        "state":  "27.5",
+        "attributes":  {
+                           "state_class":  "measurement",
+                           "unit_of_measurement":  "Â°C",
+                           "device_class":  "temperature",
+                           "friendly_name":  "Heizung Hauptsteuerung Vorlauf FBH EG nach Mischer"
+                       },
+        "last_changed":  "2026-07-12T10:14:26.971214+00:00",
+        "last_reported":  "2026-07-12T10:14:26.971214+00:00",
+        "last_updated":  "2026-07-12T10:14:26.971214+00:00",
+        "context":  {
+                        "id":  "01KXAX4CWVZXJ16K6ZJ1YW42AX",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "sensor.heizung_hauptsteuerung_fbh_eg_rl",
+        "state":  "23.3",
+        "attributes":  {
+                           "state_class":  "measurement",
+                           "unit_of_measurement":  "Â°C",
+                           "device_class":  "temperature",
+                           "friendly_name":  "Heizung Hauptsteuerung Ruecklauf FBH EG"
+                       },
+        "last_changed":  "2026-07-12T10:12:28.701865+00:00",
+        "last_reported":  "2026-07-12T10:12:28.701865+00:00",
+        "last_updated":  "2026-07-12T10:12:28.701865+00:00",
+        "context":  {
+                        "id":  "01KXAX0SCXZKD6SJDM7E54EV4W",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "sensor.heizung_hauptsteuerung_mischer_fbh_eg_ist",
+        "state":  "99.5",
+        "attributes":  {
+                           "state_class":  "measurement",
+                           "unit_of_measurement":  "%",
+                           "friendly_name":  "Heizung Hauptsteuerung Mischer FBH EG Ist"
+                       },
+        "last_changed":  "2026-07-12T09:58:27.772700+00:00",
+        "last_reported":  "2026-07-12T09:58:27.772700+00:00",
+        "last_updated":  "2026-07-12T09:58:27.772700+00:00",
+        "context":  {
+                        "id":  "01KXAW745WW3VYT1NPVBAW40KJ",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "sensor.heizung_hauptsteuerung_mischer_fbh_eg_soll",
+        "state":  "100.0",
+        "attributes":  {
+                           "state_class":  "measurement",
+                           "unit_of_measurement":  "%",
+                           "friendly_name":  "Heizung Hauptsteuerung Mischer FBH EG Soll"
+                       },
+        "last_changed":  "2026-07-12T09:58:56.718352+00:00",
+        "last_reported":  "2026-07-12T09:58:56.718352+00:00",
+        "last_updated":  "2026-07-12T09:58:56.718352+00:00",
+        "context":  {
+                        "id":  "01KXAW80EEV48K6Y5JVY4T87AX",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    },
+    {
+        "entity_id":  "binary_sensor.heizung_hauptsteuerung_ausgang_r421b16_relais_1_fbh_eg_pumpe",
+        "state":  "on",
+        "attributes":  {
+                           "friendly_name":  "Heizung Hauptsteuerung Ausgang R421B16 Relais 1 FBH EG Pumpe"
+                       },
+        "last_changed":  "2026-07-12T10:14:32.771912+00:00",
+        "last_reported":  "2026-07-12T10:14:32.771912+00:00",
+        "last_updated":  "2026-07-12T10:14:32.771912+00:00",
+        "context":  {
+                        "id":  "01KXAX4JJ3J4PY7WX3PCQHXGQC",
+                        "parent_id":  null,
+                        "user_id":  null
+                    }
+    }
+]

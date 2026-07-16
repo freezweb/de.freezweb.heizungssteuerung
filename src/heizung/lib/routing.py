@@ -24,6 +24,10 @@ class RoutingState:
     pool_active: bool
     bwwp_active: bool
     failsafe_active: bool
+    heat_demand_kw: float | None = None
+    single_wp_available_kw: float | None = None
+    wp_parallel_threshold_kw: float | None = None
+    wp_count_reason: str = "keine_anforderung"
 
     def as_payload(self) -> dict[str, Any]:
         return {
@@ -36,6 +40,10 @@ class RoutingState:
             "pool_active": self.pool_active,
             "bwwp_active": self.bwwp_active,
             "failsafe_active": self.failsafe_active,
+            "heat_demand_kw": self.heat_demand_kw,
+            "single_wp_available_kw": self.single_wp_available_kw,
+            "wp_parallel_threshold_kw": self.wp_parallel_threshold_kw,
+            "wp_count_reason": self.wp_count_reason,
         }
 
 
@@ -44,6 +52,7 @@ def compute_routing(
     demands: dict[str, Demand],
     failsafe_state: FailsafeState,
     freigaben: Freigaben | None = None,
+    outside_temp_c: float | None = None,
 ) -> tuple[RoutingState, dict[str, bool], dict[str, float]]:
     """Berechnet Erzeuger, Senken und Sollwerte fuer den gemeinsamen Heizkreis.
 
@@ -73,9 +82,22 @@ def compute_routing(
 
     common_requested = bool(common_active) or (failsafe_state.active and vl_soll is not None)
     parallel_ab_kreise = int(_setting(settings, "wp.parallel_ab_aktive_kreise", 2))
+    heat_demand_kw = _sum_heat_demand_kw(common_active)
+    single_wp_available_kw = _wp_available_kw(settings, outside_temp_c)
+    parallel_ab_pct = float(_setting(settings, "wp.parallel_ab_pct", 50))
+    wp_parallel_threshold_kw = (
+        single_wp_available_kw * parallel_ab_pct / 100.0 if single_wp_available_kw is not None else None
+    )
+    wp_count_reason = "keine_anforderung"
     active_wps: tuple[str, ...] = ()
     if common_requested:
-        wanted_wp_count = 2 if len(common_active) >= parallel_ab_kreise else 1
+        wanted_wp_count = 1
+        if heat_demand_kw is not None and wp_parallel_threshold_kw is not None:
+            wanted_wp_count = 2 if heat_demand_kw >= wp_parallel_threshold_kw else 1
+            wp_count_reason = "waermebedarf_kw"
+        else:
+            wanted_wp_count = 2 if len(common_active) >= parallel_ab_kreise else 1
+            wp_count_reason = "aktive_kreise_fallback"
         enabled_wps = [name for name in ("wp1", "wp2") if _source_enabled(freigaben, name)]
         active_wps = tuple(enabled_wps[:wanted_wp_count])
     oel_active = bool(
@@ -106,6 +128,10 @@ def compute_routing(
         pool_active=pool_active,
         bwwp_active=bwwp_active,
         failsafe_active=failsafe_state.active,
+        heat_demand_kw=heat_demand_kw,
+        single_wp_available_kw=single_wp_available_kw,
+        wp_parallel_threshold_kw=wp_parallel_threshold_kw,
+        wp_count_reason=wp_count_reason,
     )
 
     do = {
@@ -164,6 +190,56 @@ def _setting(settings: dict[str, Any], path: str, default: Any) -> Any:
             return default
         node = node[part]
     return node
+
+
+def _sum_heat_demand_kw(common_active: dict[str, Demand]) -> float | None:
+    values: list[float] = []
+    for demand in common_active.values():
+        if demand.leistung_kw is None:
+            continue
+        value = max(0.0, float(demand.leistung_kw))
+        if value > 0.0:
+            values.append(value)
+    return round(sum(values), 3) if values else None
+
+
+def _wp_available_kw(settings: dict[str, Any], outside_temp_c: float | None) -> float | None:
+    points_raw = _setting(settings, "wp.leistungskurve_kw", None)
+    if isinstance(points_raw, list) and points_raw:
+        points: list[tuple[float, float]] = []
+        for point in points_raw:
+            if not isinstance(point, dict):
+                continue
+            try:
+                points.append((float(point["aussen"]), float(point["kw"])))
+            except (KeyError, TypeError, ValueError):
+                continue
+        if points:
+            return round(_interpolate(points, outside_temp_c), 3)
+    try:
+        return float(_setting(settings, "wp.nennleistung_kw", 18.0))
+    except (TypeError, ValueError):
+        return None
+
+
+def _interpolate(points: list[tuple[float, float]], outside_temp_c: float | None) -> float:
+    points = sorted(points)
+    if outside_temp_c is None:
+        # Ohne Aussenfuehler konservativ den kuehlsten Stuetzpunkt nutzen.
+        return points[0][1]
+    temp = float(outside_temp_c)
+    if temp <= points[0][0]:
+        return points[0][1]
+    if temp >= points[-1][0]:
+        return points[-1][1]
+    for (x1, y1), (x2, y2) in zip(points, points[1:]):
+        if x1 <= temp <= x2:
+            span = x2 - x1
+            if span == 0:
+                return y2
+            ratio = (temp - x1) / span
+            return y1 + ratio * (y2 - y1)
+    return points[-1][1]
 
 
 def _source_enabled(freigaben: Freigaben | None, name: str) -> bool:

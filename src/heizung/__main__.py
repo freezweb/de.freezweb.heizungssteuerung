@@ -8,20 +8,27 @@ import signal
 import sys
 import time
 from dataclasses import replace
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Any
 
 from .lib.brauchwasser import BrauchwasserState, compute_brauchwasser
 from .lib.brunnen import BrunnenPressureState, brunnen_flow_timer_armed, compute_brunnen_pressure
 from .lib.config import AppConfig, ChannelConfig, ConfigError, IoMap, load_yaml, resolve_config_file
 from .lib.failsafe import FailsafeMonitor, FailsafeState
-from .lib.flowmeter import FlowmeterModbusClient, FlowmeterModbusConfig
+from .lib.flowmeter import (
+    FlowmeterModbusClient,
+    FlowmeterModbusConfig,
+    WatermeterHttpClient,
+    WatermeterHttpConfig,
+    WatermeterHttpSnapshot,
+)
 from .lib.freigaben import Freigaben
 from .lib.hand_auto import HandAutoManager
 from .lib.intercpu import KellerModbusClient
 from .lib.iohw import BaseIO, HardwareSnapshot, create_io_backend
 from .lib.keller_relais import KellerRelayClient, KellerRelayConfig, RelayGroupConfig, relay_component_names
 from .lib.mqtt_bridge import MqttBridge
+from .lib.oelverbrauch import DieselPriceClient, OelverbrauchConfig, OelverbrauchSnapshot, OelverbrauchTracker
 from .lib.pool import PoolController, PoolControlState, PoolProdinoConfig
 from .lib.prodino_modbus import ProdinoPoolModbusClient, ProdinoPoolSnapshot
 from .lib.pumpengruppe import (
@@ -32,7 +39,7 @@ from .lib.pumpengruppe import (
 from .lib.regler import ReglerParameter
 from .lib.routing import RoutingState, compute_routing
 from .lib.state import StateStore
-from .lib.tor import entscheide_tor_command
+from .lib.tor import TorRuntime
 
 log = logging.getLogger("heizung")
 
@@ -54,6 +61,7 @@ async def run() -> int:
     regler_state_path = app_config.state_path(app_config.setting("regler.state_persist_path", "state/regler.json"))
     keller_relay_config = KellerRelayConfig.from_settings(app_config.settings)
     pool_prodino_config = PoolProdinoConfig.from_settings(app_config.settings, app_config.mqtt.get("topics", {}).get("base", "heizung"))
+    oelverbrauch_config = OelverbrauchConfig.from_settings(app_config.settings)
 
     keller_client: KellerModbusClient | None = None
     keller_relay_client: KellerRelayClient | None = None
@@ -104,6 +112,12 @@ async def run() -> int:
     hand_auto = HandAutoManager(controller_config.io_map, StateStore(hand_state_path), default_hand_timeout)
     freigaben = Freigaben.from_settings(app_config.settings, StateStore(freigaben_state_path))
     regler = ReglerParameter.from_settings(app_config.settings, StateStore(regler_state_path))
+    tor_runtime = TorRuntime(
+        StateStore(app_config.state_path(app_config.setting("tor.state_persist_path", "state/tor.json"))),
+        fahrzeit_s=float(app_config.setting("tor.fahrzeit_s", 30)),
+        initial_position=str(app_config.setting("tor.initial_position", "geschlossen")),
+        halb_aktiv=bool(app_config.setting("tor.halb_aktiv", False)),
+    )
     pool_controller = (
         PoolController(
             pool_prodino_config,
@@ -112,9 +126,16 @@ async def run() -> int:
         if pool_prodino_config.enabled
         else None
     )
+    oelverbrauch = OelverbrauchTracker(
+        oelverbrauch_config,
+        StateStore(app_config.state_path(oelverbrauch_config.state_persist_path)),
+    )
+    diesel_price_client = DieselPriceClient(oelverbrauch_config) if oelverbrauch_config.enabled else None
     failsafe_monitor = FailsafeMonitor.from_settings(app_config.settings)
     flowmeter_config = FlowmeterModbusConfig.from_settings(app_config.settings)
     flowmeter = FlowmeterModbusClient(flowmeter_config) if flowmeter_config.enabled else None
+    watermeter_http_config = WatermeterHttpConfig.from_settings(app_config.settings)
+    watermeter_http = WatermeterHttpClient(watermeter_http_config) if watermeter_http_config.enabled else None
     pump_group_configs = pump_group_configs_from_settings(app_config.settings)
     pump_group_clients = {
         name: PumpGroupModbusClient(config) for name, config in pump_group_configs.items()
@@ -152,11 +173,15 @@ async def run() -> int:
     brunnen_speed_pct = 0.0
     brunnen_flow_l_min: float | None = None
     brunnen_water_total_l: float | None = None
+    brunnen_water_total_l_http: float | None = None
     brunnen_flow_last_seen_ts: float | None = None
     brunnen_no_flow_since_ts: float | None = None
     flowmeter_next_poll_ts = 0.0
     flowmeter_task: asyncio.Task | None = None
     flowmeter_last_error_log_ts = 0.0
+    watermeter_http_next_poll_ts = 0.0
+    watermeter_http_task: asyncio.Task | None = None
+    watermeter_http_last_error_log_ts = 0.0
     applied_do: dict[str, bool] = {}
     applied_ao: dict[str, float] = {}
     pump_group_snapshots: dict[str, PumpGroupSnapshot] = {}
@@ -171,6 +196,10 @@ async def run() -> int:
     pool_prodino_last_ok_ts: float | None = None
     pool_prodino_next_poll_ts = 0.0
     pool_prodino_error = ""
+    oelverbrauch_snapshot = oelverbrauch.snapshot(None)
+    diesel_price_next_poll_ts = 0.0
+    diesel_price_task: asyncio.Task | None = None
+    diesel_price_last_error_log_ts = 0.0
     oelbrenner_common_active = False
     klima_og_cooling_active = False
     pool_state = PoolControlState(False, None, None, False, False, False, False, "deaktiviert", 0.0, 0.0, 0.0, None, 0.0, 0.0, "")
@@ -197,6 +226,37 @@ async def run() -> int:
                     flowmeter_next_poll_ts = now_ts + max(0.2, flowmeter_config.poll_interval_s)
                 if flowmeter_task is None and now_ts >= flowmeter_next_poll_ts:
                     flowmeter_task = asyncio.create_task(flowmeter.read_snapshot())
+            if watermeter_http is not None:
+                if watermeter_http_task is not None and watermeter_http_task.done():
+                    try:
+                        watermeter_snapshot = watermeter_http_task.result()
+                        brunnen_water_total_l_http = watermeter_snapshot.total_l
+                        if watermeter_http_config.mqtt_mirror_enabled:
+                            _publish_watermeter_http_mirror(mqtt, watermeter_http_config, watermeter_snapshot)
+                    except Exception as exc:
+                        if watermeter_http_config.mqtt_mirror_enabled:
+                            _publish_watermeter_http_error(mqtt, watermeter_http_config, str(exc))
+                        if now_ts - watermeter_http_last_error_log_ts >= 60:
+                            watermeter_http_last_error_log_ts = now_ts
+                            log.warning("AI-on-the-edge Wasserzaehler HTTP nicht erreichbar/ungueltig: %s", exc)
+                    watermeter_http_task = None
+                    watermeter_http_next_poll_ts = now_ts + max(1.0, watermeter_http_config.poll_interval_s)
+                if watermeter_http_task is None and now_ts >= watermeter_http_next_poll_ts:
+                    watermeter_http_task = asyncio.create_task(watermeter_http.read_snapshot())
+            if diesel_price_client is not None:
+                if diesel_price_task is not None and diesel_price_task.done():
+                    try:
+                        diesel_price_snapshot = diesel_price_task.result()
+                        oelverbrauch.update_dieselpreis(diesel_price_snapshot, now_ts)
+                    except Exception as exc:
+                        oelverbrauch.mark_price_error(str(exc))
+                        if now_ts - diesel_price_last_error_log_ts >= 300:
+                            diesel_price_last_error_log_ts = now_ts
+                            log.warning("Dieselpreis konnte nicht aktualisiert werden: %s", exc)
+                    diesel_price_task = None
+                    diesel_price_next_poll_ts = now_ts + oelverbrauch_config.dieselpreis_poll_interval_s
+                if diesel_price_task is None and now_ts >= diesel_price_next_poll_ts:
+                    diesel_price_task = asyncio.create_task(asyncio.to_thread(diesel_price_client.fetch))
 
             snapshot = await io_backend.read_all()
             if pool_controller is not None:
@@ -276,6 +336,7 @@ async def run() -> int:
                 io_backend,
                 snapshot,
                 now_ts,
+                tor_runtime,
             )
 
             failsafe_state = failsafe_monitor.evaluate(
@@ -311,6 +372,10 @@ async def run() -> int:
                     brunnen_flow_l_min,
                     brunnen_no_flow_s,
                 )
+                oelverbrauch_snapshot = oelverbrauch.update(
+                    now_ts,
+                    _di_value_by_component(controller_config, snapshot, oelverbrauch_config.burner_component),
+                )
                 _apply_pump_group_vl_controls(
                     controller_config,
                     mqtt,
@@ -332,12 +397,19 @@ async def run() -> int:
                         test_mode=bool(regler.pool_nachspeisung_testmodus),
                         fill_delay_s=regler.pool_nachspeisung_delay_s,
                         start_hour=regler.pool_nachspeisung_start_hour,
+                        end_hour=regler.pool_nachspeisung_end_hour,
+                        close_delay_s=regler.pool_nachspeisung_close_delay_s,
+                        meter_settle_s=regler.pool_nachspeisung_meter_settle_s,
                         max_fill_s=regler.pool_nachspeisung_max_fill_s,
                         daily_dose_ml=regler.pool_flockung_tagesdosis_ml,
                         daily_dose_hour=regler.pool_flockung_start_hour,
                         fresh_ml_per_l=regler.pool_flockung_ml_pro_l_frischwasser,
                         pump_ml_min=regler.pool_flockung_pumpe_ml_min,
-                        water_meter_total_l=brunnen_water_total_l,
+                        water_meter_total_l=(
+                            brunnen_water_total_l_http
+                            if brunnen_water_total_l_http is not None
+                            else brunnen_water_total_l
+                        ),
                     )
                     _set_do_by_component(controller_config, auto_do, pool_prodino_config.valve_component, pool_state.valve_open)
                     _set_do_by_component(controller_config, auto_do, pool_prodino_config.pump_component, pool_state.dosing_pump_on)
@@ -450,7 +522,10 @@ async def run() -> int:
                     if pool_controller is not None
                     else None,
                     pool_prodino_snapshot if pool_prodino_client is not None else None,
-                    brunnen_water_total_l,
+                    brunnen_water_total_l_http if brunnen_water_total_l_http is not None else brunnen_water_total_l,
+                    oelverbrauch_snapshot,
+                    tor_runtime,
+                    now_ts,
                 )
             uptime_s = int(now_ts - boot_ts)
             heartbeat_tick = uptime_s // 30
@@ -488,6 +563,11 @@ async def run() -> int:
                 log.warning("Pool-Prodino Abschalten fehlgeschlagen: %s", exc)
         if flowmeter_task is not None:
             flowmeter_task.cancel()
+        if watermeter_http_task is not None:
+            watermeter_http_task.cancel()
+        if diesel_price_task is not None:
+            diesel_price_task.cancel()
+        oelverbrauch.save()
         mqtt.stop()
         await io_backend.close()
 
@@ -867,6 +947,7 @@ async def _handle_mqtt_commands(
     io_backend: BaseIO,
     snapshot: HardwareSnapshot,
     now_ts: float,
+    tor_runtime: TorRuntime,
 ) -> None:
     for command in mqtt.drain_commands():
         if command.typ == "failsafe_force":
@@ -891,8 +972,24 @@ async def _handle_mqtt_commands(
                 log.warning("MQTT-Mischerlaufzeit unbekannt/ungueltig, ignoriert: %s", command.name)
             continue
 
+        if command.typ == "tor_request":
+            mqtt.publish_json(
+                f"{mqtt.base}/tor/fahrwunsch",
+                {"command": command.name, "requested_at": now_ts},
+                retain=False,
+            )
+            log.info("Torfahrwunsch %s zur Kamerapruefung an Home Assistant gesendet", command.name)
+            continue
+
         if command.typ == "tor_command":
-            await _handle_tor_command(app_config, io_backend, snapshot, command.name)
+            await _handle_tor_command(app_config, io_backend, command.name, tor_runtime, now_ts)
+            continue
+
+        if command.typ == "tor_verify":
+            if not tor_runtime.bestaetige_position(command.name, now_ts):
+                log.warning("Torposition %r nicht akzeptiert (Fahrt aktiv oder Wert ungueltig)", command.name)
+            else:
+                log.info("Torposition durch Kamerapruefung bestaetigt: %s", command.name)
             continue
 
         channel = app_config.io_map.by_component(command.name)
@@ -915,17 +1012,15 @@ async def _handle_mqtt_commands(
 async def _handle_tor_command(
     app_config: AppConfig,
     io_backend: BaseIO,
-    snapshot: HardwareSnapshot,
     command_name: str,
+    tor_runtime: TorRuntime,
+    now_ts: float,
 ) -> None:
-    links_zu = _di_value_by_component(app_config, snapshot, "tor_fluegel_links_zu", "tor_es_ganz_zu")
-    rechts_zu = _di_value_by_component(app_config, snapshot, "tor_fluegel_rechts_zu", "tor_es_halb_zu")
-    decision = entscheide_tor_command(command_name, links_zu, rechts_zu)
+    decision = tor_runtime.entscheide(command_name, now_ts)
     log.info(
-        "Torbefehl %s: links_zu=%s rechts_zu=%s ausgang=%s ausfuehren=%s grund=%s",
+        "Torbefehl %s: position=%s ausgang=%s ausfuehren=%s grund=%s",
         command_name,
-        links_zu,
-        rechts_zu,
+        tor_runtime.position,
         decision.ausgang,
         decision.ausfuehren,
         decision.grund,
@@ -979,11 +1074,13 @@ def _compute_auto_outputs(
     )
     if klima_og_cooling_active:
         demands.pop("klima_og", None)
+    outside_temp_c = _sensor_value_by_component(app_config, snapshot, "aussen")
     routing_state, routed_do, routed_ao = compute_routing(
         regler.as_settings(app_config.settings),
         demands,
         failsafe_state,
         freigaben,
+        outside_temp_c=outside_temp_c,
     )
     auto = {channel_id: False for channel_id in app_config.io_map.do}
     for channel_id, value in routed_do.items():
@@ -1006,7 +1103,10 @@ def _compute_auto_outputs(
         brauchwasser_previous_active,
     )
     if "DO01" in auto:
-        auto["DO01"] = auto["DO01"] or brauchwasser_state.active
+        auto["DO01"] = auto["DO01"] or (
+            brauchwasser_state.active
+            and _compute_oelbrenner_brauchwasser_heat(app_config, snapshot, brauchwasser_state)
+        )
     if "DO02" in auto:
         auto["DO02"] = brauchwasser_state.active
 
@@ -1387,6 +1487,19 @@ def _compute_oelbrenner_common_heat(
     return previous_active
 
 
+def _compute_oelbrenner_brauchwasser_heat(
+    app_config: AppConfig,
+    snapshot: HardwareSnapshot,
+    brauchwasser_state: BrauchwasserState,
+) -> bool:
+    if not brauchwasser_state.active:
+        return False
+    vl_ist = _sensor_value_by_component(app_config, snapshot, "vl_sammel")
+    if vl_ist is None:
+        return True
+    return vl_ist < float(brauchwasser_state.soll_c) + max(0.0, float(brauchwasser_state.kessel_reserve_k))
+
+
 def _compute_fast_brunnen_outputs(
     app_config: AppConfig,
     snapshot: HardwareSnapshot,
@@ -1632,14 +1745,41 @@ def _publish_state(
     pool_prodino_last_seen_ts: float | None = None,
     pool_prodino_snapshot: ProdinoPoolSnapshot | None = None,
     brunnen_water_total_l: float | None = None,
+    oelverbrauch_snapshot: OelverbrauchSnapshot | None = None,
+    tor_runtime: TorRuntime | None = None,
+    now_ts: float | None = None,
 ) -> None:
     base = mqtt.base
+    if tor_runtime is not None and now_ts is not None:
+        tor_state = tor_runtime.snapshot(now_ts)
+        mqtt.publish(f"{base}/tor/status", tor_state["status"], retain=True)
+        mqtt.publish(f"{base}/tor/gesperrt", "1" if tor_state["gesperrt"] else "0", retain=True)
+        mqtt.publish_json(f"{base}/tor/state", tor_state, retain=True)
     mqtt.publish(f"{base}/failsafe/active", "1" if failsafe_state.active else "0", retain=True)
     mqtt.publish(f"{base}/failsafe/grund", ",".join(failsafe_state.reasons), retain=True)
     if failsafe_state.vl_soll is not None:
         mqtt.publish(f"{base}/vl_soll/state", f"{failsafe_state.vl_soll:.1f}", retain=True)
-    if routing_state.vl_soll is not None:
-        mqtt.publish(f"{base}/gesamt/vl_soll/state", f"{routing_state.vl_soll:.1f}", retain=True)
+    effective_vl_soll = _effective_heat_source_vl_soll(app_config, routing_state, brauchwasser_state)
+    mqtt.publish(
+        f"{base}/gesamt/vl_soll/state",
+        "" if effective_vl_soll is None else f"{effective_vl_soll:.1f}",
+        retain=True,
+    )
+    mqtt.publish(
+        f"{base}/gesamt/waermebedarf_kw/state",
+        "" if routing_state.heat_demand_kw is None else f"{routing_state.heat_demand_kw:.2f}",
+        retain=True,
+    )
+    mqtt.publish(
+        f"{base}/gesamt/wp_einzelleistung_kw/state",
+        "" if routing_state.single_wp_available_kw is None else f"{routing_state.single_wp_available_kw:.2f}",
+        retain=True,
+    )
+    mqtt.publish(
+        f"{base}/gesamt/wp_parallel_schwelle_kw/state",
+        "" if routing_state.wp_parallel_threshold_kw is None else f"{routing_state.wp_parallel_threshold_kw:.2f}",
+        retain=True,
+    )
     mqtt.publish(f"{base}/gesamt/active", "1" if routing_state.common_active else "0", retain=True)
     mqtt.publish_json(f"{base}/routing/state", routing_state.as_payload(), retain=True)
     mqtt.publish(f"{base}/brauchwasser/ladung_aktiv", "1" if brauchwasser_state.active else "0", retain=True)
@@ -1655,6 +1795,8 @@ def _publish_state(
     oelbrenner_safety_reasons = _oelbrenner_safety_reasons(app_config, snapshot)
     mqtt.publish(f"{base}/oelbrenner/sicherheit/ok", "0" if oelbrenner_safety_reasons else "1", retain=True)
     mqtt.publish(f"{base}/oelbrenner/sicherheit/grund", ",".join(oelbrenner_safety_reasons), retain=True)
+    if oelverbrauch_snapshot is not None:
+        _publish_oelverbrauch_state(mqtt, oelverbrauch_snapshot)
     mqtt.publish(f"{base}/brunnen/active", "1" if brunnen_state.active else "0", retain=True)
     mqtt.publish(f"{base}/brunnen/grund", brunnen_state.reason, retain=True)
     mqtt.publish(f"{base}/brunnen/druck_bar/state", "" if brunnen_state.pressure_bar is None else f"{brunnen_state.pressure_bar:.2f}", retain=True)
@@ -1690,12 +1832,22 @@ def _publish_state(
     for name, demand in mqtt.demands.items():
         mqtt.publish_json(
             f"{base}/anforderung/{name}/aktuell",
-            {"aktiv": demand.aktiv, "vl_soll": demand.vl_soll, "quelle": demand.quelle},
+            {
+                "aktiv": demand.aktiv,
+                "vl_soll": demand.vl_soll,
+                "quelle": demand.quelle,
+                "leistung_kw": demand.leistung_kw,
+            },
             retain=True,
         )
         mqtt.publish(f"{base}/anforderung/{name}/aktiv/state", "1" if demand.aktiv else "0", retain=True)
         if demand.vl_soll is not None:
             mqtt.publish(f"{base}/anforderung/{name}/vl_soll/state", f"{demand.vl_soll:.1f}", retain=True)
+        mqtt.publish(
+            f"{base}/anforderung/{name}/leistung_kw/state",
+            "" if demand.leistung_kw is None else f"{demand.leistung_kw:.2f}",
+            retain=True,
+        )
 
     for channel_id, channel in app_config.io_map.ai.items():
         value = snapshot.ai.get(channel_id)
@@ -1710,7 +1862,7 @@ def _publish_state(
     for channel_id, channel in app_config.io_map.di.items():
         value = snapshot.di.get(channel_id)
         if value is not None:
-            mqtt.publish(f"{base}/di/{channel.komponente}/state", "1" if value else "0")
+            mqtt.publish(f"{base}/di/{channel.komponente}/state", "1" if value else "0", retain=True)
 
     mqtt.publish_json(f"{base}/hand/state", hand_auto.snapshot(), retain=True)
     hand_snapshot = hand_auto.snapshot()
@@ -1734,6 +1886,75 @@ def _publish_state(
         mqtt.publish(f"{base}/ao/{channel.komponente}/state", f"{value:.1f}", retain=True)
         mqtt.publish(f"{base}/{channel.komponente}/hand/mode/state", "1" if hand_active else "0", retain=True)
         mqtt.publish(f"{base}/{channel.komponente}/hand/value/state", _ao_hand_value_state(channel, hand if hand_active else None), retain=True)
+
+
+def _publish_watermeter_http_mirror(
+    mqtt: MqttBridge,
+    config: WatermeterHttpConfig,
+    snapshot: WatermeterHttpSnapshot,
+) -> None:
+    topic_base = config.mqtt_topic_base
+    if not topic_base:
+        return
+    mqtt.publish(f"{topic_base}/value", f"{snapshot.value:.4f}", retain=True)
+    mqtt.publish(f"{topic_base}/raw", snapshot.raw, retain=True)
+    mqtt.publish(f"{topic_base}/error", "no error", retain=True)
+    mqtt.publish(f"{topic_base}/connection", "connected", retain=True)
+    mqtt.publish(f"{topic_base}/timestamp", datetime.now(UTC).isoformat(), retain=True, force=True)
+
+
+def _publish_oelverbrauch_state(mqtt: MqttBridge, snapshot: OelverbrauchSnapshot) -> None:
+    base = mqtt.base
+    mqtt.publish_json(f"{base}/oelverbrauch/state", snapshot.as_payload(), retain=True)
+    mqtt.publish(
+        f"{base}/oelverbrauch/brenner_laeuft",
+        "" if snapshot.burner_running is None else ("1" if snapshot.burner_running else "0"),
+        retain=True,
+    )
+    mqtt.publish(f"{base}/oelverbrauch/liter/state", f"{snapshot.total_liter:.4f}", retain=True)
+    mqtt.publish(f"{base}/oelverbrauch/kwh/state", f"{snapshot.total_kwh:.3f}", retain=True)
+    mqtt.publish(f"{base}/oelverbrauch/aktuell_l_h/state", f"{snapshot.current_liter_per_hour:.3f}", retain=True)
+    mqtt.publish(f"{base}/oelverbrauch/aktuell_kw/state", f"{snapshot.current_kw:.3f}", retain=True)
+    mqtt.publish(f"{base}/oelverbrauch/aktuell_eur_h/state", f"{snapshot.current_cost_eur_per_hour:.3f}", retain=True)
+    mqtt.publish(f"{base}/oelverbrauch/laufzeit_h/state", f"{snapshot.runtime_h:.4f}", retain=True)
+    mqtt.publish(f"{base}/oelverbrauch/kosten/state", f"{snapshot.cost_eur:.2f}", retain=True)
+    mqtt.publish(f"{base}/oelverbrauch/dieselpreis_eur_l/state", f"{snapshot.dieselpreis_eur_l:.4f}", retain=True)
+    mqtt.publish(f"{base}/oelverbrauch/dieselpreis_eur_m3/state", f"{snapshot.dieselpreis_eur_l:.4f}", retain=True)
+    mqtt.publish(f"{base}/oelverbrauch/dieselpreis_quelle", snapshot.dieselpreis_source, retain=True)
+    mqtt.publish(
+        f"{base}/oelverbrauch/dieselpreis_aktualisiert",
+        snapshot.dieselpreis_remote_updated or "unknown",
+        retain=True,
+    )
+    mqtt.publish(
+        f"{base}/oelverbrauch/dieselpreis_last_ok_ts",
+        "" if snapshot.dieselpreis_last_ok_ts is None else str(int(snapshot.dieselpreis_last_ok_ts)),
+        retain=True,
+    )
+    mqtt.publish(f"{base}/oelverbrauch/dieselpreis_fehler", snapshot.dieselpreis_error or "ok", retain=True)
+
+
+def _effective_heat_source_vl_soll(
+    app_config: AppConfig,
+    routing_state: RoutingState,
+    brauchwasser_state: BrauchwasserState,
+) -> float | None:
+    values: list[float] = []
+    if routing_state.vl_soll is not None:
+        values.append(float(routing_state.vl_soll))
+    if brauchwasser_state.active:
+        reserve_k = max(0.0, float(brauchwasser_state.kessel_reserve_k))
+        values.append(float(brauchwasser_state.soll_c) + reserve_k)
+    return max(values) if values else None
+
+
+def _publish_watermeter_http_error(mqtt: MqttBridge, config: WatermeterHttpConfig, error: str) -> None:
+    topic_base = config.mqtt_topic_base
+    if not topic_base:
+        return
+    mqtt.publish(f"{topic_base}/connection", "disconnected", retain=True)
+    mqtt.publish(f"{topic_base}/error", error or "HTTP read failed", retain=True)
+    mqtt.publish(f"{topic_base}/timestamp", datetime.now(UTC).isoformat(), retain=True, force=True)
 
 
 def _publish_keller_relay_states(mqtt: MqttBridge, states: dict[str, bool]) -> None:
@@ -1901,6 +2122,42 @@ def _publish_ha_discovery(mqtt: MqttBridge, app_config: AppConfig) -> None:
         "sw_version": device.get("sw_version", "0.0.1"),
     }
 
+    _publish_discovery_entity(
+        mqtt,
+        prefix,
+        "sensor",
+        "tor_status",
+        {
+            "name": "Tor Status",
+            "state_topic": f"{mqtt.base}/tor/status",
+            "icon": "mdi:gate",
+            "device": device_payload,
+        },
+    )
+    for object_name, name, topic in (
+        ("gesamt_waermebedarf_kw", "Heizung Waermebedarf", f"{mqtt.base}/gesamt/waermebedarf_kw/state"),
+        ("wp_einzelleistung_kw", "WP Einzelleistung aktuell", f"{mqtt.base}/gesamt/wp_einzelleistung_kw/state"),
+        (
+            "wp_parallel_schwelle_kw",
+            "WP Parallel Schwelle aktuell",
+            f"{mqtt.base}/gesamt/wp_parallel_schwelle_kw/state",
+        ),
+    ):
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "sensor",
+            object_name,
+            {
+                "name": name,
+                "state_topic": topic,
+                "unit_of_measurement": "kW",
+                "device_class": "power",
+                "state_class": "measurement",
+                "device": device_payload,
+            },
+        )
+
     for regler_number in _regler_number_definitions():
         _publish_discovery_entity(
             mqtt,
@@ -1998,6 +2255,7 @@ def _publish_ha_discovery(mqtt: MqttBridge, app_config: AppConfig) -> None:
 
     _publish_mischer_discovery(mqtt, prefix, device_payload)
     _publish_pool_discovery(mqtt, prefix, device_payload)
+    _publish_oelverbrauch_discovery(mqtt, prefix, device_payload)
 
     for demand in _demand_discovery_definitions(mqtt.base, app_config.setting("anforderungen", {})):
         _publish_discovery_entity(
@@ -2031,6 +2289,20 @@ def _publish_ha_discovery(mqtt: MqttBridge, app_config: AppConfig) -> None:
                 "mode": "box",
                 "unit_of_measurement": "C",
                 "device_class": "temperature",
+                "device": device_payload,
+            },
+        )
+        _publish_discovery_entity(
+            mqtt,
+            prefix,
+            "sensor",
+            demand["leistung_object_name"],
+            {
+                "name": demand["leistung_name"],
+                "state_topic": demand["leistung_state_topic"],
+                "unit_of_measurement": "kW",
+                "device_class": "power",
+                "state_class": "measurement",
                 "device": device_payload,
             },
         )
@@ -2363,6 +2635,108 @@ def _publish_pool_discovery(mqtt: MqttBridge, prefix: str, device_payload: dict[
         )
 
 
+def _publish_oelverbrauch_discovery(mqtt: MqttBridge, prefix: str, device_payload: dict[str, Any]) -> None:
+    for sensor in (
+        {
+            "object_name": "oelverbrauch_liter",
+            "name": "Oelverbrauch Liter",
+            "state_topic": f"{mqtt.base}/oelverbrauch/liter/state",
+            "unit_of_measurement": "L",
+            "device_class": "gas",
+            "state_class": "total_increasing",
+            "icon": "mdi:oil",
+        },
+        {
+            "object_name": "oelverbrauch_kwh",
+            "name": "Oelverbrauch Energie",
+            "state_topic": f"{mqtt.base}/oelverbrauch/kwh/state",
+            "unit_of_measurement": "kWh",
+            "device_class": "energy",
+            "state_class": "total_increasing",
+            "icon": "mdi:fire",
+        },
+        {
+            "object_name": "oelverbrauch_aktuell_l_h",
+            "name": "Oelverbrauch aktuell Energie-Dashboard",
+            "state_topic": f"{mqtt.base}/oelverbrauch/aktuell_l_h/state",
+            "unit_of_measurement": "L/h",
+            "device_class": "volume_flow_rate",
+            "state_class": "measurement",
+            "icon": "mdi:oil",
+        },
+        {
+            "object_name": "oelbrenner_leistung",
+            "name": "Oelbrenner Leistung",
+            "state_topic": f"{mqtt.base}/oelverbrauch/aktuell_kw/state",
+            "unit_of_measurement": "kW",
+            "device_class": "power",
+            "state_class": "measurement",
+            "icon": "mdi:fire",
+        },
+        {
+            "object_name": "oelverbrauch_kosten_aktuell",
+            "name": "Oelverbrauch Kosten aktuell",
+            "state_topic": f"{mqtt.base}/oelverbrauch/aktuell_eur_h/state",
+            "unit_of_measurement": "EUR/h",
+            "state_class": "measurement",
+            "icon": "mdi:currency-eur",
+        },
+        {
+            "object_name": "oelverbrauch_laufzeit",
+            "name": "Oelbrenner Laufzeit",
+            "state_topic": f"{mqtt.base}/oelverbrauch/laufzeit_h/state",
+            "unit_of_measurement": "h",
+            "state_class": "total_increasing",
+            "icon": "mdi:timer-outline",
+        },
+        {
+            "object_name": "oelverbrauch_kosten",
+            "name": "Oelverbrauch Kosten",
+            "state_topic": f"{mqtt.base}/oelverbrauch/kosten/state",
+            "unit_of_measurement": "EUR",
+            "state_class": "measurement",
+            "icon": "mdi:currency-eur",
+        },
+        {
+            "object_name": "oelpreis_diesel_wez",
+            "name": "Oelpreis Diesel WEZ",
+            "state_topic": f"{mqtt.base}/oelverbrauch/dieselpreis_eur_l/state",
+            "unit_of_measurement": "EUR/L",
+            "state_class": "measurement",
+            "icon": "mdi:gas-station",
+        },
+        {
+            "object_name": "oelpreis_diesel_aktualisiert",
+            "name": "Oelpreis Diesel Aktualisiert",
+            "state_topic": f"{mqtt.base}/oelverbrauch/dieselpreis_aktualisiert",
+            "icon": "mdi:update",
+        },
+        {
+            "object_name": "oelpreis_diesel_fehler",
+            "name": "Oelpreis Diesel Fehler",
+            "state_topic": f"{mqtt.base}/oelverbrauch/dieselpreis_fehler",
+            "icon": "mdi:alert-circle-outline",
+        },
+    ):
+        object_name = str(sensor.pop("object_name"))
+        _publish_discovery_entity(mqtt, prefix, "sensor", object_name, {**sensor, "device": device_payload})
+
+    _publish_discovery_entity(
+        mqtt,
+        prefix,
+        "binary_sensor",
+        "oelverbrauch_brenner_laeuft",
+        {
+            "name": "Oelbrenner laeuft",
+            "state_topic": f"{mqtt.base}/oelverbrauch/brenner_laeuft",
+            "payload_on": "1",
+            "payload_off": "0",
+            "device_class": "running",
+            "device": device_payload,
+        },
+    )
+
+
 def _publish_discovery_entity(
     mqtt: MqttBridge,
     prefix: str,
@@ -2461,6 +2835,9 @@ def _demand_discovery_definitions(base: str, demand_settings: dict[str, Any]) ->
                 "active_command_topic": f"{base}/anforderung/{name}/aktiv/set",
                 "vl_state_topic": f"{base}/anforderung/{name}/vl_soll/state",
                 "vl_command_topic": f"{base}/anforderung/{name}/vl_soll/set",
+                "leistung_object_name": f"anforderung_{object_name}_leistung_kw",
+                "leistung_name": f"Anforderung {display_name} Leistung",
+                "leistung_state_topic": f"{base}/anforderung/{name}/leistung_kw/state",
                 "min": low,
                 "max": high,
             }
@@ -2503,6 +2880,15 @@ def _regler_number_definitions() -> list[dict[str, Any]]:
             "name": "Brauchwasser Hysterese K",
             "min": 1,
             "max": 20,
+            "step": 0.5,
+            "unit": "K",
+        },
+        {
+            "key": "brauchwasser_kessel_reserve_k",
+            "object_name": "brauchwasser_kessel_reserve_k",
+            "name": "Brauchwasser Kesselreserve",
+            "min": 0,
+            "max": 30,
             "step": 0.5,
             "unit": "K",
         },
@@ -2624,11 +3010,38 @@ def _regler_number_definitions() -> list[dict[str, Any]]:
             "unit": "h",
         },
         {
+            "key": "pool_nachspeisung_end_hour",
+            "object_name": "pool_nachspeisung_endzeit",
+            "name": "Pool Nachspeisung Endzeit",
+            "min": 0,
+            "max": 23,
+            "step": 1,
+            "unit": "h",
+        },
+        {
             "key": "pool_nachspeisung_delay_s",
             "object_name": "pool_nachspeisung_verzoegerung",
             "name": "Pool Nachspeisung Verzoegerung",
             "min": 0,
             "max": 86400,
+            "step": 10,
+            "unit": "s",
+        },
+        {
+            "key": "pool_nachspeisung_close_delay_s",
+            "object_name": "pool_schwimmer_voll_verzoegerung",
+            "name": "Pool Schwimmer Voll Verzoegerung",
+            "min": 0,
+            "max": 600,
+            "step": 1,
+            "unit": "s",
+        },
+        {
+            "key": "pool_nachspeisung_meter_settle_s",
+            "object_name": "pool_wasserzaehler_nachlauf",
+            "name": "Pool Wasserzaehler Nachlauf",
+            "min": 0,
+            "max": 1800,
             "step": 10,
             "unit": "s",
         },

@@ -1,0 +1,131 @@
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 1970-01-01T00:00:01	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 1970-01-01T00:00:01	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[MAIN] Reset reason: Power-on event (or reset button)
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 1970-01-01T00:00:04	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 1970-01-01T00:00:04	<INF>	[WIFI] Init successful
+[0d00h00m08s] 1970-01-01T00:00:08	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -55
+[0d00h00m13s] 1970-01-01T00:00:13	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m24s] 1970-01-01T00:00:24	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 1970-01-01T00:00:24	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3818MB
+[0d00h00m26s] 1970-01-01T00:00:26	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m28s] 1970-01-01T00:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T00:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T00:00:28	<INF>	[MAINCTRL] Starting Flow...
+[0d00h00m28s] 1970-01-01T00:00:28	<INF>	[MAINCTRL] Round #1 started
+[0d00h00m42s] 1970-01-01T00:00:42	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m56s] 1970-01-01T00:00:56	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m58s] 1970-01-01T00:00:58	<ERR>	[POSTPROC] zaehlerstand: Raw: 00058.5765, Value: , Status: Rate too high - Read: 58.5765 - Pre: 58.2666 - Rate: 0.3099
+[0d00h00m58s] 1970-01-01T00:00:58	<INF>	[MAINCTRL] Round #1 completed (30 seconds)
+[0d00h00m58s] 1970-01-01T00:00:58	<WRN>	[MAINCTRL] Time server is configured, but time is not yet set!
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m00s] 1970-01-01T00:00:01	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m00s] 1970-01-01T00:00:01	<INF>	[MAIN] Total heap: 4377151 byte
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[MAIN] Reset reason: Power-on event (or reset button)
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m03s] 1970-01-01T00:00:04	<INF>	[WIFI] Init successful
+[0d00h00m16s] 1970-01-01T00:00:17	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m19s] 1970-01-01T00:00:19	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m23s] 1970-01-01T00:00:23	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m23s] 1970-01-01T00:00:24	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m23s] 1970-01-01T00:00:24	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3817MB
+[0d00h00m25s] 1970-01-01T00:00:25	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m25s] 1970-01-01T00:00:26	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m28s] 1970-01-01T00:00:28	<INF>	[WIFI] Connected to: Eschenlohr, RSSI: -61
+[0d00h00m28s] 1970-01-01T00:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T00:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T00:00:28	<INF>	[MAINCTRL] Starting Flow...
+[0d00h00m28s] 1970-01-01T00:00:28	<INF>	[MAINCTRL] Round #1 started
+[0d00h00m29s] 1970-01-01T00:00:29	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m42s] 1970-01-01T00:00:42	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m56s] 1970-01-01T00:00:56	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m58s] 1970-01-01T00:00:58	<ERR>	[POSTPROC] zaehlerstand: Raw: 00058.5766, Value: , Status: Rate too high - Read: 58.5766 - Pre: 58.2666 - Rate: 0.3100
+[0d00h00m58s] 1970-01-01T00:00:58	<INF>	[MAINCTRL] Round #1 completed (30 seconds)
+[0d00h00m58s] 1970-01-01T00:00:58	<WRN>	[MAINCTRL] Time server is configured, but time is not yet set!
+[0d00h01m40s] 1970-01-01T00:01:40	<INF>	[MAINCTRL] Round #2 started
+[0d00h01m54s] 1970-01-01T00:01:54	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h02m08s] 1970-01-01T00:02:08	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h02m10s] 1970-01-01T00:02:10	<ERR>	[POSTPROC] zaehlerstand: Raw: 00058.5765, Value: , Status: Rate too high - Read: 58.5765 - Pre: 58.2666 - Rate: 0.3099
+[0d00h02m10s] 1970-01-01T00:02:10	<INF>	[MAINCTRL] Round #2 completed (30 seconds)
+[0d00h02m10s] 1970-01-01T00:02:10	<WRN>	[MAINCTRL] Time server is configured, but time is not yet set!
+[0d00h04m28s] 1970-01-01T00:04:28	<INF>	[POSTPROC] SetPreValue: PreValue for zaehlerstand set to 58.576600
+[0d00h04m38s] 1970-01-01T00:04:38	<INF>	[MAINCTRL] Round #3 started
+[0d00h04m52s] 1970-01-01T00:04:52	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h05m05s] 1970-01-01T00:05:06	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h05m07s] 1970-01-01T00:05:08	<INF>	[POSTPROC] zaehlerstand: Raw: 00058.5766, Value: 58.5766, Status: no error
+[0d00h05m08s] 1970-01-01T00:05:08	<INF>	[MAINCTRL] Round #3 completed (30 seconds)
+[0d00h05m08s] 1970-01-01T00:05:08	<WRN>	[MAINCTRL] Time server is configured, but time is not yet set!
+[0d00h07m09s] 1970-01-01T00:07:09	<ERR>	[OTA FILE] Failed to stat file: /sdcard/wlan.ini!
+[0d00h08m53s] 1970-01-01T00:08:53	<INF>	[MAINCTRL] Round #4 started
+[0d00h09m07s] 1970-01-01T00:09:07	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h09m20s] 1970-01-01T00:09:20	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h09m22s] 1970-01-01T00:09:22	<INF>	[POSTPROC] zaehlerstand: Raw: 00058.5766, Value: 58.5766, Status: no error
+[0d00h09m22s] 1970-01-01T00:09:22	<INF>	[MAINCTRL] Round #4 completed (29 seconds)
+[0d00h09m22s] 1970-01-01T00:09:22	<WRN>	[MAINCTRL] Time server is configured, but time is not yet set!
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] ==================== Start ======================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[MAIN] =================================================
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check started...
+[0d00h00m00s] 1970-01-01T00:00:00	<INF>	[SDCARD] Basic R/W check successful
+[0d00h00m01s] 1970-01-01T00:00:01	<INF>	[MAIN] PSRAM size: 8388608 byte (8MB / 64MBit)
+[0d00h00m01s] 1970-01-01T00:00:01	<INF>	[MAIN] Total heap: 4377019 byte
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[MAIN] Camera info: PID: 0x26, VER: 0x42, MIDL: 0x7f, MIDH: 0xa2
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SNTP] TimeServer: 10.1.20.1
+[0d00h00m03s] 1970-01-01T00:00:03	<INF>	[SNTP] Configuring NTP Client...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] Time zone set to CET-1CEST,M3.5.0,M10.5.0/3
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] time zone: +0100 Delta to UTC: 3600 seconds
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] The local time is unknown, starting with 1970-01-01 01:00:03
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SNTP] Once the NTP server provides a time, we will switch to that one
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] CPU frequency: 160 MHz
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SDCARD] Folder/file presence check started...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[SDCARD] Folder/file presence check successful
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] Tag: 'v16.1.0', Release: v16.1.0 (Commit: a1ccda2), Date/Time: 2026-01-11 22:38, Web UI: Release: v16.1.0 (Commit: a1ccda2)
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] Reset reason: Power-on event (or reset button)
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] SSID: Eschenlohr
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] Password: XXXXXXXX
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WLANINI] RSSIThreshold: -75
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[MAIN] WLAN config loaded, init WIFI...
+[0d00h00m03s] 1970-01-01T01:00:03	<INF>	[WIFI] Automatic interface config --> Use DHCP service
+[0d00h00m04s] 1970-01-01T01:00:04	<INF>	[WIFI] Set hostname to: watermeter
+[0d00h00m04s] 1970-01-01T01:00:04	<INF>	[WIFI] Init successful
+[0d00h00m16s] 1970-01-01T01:00:16	<WRN>	[WIFI] Disconnected (202, Auth fail)
+[0d00h00m19s] 1970-01-01T01:00:19	<WRN>	[WIFI] Disconnected (205)
+[0d00h00m24s] 1970-01-01T01:00:24	<INF>	[MAIN] Device info: CPU cores: 2, Chip revision: 301
+[0d00h00m24s] 1970-01-01T01:00:24	<INF>	[MAIN] SD card info: Name: SD16G, Capacity: 3840MB, Free: 3817MB
+[0d00h00m25s] 1970-01-01T01:00:25	<INF>	[WIFI] Assigned IP: 10.1.20.191
+[0d00h00m26s] 1970-01-01T01:00:26	<INF>	[MAIN] Initialization completed successfully
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[MAINCTRL] Starting Flow...
+[0d00h00m28s] 1970-01-01T01:00:28	<INF>	[MAINCTRL] Round #1 started
+[0d00h00m42s] 1970-01-01T01:00:42	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m56s] 1970-01-01T01:00:56	<INF>	[TFLITE] Trying to load the model. If it crashes here, it ist most likely due to a corrupted model!
+[0d00h00m58s] 1970-01-01T01:00:58	<INF>	[POSTPROC] zaehlerstand: Raw: 00058.5766, Value: 58.5766, Status: no error
+[0d00h00m58s] 1970-01-01T01:00:58	<INF>	[MAINCTRL] Round #1 completed (30 seconds)
+[0d00h00m58s] 1970-01-01T01:00:58	<WRN>	[MAINCTRL] Time server is configured, but time is not yet set!

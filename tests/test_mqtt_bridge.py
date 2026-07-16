@@ -52,3 +52,23 @@ def test_publish_force_resends_same_payload():
         ("heizung/status", "online", 0, True),
         ("heizung/status", "online", 0, True),
     ]
+
+
+def test_gate_button_creates_camera_checked_request():
+    bridge = MqttBridge({"topics": {"base": "heizung"}})
+
+    bridge._on_message(None, None, _Msg("heizung/tor/oeffnen_ganz/cmd", "1"))
+
+    command = bridge.drain_commands()[0]
+    assert command.typ == "tor_request"
+    assert command.name == "oeffnen_ganz"
+
+
+def test_only_ha_release_reaches_physical_gate_command():
+    bridge = MqttBridge({"topics": {"base": "heizung"}})
+
+    bridge._on_message(None, None, _Msg("heizung/tor/freigabe/cmd", '{"command":"schliessen"}'))
+
+    command = bridge.drain_commands()[0]
+    assert command.typ == "tor_command"
+    assert command.name == "schliessen"

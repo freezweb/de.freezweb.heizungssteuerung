@@ -58,11 +58,6 @@ class HandAutoManager:
         if not state.hand:
             return auto_wert, False
 
-        if self._is_expired(channel, state, now_ts):
-            self.states[channel.id] = HandState()
-            self.save()
-            return auto_wert, False
-
         return state.wert, True
 
     def snapshot(self) -> dict[str, dict[str, Any]]:
@@ -75,15 +70,6 @@ class HandAutoManager:
     def save(self) -> None:
         self.store.save({channel_id: state.to_dict() for channel_id, state in self.states.items()})
 
-    def _is_expired(self, channel: ChannelConfig, state: HandState, now_ts: float) -> bool:
-        timeout_min = channel.hand_timeout_min
-        if timeout_min is None:
-            timeout_min = self.default_timeout_min
-        if timeout_min is None or state.seit_ts is None:
-            return False
-        return now_ts - state.seit_ts >= timeout_min * 60
-
     def _require_output(self, channel_id: str) -> None:
         if channel_id not in self.io_map.output_channels:
             raise KeyError(f"Kein Ausgangskanal: {channel_id}")
-

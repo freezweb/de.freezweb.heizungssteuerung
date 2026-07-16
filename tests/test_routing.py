@@ -41,6 +41,63 @@ def test_single_common_demand_uses_one_heat_pump():
     assert ao["AO04"] == 100.0
 
 
+def test_heat_demand_kw_decides_parallel_heat_pumps():
+    settings = {
+        "regelung": {"mischer_reserve_k": 5},
+        "wp": {
+            "parallel_ab_aktive_kreise": 2,
+            "parallel_ab_pct": 80,
+            "leistungskurve_kw": [
+                {"aussen": -10, "kw": 12.0},
+                {"aussen": 0, "kw": 16.0},
+                {"aussen": 10, "kw": 18.0},
+            ],
+        },
+    }
+
+    state, do, ao = compute_routing(
+        settings,
+        {"fbh_eg": Demand(aktiv=True, vl_soll=35.0, leistung_kw=13.0)},
+        FailsafeState(False, (), None),
+        outside_temp_c=0.0,
+    )
+
+    assert state.source_count == 2
+    assert state.heat_demand_kw == 13.0
+    assert state.single_wp_available_kw == 16.0
+    assert state.wp_parallel_threshold_kw == 12.8
+    assert state.wp_count_reason == "waermebedarf_kw"
+    assert do["DO03"] is True
+    assert do["DO04"] is True
+    assert ao["AO01"] == 40.0
+    assert ao["AO02"] == 40.0
+
+
+def test_heat_demand_kw_keeps_single_heat_pump_below_threshold():
+    settings = {
+        "regelung": {"mischer_reserve_k": 5},
+        "wp": {
+            "parallel_ab_aktive_kreise": 2,
+            "parallel_ab_pct": 80,
+            "leistungskurve_kw": [{"aussen": 0, "kw": 16.0}],
+        },
+    }
+
+    state, do, ao = compute_routing(
+        settings,
+        {"fbh_eg": Demand(aktiv=True, vl_soll=35.0, leistung_kw=8.0)},
+        FailsafeState(False, (), None),
+        outside_temp_c=0.0,
+    )
+
+    assert state.source_count == 1
+    assert state.wp_count_reason == "waermebedarf_kw"
+    assert do["DO03"] is True
+    assert do["DO04"] is False
+    assert ao["AO01"] == 40.0
+    assert ao["AO02"] == 0.0
+
+
 def test_bwwp_stays_separate_from_common_loop():
     state, do, ao = compute_routing(
         {"wp": {"bwwp": {"soll_normal": 50}}},

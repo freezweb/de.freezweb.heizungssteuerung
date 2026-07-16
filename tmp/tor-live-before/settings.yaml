@@ -1,0 +1,259 @@
+regelung:
+  mischer_reserve_k: 5
+  oelbrenner_unterstuetzung: true
+  fast_zyklus_ms: 100
+  heizung_divider: 10
+leds:
+  enabled: true
+  peer_timeout_s: 90
+  heartbeat_interval_s: 1.0
+regler:
+  state_persist_path: state/regler.json
+hydraulik:
+  common_heat_demands:
+  - fbh_eg
+  - klima_og
+  - nebengeb
+  - pool
+  - hk_backup
+freigaben:
+  state_persist_path: state/freigaben.json
+  quellen:
+    oelbrenner: true
+    wp1: false
+    wp2: false
+    bwwp: false
+  senken:
+    fbh_eg: true
+    klima_og: false
+    nebengeb: false
+    hk_backup: false
+    pool: false
+anforderungen:
+  fbh_eg:
+    aktiv: false
+    vl_soll: 35
+    quelle: default
+  klima_og:
+    aktiv: false
+    vl_soll: 18
+    quelle: default
+  nebengeb:
+    aktiv: false
+    vl_soll: 38
+    quelle: default
+  hk_backup:
+    aktiv: false
+    vl_soll: 50
+    quelle: default
+  pool:
+    aktiv: false
+    vl_soll: 38
+    quelle: default
+  bwwp:
+    aktiv: false
+    vl_soll: 50
+    quelle: default
+heizkurve:
+  stuetzpunkte:
+  - aussen: -12
+    vl: 45
+  - aussen: 0
+    vl: 38
+  - aussen: 15
+    vl: 25
+  vl_min: 25
+  vl_max: 55
+wp:
+  wechsel_stunden: 24
+  parallel_ab_pct: 50
+  parallel_ab_aktive_kreise: 2
+  bwwp:
+    soll_normal: 50
+    soll_legionellen: 65
+    legionellen_intervall_tage: 7
+pool:
+  soll_winter: 35
+  soll_sommer: 28
+  max_pv_ueberschuss_temp: 40
+  becken_volumen_m3: 30
+  filter_speed_pct: 100
+failsafe:
+  mqtt_timeout_s: 60
+  ha_heartbeat_timeout_s: 300
+  mqtt_activity_required: false
+  ha_heartbeat_required: false
+  outside_sensor_required: false
+  fallback_vl_ohne_aussenfuehler: 50
+  pumpen_an_im_failsafe: true
+hand:
+  default_timeout_min: null
+  state_persist_path: state/hand_state.json
+logging:
+  level: INFO
+  datei: /var/log/heizung.log
+  rotate_mb: 10
+  keep: 5
+brunnen:
+  druck_sensor_signal: 4-20ma
+  fu_start_pct: 20
+  kp_pct_pro_bar: 25
+  fu_ramp_up_pct_s: 25
+  fu_ramp_down_pct_s: 500
+  flow_min_l_min: 0.2
+  flow_timeout_s: 120
+  flow_stale_timeout_s: 15
+  flow_modbus:
+    enabled: true
+    host: wasserverbrauch-pumpe.local
+    port: 502
+    unit_id: 1
+    register_type: input
+    register: 0
+    scale: 100
+    timeout_s: 0.3
+    poll_interval_s: 1.0
+  watermeter_http:
+    enabled: true
+    url: "http://10.1.20.191/value?all=true&type=value"
+    number_name: "zaehlerstand"
+    total_scale_l_per_unit: 1000
+    timeout_s: 2.0
+    poll_interval_s: 10.0
+    mqtt_mirror_enabled: true
+    mqtt_topic_base: "watermeter/zaehlerstand"
+intercpu:
+  keller:
+    enabled: true
+    host: 10.1.25.11
+    port: 502
+    timeout_s: 1.0
+  keller_slave:
+    host: 0.0.0.0
+    port: 502
+    zyklus_ms: 500
+    watchdog_s: 5
+pumpengruppen:
+  nebengeb:
+    enabled: true
+    host: 10.1.20.189
+    port: 502
+    unit_id: 30
+    timeout_s: 0.5
+    poll_interval_s: 1.0
+    pump_component: pumpe_nebengeb
+    mixer_component: sv_nebengeb_pct
+    vl_component: vl_nebengeb
+    rl_component: rl_nebengeb
+    disable_local_outputs: true
+mischer:
+  nebengeb:
+    hysterese_k: 0.3
+    kp_pct_pro_k: 8.0
+    max_step_pct: 20.0
+    min_pct: 0
+    max_pct: 100
+  fbh_eg:
+    hysterese_k: 0.3
+    kp_pct_pro_k: 8.0
+    max_step_pct: 5.0
+    min_pct: 0
+    max_pct: 100
+    control_interval_s: 30.0
+    max_open_step_pct: 2.0
+    max_close_step_pct: 5.0
+    anticipation_s: 90.0
+  hk_backup:
+    hysterese_k: 0.3
+    kp_pct_pro_k: 8.0
+    max_step_pct: 5.0
+    min_pct: 0
+    max_pct: 100
+    control_interval_s: 30.0
+    max_open_step_pct: 2.0
+    max_close_step_pct: 5.0
+    anticipation_s: 90.0
+  klima_og:
+    hysterese_k: 0.3
+    kp_pct_pro_k: 8.0
+    max_step_pct: 5.0
+    min_pct: 0
+    max_pct: 100
+    control_interval_s: 30.0
+    max_open_step_pct: 2.0
+    max_close_step_pct: 5.0
+    anticipation_s: 90.0
+keller_relais:
+  enabled: true
+  host: 10.1.100.169
+  port: 26
+  unit_id: 1
+  timeout_s: 1.0
+  command_delay_s: 0.03
+  state_persist_path: state/keller_relais.json
+  runtime_s: 120
+  tolerance_pct: 1.0
+  groups:
+    fbh_eg:
+      pump_component: pumpe_fbh_eg
+      mixer_component: mischer_fbh_eg_pct
+      relays:
+        pump: 1
+        enable: 2
+        direction: 3
+      target_channel_id: K-AO02
+      vl_component: fbh_eg_vl
+    hk_backup:
+      pump_component: pumpe_hk_backup
+      mixer_component: mischer_hk_backup_pct
+      relays:
+        pump: 4
+        enable: 5
+        direction: 6
+      target_channel_id: K-AO04
+      vl_component: hk_backup_vl
+    klima_og:
+      pump_component: pumpe_klima_og
+      mixer_component: mischer_klima_og_pct
+      relays:
+        pump: 7
+        enable: 8
+        direction: 9
+      target_channel_id: K-AO03
+      vl_component: klima_og_vl
+  test_mode:
+    enabled: false
+    pump_on: false
+    target_pct: 0
+  protocol: modbus_tcp
+pool_prodino:
+  enabled: true
+  topic_base: heizung/prodino_pool
+  input_index: 1
+  float_empty_high: false
+  valve_component: pool_nachfuellventil
+  pump_component: pool_flockung_pumpe
+  float_component: pool_schwimmer_zu_leer
+  state_persist_path: state/pool_nachspeisung.json
+  protocol: modbus_tcp
+  host: 10.1.1.146
+  port: 502
+  unit_id: 1
+  timeout_s: 0.5
+  poll_interval_s: 1.0
+  health_timeout_s: 90
+pool_nachspeisung:
+  testmodus: 1
+  start_hour: 2
+  delay_s: 30
+  max_fill_s: 3600
+pool_flockung:
+  tagesdosis_ml: 36
+  start_hour: 2
+  ml_pro_l_frischwasser: 0.1
+  pumpe_ml_min: 133.33
+tor:
+  fahrzeit_s: 30
+  initial_position: geschlossen
+  halb_aktiv: false
+  state_persist_path: state/tor.json

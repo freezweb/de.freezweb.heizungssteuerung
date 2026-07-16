@@ -1,0 +1,30 @@
+classify:
+  name: Hoftorposition erkennen
+  description: Vergleicht das aktuelle Kamerabild lokal mit den Endlagenreferenzen.
+  fields:
+    entity_id:
+      name: Kamera
+      required: true
+      selector:
+        entity:
+          domain: camera
+  response:
+    optional: false
+capture_reference:
+  name: Hoftor-Referenz erfassen
+  description: Speichert die aktuelle Kameraposition als lokale Endlagenreferenz.
+  fields:
+    entity_id:
+      name: Kamera
+      required: true
+      selector:
+        entity:
+          domain: camera
+    position:
+      name: Position
+      required: true
+      selector:
+        select:
+          options:
+            - offen
+            - geschlossen

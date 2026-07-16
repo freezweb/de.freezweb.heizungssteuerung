@@ -71,6 +71,43 @@ durchlaeuft (kein Frost), Kernsanierung 2000-2003 -> Heizlastniveau ca. 55-70 W/
 | Pool 35 Grad outdoor, abgedeckt, -10 Grad Aussentemp | 25 m^2 Becken | 250 W/m^2 | ~6-8 kW dauerhaft |
 | **Spitzenlast (gleichzeitig)** | | | **~28-30 kW** |
 
+### 2.3.1 Raumweise Heizlast fuer HA-Leistungsanforderung
+
+Da das Gebaeude innen und aussen um 2000 gedaemmt wurde und ueberall
+doppelt verglaste Kunststofffenster verbaut sind, wird fuer die
+laufende Regelung vorerst der Lastenheft-Ueberschlag von **65 W/m^2**
+als einheitlicher spezifischer Raumwert verwendet. Home Assistant
+gewichtet diese Raum-Heizlast mit der aktuellen Ventilstellung.
+
+**EG / FBH-Kreis**
+
+| Raum / Ventilgruppe | Flaeche | Heizlast bei 65 W/m^2 | HA-Stellwert |
+|---|---:|---:|---|
+| Kueche | 18,46 m^2 | 1,20 kW | `number.heizung_kuche_ventilstellung` |
+| Wohnen 1 | 19,17 m^2 anteilig | 1,25 kW | `number.wohnzimmer_1_ventilstellung` |
+| Wohnen 2 | 19,17 m^2 anteilig | 1,25 kW | `number.wohnzimmer_2_ventilstellung` |
+| Wohnen 3 | 19,17 m^2 anteilig | 1,25 kW | `number.wohnzimmer_3_ventilstellung` |
+| Bad EG | 9,08 m^2 | 0,59 kW | `number.heizung_eg_bad_ventilstellung` |
+| Flur + Treppenflur | 20,50 m^2 | 1,33 kW | `number.heizung_flur_eg_ventilstellung` |
+| **Summe EG** | **105,54 m^2** | **6,86 kW** | |
+
+**OG / Heizkoerper-Backup**
+
+| Raum / Ventilgruppe | Flaeche | Heizlast bei 65 W/m^2 | HA-Stellwert |
+|---|---:|---:|---|
+| Flur 1-3 | 31,55 m^2 | 2,05 kW | `sensor.shellyblutrv_f844772c4513_valve_position` |
+| Kind | 17,75 m^2 | 1,15 kW | `sensor.shellyblutrv_f8447705cec4_valve_position_2` |
+| Buero | 24,67 m^2 | 1,60 kW | `sensor.shellyblutrv_f844772090fd_valve_position` |
+| Schlafen | 12,60 m^2 | 0,82 kW | `sensor.shellyblutrv_f844772ca365_valve_position` |
+| Bad OG | 12,60 m^2 | 0,82 kW | `sensor.shellyblutrv_f844772c36fd_valve_position` |
+| Saunaraum/Lager | 24,50 m^2 | Frostschutz, nicht in Heizanforderung | `sensor.shellyblutrv_f8447705cec4_valve_position` |
+| **Summe OG ohne Sauna** | **99,17 m^2** | **6,44 kW** | |
+
+Wenn einzelne Ventil-Entitaeten in HA nicht verfuegbar sind, darf die
+Automation fuer diesen Raum temporaer auf den jeweiligen Gesamt-Prozentwert
+`sensor.heizanforderung_eg_prozent` bzw. `sensor.heizanforderung_og_prozent`
+zurueckfallen.
+
 ### 2.4 WP-Dimensionierungs-Empfehlung
 - 2x 11 kW war urspruenglich zu knapp gerechnet.
 - **Empfehlung: 2x 16 kW Monoblock** (gesamt 32 kW, Modulationsbereich typ. 5-16 kW/Stueck)
@@ -224,8 +261,8 @@ spaeter ein regelbares Ventil hydraulisch sicher eingebaut sind.
 | DI10 | DI2.10 | Sammelstoerung BW-WP | B |
 | DI11 | DI2.11 | Stromungswachter Brunnen | C |
 | DI12 | DI2.12 | Oelbrenner Wasserdruckwachter (NC: 1=OK, 0=Stoerung) | A |
-| DI13 | DI2.13 | Oelbrenner Stoermeldung | A |
-| DI14 | DI2.14 | Oelbrenner Betriebsmeldung | A |
+| DI13 | DI2.13 | Oelbrenner Betriebsmeldung | A |
+| DI14 | DI2.14 | Oelbrenner Stoermeldung | A |
 | DI15 | DI1.1 | Oelbrenner Sicherheitstemperaturbegrenzer STB (NC: 1=OK, 0=Stoerung) | A |
 | DI16 | DI1.2 | Reserve | - |
 
@@ -235,7 +272,7 @@ Sicherheitswirkung Oelbrenner Bestand:
   schaltet alle Heizungs-Hauptkreis-Pumpen ab, auch im Handbetrieb:
   DO02, DO18, DO19 sowie K-DO01 bis K-DO03.
 - DI15 STB offen sperrt DO01 Brennerfreigabe hart, auch im Handbetrieb.
-- DI13 Brenner-Stoermeldung wird gemeldet und per Telegram eskaliert, sperrt
+- DI14 Brenner-Stoermeldung wird gemeldet und per Telegram eskaliert, sperrt
   DO01 aber nicht. So bleibt die normale Anforderung am Feuerungsautomaten an,
   damit der Brenner direkt an seiner Taste entstoert werden kann.
 
@@ -257,8 +294,8 @@ Physische AIO-Karten der Hauptsteuerung:
 | # | Physisch | AIO | Kanal | Beschreibung |
 |---|---|---|---|---|
 | RTD01 | RTD3.1 | 1 | RTD1 | Vorlauf Kessel/WP-Sammelvorlauf |
-| RTD02 | RTD3.2 | 1 | RTD2 | Ruecklauf Kessel/WP-Sammelruecklauf |
-| RTD03 | RTD4.1 | 2 | RTD1 | Brauchwasser oben |
+| RTD02 | RTD3.2 | 1 | RTD2 | Brauchwasser oben |
+| RTD03 | RTD4.1 | 2 | RTD1 | Ruecklauf Kessel/WP-Sammelruecklauf |
 | RTD04 | RTD4.2 | 2 | RTD2 | Brauchwasser unten / Ladetemperatur |
 | RTD05 | RTD5.1 | 3 | RTD1 | Aussentemperatur (Nordwand, beschattet) |
 | RTD06 | RTD5.2 | 3 | RTD2 | Brunnenwasser-Eintritt WT |
@@ -457,7 +494,7 @@ Siehe [docs/hydraulik.md](docs/hydraulik.md).
 ├── config/
 │   ├── io_map.yaml         # I/O-Kanalbelegung (Single Source of Truth)
 │   ├── modbus_map.yaml     # Modbus-Register-Definitionen WP/Klima
-│   ├── settings.yaml       # Sollwerte, Heizkurve, Hand-Timeouts
+│   ├── settings.yaml       # Sollwerte, Heizkurve, Hand/Auto-State
 │   └── mqtt.yaml           # MQTT-Topics, HA-Discovery
 ├── lib/
 │   ├── iohw.py             # RevPi-I/O-Wrapper
@@ -465,7 +502,7 @@ Siehe [docs/hydraulik.md](docs/hydraulik.md).
 │   ├── regler.py           # PI-Regler, Heizkurve, Sequenzlogik
 │   ├── mqtt_bridge.py      # MQTT-Client + HA-Discovery + State-Sync
 │   ├── failsafe.py         # Watchdog + Fallback-Logik
-│   ├── hand_auto.py        # Hand/Auto-Override pro Kanal mit Timeout
+│   ├── hand_auto.py        # Hand/Auto-Override pro Kanal, nur explizit rueckstellbar
 │   └── state.py            # Persistierter State (JSON, atomic-write)
 ├── state/
 │   └── state.json
@@ -494,9 +531,8 @@ Siehe [docs/hydraulik.md](docs/hydraulik.md).
 8. **Failsafe-Watchdog**: HA-Last-Seen Timestamp pruefen
 
 ### 6.4 Hand/Auto-Logik
-- Pro Kanal in `settings.yaml`: `hand_timeout_min: 240` (oder `null` = nie)
 - Hand-Modus: Wert (DO bool, AO 0-100%) wird festgehalten
-- Bei Timeout: automatischer Rueckfall auf Auto
+- Kein automatischer Rueckfall auf Auto: Handwerte/Sperren bleiben aktiv, bis sie in der Visu explizit auf Auto gesetzt werden
 - Persistierung: Hand-Stati ueberleben Neustart
 - In HA sichtbar: pro Kanal eine Switch-Entitat "Hand-Modus" + Number/Switch fur den Wert
 

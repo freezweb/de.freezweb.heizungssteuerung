@@ -34,7 +34,7 @@ def _io_map() -> IoMap:
                 "oelbrenner_wasserdruck_stoerung",
                 polaritaet="NC_SAFE_HIGH",
             ),
-            "DI13": ChannelConfig("DI13", "di", "I_13", "brenner_stoerung"),
+            "DI14": ChannelConfig("DI14", "di", "I_14", "brenner_stoerung"),
             "DI15": ChannelConfig(
                 "DI15",
                 "di",
@@ -50,6 +50,7 @@ def _io_map() -> IoMap:
         },
         rtd={
             "RTD01": ChannelConfig("RTD01", "rtd", "RTD_1", "vl_sammel"),
+            "RTD03": ChannelConfig("RTD03", "rtd", "RTD_3", "bw_oben"),
             "K-RTD03": ChannelConfig("K-RTD03", "rtd", "RTD_3", "klima_og_vl"),
         },
     )
@@ -73,10 +74,10 @@ class _TestConfig:
 @pytest.mark.parametrize(
     ("di", "expected"),
     [
-        ({"DI12": True, "DI13": False, "DI15": True}, True),
-        ({"DI12": False, "DI13": False, "DI15": True}, False),
-        ({"DI12": True, "DI13": False, "DI15": False}, False),
-        ({"DI12": True, "DI13": True, "DI15": True}, True),
+        ({"DI12": True, "DI14": False, "DI15": True}, True),
+        ({"DI12": False, "DI14": False, "DI15": True}, False),
+        ({"DI12": True, "DI14": False, "DI15": False}, False),
+        ({"DI12": True, "DI14": True, "DI15": True}, True),
     ],
 )
 async def test_oelbrenner_safety_chain_hard_locks_burner_output(tmp_path, di, expected):
@@ -113,7 +114,7 @@ async def test_burner_fault_keeps_burner_demand_for_physical_reset(tmp_path):
         hand_auto=hand,
         auto_do={"DO01": True},
         auto_ao={},
-        snapshot=HardwareSnapshot(di={"DI12": True, "DI13": True, "DI15": True}),
+        snapshot=HardwareSnapshot(di={"DI12": True, "DI14": True, "DI15": True}),
         now_ts=101.0,
     )
 
@@ -137,7 +138,7 @@ async def test_water_shortage_hard_locks_heating_pumps_even_in_hand_mode(tmp_pat
         hand_auto=hand,
         auto_do={channel_id: True for channel_id in pump_ids},
         auto_ao={},
-        snapshot=HardwareSnapshot(di={"DI12": False, "DI13": False, "DI15": True}),
+        snapshot=HardwareSnapshot(di={"DI12": False, "DI14": False, "DI15": True}),
         now_ts=101.0,
     )
 
@@ -273,3 +274,45 @@ def test_klima_og_cooling_is_disabled_by_default():
 
     assert cooling_active is False
     assert auto_do["DO06"] is False
+
+
+def test_brauchwasser_uses_own_kessel_reserve_for_burner_limit_and_keeps_charge_pump_on():
+    io_map = _io_map()
+    app_config = _TestConfig(
+        io_map,
+        {
+            "regelung": {"mischer_reserve_k": 5, "oelbrenner_unterstuetzung": True},
+            "brauchwasser": {"soll_c": 55, "hysterese_k": 5, "kessel_reserve_k": 15, "sensor_max_c": 95},
+        },
+    )
+    mqtt = type("Mqtt", (), {"demands": {}})()
+    freigaben = Freigaben(
+        sources={"oelbrenner": True, "wp1": False, "wp2": False, "bwwp": False},
+        sinks={
+            "brauchwasser": True,
+            "fbh_eg": False,
+            "klima_og": False,
+            "nebengeb": False,
+            "hk_backup": False,
+            "pool": False,
+        },
+    )
+
+    _routing_state, bw_state, _brunnen, auto_do, _auto_ao, _burner, _cooling = _compute_auto_outputs(
+        app_config,
+        mqtt,
+        HardwareSnapshot(rtd={"RTD01": 60.0, "RTD03": 40.0}),
+        FailsafeState(False, (), None),
+        freigaben,
+        ReglerParameter.from_settings(app_config.settings),
+        False,
+        False,
+        0.0,
+        False,
+        False,
+    )
+
+    assert bw_state.active is True
+    assert bw_state.kessel_reserve_k == 15.0
+    assert auto_do["DO01"] is True
+    assert auto_do["DO02"] is True

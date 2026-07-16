@@ -24,6 +24,7 @@ class Demand:
     aktiv: bool
     vl_soll: float | None
     quelle: str = "ha"
+    leistung_kw: float | None = None
 
 
 class MqttBridge:
@@ -141,6 +142,7 @@ class MqttBridge:
                     aktiv=bool(raw.get("aktiv", False)),
                     vl_soll=float(raw["vl_soll"]) if raw.get("vl_soll") is not None else None,
                     quelle=str(raw.get("quelle", "default")),
+                    leistung_kw=float(raw["leistung_kw"]) if raw.get("leistung_kw") is not None else None,
                 ),
             )
 
@@ -214,6 +216,7 @@ class MqttBridge:
                 aktiv=bool(payload.get("aktiv", False)),
                 vl_soll=float(payload["vl_soll"]) if payload.get("vl_soll") is not None else None,
                 quelle=str(payload.get("quelle", "ha")),
+                leistung_kw=float(payload["leistung_kw"]) if payload.get("leistung_kw") is not None else None,
             )
             return
 
@@ -224,6 +227,7 @@ class MqttBridge:
                     aktiv=_as_bool(payload),
                     vl_soll=current.vl_soll,
                     quelle="ha",
+                    leistung_kw=current.leistung_kw,
                 )
                 return
             if parts[3] == "vl_soll":
@@ -231,6 +235,15 @@ class MqttBridge:
                     aktiv=current.aktiv,
                     vl_soll=float(str(payload).replace(",", ".")),
                     quelle="ha",
+                    leistung_kw=current.leistung_kw,
+                )
+                return
+            if parts[3] == "leistung_kw":
+                self.demands[parts[2]] = Demand(
+                    aktiv=current.aktiv,
+                    vl_soll=current.vl_soll,
+                    quelle="ha",
+                    leistung_kw=float(str(payload).replace(",", ".")),
                 )
                 return
 
@@ -260,13 +273,20 @@ class MqttBridge:
             return
 
         if len(parts) == 4 and parts[1] == "tor" and parts[3] == "cmd":
+            if parts[2] == "position_bestaetigt":
+                self._commands.put(MqttCommand("tor_verify", str(payload), payload))
+                return
+            if parts[2] == "freigabe":
+                command_name = str(payload.get("command", "")) if isinstance(payload, dict) else str(payload)
+                self._commands.put(MqttCommand("tor_command", command_name, payload))
+                return
             command_name = {
                 "ganz": "oeffnen_ganz",
                 "halb": "oeffnen_halb",
                 "auf": "oeffnen_ganz",
                 "zu": "schliessen",
             }.get(parts[2], parts[2])
-            self._commands.put(MqttCommand("tor_command", command_name, payload))
+            self._commands.put(MqttCommand("tor_request", command_name, payload))
             return
 
         if topic == f"{self.base}/failsafe/force":

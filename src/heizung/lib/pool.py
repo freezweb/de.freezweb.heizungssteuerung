@@ -55,9 +55,14 @@ class PoolProdinoConfig:
 class PoolRuntimeState:
     pending_since_ts: float | None = None
     filling_since_ts: float | None = None
+    full_since_ts: float | None = None
     fill_start_meter_l: float | None = None
+    pending_meter_since_ts: float | None = None
+    pending_meter_start_l: float | None = None
+    pending_meter_fill_seconds: float = 0.0
     dosing_until_ts: float | None = None
     last_fill_attempt_day: str = ""
+    max_fill_blocked_day: str = ""
     last_daily_dose_day: str = ""
     last_fill_liters: float = 0.0
     last_fill_seconds: float = 0.0
@@ -76,9 +81,14 @@ class PoolRuntimeState:
         return cls(
             pending_since_ts=_optional_float(raw.get("pending_since_ts")),
             filling_since_ts=_optional_float(raw.get("filling_since_ts")),
+            full_since_ts=_optional_float(raw.get("full_since_ts")),
             fill_start_meter_l=_optional_float(raw.get("fill_start_meter_l")),
+            pending_meter_since_ts=_optional_float(raw.get("pending_meter_since_ts")),
+            pending_meter_start_l=_optional_float(raw.get("pending_meter_start_l")),
+            pending_meter_fill_seconds=float(raw.get("pending_meter_fill_seconds", 0.0) or 0.0),
             dosing_until_ts=_optional_float(raw.get("dosing_until_ts")),
             last_fill_attempt_day=str(raw.get("last_fill_attempt_day", "")),
+            max_fill_blocked_day=str(raw.get("max_fill_blocked_day", "")),
             last_daily_dose_day=str(raw.get("last_daily_dose_day", "")),
             last_fill_liters=float(raw.get("last_fill_liters", 0.0) or 0.0),
             last_fill_seconds=float(raw.get("last_fill_seconds", 0.0) or 0.0),
@@ -92,9 +102,14 @@ class PoolRuntimeState:
         return {
             "pending_since_ts": self.pending_since_ts,
             "filling_since_ts": self.filling_since_ts,
+            "full_since_ts": self.full_since_ts,
             "fill_start_meter_l": self.fill_start_meter_l,
+            "pending_meter_since_ts": self.pending_meter_since_ts,
+            "pending_meter_start_l": self.pending_meter_start_l,
+            "pending_meter_fill_seconds": round(self.pending_meter_fill_seconds, 1),
             "dosing_until_ts": self.dosing_until_ts,
             "last_fill_attempt_day": self.last_fill_attempt_day,
+            "max_fill_blocked_day": self.max_fill_blocked_day,
             "last_daily_dose_day": self.last_daily_dose_day,
             "last_fill_liters": round(self.last_fill_liters, 2),
             "last_fill_seconds": round(self.last_fill_seconds, 1),
@@ -158,6 +173,9 @@ class PoolController:
         test_mode: bool,
         fill_delay_s: float,
         start_hour: int,
+        end_hour: int,
+        close_delay_s: float,
+        meter_settle_s: float,
         max_fill_s: float,
         daily_dose_ml: float,
         daily_dose_hour: int,
@@ -174,44 +192,68 @@ class PoolController:
         now_dt = datetime.fromtimestamp(now_ts)
         today = now_dt.date().isoformat()
         fill_delay_s = max(0.0, float(fill_delay_s))
+        close_delay_s = max(0.0, float(close_delay_s))
+        meter_settle_s = max(0.0, float(meter_settle_s))
         max_fill_s = max(1.0, float(max_fill_s))
         pump_ml_min = max(0.1, float(pump_ml_min))
 
-        reason = "bereit"
+        waiting_for_meter = self._complete_pending_meter_dose(
+            now_ts,
+            fresh_ml_per_l,
+            pump_ml_min,
+            water_meter_total_l,
+            meter_settle_s,
+        )
+        reason = "warte_wasserzaehler" if waiting_for_meter else "bereit"
         valve_open = False
         if float_empty is None:
             reason = "schwimmer_unbekannt"
             self._reset_fill()
         elif not float_empty:
-            reason = "pool_voll"
-            self._finish_fill(now_ts, fresh_ml_per_l, pump_ml_min, water_meter_total_l)
+            if self.runtime.filling_since_ts is not None:
+                if self.runtime.full_since_ts is None:
+                    self.runtime.full_since_ts = now_ts
+                if now_ts - self.runtime.full_since_ts >= close_delay_s:
+                    reason = "pool_voll"
+                    if self._finish_fill(now_ts, fresh_ml_per_l, pump_ml_min, water_meter_total_l, meter_settle_s):
+                        reason = "warte_wasserzaehler"
+                else:
+                    reason = "schliessverzoegerung"
+                    valve_open = True
+            else:
+                reason = "warte_wasserzaehler" if waiting_for_meter else "pool_voll"
+                self._reset_fill()
         else:
-            allowed = bool(test_mode) or (now_dt.hour == max(0, min(23, int(start_hour))))
-            already_tried_today = (not test_mode) and self.runtime.last_fill_attempt_day == today
-            if not allowed:
+            self.runtime.full_since_ts = None
+            filling_already_active = self.runtime.filling_since_ts is not None
+            allowed_to_start = bool(test_mode) or _hour_in_window(now_dt.hour, start_hour, end_hour)
+            if not allowed_to_start and not filling_already_active:
                 reason = "wartet_bis_startzeit"
                 self.runtime.pending_since_ts = None
-            elif already_tried_today and self.runtime.filling_since_ts is None:
-                reason = "heute_bereits_versucht"
+            elif not test_mode and self.runtime.max_fill_blocked_day == today and not filling_already_active:
+                reason = "max_fuellzeit_heute_erreicht"
                 self.runtime.pending_since_ts = None
             else:
-                if self.runtime.pending_since_ts is None:
-                    self.runtime.pending_since_ts = now_ts
-                    self.runtime.last_fill_attempt_day = today
-                elapsed_pending = now_ts - self.runtime.pending_since_ts
-                if elapsed_pending >= fill_delay_s:
-                    if self.runtime.filling_since_ts is None:
+                if self.runtime.filling_since_ts is None:
+                    if self.runtime.pending_since_ts is None:
+                        self.runtime.pending_since_ts = now_ts
+                    elapsed_pending = now_ts - self.runtime.pending_since_ts
+                    if elapsed_pending < fill_delay_s:
+                        reason = "verzoegerung"
+                    else:
                         self.runtime.filling_since_ts = now_ts
                         self.runtime.fill_start_meter_l = _optional_float(water_meter_total_l)
+                if self.runtime.filling_since_ts is not None:
                     fill_elapsed_s = now_ts - self.runtime.filling_since_ts
                     if fill_elapsed_s <= max_fill_s:
                         valve_open = True
                         reason = "fuellt"
                     else:
                         reason = "max_fuellzeit_erreicht"
-                        self._finish_fill(now_ts, fresh_ml_per_l, pump_ml_min, water_meter_total_l)
-                else:
-                    reason = "verzoegerung"
+                        if not test_mode:
+                            self.runtime.max_fill_blocked_day = today
+                        if self._finish_fill(now_ts, fresh_ml_per_l, pump_ml_min, water_meter_total_l, meter_settle_s):
+                            reason = "warte_wasserzaehler"
 
         self._schedule_daily_dose(today, now_dt.hour, daily_dose_hour, daily_dose_ml, pump_ml_min, now_ts)
         dosing_on = bool(self.runtime.dosing_until_ts is not None and now_ts < self.runtime.dosing_until_ts)
@@ -229,33 +271,92 @@ class PoolController:
         fresh_ml_per_l: float,
         pump_ml_min: float,
         water_meter_total_l: float | None = None,
-    ) -> None:
+        meter_settle_s: float = 0.0,
+    ) -> bool:
         if self.runtime.filling_since_ts is not None:
             duration_s = max(0.0, now_ts - self.runtime.filling_since_ts)
             meter_total_l = _optional_float(water_meter_total_l)
             if (
                 meter_total_l is not None
                 and self.runtime.fill_start_meter_l is not None
-                and meter_total_l >= self.runtime.fill_start_meter_l
+                and meter_total_l > self.runtime.fill_start_meter_l
             ):
                 liters = meter_total_l - self.runtime.fill_start_meter_l
+                self._record_fill_and_dose(liters, duration_s, fresh_ml_per_l, pump_ml_min, now_ts)
+            elif self.runtime.fill_start_meter_l is not None and meter_settle_s > 0:
+                self.runtime.pending_meter_since_ts = now_ts
+                self.runtime.pending_meter_start_l = self.runtime.fill_start_meter_l
+                self.runtime.pending_meter_fill_seconds = duration_s
+                self._reset_fill()
+                return True
             else:
-                liters = 0.0
-            self.runtime.last_fill_seconds = duration_s
-            self.runtime.last_fill_liters = liters
-            dose_ml = liters * max(0.0, fresh_ml_per_l)
-            self._add_dose_seconds(
-                dose_ml / max(0.1, pump_ml_min) * 60.0,
-                now_ts,
-                dose_ml=dose_ml,
-                reason="frischwasser",
-            )
+                self._record_fill_and_dose(0.0, duration_s, fresh_ml_per_l, pump_ml_min, now_ts)
         self._reset_fill()
+        return False
+
+    def _complete_pending_meter_dose(
+        self,
+        now_ts: float,
+        fresh_ml_per_l: float,
+        pump_ml_min: float,
+        water_meter_total_l: float | None,
+        meter_settle_s: float,
+    ) -> bool:
+        if self.runtime.pending_meter_since_ts is None:
+            return False
+        meter_total_l = _optional_float(water_meter_total_l)
+        start_l = self.runtime.pending_meter_start_l
+        if meter_total_l is not None and start_l is not None and meter_total_l > start_l:
+            self._record_fill_and_dose(
+                meter_total_l - start_l,
+                self.runtime.pending_meter_fill_seconds,
+                fresh_ml_per_l,
+                pump_ml_min,
+                now_ts,
+            )
+            self._reset_pending_meter()
+            return False
+        if now_ts - self.runtime.pending_meter_since_ts >= meter_settle_s:
+            self._record_fill_and_dose(
+                0.0,
+                self.runtime.pending_meter_fill_seconds,
+                fresh_ml_per_l,
+                pump_ml_min,
+                now_ts,
+            )
+            self._reset_pending_meter()
+            return False
+        return True
+
+    def _record_fill_and_dose(
+        self,
+        liters: float,
+        duration_s: float,
+        fresh_ml_per_l: float,
+        pump_ml_min: float,
+        now_ts: float,
+    ) -> None:
+        liters = max(0.0, float(liters))
+        self.runtime.last_fill_seconds = max(0.0, float(duration_s))
+        self.runtime.last_fill_liters = liters
+        dose_ml = liters * max(0.0, fresh_ml_per_l)
+        self._add_dose_seconds(
+            dose_ml / max(0.1, pump_ml_min) * 60.0,
+            now_ts,
+            dose_ml=dose_ml,
+            reason="frischwasser",
+        )
 
     def _reset_fill(self) -> None:
         self.runtime.pending_since_ts = None
         self.runtime.filling_since_ts = None
+        self.runtime.full_since_ts = None
         self.runtime.fill_start_meter_l = None
+
+    def _reset_pending_meter(self) -> None:
+        self.runtime.pending_meter_since_ts = None
+        self.runtime.pending_meter_start_l = None
+        self.runtime.pending_meter_fill_seconds = 0.0
 
     def _schedule_daily_dose(
         self,
@@ -334,3 +435,14 @@ def _optional_float(value: Any) -> float | None:
         return float(value)
     except (TypeError, ValueError):
         return None
+
+
+def _hour_in_window(hour: int, start_hour: int, end_hour: int) -> bool:
+    hour = max(0, min(23, int(hour)))
+    start = max(0, min(23, int(start_hour)))
+    end = max(0, min(23, int(end_hour)))
+    if start == end:
+        return True
+    if start < end:
+        return start <= hour < end
+    return hour >= start or hour < end

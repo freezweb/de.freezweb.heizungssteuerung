@@ -15,7 +15,7 @@ def _config() -> AppConfig:
         ai={},
         ao={},
         rtd={
-            "RTD03": ChannelConfig("RTD03", "rtd", "RTDValue_1_i13", "bw_oben"),
+            "RTD02": ChannelConfig("RTD02", "rtd", "RTDValue_2_i14", "bw_oben"),
             "RTD04": ChannelConfig("RTD04", "rtd", "RTDValue_2_i13", "bw_unten"),
         },
     )
@@ -44,13 +44,13 @@ def _freigaben(enabled: bool = True, oel: bool = True) -> Freigaben:
 
 
 def _regler() -> ReglerParameter:
-    return ReglerParameter(brauchwasser_soll_c=50.0, brauchwasser_hysterese_k=5.0)
+    return ReglerParameter(brauchwasser_soll_c=50.0, brauchwasser_hysterese_k=5.0, brauchwasser_kessel_reserve_k=15.0)
 
 
 def _snapshot(temp_oben: float | None) -> HardwareSnapshot:
     rtd = {}
     if temp_oben is not None:
-        rtd["RTD03"] = temp_oben
+        rtd["RTD02"] = temp_oben
     rtd["RTD04"] = 42.0
     return HardwareSnapshot(di={}, do={}, ai={}, ao={}, rtd=rtd)
 
@@ -60,6 +60,7 @@ def test_brauchwasser_starts_below_hysteresis_threshold():
 
     assert state.active is True
     assert state.reason == "unter_einschaltschwelle"
+    assert state.kessel_reserve_k == 15.0
 
 
 def test_brauchwasser_holds_until_soll_is_reached():

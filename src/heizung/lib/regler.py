@@ -16,6 +16,7 @@ class ReglerParameter:
     wp_parallel_ab_aktive_kreise: int = 2
     brauchwasser_soll_c: float = 50.0
     brauchwasser_hysterese_k: float = 5.0
+    brauchwasser_kessel_reserve_k: float = 15.0
     brunnen_min_druck_bar: float = 2.2
     brunnen_max_druck_bar: float = 4.2
     brunnen_regeldruck_bar: float = 3.2
@@ -29,7 +30,10 @@ class ReglerParameter:
     brunnen_flow_stop_tolerance_bar: float = 0.2
     pool_nachspeisung_testmodus: int = 1
     pool_nachspeisung_start_hour: int = 2
+    pool_nachspeisung_end_hour: int = 8
     pool_nachspeisung_delay_s: float = 30.0
+    pool_nachspeisung_close_delay_s: float = 10.0
+    pool_nachspeisung_meter_settle_s: float = 120.0
     pool_nachspeisung_max_fill_s: float = 3600.0
     pool_flockung_tagesdosis_ml: float = 36.0
     pool_flockung_start_hour: int = 2
@@ -44,6 +48,7 @@ class ReglerParameter:
             wp_parallel_ab_aktive_kreise=int(_setting(settings, "wp.parallel_ab_aktive_kreise", 2)),
             brauchwasser_soll_c=float(_setting(settings, "brauchwasser.soll_c", 50.0)),
             brauchwasser_hysterese_k=float(_setting(settings, "brauchwasser.hysterese_k", 5.0)),
+            brauchwasser_kessel_reserve_k=float(_setting(settings, "brauchwasser.kessel_reserve_k", 15.0)),
             brunnen_min_druck_bar=float(_setting(settings, "brunnen.min_druck_bar", 2.2)),
             brunnen_max_druck_bar=float(_setting(settings, "brunnen.max_druck_bar", 4.2)),
             brunnen_regeldruck_bar=float(_setting(settings, "brunnen.regeldruck_bar", 3.2)),
@@ -57,7 +62,10 @@ class ReglerParameter:
             brunnen_flow_stop_tolerance_bar=float(_setting(settings, "brunnen.flow_stop_regeldruck_tolerance_bar", 0.2)),
             pool_nachspeisung_testmodus=int(_setting(settings, "pool_nachspeisung.testmodus", 1)),
             pool_nachspeisung_start_hour=int(_setting(settings, "pool_nachspeisung.start_hour", 2)),
+            pool_nachspeisung_end_hour=int(_setting(settings, "pool_nachspeisung.end_hour", 8)),
             pool_nachspeisung_delay_s=float(_setting(settings, "pool_nachspeisung.delay_s", 30.0)),
+            pool_nachspeisung_close_delay_s=float(_setting(settings, "pool_nachspeisung.close_delay_s", 10.0)),
+            pool_nachspeisung_meter_settle_s=float(_setting(settings, "pool_nachspeisung.meter_settle_s", 120.0)),
             pool_nachspeisung_max_fill_s=float(_setting(settings, "pool_nachspeisung.max_fill_s", 3600.0)),
             pool_flockung_tagesdosis_ml=float(_setting(settings, "pool_flockung.tagesdosis_ml", 36.0)),
             pool_flockung_start_hour=int(_setting(settings, "pool_flockung.start_hour", 2)),
@@ -77,6 +85,8 @@ class ReglerParameter:
             self.brauchwasser_soll_c = max(30.0, min(70.0, float(str(value).replace(",", "."))))
         elif name == "brauchwasser_hysterese_k":
             self.brauchwasser_hysterese_k = max(1.0, min(20.0, float(str(value).replace(",", "."))))
+        elif name == "brauchwasser_kessel_reserve_k":
+            self.brauchwasser_kessel_reserve_k = max(0.0, min(30.0, float(str(value).replace(",", "."))))
         elif name == "brunnen_min_druck_bar":
             self.brunnen_min_druck_bar = max(0.0, min(9.5, float(str(value).replace(",", "."))))
             if self.brunnen_max_druck_bar <= self.brunnen_min_druck_bar:
@@ -116,8 +126,14 @@ class ReglerParameter:
             self.pool_nachspeisung_testmodus = 1 if _as_bool(value) else 0
         elif name == "pool_nachspeisung_start_hour":
             self.pool_nachspeisung_start_hour = max(0, min(23, int(float(str(value).replace(",", ".")))))
+        elif name == "pool_nachspeisung_end_hour":
+            self.pool_nachspeisung_end_hour = max(0, min(23, int(float(str(value).replace(",", ".")))))
         elif name == "pool_nachspeisung_delay_s":
             self.pool_nachspeisung_delay_s = max(0.0, min(86400.0, float(str(value).replace(",", "."))))
+        elif name == "pool_nachspeisung_close_delay_s":
+            self.pool_nachspeisung_close_delay_s = max(0.0, min(600.0, float(str(value).replace(",", "."))))
+        elif name == "pool_nachspeisung_meter_settle_s":
+            self.pool_nachspeisung_meter_settle_s = max(0.0, min(1800.0, float(str(value).replace(",", "."))))
         elif name == "pool_nachspeisung_max_fill_s":
             self.pool_nachspeisung_max_fill_s = max(30.0, min(21600.0, float(str(value).replace(",", "."))))
         elif name == "pool_flockung_tagesdosis_ml":
@@ -139,6 +155,7 @@ class ReglerParameter:
         settings.setdefault("wp", {})["parallel_ab_aktive_kreise"] = self.wp_parallel_ab_aktive_kreise
         settings.setdefault("brauchwasser", {})["soll_c"] = self.brauchwasser_soll_c
         settings.setdefault("brauchwasser", {})["hysterese_k"] = self.brauchwasser_hysterese_k
+        settings.setdefault("brauchwasser", {})["kessel_reserve_k"] = self.brauchwasser_kessel_reserve_k
         settings.setdefault("brunnen", {})["min_druck_bar"] = self.brunnen_min_druck_bar
         settings.setdefault("brunnen", {})["max_druck_bar"] = self.brunnen_max_druck_bar
         settings.setdefault("brunnen", {})["regeldruck_bar"] = self.brunnen_regeldruck_bar
@@ -154,7 +171,10 @@ class ReglerParameter:
         ] = self.brunnen_flow_stop_tolerance_bar
         settings.setdefault("pool_nachspeisung", {})["testmodus"] = self.pool_nachspeisung_testmodus
         settings.setdefault("pool_nachspeisung", {})["start_hour"] = self.pool_nachspeisung_start_hour
+        settings.setdefault("pool_nachspeisung", {})["end_hour"] = self.pool_nachspeisung_end_hour
         settings.setdefault("pool_nachspeisung", {})["delay_s"] = self.pool_nachspeisung_delay_s
+        settings.setdefault("pool_nachspeisung", {})["close_delay_s"] = self.pool_nachspeisung_close_delay_s
+        settings.setdefault("pool_nachspeisung", {})["meter_settle_s"] = self.pool_nachspeisung_meter_settle_s
         settings.setdefault("pool_nachspeisung", {})["max_fill_s"] = self.pool_nachspeisung_max_fill_s
         settings.setdefault("pool_flockung", {})["tagesdosis_ml"] = self.pool_flockung_tagesdosis_ml
         settings.setdefault("pool_flockung", {})["start_hour"] = self.pool_flockung_start_hour
@@ -168,6 +188,7 @@ class ReglerParameter:
             "wp_parallel_ab_aktive_kreise": self.wp_parallel_ab_aktive_kreise,
             "brauchwasser_soll_c": self.brauchwasser_soll_c,
             "brauchwasser_hysterese_k": self.brauchwasser_hysterese_k,
+            "brauchwasser_kessel_reserve_k": self.brauchwasser_kessel_reserve_k,
             "brunnen_min_druck_bar": self.brunnen_min_druck_bar,
             "brunnen_max_druck_bar": self.brunnen_max_druck_bar,
             "brunnen_regeldruck_bar": self.brunnen_regeldruck_bar,
@@ -181,7 +202,10 @@ class ReglerParameter:
             "brunnen_flow_stop_tolerance_bar": self.brunnen_flow_stop_tolerance_bar,
             "pool_nachspeisung_testmodus": self.pool_nachspeisung_testmodus,
             "pool_nachspeisung_start_hour": self.pool_nachspeisung_start_hour,
+            "pool_nachspeisung_end_hour": self.pool_nachspeisung_end_hour,
             "pool_nachspeisung_delay_s": self.pool_nachspeisung_delay_s,
+            "pool_nachspeisung_close_delay_s": self.pool_nachspeisung_close_delay_s,
+            "pool_nachspeisung_meter_settle_s": self.pool_nachspeisung_meter_settle_s,
             "pool_nachspeisung_max_fill_s": self.pool_nachspeisung_max_fill_s,
             "pool_flockung_tagesdosis_ml": self.pool_flockung_tagesdosis_ml,
             "pool_flockung_start_hour": self.pool_flockung_start_hour,
@@ -206,6 +230,8 @@ class ReglerParameter:
                     self.brauchwasser_soll_c = max(30.0, min(70.0, float(str(value).replace(",", "."))))
                 elif name == "brauchwasser_hysterese_k":
                     self.brauchwasser_hysterese_k = max(1.0, min(20.0, float(str(value).replace(",", "."))))
+                elif name == "brauchwasser_kessel_reserve_k":
+                    self.brauchwasser_kessel_reserve_k = max(0.0, min(30.0, float(str(value).replace(",", "."))))
                 elif name == "brunnen_min_druck_bar":
                     self.set(name, value)
                 elif name == "brunnen_max_druck_bar":
@@ -223,7 +249,10 @@ class ReglerParameter:
                     "brunnen_flow_stop_tolerance_bar",
                     "pool_nachspeisung_testmodus",
                     "pool_nachspeisung_start_hour",
+                    "pool_nachspeisung_end_hour",
                     "pool_nachspeisung_delay_s",
+                    "pool_nachspeisung_close_delay_s",
+                    "pool_nachspeisung_meter_settle_s",
                     "pool_nachspeisung_max_fill_s",
                     "pool_flockung_tagesdosis_ml",
                     "pool_flockung_start_hour",

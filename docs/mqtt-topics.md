@@ -47,14 +47,22 @@ Broker: `mqtt.esrv.center` mit User `vbnet`/`vbnet`. Basis-Pfad: `heizung/...`
 | `heizung/do/<komponente>/state` | `0` / `1` | Tatsachlich geschriebener Digitalausgang |
 | `heizung/klima_og/kuehlung_aktiv` | `0` / `1` | Klima OG laeuft im Brunnen-/Waermetauscher-Kuehlmodus |
 | `heizung/di/oelbrenner_wasserdruck_stoerung/state` | `0` / `1` | DI12, Wasserdruckwachter Oelbrenner, NC: `0` = Stoerung |
-| `heizung/di/brenner_stoerung/state` | `0` / `1` | DI13, Oelbrenner Stoermeldung; `1` triggert HA-Telegram |
-| `heizung/di/brenner_betrieb/state` | `0` / `1` | DI14, Oelbrenner Betriebsmeldung |
+| `heizung/di/brenner_stoerung/state` | `0` / `1` | DI14, Oelbrenner Stoermeldung; `1` triggert HA-Telegram |
+| `heizung/di/brenner_betrieb/state` | `0` / `1` | DI13, Oelbrenner Betriebsmeldung |
 | `heizung/di/oelbrenner_stb_stoerung/state` | `0` / `1` | DI15, Sicherheitstemperaturbegrenzer Oelbrenner, NC: `0` = Stoerung |
+| `heizung/oelverbrauch/liter/state` | Liter | HA-Energiequelle fuer Oel/Gas-Tab, geschaetzt aus DI13 Betriebsmeldung, 25 kW / 10 kWh/l = 2,5 l/h |
+| `heizung/oelverbrauch/kwh/state` | kWh | Energetisches Aequivalent des geschaetzten Oelverbrauchs |
+| `heizung/oelverbrauch/aktuell_l_h/state` | L/h | Momentaner Oelverbrauch als HA-Rate-Wert mit `device_class: volume_flow_rate` |
+| `heizung/oelverbrauch/aktuell_kw/state` | kW | Momentane Brennerleistung: `25` bei Betriebsmeldung, sonst `0` |
+| `heizung/oelverbrauch/aktuell_eur_h/state` | EUR/h | Momentane Kosten auf Basis des aktuellen Dieselpreises |
+| `heizung/oelverbrauch/dieselpreis_eur_l/state` | EUR/l | Automatisch aktualisierter Dieselpreis der WEZ/E-Center-Tankstelle Wittenberge als Kostenbasis |
 | `heizung/ao/<komponente>/state` | float | Tatsachlich geschriebener Analogausgang |
 | `heizung/<komponente>/hand/mode/state` | `0` / `1` | Handbetrieb aktiv |
 | `heizung/<komponente>/hand/value/state` | bool/float | Aktueller Handwert |
 | `heizung/temp/<sensorname>/state` | float | `45.2` |
-| `heizung/tor/status` | string | `offen` / `halb_offen` / `zu` / `unbekannt` |
+| `heizung/tor/status` | string | Virtueller, kamerabestaetigter Status (`Tor Geschlossen`, `Tor Oeffnet`, `Tor Offen`, `Tor Schliesst`, `Kamerapruefung ausstehend`) |
+| `heizung/tor/state` | JSON | Persistenter Torzustand, Ziel, Sperrzeit und letzte Kamerabestaetigung |
+| `heizung/tor/gesperrt` | bool | `1` bis die 30-s-Fahrt abgelaufen und die Position per Kamera bestaetigt ist |
 | `heizung/anforderung/<kreis>/aktuell` | JSON | `{"vl_soll": 42, "aktiv": true, "quelle": "ha"}` (vom RevPi rueckgespiegelt) |
 
 Wichtig: `fbh_eg`, `klima_og`, `nebengeb`, `hk_backup` und `pool` sind Senken
@@ -77,16 +85,33 @@ zugeordnet; beide koennen jede aktive Senke bedienen.
 | `heizung/freigabe/quellen/<quelle>/set` | `0` / `1` | Waermequelle erlauben/sperren |
 | `heizung/freigabe/senken/<senke>/set` | `0` / `1` | Heizkreis/Senke erlauben/sperren |
 | `heizung/regler/mischer_reserve_k/set` | Zahl `0..15` | Aufschlag auf hoechste Senkenanforderung |
-| `heizung/regler/wp_parallel_ab_aktive_kreise/set` | Zahl `1..10` | Ab wie vielen aktiven Senken beide WPs laufen duerfen |
+| `heizung/regler/wp_parallel_ab_aktive_kreise/set` | Zahl `1..10` | Fallback: ab wie vielen aktiven Senken beide WPs laufen duerfen, falls keine kW-Anforderung vorliegt |
 | `heizung/regler/brauchwasser_soll_c/set` | Zahl `30..70` | Abschalttemperatur der aktuellen Brauchwasserladung |
 
 Home Assistant schaltet die Gebaeudeanforderungen automatisch ueber die
 MQTT-Discovery-Schalter der RevPi-Steuerung:
-`sensor.heizanforderung_eg_prozent > 0` schaltet
-`switch.heizung_hauptsteuerung_anforderung_fbh_eg`, und
-`sensor.heizanforderung_og_prozent > 0` schaltet
-`switch.heizung_hauptsteuerung_anforderung_hk_backup`.
+`sensor.heizanforderung_eg_prozent` und `sensor.heizanforderung_og_prozent`
+werden in HA in eine JSON-Anforderung umgerechnet. Neben `aktiv` und
+`vl_soll` wird `leistung_kw` uebertragen. Der RevPi entscheidet damit anhand
+der aktuellen Aussentemperatur und der WP-Leistungskurve, ob eine oder beide
+Waermepumpen freigegeben werden.
+
+Beispiel:
+
+```json
+{"aktiv":true,"vl_soll":30,"leistung_kw":6.7,"quelle":"ha_leistungsbedarf"}
+```
+
+Rueckmeldungen:
+
+| Topic | Einheit | Bedeutung |
+|---|---:|---|
+| `heizung/anforderung/<kreis>/leistung_kw/state` | kW | aktuell uebernommene Leistungsanforderung dieses Kreises |
+| `heizung/gesamt/waermebedarf_kw/state` | kW | Summe der aktuell freigegebenen aktiven Senken |
+| `heizung/gesamt/wp_einzelleistung_kw/state` | kW | interpolierte Leistung einer WP bei aktueller Aussentemperatur |
+| `heizung/gesamt/wp_parallel_schwelle_kw/state` | kW | Schaltschwelle fuer Parallelbetrieb aus `parallel_ab_pct` |
 | `heizung/regler/brauchwasser_hysterese_k/set` | Zahl `1..20` | Einschaltdifferenz unterhalb des Sollwerts |
+| `heizung/regler/brauchwasser_kessel_reserve_k/set` | Zahl `0..30` | Kessel-/Vorlaufaufschlag fuer schnelle Oelbrenner-Brauchwasserladung |
 | `heizung/regler/brunnen_min_druck_bar/set` | Zahl `0..9.5` | Unterschreiten startet Brunnenpumpe/FU |
 | `heizung/regler/brunnen_max_druck_bar/set` | Zahl `0.2..10` | Ueberschreiten stoppt Brunnenpumpe/FU |
 | `heizung/regler/brunnen_regeldruck_bar/set` | Zahl `0..10` | Konstantdruck-Sollwert bei offenem Verbraucher |
@@ -100,9 +125,10 @@ MQTT-Discovery-Schalter der RevPi-Steuerung:
 | `heizung/regler/brunnen_flow_stop_tolerance_bar/set` | Zahl `0..2` | Flow-Stop-Timer erst ab Regeldruck minus Toleranz |
 | `heizung/pv/ueberschuss/set` | `0` / `1` | HA setzt PV-Ueberschuss; kein physischer RevPi-DI |
 | `heizung/pv/mangel/set` | `0` / `1` | HA setzt PV-Mangel; kein physischer RevPi-DI |
-| `heizung/tor/oeffnen_ganz/cmd` | leer | Oeffnen beider Fluegel, wenn nicht beide Fluegel bereits nicht-geschlossen sind |
-| `heizung/tor/oeffnen_halb/cmd` | leer | Oeffnen rechter Fluegel, wenn rechter Fluegel geschlossen ist |
-| `heizung/tor/schliessen/cmd` | leer | Schliessen, wenn nicht beide Fluegel bereits geschlossen sind |
+| `heizung/tor/oeffnen_ganz/cmd` | leer | Oeffnen ueber den angeschlossenen Ganz-Taster, sofern die letzte Kamerabestaetigung nicht bereits `offen` lautet |
+| `heizung/tor/oeffnen_halb/cmd` | leer | Derzeit gesperrt, weil das Halb-Relais nicht angeschlossen ist |
+| `heizung/tor/schliessen/cmd` | leer | Schliessen ueber denselben Ganz-Taster, sofern die letzte Kamerabestaetigung nicht bereits `geschlossen` lautet |
+| `heizung/tor/position_bestaetigt/cmd` | `offen` / `geschlossen` | Position nach visueller Pruefung bestaetigen; waehrend der 30-s-Fahrt unzulaessig |
 | `heizung/tor/ganz/cmd` | leer | Legacy-Alias fuer `oeffnen_ganz` |
 | `heizung/tor/halb/cmd` | leer | Legacy-Alias fuer `oeffnen_halb` |
 | `heizung/heizkurve/set` | JSON `{"stuetzpunkte":[{"aussen":-12,"vl":45}, ...]}` | Heizkurve aktualisieren |

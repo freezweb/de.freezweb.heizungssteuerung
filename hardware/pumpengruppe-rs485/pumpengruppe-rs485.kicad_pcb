@@ -1685,6 +1685,18 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Yageo"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "e6c9869e-0576-4a8d-a2d7-fb396887d90b")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(property "AISLER_MPN" "RC0603FR-0710KL"
 			(at 0 0 0)
 			(layer "F.Fab")

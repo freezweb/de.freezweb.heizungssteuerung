@@ -78,8 +78,8 @@ di:
   DI10: { module: DIO1, channel: I_10, pictory_name: "I_10",             komponente: "bwwp_stoerung",     beschreibung: "Sammelstoerung BW-WP",      phase: B }
   DI11: { module: DIO1, channel: I_11, pictory_name: "I_11",             komponente: "brunnen_stroemung", beschreibung: "Stroemungswachter Brunnen", phase: C }
   DI12: { module: DIO1, channel: I_12, pictory_name: "I_12",             komponente: "oelbrenner_wasserdruck_stoerung", beschreibung: "Oelbrenner Wasserdruck Stoerung", phase: A, polaritaet: NC_SAFE_HIGH }
-  DI13: { module: DIO1, channel: I_13, pictory_name: "I_13",             komponente: "brenner_stoerung",  beschreibung: "Oelbrenner Stoermeldung",   phase: A }
-  DI14: { module: DIO1, channel: I_14, pictory_name: "I_14",             komponente: "brenner_betrieb",   beschreibung: "Oelbrenner Betriebsmeldung", phase: A }
+  DI13: { module: DIO1, channel: I_13, pictory_name: "I_13",             komponente: "brenner_betrieb",   beschreibung: "Oelbrenner Betriebsmeldung", phase: A }
+  DI14: { module: DIO1, channel: I_14, pictory_name: "I_14",             komponente: "brenner_stoerung",  beschreibung: "Oelbrenner Stoermeldung",   phase: A }
   DI15: { module: DIO2, channel: I_1,  pictory_name: "I_1_i17",          komponente: "oelbrenner_stb_stoerung", beschreibung: "Oelbrenner STB Stoerung", phase: A, polaritaet: NC_SAFE_HIGH }
   DI16: { module: DIO2, channel: I_2,  pictory_name: "I_2_i17",          komponente: "reserve_di_16",     beschreibung: "Reserve",                   phase: "-" }
 
@@ -87,8 +87,8 @@ di:
 # 8x AIO auf der Hauptsteuerung ergeben 16 direkte RTD-Kanaele.
 rtd:
   RTD01: { module: AIO1, channel: RTD_1, pictory_name: "RTDValue_1_i14", komponente: "vl_sammel",      sensor: PT1000, einheit: "C", phase: A }
-  RTD02: { module: AIO1, channel: RTD_2, pictory_name: "RTDValue_2_i14", komponente: "rl_sammel",      sensor: PT1000, einheit: "C", phase: A }
-  RTD03: { module: AIO2, channel: RTD_1, pictory_name: "RTDValue_1_i13", komponente: "bw_oben",        sensor: PT1000, einheit: "C", phase: A }
+  RTD02: { module: AIO1, channel: RTD_2, pictory_name: "RTDValue_2_i14", komponente: "bw_oben",        sensor: PT1000, einheit: "C", phase: A }
+  RTD03: { module: AIO2, channel: RTD_1, pictory_name: "RTDValue_1_i13", komponente: "rl_sammel",      sensor: PT1000, einheit: "C", phase: A }
   RTD04: { module: AIO2, channel: RTD_2, pictory_name: "RTDValue_2_i13", komponente: "bw_unten",       sensor: PT1000, einheit: "C", phase: A }
   RTD05: { module: AIO3, channel: RTD_1, pictory_name: "RTDValue_1_i12", komponente: "aussen",         sensor: PT1000, einheit: "C", phase: A }
   RTD06: { module: AIO3, channel: RTD_2, pictory_name: "RTDValue_2_i12", komponente: "brunnen_ein",    sensor: PT1000, einheit: "C", phase: C }

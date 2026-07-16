@@ -1,4 +1,4 @@
-"""Modbus-TCP Leser fuer den Brunnen-Durchflusszaehler."""
+"""Leser fuer Brunnen-Durchfluss und Wasserzaehler."""
 
 from __future__ import annotations
 
@@ -6,12 +6,20 @@ import asyncio
 import struct
 from dataclasses import dataclass
 from typing import Any
+from urllib.request import urlopen
 
 
 @dataclass(frozen=True)
 class FlowmeterSnapshot:
     flow_l_min: float
     total_l: float | None = None
+
+
+@dataclass(frozen=True)
+class WatermeterHttpSnapshot:
+    total_l: float
+    value: float
+    raw: str
 
 
 @dataclass(frozen=True)
@@ -47,6 +55,34 @@ class FlowmeterModbusConfig:
             total_scale=float(raw.get("total_scale", 1000.0)),
             timeout_s=float(raw.get("timeout_s", 0.3)),
             poll_interval_s=float(raw.get("poll_interval_s", 1.0)),
+        )
+
+
+@dataclass(frozen=True)
+class WatermeterHttpConfig:
+    enabled: bool = False
+    url: str = "http://10.1.20.191/value?all=true&type=value"
+    number_name: str = "zaehlerstand"
+    total_scale_l_per_unit: float = 1000.0
+    timeout_s: float = 2.0
+    poll_interval_s: float = 10.0
+    mqtt_mirror_enabled: bool = True
+    mqtt_topic_base: str = "watermeter/zaehlerstand"
+
+    @classmethod
+    def from_settings(cls, settings: dict[str, Any]) -> "WatermeterHttpConfig":
+        raw = _setting(settings, "brunnen.watermeter_http", {})
+        if not isinstance(raw, dict):
+            raw = {}
+        return cls(
+            enabled=bool(raw.get("enabled", False)),
+            url=str(raw.get("url", "http://10.1.20.191/value?all=true&type=value")),
+            number_name=str(raw.get("number_name", "zaehlerstand")),
+            total_scale_l_per_unit=float(raw.get("total_scale_l_per_unit", 1000.0)),
+            timeout_s=float(raw.get("timeout_s", 2.0)),
+            poll_interval_s=float(raw.get("poll_interval_s", 10.0)),
+            mqtt_mirror_enabled=bool(raw.get("mqtt_mirror_enabled", True)),
+            mqtt_topic_base=str(raw.get("mqtt_topic_base", "watermeter/zaehlerstand")).strip("/"),
         )
 
 
@@ -106,6 +142,44 @@ class FlowmeterModbusClient:
         finally:
             writer.close()
             await writer.wait_closed()
+
+
+class WatermeterHttpClient:
+    def __init__(self, config: WatermeterHttpConfig) -> None:
+        self.config = config
+
+    async def read_snapshot(self) -> WatermeterHttpSnapshot:
+        return await asyncio.to_thread(self._read_snapshot_sync)
+
+    def _read_snapshot_sync(self) -> WatermeterHttpSnapshot:
+        with urlopen(self.config.url, timeout=self.config.timeout_s) as response:  # noqa: S310
+            payload = response.read().decode("utf-8", errors="replace")
+        return parse_watermeter_http_payload(
+            payload,
+            self.config.number_name,
+            self.config.total_scale_l_per_unit,
+        )
+
+
+def parse_watermeter_http_payload(
+    payload: str,
+    number_name: str = "zaehlerstand",
+    total_scale_l_per_unit: float = 1000.0,
+) -> WatermeterHttpSnapshot:
+    """Parst AI-on-the-edge /value Ausgabe und gibt den absoluten Zaehlerstand in Litern zurueck."""
+    expected = number_name.strip()
+    for line in payload.splitlines():
+        parts = [part.strip() for part in line.replace(";", "\t").split("\t") if part.strip()]
+        if len(parts) < 2 or parts[0] != expected:
+            continue
+        raw = parts[1]
+        value = float(raw.replace(",", "."))
+        return WatermeterHttpSnapshot(
+            total_l=max(0.0, value * total_scale_l_per_unit),
+            value=value,
+            raw=raw,
+        )
+    raise ValueError(f"Wasserzaehler {expected!r} nicht in AI-on-the-edge Antwort gefunden")
 
 
 def _setting(settings: dict[str, Any], path: str, default: Any) -> Any:

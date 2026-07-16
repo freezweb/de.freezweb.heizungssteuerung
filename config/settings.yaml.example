@@ -7,6 +7,21 @@ regelung:
   oelbrenner_unterstuetzung: true # Phase A: alter Kessel darf gemeinsame Waermeanforderung bedienen
   oelbrenner_hysterese_k: 1      # Brenner fuer Gesamtwaerme startet erst unter VL-Soll minus Hysterese
 
+oelverbrauch:
+  # Geschaetzter Verbrauch aus DI13/Oelbrenner Betriebsmeldung, nicht aus der
+  # Anforderung. 25 kW / 10 kWh pro Liter = 2,5 l/h.
+  enabled: true
+  burner_component: "brenner_betrieb"
+  brenner_kw: 25
+  kwh_per_liter: 10
+  state_persist_path: "state/oelverbrauch.json"
+  max_update_interval_s: 300
+  # Start-/Fallbackpreis; wird automatisch von der Tankstellen-Seite aktualisiert.
+  dieselpreis_eur_l: 2.079
+  dieselpreis_url: "https://www.clever-tanken.de/tankstelle_details/wittenberge-lenzener-chaussee-tankstelle-am-e-cen"
+  dieselpreis_poll_interval_s: 1800
+  dieselpreis_timeout_s: 10
+
 leds:
   enabled: true
   peer_timeout_s: 90
@@ -120,10 +135,15 @@ pool_prodino:
 
 pool_nachspeisung:
   # Testmodus: leerer Schwimmer startet nach delay_s unabhaengig von 02:00.
-  # Im Livebetrieb auf 0 setzen, dann wird nur zur start_hour nachgespeist.
+  # Im Livebetrieb auf 0 setzen, dann wird nur im Zeitfenster nachgespeist.
   testmodus: 1
   start_hour: 2
+  end_hour: 8
   delay_s: 30
+  # Schwimmer muss so lange stabil "voll" melden, bevor das Ventil schliesst.
+  close_delay_s: 10
+  # Nach dem Schliessen auf einen nachlaufenden AI-on-the-edge-Zaehlerwert warten.
+  meter_settle_s: 120
   max_fill_s: 3600
 
 pool_flockung:
@@ -204,6 +224,9 @@ brauchwasser:
   # Abschaltbar ueber Freigabe Senke "brauchwasser" in HA.
   soll_c: 50
   hysterese_k: 5
+  # Eigener Kessel-/Vorlaufaufschlag fuer die Oelbrenner-Brauchwasserladung.
+  # Hoeheres Delta beschleunigt die Endphase am Speicher-Waermetauscher.
+  kessel_reserve_k: 15
   sensor_min_c: -20
   sensor_max_c: 95
 
@@ -243,6 +266,20 @@ brunnen:
     scale: 100             # Registerwert = L/min * 100
     timeout_s: 0.3
     poll_interval_s: 1.0
+  watermeter_http:
+    # AI-on-the-edge liefert den absoluten Brunnenwasserzaehlerstand in m3.
+    # Dieser Wert ueberschreibt nur den Gesamtzaehler; der L/min-Durchfluss
+    # kommt weiterhin vom flow_modbus.
+    enabled: false
+    url: "http://10.1.20.191/value?all=true&type=value"
+    number_name: "zaehlerstand"
+    total_scale_l_per_unit: 1000
+    timeout_s: 2.0
+    poll_interval_s: 10.0
+    # Spiegelt den Wert zusaetzlich auf die AI-on-the-edge MQTT-Topics, falls
+    # das ESP selbst HTTP liefert, aber nicht mehr sauber per MQTT publisht.
+    mqtt_mirror_enabled: true
+    mqtt_topic_base: "watermeter/zaehlerstand"
 
 klima_og:
   # Kuehlbetrieb ueber Brunnen/Waermetauscher ist absichtlich aus, bis Ventil
@@ -264,8 +301,17 @@ heizkurve:
 wp:
   # Wechselrhythmus zwischen WP1/WP2 fuer gleichmaessige Laufzeit
   wechsel_stunden: 24
-  # Wann beide WPs gleichzeitig laufen sollen (in % der max. Leistung)
-  parallel_ab_pct: 50
+  # Heizleistung einer einzelnen WP je Aussentemperatur. Startwerte konservativ
+  # fuer eine 18-kW-Klasse; finale Herstellerkurve nach Datenblatt eintragen.
+  leistungskurve_kw:
+    - { aussen: -15, kw: 11.0 }
+    - { aussen:  -7, kw: 14.0 }
+    - { aussen:   2, kw: 16.0 }
+    - { aussen:   7, kw: 18.0 }
+    - { aussen:  15, kw: 18.0 }
+  # Wann beide WPs gleichzeitig laufen sollen: Prozent der aktuell interpolierten
+  # Leistung einer einzelnen WP. 90 % startet WP2 kurz vor der Einzel-WP-Grenze.
+  parallel_ab_pct: 90
   # Solange keine echte Leistungsanforderung vorliegt: ab so vielen aktiven Senken beide WPs freigeben.
   parallel_ab_aktive_kreise: 2
   bwwp:
@@ -292,9 +338,18 @@ failsafe:
   pumpen_an_im_failsafe: true
 
 hand:
-  # Default-Hand-Timeout (kann pro Kanal in io_map.yaml ueberschrieben werden)
-  default_timeout_min: null     # null = nie automatisch zurueck
+  # Handwerte fallen nie automatisch auf Auto zurueck.
+  # default_timeout_min bleibt nur fuer alte Configs vorhanden und wird ignoriert.
+  default_timeout_min: null
   state_persist_path: "state/hand_state.json"
+
+tor:
+  # Ohne Endlagensensoren wird nach jedem Toggle-Impuls 30 s gesperrt und
+  # anschliessend eine Kamerabestaetigung verlangt.
+  fahrzeit_s: 30
+  initial_position: geschlossen
+  halb_aktiv: false
+  state_persist_path: "state/tor.json"
 
 logging:
   level: INFO
